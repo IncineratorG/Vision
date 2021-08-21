@@ -1,10 +1,18 @@
+import FirebaseService from './firebase/FirebaseService';
+
 const Services = () => {
-  const init = async () => {};
+  const firebaseService = FirebaseService();
+
+  const init = async () => {
+    firebaseService.init();
+  };
 
   const dispose = () => {};
 
   const services = () => {
-    return {};
+    return {
+      firebaseService,
+    };
   };
 
   return {
