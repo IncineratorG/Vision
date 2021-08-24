@@ -1,9 +1,15 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {View, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const MainView = ({model, controller}) => {
+  const noteTextInputRef = useRef(null);
+
   const [noteText, setNoteText] = useState('');
   const [searchText, setSearchText] = useState('');
+  // const [selection, setSelection] = useState({start: 0, end: 0});
+  const [selection, setSelection] = useState(undefined);
+  const [lastSelectionIndex, setLastSelectionIndex] = useState(-1);
 
   const {
     data: {initialText},
@@ -13,11 +19,70 @@ const MainView = ({model, controller}) => {
 
   const onSearchTextChange = useCallback((text) => {
     setSearchText(text);
+
+    // setSelection({start: 1, end: 2});
+    // noteTextInputRef.current.focus();
   }, []);
 
   const onNoteTextChange = useCallback((text) => {
     setNoteText(text);
   }, []);
+
+  const onNoteTextSelectionChange = useCallback((data) => {
+    const {
+      nativeEvent: {
+        selection: {start, end},
+      },
+    } = data;
+
+    SystemEventsHandler.onInfo({
+      info: 'onNoteTextSelectionChange: ' + start + ' - ' + end,
+    });
+  }, []);
+
+  const buttonPressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'buttonPressHandler(): ' + searchText});
+
+    let searchTextStartPosition = -1;
+    if (lastSelectionIndex) {
+      searchTextStartPosition = initialText
+        .toLowerCase()
+        .indexOf(searchText.toLowerCase(), lastSelectionIndex);
+    } else {
+      searchTextStartPosition = initialText
+        .toLowerCase()
+        .indexOf(searchText.toLowerCase());
+    }
+
+    SystemEventsHandler.onInfo({
+      info: 'buttonPressHandler()->POSITION: ' + searchTextStartPosition,
+    });
+
+    if (searchTextStartPosition >= 0) {
+      const selectionObject = {
+        start: searchTextStartPosition,
+        end: searchTextStartPosition + searchText.length,
+      };
+
+      setLastSelectionIndex(searchTextStartPosition + searchText.length);
+      setSelection(selectionObject);
+
+      SystemEventsHandler.onInfo({
+        info:
+          'buttonPressHandler()->WILL_FOCUS: ' +
+          JSON.stringify(selectionObject),
+      });
+
+      noteTextInputRef.current.focus();
+    } else {
+      SystemEventsHandler.onInfo({
+        info: 'buttonPressHandler()->WILL_NOT_FOCUS:',
+      });
+
+      setLastSelectionIndex(-1);
+      setSelection(undefined);
+    }
+  }, [searchText, initialText, lastSelectionIndex]);
 
   useEffect(() => {
     setNoteText(initialText);
@@ -36,11 +101,14 @@ const MainView = ({model, controller}) => {
       </View>
       <View style={styles.textArea}>
         <TextInput
-          style={[styles.noteText, ,]}
+          ref={noteTextInputRef}
+          style={[styles.noteText]}
           defaultValue={noteText}
           placeholder={'Placeholder'}
           multiline={true}
+          selection={selection}
           onChangeText={onNoteTextChange}
+          onSelectionChange={onNoteTextSelectionChange}
         />
       </View>
       <View style={styles.buttonsContainer}>
@@ -51,7 +119,7 @@ const MainView = ({model, controller}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.test2ButtonContainer}
-          onPress={callback2}>
+          onPress={buttonPressHandler}>
           <View style={styles.test2ButtonContainer} />
         </TouchableOpacity>
       </View>
