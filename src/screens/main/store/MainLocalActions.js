@@ -1,12 +1,21 @@
 const MainLocalActions = () => {
   const types = {
-    SET_REGISTER_USER_GROUP_VISIBILITY_DIALOG:
-      'MLA_SET_REGISTER_USER_GROUP_VISIBILITY_DIALOG',
+    SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY:
+      'MLA_SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY',
+    SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY:
+      'MLA_SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY',
   };
 
-  const setRegisterUserGroupVisibility = ({visible}) => {
+  const setRegisterUserGroupDialogVisibility = ({visible}) => {
     return {
-      type: types.SET_REGISTER_USER_GROUP_VISIBILITY_DIALOG,
+      type: types.SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY,
+      payload: {visible},
+    };
+  };
+
+  const setLoginUserGroupDialogVisibility = ({visible}) => {
+    return {
+      type: types.SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY,
       payload: {visible},
     };
   };
@@ -14,7 +23,8 @@ const MainLocalActions = () => {
   return {
     types,
     actions: {
-      setRegisterUserGroupVisibility,
+      setRegisterUserGroupDialogVisibility,
+      setLoginUserGroupDialogVisibility,
     },
   };
 };

@@ -3,7 +3,12 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 
-const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
+const LoginUserGroupDialog = ({
+  visible,
+  onLoginPress,
+  onRegisterPress,
+  onCancelPress,
+}) => {
   const {t} = useTranslation();
 
   const passwordInputRef = useRef(null);
@@ -11,11 +16,11 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
   const [groupLogin, setGroupLogin] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
 
-  const createPressHandler = useCallback(() => {
-    if (onCreatePress) {
-      onCreatePress({login: groupLogin, password: groupPassword});
+  const loginPressHandler = useCallback(() => {
+    if (onLoginPress) {
+      onLoginPress({login: groupLogin, password: groupPassword});
     }
-  }, [groupLogin, groupPassword, onCreatePress]);
+  }, [groupLogin, groupPassword, onLoginPress]);
 
   const cancelPressHandler = useCallback(() => {
     if (onCancelPress) {
@@ -36,8 +41,8 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
   }, []);
 
   const groupPasswordSubmitEditingPressHandler = useCallback(() => {
-    createPressHandler();
-  }, [createPressHandler]);
+    loginPressHandler();
+  }, [loginPressHandler]);
 
   useEffect(() => {
     if (!visible) {
@@ -49,13 +54,13 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onCancelPress}>
-        <Dialog.Title>{t('RegisterUserGroupDialog_title')}</Dialog.Title>
+        <Dialog.Title>{t('LoginUserGroupDialog_title')}</Dialog.Title>
         <Dialog.Content>
           <View style={styles.mainContainer}>
             <View style={styles.groupLoginContainer}>
               <TextInput
                 style={{fontSize: 18, color: '#000000'}}
-                placeholder={t('RegisterUserGroupDialog_groupLoginPlaceholder')}
+                placeholder={t('LoginUserGroupDialog_groupLoginPlaceholder')}
                 defaultValue={groupLogin}
                 onChangeText={groupLoginChangeHandler}
                 onSubmitEditing={groupLoginSubmitEditingPressHandler}
@@ -66,9 +71,7 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
               <TextInput
                 ref={passwordInputRef}
                 style={{fontSize: 18, color: '#000000'}}
-                placeholder={t(
-                  'RegisterUserGroupDialog_groupPasswordPlaceholder',
-                )}
+                placeholder={t('LoginUserGroupDialog_groupPasswordPlaceholder')}
                 defaultValue={groupPassword}
                 onChangeText={groupPasswordChangeHandler}
                 onSubmitEditing={groupPasswordSubmitEditingPressHandler}
@@ -78,11 +81,15 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
           </View>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={createPressHandler}>
-            {t('RegisterUserGroupDialog_createButton')}
+          <Button onPress={onRegisterPress}>
+            {t('LoginUserGroupDialog_registerButton')}
+          </Button>
+          <View style={{flex: 1}} />
+          <Button onPress={loginPressHandler}>
+            {t('LoginUserGroupDialog_loginButton')}
           </Button>
           <Button onPress={cancelPressHandler}>
-            {t('RegisterUserGroupDialog_cancelButton')}
+            {t('LoginUserGroupDialog_cancelButton')}
           </Button>
         </Dialog.Actions>
       </Dialog>
@@ -107,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(RegisterUserGroupDialog);
+export default React.memo(LoginUserGroupDialog);

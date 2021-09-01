@@ -18,14 +18,83 @@ const useMainController = (model) => {
 
   const openRegisterUserGroupDialog = useCallback(() => {
     localDispatch(
-      MainLocalActions.actions.setRegisterUserGroupVisibility({visible: true}),
+      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+        visible: true,
+      }),
     );
   }, [localDispatch]);
 
   const registerUserGroupDialogCancelHandler = useCallback(() => {
     localDispatch(
-      MainLocalActions.actions.setRegisterUserGroupVisibility({
+      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
         visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const registerUserGroupCreatePressHandler = useCallback(
+    ({login, password}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'useMainController->registerUserGroupCreatePressHandler(): ' +
+          login +
+          ' - ' +
+          password,
+      });
+
+      localDispatch(
+        MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+          visible: false,
+        }),
+      );
+    },
+    [localDispatch],
+  );
+
+  const openLoginIntoUserGroupDialog = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+        visible: true,
+      }),
+    );
+  }, [localDispatch]);
+
+  const loginIntoUserGroupDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const loginIntoUserGroupDialogLoginHandler = useCallback(
+    ({login, password}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'useMainController->loginIntoUserGroupDialogLoginHandler(): ' +
+          login +
+          ' - ' +
+          password,
+      });
+
+      localDispatch(
+        MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+          visible: false,
+        }),
+      );
+    },
+    [localDispatch],
+  );
+
+  const loginIntoUserGroupDialogRegisterHandler = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+    localDispatch(
+      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+        visible: true,
       }),
     );
   }, [localDispatch]);
@@ -35,6 +104,11 @@ const useMainController = (model) => {
     callback2,
     openRegisterUserGroupDialog,
     registerUserGroupDialogCancelHandler,
+    registerUserGroupCreatePressHandler,
+    openLoginIntoUserGroupDialog,
+    loginIntoUserGroupDialogCancelHandler,
+    loginIntoUserGroupDialogLoginHandler,
+    loginIntoUserGroupDialogRegisterHandler,
   };
 };
 

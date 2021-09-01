@@ -8,12 +8,14 @@ import {
 } from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import RegisterUserGroupDialog from '../../../components/specific/main/register-user-group-dialog/RegisterUserGroupDialog';
+import LoginUserGroupDialog from '../../../components/specific/main/login-user-group-dialog/LoginUserGroupDialog';
 
 const MainView = ({model, controller}) => {
   const {
     data: {
       localState: {
         registerUserGroupDialog: {visible: registerUserGroupDialogVisible},
+        loginUserGroupDialog: {visible: loginUserGroupDialogVisible},
       },
     },
   } = model;
@@ -22,12 +24,27 @@ const MainView = ({model, controller}) => {
     callback1,
     openRegisterUserGroupDialog,
     registerUserGroupDialogCancelHandler,
+    registerUserGroupCreatePressHandler,
+    openLoginIntoUserGroupDialog,
+    loginIntoUserGroupDialogCancelHandler,
+    loginIntoUserGroupDialogLoginHandler,
+    loginIntoUserGroupDialogRegisterHandler,
   } = controller;
 
   const registerUserGroupDialogComponent = (
     <RegisterUserGroupDialog
       visible={registerUserGroupDialogVisible}
+      onCreatePress={registerUserGroupCreatePressHandler}
       onCancelPress={registerUserGroupDialogCancelHandler}
+    />
+  );
+
+  const loginIntoUserGroupDialogComponent = (
+    <LoginUserGroupDialog
+      visible={loginUserGroupDialogVisible}
+      onLoginPress={loginIntoUserGroupDialogLoginHandler}
+      onRegisterPress={loginIntoUserGroupDialogRegisterHandler}
+      onCancelPress={loginIntoUserGroupDialogCancelHandler}
     />
   );
 
@@ -39,7 +56,14 @@ const MainView = ({model, controller}) => {
           onPress={openRegisterUserGroupDialog}
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title={'Open login into user group dialog'}
+          onPress={openLoginIntoUserGroupDialog}
+        />
+      </View>
       {registerUserGroupDialogComponent}
+      {loginIntoUserGroupDialogComponent}
     </View>
   );
 };
