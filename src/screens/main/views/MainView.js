@@ -7,15 +7,39 @@ import {
   StyleSheet,
 } from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import RegisterUserGroupDialog from '../../../components/specific/main/register-user-group-dialog/RegisterUserGroupDialog';
 
 const MainView = ({model, controller}) => {
-  const {callback1} = controller;
+  const {
+    data: {
+      localState: {
+        registerUserGroupDialog: {visible: registerUserGroupDialogVisible},
+      },
+    },
+  } = model;
+
+  const {
+    callback1,
+    openRegisterUserGroupDialog,
+    registerUserGroupDialogCancelHandler,
+  } = controller;
+
+  const registerUserGroupDialogComponent = (
+    <RegisterUserGroupDialog
+      visible={registerUserGroupDialogVisible}
+      onCancelPress={registerUserGroupDialogCancelHandler}
+    />
+  );
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.buttonContainer}>
-        <Button title={'Button 1'} onPress={callback1} />
+        <Button
+          title={'Open register user group dialog'}
+          onPress={openRegisterUserGroupDialog}
+        />
       </View>
+      {registerUserGroupDialogComponent}
     </View>
   );
 };
