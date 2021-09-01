@@ -1,9 +1,9 @@
-import NativeSecureFlagLib from '../lib/NativeFirebaseLib';
+import NativeFirebaseLib from '../lib/NativeFirebaseLib';
 
 const NativeFirebaseConstants = () => {
   const {
     actionTypes: {TEST_ACTION},
-  } = NativeSecureFlagLib.getConstants();
+  } = NativeFirebaseLib.getConstants();
 
   return {
     actionTypes: {
