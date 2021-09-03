@@ -1,4 +1,4 @@
-package com.vision.modules.auth;
+package com.vision.modules.surveillance_foreground_service;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,28 +10,28 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.modules.auth.module_actions.types.AuthJSActionTypes;
-import com.vision.modules.auth.module_actions_executor.AuthJSActionsExecutor;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
+import com.vision.modules.surveillance_foreground_service.module_actions.types.SurveillanceForegroundServiceJSActionTypes;
+import com.vision.modules.surveillance_foreground_service.module_actions_executor.SurveillanceForegroundServiceJSActionsExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthModule extends ReactContextBaseJavaModule {
+public class SurveillanceForegroundServiceModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     private JSActionsExecutor mActionsExecutor;
 
-    public AuthModule(@Nullable ReactApplicationContext reactContext) {
+    public SurveillanceForegroundServiceModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
 
         mContext = reactContext;
-        mActionsExecutor = new AuthJSActionsExecutor();
+        mActionsExecutor = new SurveillanceForegroundServiceJSActionsExecutor();
     }
 
     @NonNull
     @Override
     public String getName() {
-        return "Auth";
+        return "SurveillanceForegroundService";
     }
 
     @Nullable
@@ -40,10 +40,9 @@ public class AuthModule extends ReactContextBaseJavaModule {
         final Map<String, Object> constants = new HashMap<>();
 
         WritableMap actionTypesConstants = new WritableNativeMap();
-        actionTypesConstants.putString(AuthJSActionTypes.IS_USER_GROUP_EXIST, AuthJSActionTypes.IS_USER_GROUP_EXIST);
-        actionTypesConstants.putString(AuthJSActionTypes.REGISTER_USER_GROUP, AuthJSActionTypes.REGISTER_USER_GROUP);
-        actionTypesConstants.putString(AuthJSActionTypes.CREATE_USER_IN_USER_GROUP, AuthJSActionTypes.CREATE_USER_IN_USER_GROUP);
-        actionTypesConstants.putString(AuthJSActionTypes.LOGIN_USER_IN_USER_GROUP, AuthJSActionTypes.LOGIN_USER_IN_USER_GROUP);
+        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.IS_RUNNING, SurveillanceForegroundServiceJSActionTypes.IS_RUNNING);
+        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.START_SERVICE, SurveillanceForegroundServiceJSActionTypes.START_SERVICE);
+        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE, SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE);
 
         constants.put("actionTypes", actionTypesConstants);
 

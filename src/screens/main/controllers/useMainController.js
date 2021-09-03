@@ -99,6 +99,14 @@ const useMainController = (model) => {
     );
   }, [localDispatch]);
 
+  const startServicePressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'startServicePressHandler()'});
+  }, []);
+
+  const stopServicePressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'stopServicePressHandler()'});
+  }, []);
+
   return {
     callback1,
     callback2,
@@ -109,6 +117,8 @@ const useMainController = (model) => {
     loginIntoUserGroupDialogCancelHandler,
     loginIntoUserGroupDialogLoginHandler,
     loginIntoUserGroupDialogRegisterHandler,
+    startServicePressHandler,
+    stopServicePressHandler,
   };
 };
 

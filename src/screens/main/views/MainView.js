@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {
   View,
+  Text,
   TextInput,
   TouchableOpacity,
   Button,
@@ -29,6 +30,8 @@ const MainView = ({model, controller}) => {
     loginIntoUserGroupDialogCancelHandler,
     loginIntoUserGroupDialogLoginHandler,
     loginIntoUserGroupDialogRegisterHandler,
+    startServicePressHandler,
+    stopServicePressHandler,
   } = controller;
 
   const registerUserGroupDialogComponent = (
@@ -50,6 +53,9 @@ const MainView = ({model, controller}) => {
 
   return (
     <View style={styles.mainContainer}>
+      <View style={styles.indicatorContainer}>
+        <View style={styles.indicatorItemContainer} />
+      </View>
       <View style={styles.buttonContainer}>
         <Button
           title={'Open register user group dialog'}
@@ -62,6 +68,12 @@ const MainView = ({model, controller}) => {
           onPress={openLoginIntoUserGroupDialog}
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <Button title={'Start service'} onPress={startServicePressHandler} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title={'Stop service'} onPress={stopServicePressHandler} />
+      </View>
       {registerUserGroupDialogComponent}
       {loginIntoUserGroupDialogComponent}
     </View>
@@ -72,11 +84,23 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
+  indicatorContainer: {
+    flexDirection: 'row',
+    height: 50,
+    backgroundColor: 'yellow',
+    alignItems: 'center',
+  },
+  indicatorItemContainer: {
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: 'grey',
+    marginLeft: 8,
+  },
   buttonContainer: {
     height: 50,
     padding: 8,
     backgroundColor: 'green',
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   freeSpace: {
