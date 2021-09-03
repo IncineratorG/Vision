@@ -32,6 +32,7 @@ const MainView = ({model, controller}) => {
     loginIntoUserGroupDialogRegisterHandler,
     startServicePressHandler,
     stopServicePressHandler,
+    isServiceRunningPressHandler,
   } = controller;
 
   const registerUserGroupDialogComponent = (
@@ -73,6 +74,12 @@ const MainView = ({model, controller}) => {
       </View>
       <View style={styles.buttonContainer}>
         <Button title={'Stop service'} onPress={stopServicePressHandler} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title={'Is service running'}
+          onPress={isServiceRunningPressHandler}
+        />
       </View>
       {registerUserGroupDialogComponent}
       {loginIntoUserGroupDialogComponent}

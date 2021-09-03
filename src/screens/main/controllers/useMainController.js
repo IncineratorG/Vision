@@ -99,12 +99,22 @@ const useMainController = (model) => {
     );
   }, [localDispatch]);
 
-  const startServicePressHandler = useCallback(() => {
+  const startServicePressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'startServicePressHandler()'});
+
+    await Services.services().surveillanceForegroundService.startService();
   }, []);
 
-  const stopServicePressHandler = useCallback(() => {
+  const stopServicePressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'stopServicePressHandler()'});
+
+    await Services.services().surveillanceForegroundService.stopService();
+  }, []);
+
+  const isServiceRunningPressHandler = useCallback(async () => {
+    SystemEventsHandler.onInfo({info: 'isServiceRunningPressHandler'});
+
+    await Services.services().surveillanceForegroundService.isServiceRunning();
   }, []);
 
   return {
@@ -119,6 +129,7 @@ const useMainController = (model) => {
     loginIntoUserGroupDialogRegisterHandler,
     startServicePressHandler,
     stopServicePressHandler,
+    isServiceRunningPressHandler,
   };
 };
 
