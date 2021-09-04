@@ -54,9 +54,16 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
           <View style={styles.mainContainer}>
             <View style={styles.groupLoginContainer}>
               <TextInput
-                style={{fontSize: 18, color: '#000000'}}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
                 placeholder={t('RegisterUserGroupDialog_groupLoginPlaceholder')}
                 defaultValue={groupLogin}
+                underlineColorAndroid={'transparent'}
+                spellCheck={false}
+                autoCorrect={false}
                 onChangeText={groupLoginChangeHandler}
                 onSubmitEditing={groupLoginSubmitEditingPressHandler}
               />
@@ -65,11 +72,18 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
             <View style={styles.groupPasswordContainer}>
               <TextInput
                 ref={passwordInputRef}
-                style={{fontSize: 18, color: '#000000'}}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
                 placeholder={t(
                   'RegisterUserGroupDialog_groupPasswordPlaceholder',
                 )}
                 defaultValue={groupPassword}
+                underlineColorAndroid={'transparent'}
+                spellCheck={false}
+                autoCorrect={false}
                 onChangeText={groupPasswordChangeHandler}
                 onSubmitEditing={groupPasswordSubmitEditingPressHandler}
               />

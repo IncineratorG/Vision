@@ -4,12 +4,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Button,
   StyleSheet,
 } from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import RegisterUserGroupDialog from '../../../components/specific/main/register-user-group-dialog/RegisterUserGroupDialog';
 import LoginUserGroupDialog from '../../../components/specific/main/login-user-group-dialog/LoginUserGroupDialog';
+import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 
 const MainView = ({model, controller}) => {
   const {
@@ -52,31 +52,50 @@ const MainView = ({model, controller}) => {
     />
   );
 
+  // return (
+  //   <View style={styles.mainContainer}>
+  //     <View style={styles.indicatorContainer}>
+  //       <View style={styles.indicatorItemContainer} />
+  //     </View>
+  //     <View style={styles.buttonContainer}>
+  //       <SimpleButton
+  //         title={'Open register user group dialog'}
+  //         onPress={openRegisterUserGroupDialog}
+  //       />
+  //     </View>
+  //   </View>
+  // );
   return (
     <View style={styles.mainContainer}>
       <View style={styles.indicatorContainer}>
         <View style={styles.indicatorItemContainer} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
+        <SimpleButton
           title={'Open register user group dialog'}
           onPress={openRegisterUserGroupDialog}
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
+        <SimpleButton
           title={'Open login into user group dialog'}
           onPress={openLoginIntoUserGroupDialog}
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title={'Start service'} onPress={startServicePressHandler} />
+        <SimpleButton
+          title={'Start service'}
+          onPress={startServicePressHandler}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title={'Stop service'} onPress={stopServicePressHandler} />
+        <SimpleButton
+          title={'Stop service'}
+          onPress={stopServicePressHandler}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
+        <SimpleButton
           title={'Is service running'}
           onPress={isServiceRunningPressHandler}
         />

@@ -59,9 +59,14 @@ const LoginUserGroupDialog = ({
           <View style={styles.mainContainer}>
             <View style={styles.groupLoginContainer}>
               <TextInput
-                style={{fontSize: 18, color: '#000000'}}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
                 placeholder={t('LoginUserGroupDialog_groupLoginPlaceholder')}
                 defaultValue={groupLogin}
+                underlineColorAndroid={'transparent'}
                 onChangeText={groupLoginChangeHandler}
                 onSubmitEditing={groupLoginSubmitEditingPressHandler}
               />
@@ -70,9 +75,14 @@ const LoginUserGroupDialog = ({
             <View style={styles.groupPasswordContainer}>
               <TextInput
                 ref={passwordInputRef}
-                style={{fontSize: 18, color: '#000000'}}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
                 placeholder={t('LoginUserGroupDialog_groupPasswordPlaceholder')}
                 defaultValue={groupPassword}
+                underlineColorAndroid={'transparent'}
                 onChangeText={groupPasswordChangeHandler}
                 onSubmitEditing={groupPasswordSubmitEditingPressHandler}
               />
