@@ -115,6 +115,8 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'green',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'grey',
   },
   freeSpace: {
     height: 10,

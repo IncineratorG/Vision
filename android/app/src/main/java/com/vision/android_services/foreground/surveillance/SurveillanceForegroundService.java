@@ -45,24 +45,6 @@ public class SurveillanceForegroundService extends Service {
 
         return Service.START_STICKY;
     }
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        String input = intent.getStringExtra("inputExtra");
-//        createNotificationChannel();
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-//                0, notificationIntent, 0);
-//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setContentTitle("Foreground Service")
-//                .setContentText("input")
-//                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-//                .setContentIntent(pendingIntent)
-//                .build();
-//        startForeground(1, notification);
-//        //do heavy work on a background thread
-//        //stopSelf();
-//        return START_STICKY;
-//    }
 
     @Override
     public void onDestroy() {
@@ -126,5 +108,23 @@ public class SurveillanceForegroundService extends Service {
                 .setContentIntent(action)
                 .setOngoing(true).build();
     }
-
 }
+
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        String input = intent.getStringExtra("inputExtra");
+//        createNotificationChannel();
+//        Intent notificationIntent = new Intent(this, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+//                0, notificationIntent, 0);
+//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+//                .setContentTitle("Foreground Service")
+//                .setContentText("input")
+//                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+//                .setContentIntent(pendingIntent)
+//                .build();
+//        startForeground(1, notification);
+//        //do heavy work on a background thread
+//        //stopSelf();
+//        return START_STICKY;
+//    }
