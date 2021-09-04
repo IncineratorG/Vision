@@ -52,19 +52,6 @@ const MainView = ({model, controller}) => {
     />
   );
 
-  // return (
-  //   <View style={styles.mainContainer}>
-  //     <View style={styles.indicatorContainer}>
-  //       <View style={styles.indicatorItemContainer} />
-  //     </View>
-  //     <View style={styles.buttonContainer}>
-  //       <SimpleButton
-  //         title={'Open register user group dialog'}
-  //         onPress={openRegisterUserGroupDialog}
-  //       />
-  //     </View>
-  //   </View>
-  // );
   return (
     <View style={styles.mainContainer}>
       <View style={styles.indicatorContainer}>
