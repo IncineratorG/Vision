@@ -13,7 +13,7 @@ public class IsServiceRunningHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "IsServiceRunningHandler");
 
-        boolean isForegroundServiceRunning = SurveillanceService.get().isForegroundServiceRunning(context);
+        boolean isForegroundServiceRunning = SurveillanceService.get().isRunning(context);
 
         Log.d("tag", "IsServiceRunningHandler: " + isForegroundServiceRunning);
 

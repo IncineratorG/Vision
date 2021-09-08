@@ -20,7 +20,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.MainActivity;
 import com.vision.R;
-import com.vision.common.services.firebase.FirebaseService;
+import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,33 +54,48 @@ public class SurveillanceForegroundService extends Service {
 //            stopSelf();
 //        }
 
+        // ===
+        // =====
+//        if (intent.getAction().contains("start")) {
+//            List<String> requestPathFields = Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
+//            ValueEventListener listener = new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    // This method is called once with the initial value and again
+//                    // whenever data at this location is updated.
+//                    String value = dataSnapshot.getValue(String.class);
+//                    Log.d("tag", "StartServiceHandler->Value is: " + value);
+//
+//                    List<String> responsePathFields = Arrays.asList("emulatorTestField", "testSubfield", "RESPONSE");
+//
+//                    FBSService.get().setStringValue(responsePathFields, value + "+");
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    // Failed to read value
+//                    Log.w("tag", "SurveillanceForegroundService->Failed to read value.", error.toException());
+//                }
+//            };
+//
+//            FBSService.get().addListener(requestPathFields, listener);
+//
+//            startForeground(101, updateNotification());
+//        } else {
+//            FBSService.get().removeAllListeners();
+//
+//            stopForeground(true);
+//            stopSelf();
+//        }
+        // =====
+        // ===
+
         if (intent.getAction().contains("start")) {
-            List<String> requestPathFields = Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
-            ValueEventListener listener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    String value = dataSnapshot.getValue(String.class);
-                    Log.d("tag", "StartServiceHandler->Value is: " + value);
-
-                    List<String> responsePathFields = Arrays.asList("emulatorTestField", "testSubfield", "RESPONSE");
-
-                    FirebaseService.get().setStringValue(responsePathFields, value + "+");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Failed to read value
-                    Log.w("tag", "SurveillanceForegroundService->Failed to read value.", error.toException());
-                }
-            };
-
-            FirebaseService.get().addListener(requestPathFields, listener);
+            SurveillanceService.get().foregroundServiceWork().start();
 
             startForeground(101, updateNotification());
         } else {
-            FirebaseService.get().removeAllListeners();
+            SurveillanceService.get().foregroundServiceWork().stop();
 
             stopForeground(true);
             stopSelf();

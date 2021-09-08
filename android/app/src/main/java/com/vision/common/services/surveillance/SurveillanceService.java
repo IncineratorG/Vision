@@ -6,12 +6,28 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
+import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
+import com.vision.common.services.surveillance.data.request_handler.RequestHandler;
+import com.vision.common.services.surveillance.data.request_handler.firebase.FBSRequestHandler;
+
+import java.util.List;
 
 public class SurveillanceService {
     private static SurveillanceService sInstance;
 
-    private SurveillanceService() {
+    private ForegroundServiceWork mForegroundServiceWork;
+    private RequestHandler mRequestHandler;
 
+    private SurveillanceService() {
+        mRequestHandler = new FBSRequestHandler();
+        List<String> requestPath = FBSPathsService.get().requestPath();
+
+        mForegroundServiceWork = new FBSForegroundServiceWork(
+                mRequestHandler,
+                requestPath
+        );
     }
 
     public static synchronized SurveillanceService get() {
@@ -22,16 +38,16 @@ public class SurveillanceService {
         return sInstance;
     }
 
-    public void startForegroundService(Context context) {
-        Log.d("tag", "SurveillanceService->startForegroundService()");
+    public void start(Context context) {
+        Log.d("tag", "SurveillanceService->start()");
 
         if (context == null) {
-            Log.d("tag", "SurveillanceService->startForegroundService(): CONTEXT_IS_NULL");
+            Log.d("tag", "SurveillanceService->start(): CONTEXT_IS_NULL");
             return;
         }
 
-        if (isForegroundServiceRunning(context)) {
-            Log.d("tag", "SurveillanceService->startForegroundService(): SERVICE_IS_ALREADY_RUNNING");
+        if (isRunning(context)) {
+            Log.d("tag", "SurveillanceService->start(): SERVICE_IS_ALREADY_RUNNING");
             return;
         }
 
@@ -40,16 +56,16 @@ public class SurveillanceService {
         context.startService(serviceIntent);
     }
 
-    public void stopForegroundService(Context context) {
-        Log.d("tag", "SurveillanceService->stopForegroundService()");
+    public void stop(Context context) {
+        Log.d("tag", "SurveillanceService->stop()");
 
         if (context == null) {
-            Log.d("tag", "SurveillanceService->stopForegroundService(): CONTEXT_IS_NULL");
+            Log.d("tag", "SurveillanceService->stop(): CONTEXT_IS_NULL");
             return;
         }
 
-        if (!isForegroundServiceRunning(context)) {
-            Log.d("tag", "SurveillanceService->stopForegroundService(): SERVICE_ALREADY_NOT_RUNNING");
+        if (!isRunning(context)) {
+            Log.d("tag", "SurveillanceService->stop(): SERVICE_ALREADY_NOT_RUNNING");
             return;
         }
 
@@ -58,7 +74,7 @@ public class SurveillanceService {
         context.startService(serviceIntent);
     }
 
-    public boolean isForegroundServiceRunning(Context context) {
+    public boolean isRunning(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (SurveillanceForegroundService.class.getName().equals(service.service.getClassName())) {
@@ -66,5 +82,9 @@ public class SurveillanceService {
             }
         }
         return false;
+    }
+
+    public ForegroundServiceWork foregroundServiceWork() {
+        return mForegroundServiceWork;
     }
 }
