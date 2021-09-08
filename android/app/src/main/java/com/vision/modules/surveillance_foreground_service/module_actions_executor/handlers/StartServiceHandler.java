@@ -23,27 +23,30 @@ public class StartServiceHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "StartServiceHandler");
 
-//        SurveillanceService.get().startForegroundService(context);
-//        FirebaseService.get().test2();
+        SurveillanceService.get().startForegroundService(context);
 
-        List<String> fields = Arrays.asList("field", "subfield");
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d("tag", "StartServiceHandler->Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
-                Log.w("tag", "StartServiceHandler->Failed to read value.", error.toException());
-            }
-        };
-
-        FirebaseService.get().addListener(fields, listener);
+//        List<String> requestPathFields = Arrays.asList("deviceTestField", "testSubfield", "REQUEST");
+//        ValueEventListener listener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d("tag", "StartServiceHandler->Value is: " + value);
+//
+//                List<String> responsePathFields = Arrays.asList("deviceTestField", "testSubfield", "RESPONSE");
+//
+//                FirebaseService.get().setStringValue(responsePathFields, value + "+");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                // Failed to read value
+//                Log.w("tag", "StartServiceHandler->Failed to read value.", error.toException());
+//            }
+//        };
+//
+//        FirebaseService.get().addListener(requestPathFields, listener);
 
         result.resolve(true);
     }

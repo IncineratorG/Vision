@@ -10,14 +10,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.vision.common.services.firebase.data.FirebaseListenerId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseService {
     private static FirebaseService sInstance;
 
-    private FirebaseService() {
+    private List<FirebaseListenerId> mListenerIds;
 
+    private FirebaseService() {
+        mListenerIds = new ArrayList<>();
     }
 
     public static synchronized FirebaseService get() {
@@ -77,7 +81,42 @@ public class FirebaseService {
 
     }
 
-    public void addListener(@NonNull List<String> fields, @NonNull ValueEventListener listener) {
+    public FirebaseListenerId addListener(@NonNull List<String> fields, @NonNull ValueEventListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+        ref.addValueEventListener(listener);
+
+        FirebaseListenerId id = new FirebaseListenerId(fields, listener);
+        mListenerIds.add(id);
+
+        return id;
+    }
+
+    public void removeListener(@NonNull FirebaseListenerId id) {
+        List<String> fields = id.getFieldPaths();
+        ValueEventListener listener = id.getListener();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+        ref.removeEventListener(listener);
+    }
+
+    public void removeAllListeners() {
+        for (int i = 0; i < mListenerIds.size(); ++i) {
+            FirebaseListenerId id = mListenerIds.get(i);
+            removeListener(id);
+        }
+    }
+
+    public void setStringValue(@NonNull List<String> fields, @NonNull String value) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference();
@@ -85,6 +124,6 @@ public class FirebaseService {
             ref = ref.child(fields.get(i));
         }
 
-        ref.addListenerForSingleValueEvent(listener);
+        ref.setValue(value);
     }
 }

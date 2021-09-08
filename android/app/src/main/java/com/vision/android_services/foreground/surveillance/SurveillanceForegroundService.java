@@ -10,11 +10,20 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.vision.MainActivity;
 import com.vision.R;
+import com.vision.common.services.firebase.FirebaseService;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SurveillanceForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -26,19 +35,51 @@ public class SurveillanceForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        if (intent.getAction().contains("start")) {
+//            h = new Handler();
+//            r = new Runnable() {
+//                @Override
+//                public void run() {
+//                    startForeground(101, updateNotification());
+//                    h.postDelayed(this, 1000);
+//                }
+//            };
+//
+//            h.post(r);
+//        } else {
+//            h.removeCallbacks(r);
+//            stopForeground(true);
+//            stopSelf();
+//        }
+
         if (intent.getAction().contains("start")) {
-            h = new Handler();
-            r = new Runnable() {
+            List<String> requestPathFields = Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
+            ValueEventListener listener = new ValueEventListener() {
                 @Override
-                public void run() {
-                    startForeground(101, updateNotification());
-                    h.postDelayed(this, 1000);
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String value = dataSnapshot.getValue(String.class);
+                    Log.d("tag", "StartServiceHandler->Value is: " + value);
+
+                    List<String> responsePathFields = Arrays.asList("emulatorTestField", "testSubfield", "RESPONSE");
+
+                    FirebaseService.get().setStringValue(responsePathFields, value + "+");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Failed to read value
+                    Log.w("tag", "SurveillanceForegroundService->Failed to read value.", error.toException());
                 }
             };
 
-            h.post(r);
+            FirebaseService.get().addListener(requestPathFields, listener);
+
+            startForeground(101, updateNotification());
         } else {
-            h.removeCallbacks(r);
+            FirebaseService.get().removeAllListeners();
+
             stopForeground(true);
             stopSelf();
         }
@@ -73,8 +114,9 @@ public class SurveillanceForegroundService extends Service {
     int counter = 0;
 
     private Notification updateNotification() {
-        counter++;
-        String info = counter + "";
+//        counter++;
+//        String info = counter + "";
+        String info = "Service running";
 
         Context context = getApplicationContext();
 
