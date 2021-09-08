@@ -15,10 +15,15 @@ const SurveillanceForegroundService = () => {
     return await nativeService.stopService();
   };
 
+  const testRequest = async () => {
+    return await nativeService.testRequest();
+  };
+
   return {
     isServiceRunning,
     startService,
     stopService,
+    testRequest,
   };
 };
 

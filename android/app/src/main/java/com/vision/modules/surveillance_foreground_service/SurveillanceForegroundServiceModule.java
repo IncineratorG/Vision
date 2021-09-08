@@ -43,6 +43,7 @@ public class SurveillanceForegroundServiceModule extends ReactContextBaseJavaMod
         actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.IS_RUNNING, SurveillanceForegroundServiceJSActionTypes.IS_RUNNING);
         actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.START_SERVICE, SurveillanceForegroundServiceJSActionTypes.START_SERVICE);
         actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE, SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE);
+        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.TEST_REQUEST, SurveillanceForegroundServiceJSActionTypes.TEST_REQUEST);
 
         constants.put("actionTypes", actionTypesConstants);
 

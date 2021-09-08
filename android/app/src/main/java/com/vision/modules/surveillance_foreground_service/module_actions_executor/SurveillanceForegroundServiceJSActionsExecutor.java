@@ -10,6 +10,7 @@ import com.vision.modules.surveillance_foreground_service.module_actions.types.S
 import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.StartServiceHandler;
 import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.StopServiceHandler;
+import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.TestRequestHandler;
 import com.vision.modules.surveillance_foreground_service.module_errors.SurveillanceForegroundServiceModuleErrors;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class SurveillanceForegroundServiceJSActionsExecutor implements JSActions
         mHandlers.put(SurveillanceForegroundServiceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());
         mHandlers.put(SurveillanceForegroundServiceJSActionTypes.START_SERVICE, new StartServiceHandler());
         mHandlers.put(SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE, new StopServiceHandler());
+        mHandlers.put(SurveillanceForegroundServiceJSActionTypes.TEST_REQUEST, new TestRequestHandler());
     }
 
     @Override

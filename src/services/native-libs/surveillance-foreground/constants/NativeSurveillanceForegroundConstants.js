@@ -2,7 +2,7 @@ import NativeSurveillanceLib from '../lib/NativeSurveillanceForegroundLib';
 
 const NativeSurveillanceForegroundConstants = () => {
   const {
-    actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE},
+    actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE, TEST_REQUEST},
   } = NativeSurveillanceLib.getConstants();
 
   return {
@@ -10,6 +10,7 @@ const NativeSurveillanceForegroundConstants = () => {
       IS_RUNNING,
       START_SERVICE,
       STOP_SERVICE,
+      TEST_REQUEST,
     },
   };
 };

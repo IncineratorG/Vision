@@ -19,10 +19,16 @@ const NativeSurveillanceForeground = () => {
     return await nativeService.execute(action);
   };
 
+  const testRequest = async () => {
+    const action = NativeSurveillanceForegroundActions.testRequestAction();
+    return await nativeService.execute(action);
+  };
+
   return {
     isServiceRunning,
     startService,
     stopService,
+    testRequest,
   };
 };
 

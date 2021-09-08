@@ -117,6 +117,12 @@ const useMainController = (model) => {
     await Services.services().surveillanceForegroundService.isServiceRunning();
   }, []);
 
+  const testRequestPressHandler = useCallback(async () => {
+    SystemEventsHandler.onInfo({info: 'testRequestPressHandler'});
+
+    await Services.services().surveillanceForegroundService.testRequest();
+  }, []);
+
   return {
     callback1,
     callback2,
@@ -130,6 +136,7 @@ const useMainController = (model) => {
     startServicePressHandler,
     stopServicePressHandler,
     isServiceRunningPressHandler,
+    testRequestPressHandler,
   };
 };
 

@@ -2,7 +2,7 @@ import NativeSurveillanceForegroundConstants from '../constants/NativeSurveillan
 
 const NativeSurveillanceForegroundActions = () => {
   const {
-    actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE},
+    actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE, TEST_REQUEST},
   } = NativeSurveillanceForegroundConstants;
 
   const isRunningAction = () => {
@@ -23,10 +23,17 @@ const NativeSurveillanceForegroundActions = () => {
     };
   };
 
+  const testRequestAction = () => {
+    return {
+      type: TEST_REQUEST,
+    };
+  };
+
   return {
     isRunningAction,
     startServiceAction,
     stopServiceAction,
+    testRequestAction,
   };
 };
 
