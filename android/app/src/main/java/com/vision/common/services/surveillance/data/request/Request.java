@@ -16,6 +16,7 @@ public class Request implements Stringifiable {
     private final String ID_FIELD = "id";
     private final String TYPE_FIELD = "type";
     private final String TIMESTAMP_FIELD = "timestamp";
+    private final String KEY_FIELD = "key";
     private final String PAYLOAD_FIELD = "payload";
 
     private JSONObject mRequest;
@@ -80,6 +81,23 @@ public class Request implements Stringifiable {
         return id == null || type == null || type.equalsIgnoreCase(Request.EMPTY);
     }
 
+    public String key() {
+        if (mRequest == null) {
+            Log.d("tag", "Request->key(): REQUEST_IS_NULL");
+            return null;
+        }
+
+        String key = null;
+        try {
+            if (mRequest.has(KEY_FIELD)) {
+                key = mRequest.getString(KEY_FIELD);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return key;
+    }
+
     public String timestamp() {
         if (mRequest == null) {
             Log.d("tag", "Request->timestamp(): REQUEST_IS_NULL");
@@ -140,6 +158,19 @@ public class Request implements Stringifiable {
             e.printStackTrace();
         }
         return payload;
+    }
+
+    public void setKey(String key) {
+        if (mRequest == null) {
+            Log.d("tag", "Request->setKey(): REQUEST_IS_NULL");
+            return;
+        }
+
+        try {
+            mRequest.put(KEY_FIELD, key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

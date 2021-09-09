@@ -13,6 +13,7 @@ import java.util.UUID;
 public class Response implements Stringifiable {
     private final String ID_FIELD = "id";
     private final String TIMESTAMP_FIELD = "timestamp";
+    private final String KEY_FIELD = "key";
     private final String REQUEST_ID_FIELD = "requestId";
     private final String PAYLOAD_FIELD = "payload";
 
@@ -71,6 +72,23 @@ public class Response implements Stringifiable {
             e.printStackTrace();
         }
         return requestId == null;
+    }
+
+    public String key() {
+        if (mResponse == null) {
+            Log.d("tag", "Response->key(): RESPONSE_IS_NULL");
+            return null;
+        }
+
+        String key = null;
+        try {
+            if (mResponse.has(KEY_FIELD)) {
+                key = mResponse.getString(KEY_FIELD);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return key;
     }
 
     public String timestamp() {
@@ -133,6 +151,19 @@ public class Response implements Stringifiable {
             e.printStackTrace();
         }
         return payload;
+    }
+
+    public void setKey(String key) {
+        if (mResponse == null) {
+            Log.d("tag", "Response->setKey(): RESPONSE_IS_NULL");
+            return;
+        }
+
+        try {
+            mResponse.put(KEY_FIELD, key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

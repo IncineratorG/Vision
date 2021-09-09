@@ -6,15 +6,13 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.request.Request;
-import com.vision.common.services.surveillance.data.request_sender.OnDeliveredCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnErrorCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnResponseCallback;
-import com.vision.common.services.surveillance.data.response.Response;
-import com.vision.common.services.surveillance.data.service_error.ServiceError;
-import com.vision.common.services.surveillance.data.service_requests.SurveillanceServiceRequests;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
+
+import java.util.List;
 
 public class TestRequestHandler implements JSActionHandler {
     @Override
@@ -25,7 +23,11 @@ public class TestRequestHandler implements JSActionHandler {
 
         Request testRequest = service.requests().testRequest();
 
-        service.sendRequest(testRequest,
+        String receiverLogin = "testReceiver";
+
+        service.sendRequest(
+                receiverLogin,
+                testRequest,
                 () -> {
                     Log.d("tag", "TestRequestHandler->handle(): REQUEST_DELIVERED_CALLBACK");
                 },

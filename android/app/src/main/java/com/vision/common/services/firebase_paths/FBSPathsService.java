@@ -19,7 +19,11 @@ public class FBSPathsService {
         return sInstance;
     }
 
-    public List<String> requestPath() {
+    public List<String> currentRequestsPath() {
+        return Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
+    }
+
+    public List<String> receiverRequestsPath(String receiverLogin) {
         return Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
     }
 }

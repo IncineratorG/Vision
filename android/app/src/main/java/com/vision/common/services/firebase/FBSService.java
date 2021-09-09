@@ -1,15 +1,18 @@
 package com.vision.common.services.firebase;
 
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.services.firebase.data.FBSListenerId;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FBSService {
     private static FBSService sInstance;
@@ -28,7 +31,7 @@ public class FBSService {
         return sInstance;
     }
 
-    public FBSListenerId addListener(@NonNull List<String> fields, @NonNull ValueEventListener listener) {
+    public FBSListenerId addListener(List<String> fields, ValueEventListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference();
@@ -43,9 +46,25 @@ public class FBSService {
         return id;
     }
 
-    public void removeListener(@NonNull FBSListenerId id) {
+    public FBSListenerId addListener(List<String> fields, ChildEventListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+        ref.addChildEventListener(listener);
+
+        FBSListenerId id = new FBSListenerId(fields, listener);
+        mListenerIds.add(id);
+
+        return id;
+    }
+
+    public void removeListener(FBSListenerId id) {
         List<String> fields = id.fieldPaths();
-        ValueEventListener listener = id.listener();
+        ValueEventListener valueEventListener = id.valueEventListener();
+        ChildEventListener childEventListener = id.childEventListener();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -53,7 +72,13 @@ public class FBSService {
         for (int i = 0; i < fields.size(); ++i) {
             ref = ref.child(fields.get(i));
         }
-        ref.removeEventListener(listener);
+
+        if (valueEventListener != null) {
+            ref.removeEventListener(valueEventListener);
+        }
+        if (childEventListener != null) {
+            ref.removeEventListener(childEventListener);
+        }
     }
 
     public void removeAllListeners() {
@@ -63,7 +88,7 @@ public class FBSService {
         }
     }
 
-    public void setStringValue(@NonNull List<String> fields, @NonNull String value) {
+    public void setStringValue(List<String> fields, String value) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference();
@@ -72,6 +97,37 @@ public class FBSService {
         }
 
         ref.setValue(value);
+    }
+
+    public void addValueToList(List<String> fields, String value) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        String key = ref.push().getKey();
+        Log.d("tag", "KEY: " + key);
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, value);
+
+        ref.updateChildren(childUpdates);
+    }
+
+    public void removeValueFromList(List<String> fields, String key) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, null);
+
+        ref.updateChildren(childUpdates);
     }
 }
 

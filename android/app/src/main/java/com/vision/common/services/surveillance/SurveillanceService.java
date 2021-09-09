@@ -33,7 +33,7 @@ public class SurveillanceService implements ResponseSender, RequestSender {
 
     private SurveillanceService() {
         mRequestsExecutor = new FBSRequestsExecutor();
-        List<String> requestPath = FBSPathsService.get().requestPath();
+        List<String> requestPath = FBSPathsService.get().currentRequestsPath();
         mRequests = new SurveillanceServiceRequests();
 
         mForegroundServiceWork = new FBSForegroundServiceWork(
@@ -103,13 +103,20 @@ public class SurveillanceService implements ResponseSender, RequestSender {
     }
 
     @Override
-    public void sendRequest(Request request,
+    public void sendRequest(String receiverLogin,
+                            Request request,
                             OnDeliveredCallback deliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
         Log.d("tag", "SurveillanceService->sendRequest()");
 
-        mRequestsSender.sendRequest(request, deliveredCallback, onResponseCallback, onErrorCallback);
+        mRequestsSender.sendRequest(
+                receiverLogin,
+                request,
+                deliveredCallback,
+                onResponseCallback,
+                onErrorCallback
+        );
     }
 
     @Override
