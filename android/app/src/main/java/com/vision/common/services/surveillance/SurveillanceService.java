@@ -9,25 +9,39 @@ import com.vision.android_services.foreground.surveillance.SurveillanceForegroun
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
-import com.vision.common.services.surveillance.data.request_handler.RequestHandler;
-import com.vision.common.services.surveillance.data.request_handler.firebase.FBSRequestHandler;
+import com.vision.common.services.surveillance.data.request.Request;
+import com.vision.common.services.surveillance.data.request_sender.OnDeliveredCallback;
+import com.vision.common.services.surveillance.data.request_sender.OnErrorCallback;
+import com.vision.common.services.surveillance.data.request_sender.OnResponseCallback;
+import com.vision.common.services.surveillance.data.request_sender.RequestSender;
+import com.vision.common.services.surveillance.data.request_sender.firebase.FBSRequestSender;
+import com.vision.common.services.surveillance.data.requests_executor.RequestsExecutor;
+import com.vision.common.services.surveillance.data.requests_executor.firebase.FBSRequestsExecutor;
+import com.vision.common.services.surveillance.data.response.Response;
+import com.vision.common.services.surveillance.data.response_sender.ResponseSender;
+import com.vision.common.services.surveillance.data.service_requests.SurveillanceServiceRequests;
 
 import java.util.List;
 
-public class SurveillanceService {
+public class SurveillanceService implements ResponseSender, RequestSender {
     private static SurveillanceService sInstance;
 
     private ForegroundServiceWork mForegroundServiceWork;
-    private RequestHandler mRequestHandler;
+    private RequestsExecutor mRequestsExecutor;
+    private SurveillanceServiceRequests mRequests;
+    private RequestSender mRequestsSender;
 
     private SurveillanceService() {
-        mRequestHandler = new FBSRequestHandler();
+        mRequestsExecutor = new FBSRequestsExecutor();
         List<String> requestPath = FBSPathsService.get().requestPath();
+        mRequests = new SurveillanceServiceRequests();
 
         mForegroundServiceWork = new FBSForegroundServiceWork(
-                mRequestHandler,
+                mRequestsExecutor,
                 requestPath
         );
+
+        mRequestsSender = new FBSRequestSender();
     }
 
     public static synchronized SurveillanceService get() {
@@ -82,6 +96,25 @@ public class SurveillanceService {
             }
         }
         return false;
+    }
+
+    public SurveillanceServiceRequests requests() {
+        return mRequests;
+    }
+
+    @Override
+    public void sendRequest(Request request,
+                            OnDeliveredCallback deliveredCallback,
+                            OnResponseCallback onResponseCallback,
+                            OnErrorCallback onErrorCallback) {
+        Log.d("tag", "SurveillanceService->sendRequest()");
+
+        mRequestsSender.sendRequest(request, deliveredCallback, onResponseCallback, onErrorCallback);
+    }
+
+    @Override
+    public void sendResponse(Response response) {
+        Log.d("tag", "SurveillanceService->sendResponse()");
     }
 
     public ForegroundServiceWork foregroundServiceWork() {

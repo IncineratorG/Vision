@@ -1,6 +1,7 @@
 package com.vision.common.services.surveillance.data.foreground_service_work.firebase;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,45 +14,32 @@ import com.vision.common.services.firebase.data.FBSListenerId;
 import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.request.Request;
 import com.vision.common.services.surveillance.data.request_handler.RequestHandler;
+import com.vision.common.services.surveillance.data.requests_executor.RequestsExecutor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class FBSForegroundServiceWork implements ForegroundServiceWork {
     private FBSListenerId mRequestListenerId;
-    private RequestHandler mRequestHandler;
+    private RequestsExecutor mRequestsExecutor;
     private List<String> mRequestPath;
 
-    public FBSForegroundServiceWork(RequestHandler requestHandler, List<String> requestPath) {
-        mRequestHandler = requestHandler;
+    public FBSForegroundServiceWork(RequestsExecutor requestsExecutor,
+                                    List<String> requestPath) {
+        mRequestsExecutor = requestsExecutor;
         mRequestPath = requestPath;
     }
 
     @Override
-    public void start() {
-//        List<String> requestPathFields = Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
+    public void start(Context context) {
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d("tag", "FBSForegroundServiceWork->Value is: " + value);
-//
-//                List<String> responsePathFields = Arrays.asList("emulatorTestField", "testSubfield", "RESPONSE");
-//
-//                FBSService.get().setStringValue(responsePathFields, value + "+");
-
-                String stringifiedRequest = dataSnapshot.getValue(String.class);
-                if (stringifiedRequest != null) {
-                    Request request = new Request(stringifiedRequest);
-                    mRequestHandler.handle(request);
-                }
+                mRequestsExecutor.execute(context, dataSnapshot.getValue(String.class));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
                 Log.w("tag", "FBSForegroundServiceWork->Failed to read value.", error.toException());
             }
         };
@@ -64,7 +52,7 @@ public class FBSForegroundServiceWork implements ForegroundServiceWork {
     }
 
     @Override
-    public void stop() {
+    public void stop(Context context) {
         if (mRequestListenerId != null) {
             FBSService.get().removeListener(mRequestListenerId);
             mRequestListenerId = null;

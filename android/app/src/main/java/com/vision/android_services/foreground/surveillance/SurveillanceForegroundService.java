@@ -91,11 +91,11 @@ public class SurveillanceForegroundService extends Service {
         // ===
 
         if (intent.getAction().contains("start")) {
-            SurveillanceService.get().foregroundServiceWork().start();
+            SurveillanceService.get().foregroundServiceWork().start(this);
 
             startForeground(101, updateNotification());
         } else {
-            SurveillanceService.get().foregroundServiceWork().stop();
+            SurveillanceService.get().foregroundServiceWork().stop(this);
 
             stopForeground(true);
             stopSelf();
