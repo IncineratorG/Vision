@@ -24,9 +24,49 @@ const AuthService = () => {
     });
   };
 
+  const createDeviceGroup = async ({groupLogin, groupPassword}) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->createDeviceGroup()'});
+
+    return await nativeAuthService.createDeviceGroup({
+      groupName: groupLogin,
+      groupPassword,
+    });
+  };
+
+  const isDeviceNameAvailable = async ({
+    groupLogin,
+    groupPassword,
+    deviceName,
+  }) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->isDeviceNameAvailable()'});
+
+    return await nativeAuthService.isDeviceNameAvailable({
+      groupName: groupLogin,
+      groupPassword,
+      deviceName,
+    });
+  };
+
+  const registerDeviceInGroup = async ({
+    groupLogin,
+    groupPassword,
+    deviceName,
+  }) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->registerDeviceInGroup()'});
+
+    return await nativeAuthService.registerDeviceInGroup({
+      groupName: groupLogin,
+      groupPassword,
+      deviceName,
+    });
+  };
+
   return {
     registerDevice,
     loginDevice,
+    createDeviceGroup,
+    isDeviceNameAvailable,
+    registerDeviceInGroup,
   };
 };
 
