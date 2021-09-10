@@ -4,57 +4,60 @@ import NativeAuthActions from './actions/NativeAuthActions';
 const NativeAuth = () => {
   const nativeAuthService = NativeAuthLib;
 
-  const isUserGroupExist = async ({groupLogin, groupPassword}) => {
-    const action = NativeAuthActions.isUserGroupExistAction({
-      groupLogin,
+  const isDeviceGroupExist = async ({groupName}) => {
+    const action = NativeAuthActions.isDeviceGroupExistAction({groupName});
+    return await nativeAuthService.execute(action);
+  };
+
+  const createDeviceGroup = async ({groupName, groupPassword}) => {
+    const action = NativeAuthActions.createDeviceGroupAction({
+      groupName,
       groupPassword,
     });
     return await nativeAuthService.execute(action);
   };
 
-  const registerUserGroup = async ({groupLogin, groupPassword}) => {
-    const action = NativeAuthActions.registerUserGroupAction({
-      groupLogin,
-      groupPassword,
-    });
-    return await nativeAuthService.execute(action);
-  };
-
-  const createUserInUserGroup = async ({
-    userLogin,
-    userPassword,
-    groupLogin,
+  const isDeviceNameAvailable = async ({
+    groupName,
     groupPassword,
+    deviceName,
   }) => {
-    const action = NativeAuthActions.createUserInUserGroupAction({
-      userLogin,
-      userPassword,
-      groupLogin,
+    const action = NativeAuthActions.isDeviceNameAvailable({
+      groupName,
       groupPassword,
+      deviceName,
     });
     return await nativeAuthService.execute(action);
   };
 
-  const loginUserInUserGroup = async ({
-    userLogin,
-    userPassword,
-    groupLogin,
+  const registerDeviceInGroup = async ({
+    groupName,
     groupPassword,
+    deviceName,
   }) => {
-    const action = NativeAuthActions.loginUserInUserGroupAction({
-      userLogin,
-      userPassword,
-      groupLogin,
+    const action = NativeAuthActions.registerDeviceInGroupAction({
+      groupName,
       groupPassword,
+      deviceName,
+    });
+    return await nativeAuthService.execute(action);
+  };
+
+  const loginDeviceInGroup = async ({groupName, groupPassword, deviceName}) => {
+    const action = NativeAuthActions.loginDeviceInGroupAction({
+      groupName,
+      groupPassword,
+      deviceName,
     });
     return await nativeAuthService.execute(action);
   };
 
   return {
-    isUserGroupExist,
-    registerUserGroup,
-    createUserInUserGroup,
-    loginUserInUserGroup,
+    isDeviceGroupExist,
+    createDeviceGroup,
+    isDeviceNameAvailable,
+    registerDeviceInGroup,
+    loginDeviceInGroup,
   };
 };
 

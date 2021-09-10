@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useRef, useEffect} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {View, TextInput, StyleSheet} from 'react-native';
 import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 
@@ -7,15 +7,17 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
   const {t} = useTranslation();
 
   const passwordInputRef = useRef(null);
+  const deviceNameInputRef = useRef(null);
 
   const [groupLogin, setGroupLogin] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
+  const [deviceName, setDeviceName] = useState('');
 
-  const createPressHandler = useCallback(() => {
+  const createPressHandler = () => {
     if (onCreatePress) {
-      onCreatePress({login: groupLogin, password: groupPassword});
+      onCreatePress({login: groupLogin, password: groupPassword, deviceName});
     }
-  }, [groupLogin, groupPassword, onCreatePress]);
+  };
 
   const cancelPressHandler = useCallback(() => {
     if (onCancelPress) {
@@ -31,18 +33,27 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
     setGroupPassword(text);
   }, []);
 
+  const deviceNameChangeHandler = useCallback((text) => {
+    setDeviceName(text);
+  }, []);
+
   const groupLoginSubmitEditingPressHandler = useCallback(() => {
     passwordInputRef.current.focus();
   }, []);
 
   const groupPasswordSubmitEditingPressHandler = useCallback(() => {
+    deviceNameInputRef.current.focus();
+  }, []);
+
+  const deviceNameSubmitEditingPressHandler = () => {
     createPressHandler();
-  }, [createPressHandler]);
+  };
 
   useEffect(() => {
     if (!visible) {
       setGroupLogin('');
       setGroupPassword('');
+      setDeviceName('');
     }
   }, [visible]);
 
@@ -89,6 +100,24 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
               />
             </View>
             <View style={styles.underline} />
+            <View style={styles.deviceNameContainer}>
+              <TextInput
+                ref={deviceNameInputRef}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
+                placeholder={t('RegisterUserGroupDialog_deviceNamePlaceholder')}
+                defaultValue={deviceName}
+                underlineColorAndroid={'transparent'}
+                spellCheck={false}
+                autoCorrect={false}
+                onChangeText={deviceNameChangeHandler}
+                onSubmitEditing={deviceNameSubmitEditingPressHandler}
+              />
+            </View>
+            <View style={styles.underline} />
           </View>
         </Dialog.Content>
         <Dialog.Actions>
@@ -107,7 +136,6 @@ const RegisterUserGroupDialog = ({visible, onCreatePress, onCancelPress}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     minHeight: 150,
-    // backgroundColor: 'green',
   },
   underline: {
     height: 1,
@@ -117,6 +145,9 @@ const styles = StyleSheet.create({
     minHeight: 50,
   },
   groupPasswordContainer: {
+    minHeight: 50,
+  },
+  deviceNameContainer: {
     minHeight: 50,
   },
 });

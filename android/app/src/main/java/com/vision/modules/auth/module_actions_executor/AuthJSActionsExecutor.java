@@ -4,7 +4,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.auth.module_actions.types.AuthJSActionTypes;
-import com.vision.modules.auth.module_actions_executor.handlers.IsUserGroupExistHandler;
+import com.vision.modules.auth.module_actions_executor.handlers.RegisterDeviceInGroupHandler;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
@@ -19,7 +19,7 @@ public class AuthJSActionsExecutor implements JSActionsExecutor {
 
     public AuthJSActionsExecutor() {
         mHandlers = new HashMap<>();
-        mHandlers.put(AuthJSActionTypes.IS_USER_GROUP_EXIST, new IsUserGroupExistHandler());
+        mHandlers.put(AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP, new RegisterDeviceInGroupHandler());
     }
 
     @Override

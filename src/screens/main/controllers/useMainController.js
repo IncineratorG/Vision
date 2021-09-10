@@ -2,9 +2,10 @@ import {useCallback} from 'react';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import Services from '../../../services/Services';
 import MainLocalActions from '../store/MainLocalActions';
+import AppActions from '../../../store/actions/AppActions';
 
 const useMainController = (model) => {
-  const {localDispatch} = model;
+  const {localDispatch, dispatch} = model;
 
   const callback1 = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'callback1'});
@@ -33,14 +34,24 @@ const useMainController = (model) => {
   }, [localDispatch]);
 
   const registerUserGroupCreatePressHandler = useCallback(
-    ({login, password}) => {
+    ({login, password, deviceName}) => {
       SystemEventsHandler.onInfo({
         info:
           'useMainController->registerUserGroupCreatePressHandler(): ' +
           login +
           ' - ' +
-          password,
+          password +
+          ' - ' +
+          deviceName,
       });
+
+      dispatch(
+        AppActions.auth.actions.registerDevice({
+          groupLogin: login,
+          groupPassword: password,
+          deviceName,
+        }),
+      );
 
       localDispatch(
         MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
@@ -48,7 +59,7 @@ const useMainController = (model) => {
         }),
       );
     },
-    [localDispatch],
+    [localDispatch, dispatch],
   );
 
   const openLoginIntoUserGroupDialog = useCallback(() => {
@@ -68,14 +79,24 @@ const useMainController = (model) => {
   }, [localDispatch]);
 
   const loginIntoUserGroupDialogLoginHandler = useCallback(
-    ({login, password}) => {
+    ({login, password, deviceName}) => {
       SystemEventsHandler.onInfo({
         info:
           'useMainController->loginIntoUserGroupDialogLoginHandler(): ' +
           login +
           ' - ' +
-          password,
+          password +
+          ' - ' +
+          deviceName,
       });
+
+      dispatch(
+        AppActions.auth.actions.loginDevice({
+          groupLogin: login,
+          groupPassword: password,
+          deviceName,
+        }),
+      );
 
       localDispatch(
         MainLocalActions.actions.setLoginUserGroupDialogVisibility({
@@ -83,7 +104,7 @@ const useMainController = (model) => {
         }),
       );
     },
-    [localDispatch],
+    [localDispatch, dispatch],
   );
 
   const loginIntoUserGroupDialogRegisterHandler = useCallback(() => {

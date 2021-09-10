@@ -40,10 +40,11 @@ public class AuthModule extends ReactContextBaseJavaModule {
         final Map<String, Object> constants = new HashMap<>();
 
         WritableMap actionTypesConstants = new WritableNativeMap();
-        actionTypesConstants.putString(AuthJSActionTypes.IS_USER_GROUP_EXIST, AuthJSActionTypes.IS_USER_GROUP_EXIST);
-        actionTypesConstants.putString(AuthJSActionTypes.REGISTER_USER_GROUP, AuthJSActionTypes.REGISTER_USER_GROUP);
-        actionTypesConstants.putString(AuthJSActionTypes.CREATE_USER_IN_USER_GROUP, AuthJSActionTypes.CREATE_USER_IN_USER_GROUP);
-        actionTypesConstants.putString(AuthJSActionTypes.LOGIN_USER_IN_USER_GROUP, AuthJSActionTypes.LOGIN_USER_IN_USER_GROUP);
+        actionTypesConstants.putString(AuthJSActionTypes.IS_DEVICE_GROUP_EXIST, AuthJSActionTypes.IS_DEVICE_GROUP_EXIST);
+        actionTypesConstants.putString(AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE, AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE);
+        actionTypesConstants.putString(AuthJSActionTypes.CREATE_DEVICE_GROUP, AuthJSActionTypes.CREATE_DEVICE_GROUP);
+        actionTypesConstants.putString(AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP, AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP);
+        actionTypesConstants.putString(AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP, AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP);
 
         constants.put("actionTypes", actionTypesConstants);
 

@@ -3,56 +3,59 @@ import NativeAuthConstants from '../constants/NativeAuthConstants';
 const NativeFirebaseActions = () => {
   const {
     actionTypes: {
-      IS_USER_GROUP_EXIST,
-      REGISTER_USER_GROUP,
-      CREATE_USER_IN_USER_GROUP,
-      LOGIN_USER_IN_USER_GROUP,
+      IS_DEVICE_GROUP_EXIST,
+      IS_DEVICE_NAME_AVAILABLE,
+      CREATE_DEVICE_GROUP,
+      REGISTER_DEVICE_IN_GROUP,
+      LOGIN_DEVICE_IN_GROUP,
     },
   } = NativeAuthConstants;
 
-  const isUserGroupExistAction = ({groupLogin, groupPassword}) => {
+  const isDeviceGroupExistAction = ({groupName}) => {
     return {
-      type: IS_USER_GROUP_EXIST,
-      payload: {groupLogin, groupPassword},
+      type: IS_DEVICE_GROUP_EXIST,
+      payload: {groupName},
     };
   };
 
-  const registerUserGroupAction = ({groupLogin, groupPassword}) => {
+  const createDeviceGroupAction = ({groupName, groupPassword}) => {
     return {
-      type: REGISTER_USER_GROUP,
-      payload: {groupLogin, groupPassword},
+      type: CREATE_DEVICE_GROUP,
+      payload: {groupName, groupPassword},
     };
   };
 
-  const createUserInUserGroupAction = ({
-    userLogin,
-    userPassword,
-    groupLogin,
+  const isDeviceNameAvailable = ({groupName, groupPassword, deviceName}) => {
+    return {
+      type: IS_DEVICE_NAME_AVAILABLE,
+      payload: {groupName, groupPassword, deviceName},
+    };
+  };
+
+  const registerDeviceInGroupAction = ({
+    groupName,
     groupPassword,
+    deviceName,
   }) => {
     return {
-      type: CREATE_USER_IN_USER_GROUP,
-      payload: {userLogin, userPassword, groupLogin, groupPassword},
+      type: REGISTER_DEVICE_IN_GROUP,
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
-  const loginUserInUserGroupAction = ({
-    userLogin,
-    userPassword,
-    groupLogin,
-    groupPassword,
-  }) => {
+  const loginDeviceInGroupAction = ({groupName, groupPassword, deviceName}) => {
     return {
-      type: LOGIN_USER_IN_USER_GROUP,
-      payload: {userLogin, userPassword, groupLogin, groupPassword},
+      type: LOGIN_DEVICE_IN_GROUP,
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
   return {
-    isUserGroupExistAction,
-    registerUserGroupAction,
-    createUserInUserGroupAction,
-    loginUserInUserGroupAction,
+    isDeviceGroupExistAction,
+    createDeviceGroupAction,
+    isDeviceNameAvailable,
+    registerDeviceInGroupAction,
+    loginDeviceInGroupAction,
   };
 };
 

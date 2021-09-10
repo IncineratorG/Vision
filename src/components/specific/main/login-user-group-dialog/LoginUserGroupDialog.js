@@ -12,15 +12,17 @@ const LoginUserGroupDialog = ({
   const {t} = useTranslation();
 
   const passwordInputRef = useRef(null);
+  const deviceNameInputRef = useRef(null);
 
   const [groupLogin, setGroupLogin] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
+  const [deviceName, setDeviceName] = useState('');
 
-  const loginPressHandler = useCallback(() => {
+  const loginPressHandler = () => {
     if (onLoginPress) {
-      onLoginPress({login: groupLogin, password: groupPassword});
+      onLoginPress({login: groupLogin, password: groupPassword, deviceName});
     }
-  }, [groupLogin, groupPassword, onLoginPress]);
+  };
 
   const cancelPressHandler = useCallback(() => {
     if (onCancelPress) {
@@ -36,18 +38,27 @@ const LoginUserGroupDialog = ({
     setGroupPassword(text);
   }, []);
 
+  const deviceNameChangeHandler = useCallback((text) => {
+    setDeviceName(text);
+  }, []);
+
   const groupLoginSubmitEditingPressHandler = useCallback(() => {
     passwordInputRef.current.focus();
   }, []);
 
   const groupPasswordSubmitEditingPressHandler = useCallback(() => {
+    deviceNameInputRef.current.focus();
+  }, []);
+
+  const deviceNameSubmitEditingPressHandler = () => {
     loginPressHandler();
-  }, [loginPressHandler]);
+  };
 
   useEffect(() => {
     if (!visible) {
       setGroupLogin('');
       setGroupPassword('');
+      setDeviceName('');
     }
   }, [visible]);
 
@@ -88,6 +99,22 @@ const LoginUserGroupDialog = ({
               />
             </View>
             <View style={styles.underline} />
+            <View style={styles.deviceNameContainer}>
+              <TextInput
+                ref={deviceNameInputRef}
+                style={{
+                  fontSize: 18,
+                  color: '#000000',
+                  borderBottomColor: 'transparent',
+                }}
+                placeholder={t('LoginUserGroupDialog_deviceNamePlaceholder')}
+                defaultValue={deviceName}
+                underlineColorAndroid={'transparent'}
+                onChangeText={deviceNameChangeHandler}
+                onSubmitEditing={deviceNameSubmitEditingPressHandler}
+              />
+            </View>
+            <View style={styles.underline} />
           </View>
         </Dialog.Content>
         <Dialog.Actions>
@@ -110,7 +137,6 @@ const LoginUserGroupDialog = ({
 const styles = StyleSheet.create({
   mainContainer: {
     minHeight: 150,
-    // backgroundColor: 'green',
   },
   underline: {
     height: 1,
@@ -120,6 +146,9 @@ const styles = StyleSheet.create({
     minHeight: 50,
   },
   groupPasswordContainer: {
+    minHeight: 50,
+  },
+  deviceNameContainer: {
     minHeight: 50,
   },
 });

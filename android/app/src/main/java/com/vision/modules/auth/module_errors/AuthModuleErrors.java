@@ -14,4 +14,20 @@ public class AuthModuleErrors {
     public static ModuleError unknownActionType() {
         return new ModuleError("3", "UNKNOWN_ACTION_TYPE");
     }
+
+    public static ModuleError badPayload() {
+        return new ModuleError("4", "BAD_PAYLOAD");
+    }
+
+    public static ModuleError emptyGroupName() {
+        return new ModuleError("5", "EMPTY_GROUP_NAME");
+    }
+
+    public static ModuleError emptyGroupPassword() {
+        return new ModuleError("6", "EMPTY_GROUP_PASSWORD");
+    }
+
+    public static ModuleError emptyDeviceName() {
+        return new ModuleError("7", "EMPTY_DEVICE_NAME");
+    }
 }

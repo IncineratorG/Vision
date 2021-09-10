@@ -1,55 +1,32 @@
 import NativeAuth from '../native-libs/auth/NativeAuth';
+import {SystemEventsHandler} from '../../utils/common/system-events-handler/SystemEventsHandler';
 
 const AuthService = () => {
   const nativeAuthService = NativeAuth();
 
-  const isUserGroupExist = async ({groupLogin, groupPassword}) => {
-    return await nativeAuthService.isUserGroupExist({
-      groupLogin,
+  const registerDevice = async ({groupLogin, groupPassword, deviceName}) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->registerDevice()'});
+
+    return await nativeAuthService.registerDeviceInGroup({
+      groupName: groupLogin,
       groupPassword,
+      deviceName,
     });
   };
 
-  const registerUserGroup = async ({groupLogin, groupPassword}) => {
-    return await nativeAuthService.registerUserGroup({
-      groupLogin,
-      groupPassword,
-    });
-  };
+  const loginDevice = async ({groupLogin, groupPassword, deviceName}) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->loginDevice()'});
 
-  const createUserInUserGroup = async ({
-    userLogin,
-    userPassword,
-    groupLogin,
-    groupPassword,
-  }) => {
-    return await nativeAuthService.createUserInUserGroup({
-      userLogin,
-      userPassword,
-      groupLogin,
+    return await nativeAuthService.loginDeviceInGroup({
+      groupName: groupLogin,
       groupPassword,
-    });
-  };
-
-  const loginUserInUserGroup = async ({
-    userLogin,
-    userPassword,
-    groupLogin,
-    groupPassword,
-  }) => {
-    return await nativeAuthService.loginUserInUserGroup({
-      userLogin,
-      userPassword,
-      groupLogin,
-      groupPassword,
+      deviceName,
     });
   };
 
   return {
-    isUserGroupExist,
-    registerUserGroup,
-    createUserInUserGroup,
-    loginUserInUserGroup,
+    registerDevice,
+    loginDevice,
   };
 };
 

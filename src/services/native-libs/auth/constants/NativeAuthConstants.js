@@ -3,19 +3,21 @@ import NativeAuthLib from '../lib/NativeAuthLib';
 const NativeAuthConstants = () => {
   const {
     actionTypes: {
-      IS_USER_GROUP_EXIST,
-      REGISTER_USER_GROUP,
-      CREATE_USER_IN_USER_GROUP,
-      LOGIN_USER_IN_USER_GROUP,
+      IS_DEVICE_GROUP_EXIST,
+      IS_DEVICE_NAME_AVAILABLE,
+      CREATE_DEVICE_GROUP,
+      REGISTER_DEVICE_IN_GROUP,
+      LOGIN_DEVICE_IN_GROUP,
     },
   } = NativeAuthLib.getConstants();
 
   return {
     actionTypes: {
-      IS_USER_GROUP_EXIST,
-      REGISTER_USER_GROUP,
-      CREATE_USER_IN_USER_GROUP,
-      LOGIN_USER_IN_USER_GROUP,
+      IS_DEVICE_GROUP_EXIST,
+      IS_DEVICE_NAME_AVAILABLE,
+      CREATE_DEVICE_GROUP,
+      REGISTER_DEVICE_IN_GROUP,
+      LOGIN_DEVICE_IN_GROUP,
     },
   };
 };
