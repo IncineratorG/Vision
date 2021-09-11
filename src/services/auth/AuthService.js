@@ -33,6 +33,12 @@ const AuthService = () => {
     });
   };
 
+  const isDeviceGroupExist = async ({groupLogin}) => {
+    SystemEventsHandler.onInfo({info: 'AuthService->isDeviceGroupExist()'});
+
+    return await nativeAuthService.isDeviceGroupExist({groupName: groupLogin});
+  };
+
   const isDeviceNameAvailable = async ({
     groupLogin,
     groupPassword,
@@ -65,6 +71,7 @@ const AuthService = () => {
     registerDevice,
     loginDevice,
     createDeviceGroup,
+    isDeviceGroupExist,
     isDeviceNameAvailable,
     registerDeviceInGroup,
   };

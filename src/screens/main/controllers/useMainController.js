@@ -45,13 +45,13 @@ const useMainController = (model) => {
           deviceName,
       });
 
-      dispatch(
-        AppActions.auth.actions.registerDevice({
-          groupLogin: login,
-          groupPassword: password,
-          deviceName,
-        }),
-      );
+      // dispatch(
+      //   AppActions.auth.actions.registerDevice({
+      //     groupLogin: login,
+      //     groupPassword: password,
+      //     deviceName,
+      //   }),
+      // );
 
       localDispatch(
         MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
@@ -90,13 +90,13 @@ const useMainController = (model) => {
           deviceName,
       });
 
-      dispatch(
-        AppActions.auth.actions.loginDevice({
-          groupLogin: login,
-          groupPassword: password,
-          deviceName,
-        }),
-      );
+      // dispatch(
+      //   AppActions.auth.actions.loginDevice({
+      //     groupLogin: login,
+      //     groupPassword: password,
+      //     deviceName,
+      //   }),
+      // );
 
       localDispatch(
         MainLocalActions.actions.setLoginUserGroupDialogVisibility({
