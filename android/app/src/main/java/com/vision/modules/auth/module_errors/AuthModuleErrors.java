@@ -30,4 +30,8 @@ public class AuthModuleErrors {
     public static ModuleError emptyDeviceName() {
         return new ModuleError("7", "EMPTY_DEVICE_NAME");
     }
+
+    public static ModuleError groupNotExist() {
+        return new ModuleError("8", "GROUP_NOT_EXIST");
+    }
 }

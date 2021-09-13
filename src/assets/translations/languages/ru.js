@@ -23,6 +23,14 @@ const ru = {
 
   RegisteringDeviceInGroupDialog_message: 'Регистрация устройства',
   RegisteringDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
+
+  NeedCreateGroupDialog_message: 'Группа не создана. Создать?',
+  NeedCreateGroupDialog_createButton: 'СОЗДАТЬ',
+  NeedCreateGroupDialog_cancelButton: 'ОТМЕНА',
+
+  CreatingGroupWithDeviceDialog_message:
+    'Создание группы и регистрация устройства',
+  CreatingGroupWithDeviceDialog_cancelButton: 'ОТМЕНА',
 };
 
 export default ru;

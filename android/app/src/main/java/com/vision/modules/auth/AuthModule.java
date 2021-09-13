@@ -42,7 +42,7 @@ public class AuthModule extends ReactContextBaseJavaModule {
         WritableMap actionTypesConstants = new WritableNativeMap();
         actionTypesConstants.putString(AuthJSActionTypes.IS_DEVICE_GROUP_EXIST, AuthJSActionTypes.IS_DEVICE_GROUP_EXIST);
         actionTypesConstants.putString(AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE, AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE);
-        actionTypesConstants.putString(AuthJSActionTypes.CREATE_DEVICE_GROUP, AuthJSActionTypes.CREATE_DEVICE_GROUP);
+        actionTypesConstants.putString(AuthJSActionTypes.CREATE_GROUP_WITH_DEVICE, AuthJSActionTypes.CREATE_GROUP_WITH_DEVICE);
         actionTypesConstants.putString(AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP, AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP);
         actionTypesConstants.putString(AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP, AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP);
 

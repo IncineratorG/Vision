@@ -9,8 +9,12 @@ const NativeAuth = () => {
     return await nativeAuthService.execute(action);
   };
 
-  const createDeviceGroup = async ({groupName, groupPassword}) => {
-    const action = NativeAuthActions.createDeviceGroupAction({
+  const createGroupWithDevice = async ({
+    groupName,
+    groupPassword,
+    deviceName,
+  }) => {
+    const action = NativeAuthActions.createGroupWithDeviceAction({
       groupName,
       groupPassword,
     });
@@ -54,7 +58,7 @@ const NativeAuth = () => {
 
   return {
     isDeviceGroupExist,
-    createDeviceGroup,
+    createGroupWithDevice,
     isDeviceNameAvailable,
     registerDeviceInGroup,
     loginDeviceInGroup,

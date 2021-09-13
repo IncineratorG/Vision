@@ -5,6 +5,18 @@ const mainLocalState = {
   loginUserGroupDialog: {
     visible: false,
   },
+  registerDeviceInGroupDialog: {
+    visible: false,
+    groupName: '',
+    groupPassword: '',
+    deviceName: '',
+  },
+  needCreateGroupDialog: {
+    visible: false,
+    groupName: '',
+    groupPassword: '',
+    deviceName: '',
+  },
 };
 
 export default mainLocalState;

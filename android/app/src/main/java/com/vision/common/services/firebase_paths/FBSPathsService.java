@@ -26,4 +26,8 @@ public class FBSPathsService {
     public List<String> receiverRequestsPath(String receiverLogin) {
         return Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
     }
+
+    public List<String> groupNamePath(String groupName) {
+        return Arrays.asList("vision", "groups", groupName);
+    }
 }

@@ -3,14 +3,23 @@ package com.vision.modules.auth.module_actions_executor.handlers;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
+
+import java.util.List;
 
 public class RegisterDeviceInGroupHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
@@ -61,13 +70,39 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
 
         Log.d("tag", "RegisterDeviceInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        // ===
         // Проверяем, существует ли данная группа.
-        // ===
+        checkIfGroupExist(payload, result);
 
-        // ===
-        // ===
+        // Проверяем корректность пароля.
 
-        result.resolve(true);
+        // Проверяем, доступно ли такое имя устройства в данной группе.
+
+//        result.resolve(true);
+    }
+
+    private void checkIfGroupExist(RegisterDeviceInGroupPayload handlerPayload,
+                                   Promise handlerResult) {
+        List<String> groupNamePath = FBSPathsService.get().groupNamePath(handlerPayload.groupName());
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d("tag", "SNAPSHOT_EXISTS");
+                } else {
+                    Log.d("tag", "SNAPSHOT_NOT_EXIST");
+
+                    ModuleError error = AuthModuleErrors.groupNotExist();
+                    handlerResult.reject(error.code(), error.message());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        FBSService.get().getValue(groupNamePath, listener);
     }
 }

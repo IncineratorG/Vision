@@ -1,9 +1,10 @@
-import {useCallback, useReducer} from 'react';
+import {useCallback, useEffect, useReducer} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import mainLocalReducer from '../store/mainLocalReducer';
 import mainLocalState from '../store/mainLocalState';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import MainLocalActions from '../store/MainLocalActions';
 
 const useMainModel = () => {
   const navigation = useNavigation();
@@ -15,24 +16,62 @@ const useMainModel = () => {
     mainLocalState,
   );
 
-  const registerDeviceInGroupInProgress = useSelector(
-    (store) => store.auth.registerDeviceInGroup.inProgress,
-  );
-  const registerDeviceInGroupHasError = useSelector(
-    (store) => store.auth.registerDeviceInGroup.error.hasError,
-  );
-  const registerDeviceInGroupErrorCode = useSelector(
-    (store) => store.auth.registerDeviceInGroup.error.code,
-  );
-  const registerDeviceInGroupErrorMessage = useSelector(
-    (store) => store.auth.registerDeviceInGroup.error.message,
-  );
-  SystemEventsHandler.onInfo({
-    info: 'useMainModel(): ' + registerDeviceInGroupInProgress,
-  });
+  const {
+    registerDeviceInGroupDialog: {
+      groupName: registerDeviceInGroupDialogGroupName,
+      groupPassword: registerDeviceInGroupDialogGroupPassword,
+      deviceName: registerDeviceInGroupDialogDeviceName,
+    },
+  } = localState;
+
+  const {
+    inProgress: registerDeviceInGroupInProgress,
+    error: {
+      hasError: registerDeviceInGroupHasError,
+      code: registerDeviceInGroupErrorCode,
+      message: registerDeviceInGroupErrorMessage,
+    },
+  } = useSelector((store) => store.auth.registerDeviceInGroup);
+  const {
+    inProgress: createGroupWithDeviceInProgress,
+    error: {
+      hasError: createGroupWithDeviceHasError,
+      code: createGroupWithDeviceErrorCode,
+      message: createGroupWithDeviceErrorMessage,
+    },
+  } = useSelector((store) => store.auth.createGroupWithDevice);
+
+  useEffect(() => {
+    if (registerDeviceInGroupErrorCode) {
+      if (registerDeviceInGroupErrorCode === '8') {
+        localDispatch(
+          MainLocalActions.actions.setNeedCreateGroupDialogData({
+            groupName: registerDeviceInGroupDialogGroupName,
+            groupPassword: registerDeviceInGroupDialogGroupPassword,
+            deviceName: registerDeviceInGroupDialogDeviceName,
+          }),
+        );
+        localDispatch(
+          MainLocalActions.actions.setNeedCreateGroupDialogVisibility({
+            visible: true,
+          }),
+        );
+      }
+    }
+  }, [
+    registerDeviceInGroupErrorCode,
+    registerDeviceInGroupDialogGroupName,
+    registerDeviceInGroupDialogGroupPassword,
+    registerDeviceInGroupDialogDeviceName,
+    localDispatch,
+  ]);
 
   return {
-    data: {localState},
+    data: {
+      localState,
+      registerDeviceInGroupInProgress,
+      createGroupWithDeviceInProgress,
+    },
     setters: {},
     dispatch,
     localDispatch,

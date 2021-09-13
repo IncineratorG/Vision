@@ -5,7 +5,19 @@ import MainLocalActions from '../store/MainLocalActions';
 import AppActions from '../../../store/actions/AppActions';
 
 const useMainController = (model) => {
-  const {localDispatch, dispatch} = model;
+  const {
+    localDispatch,
+    dispatch,
+    data: {
+      localState: {
+        needCreateGroupDialog: {
+          groupName: registerDeviceInGroupDialogGroupName,
+          groupPassword: registerDeviceInGroupDialogGroupPassword,
+          deviceName: registerDeviceInGroupDialogDeviceName,
+        },
+      },
+    },
+  } = model;
 
   const callback1 = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'callback1'});
@@ -59,7 +71,7 @@ const useMainController = (model) => {
         }),
       );
     },
-    [localDispatch, dispatch],
+    [localDispatch],
   );
 
   const openLoginIntoUserGroupDialog = useCallback(() => {
@@ -104,7 +116,7 @@ const useMainController = (model) => {
         }),
       );
     },
-    [localDispatch, dispatch],
+    [localDispatch],
   );
 
   const loginIntoUserGroupDialogRegisterHandler = useCallback(() => {
@@ -144,6 +156,110 @@ const useMainController = (model) => {
     await Services.services().surveillanceForegroundService.testRequest();
   }, []);
 
+  // ===
+  const openRegisterDeviceInGroupDialog = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setRegisterDeviceInGroupDialogVisibility({
+        visible: true,
+      }),
+    );
+  }, [localDispatch]);
+
+  const registerDeviceInGroupDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setRegisterDeviceInGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const registerDeviceInGroupRegisterPressHandler = useCallback(
+    ({groupName, groupPassword, deviceName}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'registerDeviceInGroupRegisterPressHandler(): ' +
+          groupName +
+          ' - ' +
+          groupPassword +
+          ' - ' +
+          deviceName,
+      });
+
+      localDispatch(
+        MainLocalActions.actions.setRegisterDeviceInGroupDialogData({
+          groupName,
+          groupPassword,
+          deviceName,
+        }),
+      );
+      localDispatch(
+        MainLocalActions.actions.setRegisterDeviceInGroupDialogVisibility({
+          visible: false,
+        }),
+      );
+      dispatch(
+        AppActions.auth.actions.registerDeviceInGroup({
+          groupName,
+          groupPassword,
+          deviceName,
+        }),
+      );
+    },
+    [localDispatch, dispatch],
+  );
+
+  const registeringDeviceInGroupDialogCancelHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'registeringDeviceInGroupDialogCancelHandler()',
+    });
+  }, []);
+
+  const needCreateGroupDialogCreatePressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info:
+        'needCreateGroupDialogCreatePressHandler(): ' +
+        registerDeviceInGroupDialogGroupName +
+        ' - ' +
+        registerDeviceInGroupDialogGroupPassword +
+        ' - ' +
+        registerDeviceInGroupDialogDeviceName,
+    });
+
+    localDispatch(
+      MainLocalActions.actions.setNeedCreateGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+    dispatch(
+      AppActions.auth.actions.createGroupWithDevice({
+        groupName: registerDeviceInGroupDialogGroupName,
+        groupPassword: registerDeviceInGroupDialogGroupPassword,
+        deviceName: registerDeviceInGroupDialogDeviceName,
+      }),
+    );
+  }, [
+    registerDeviceInGroupDialogGroupName,
+    registerDeviceInGroupDialogGroupPassword,
+    registerDeviceInGroupDialogDeviceName,
+    localDispatch,
+    dispatch,
+  ]);
+
+  const needCreateGroupDialogCancelPressHandler = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setNeedCreateGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const creatingGroupWithDeviceDialogCancelPressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'creatingGroupWithDeviceDialogCancelPressHandler()',
+    });
+  }, []);
+  // ===
+
   return {
     callback1,
     callback2,
@@ -158,6 +274,13 @@ const useMainController = (model) => {
     stopServicePressHandler,
     isServiceRunningPressHandler,
     testRequestPressHandler,
+    openRegisterDeviceInGroupDialog,
+    registerDeviceInGroupDialogCancelHandler,
+    registerDeviceInGroupRegisterPressHandler,
+    registeringDeviceInGroupDialogCancelHandler,
+    needCreateGroupDialogCreatePressHandler,
+    needCreateGroupDialogCancelPressHandler,
+    creatingGroupWithDeviceDialogCancelPressHandler,
   };
 };
 

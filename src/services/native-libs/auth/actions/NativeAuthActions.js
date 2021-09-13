@@ -5,7 +5,7 @@ const NativeFirebaseActions = () => {
     actionTypes: {
       IS_DEVICE_GROUP_EXIST,
       IS_DEVICE_NAME_AVAILABLE,
-      CREATE_DEVICE_GROUP,
+      CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
     },
@@ -18,10 +18,14 @@ const NativeFirebaseActions = () => {
     };
   };
 
-  const createDeviceGroupAction = ({groupName, groupPassword}) => {
+  const createGroupWithDeviceAction = ({
+    groupName,
+    groupPassword,
+    deviceName,
+  }) => {
     return {
-      type: CREATE_DEVICE_GROUP,
-      payload: {groupName, groupPassword},
+      type: CREATE_GROUP_WITH_DEVICE,
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
@@ -52,7 +56,7 @@ const NativeFirebaseActions = () => {
 
   return {
     isDeviceGroupExistAction,
-    createDeviceGroupAction,
+    createGroupWithDeviceAction,
     isDeviceNameAvailable,
     registerDeviceInGroupAction,
     loginDeviceInGroupAction,

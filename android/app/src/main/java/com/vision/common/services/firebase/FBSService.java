@@ -61,6 +61,16 @@ public class FBSService {
         return id;
     }
 
+    public void getValue(List<String> fields, ValueEventListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+        ref.addListenerForSingleValueEvent(listener);
+    }
+
     public void removeListener(FBSListenerId id) {
         List<String> fields = id.fieldPaths();
         ValueEventListener valueEventListener = id.valueEventListener();

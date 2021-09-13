@@ -5,7 +5,7 @@ const NativeAuthConstants = () => {
     actionTypes: {
       IS_DEVICE_GROUP_EXIST,
       IS_DEVICE_NAME_AVAILABLE,
-      CREATE_DEVICE_GROUP,
+      CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
     },
@@ -15,7 +15,7 @@ const NativeAuthConstants = () => {
     actionTypes: {
       IS_DEVICE_GROUP_EXIST,
       IS_DEVICE_NAME_AVAILABLE,
-      CREATE_DEVICE_GROUP,
+      CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
     },

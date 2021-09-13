@@ -22,7 +22,11 @@ const AuthService = () => {
 
     await wait(1000);
 
-    return true;
+    return nativeAuthService.registerDeviceInGroup({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
   };
 
   const createGroupWithDevice = async ({
@@ -42,7 +46,11 @@ const AuthService = () => {
 
     await wait(1000);
 
-    return true;
+    return nativeAuthService.createGroupWithDevice({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
   };
 
   const loginInGroup = async ({groupName, groupPassword, deviceName}) => {

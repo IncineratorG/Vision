@@ -7,10 +7,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
-public class CreateDeviceGroupHandler implements JSActionHandler {
+public class CreateGroupWithDeviceHandler implements JSActionHandler {
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
-        Log.d("tag", "CreateDeviceGroupHandler");
+        Log.d("tag", "CreateGroupWithDeviceHandler");
 
         result.resolve(true);
     }

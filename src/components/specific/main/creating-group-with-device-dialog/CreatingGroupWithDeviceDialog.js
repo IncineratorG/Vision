@@ -4,35 +4,29 @@ import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 import Icon from 'react-native-vector-icons/Feather';
 
-const RegisteringDeviceInGroupDialog = ({visible, onCancelPress}) => {
+const CreatingGroupWithDeviceDialog = ({visible, onCancelPress}) => {
   const {t} = useTranslation();
-
-  const registerInProgressComponent = (
-    <View style={{flex: 1}}>
-      <View style={styles.messageContainer}>
-        <View style={styles.progressIconContainer}>
-          <Icon name="loader" size={24} color={'grey'} />
-        </View>
-        <View style={styles.messageTextContainer}>
-          <Text style={styles.messageText}>
-            {t('RegisteringDeviceInGroupDialog_message')}
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
 
   return (
     <Portal>
-      <Dialog visible={visible} dismissable={false} onDismiss={onCancelPress}>
+      <Dialog visible={visible} onDismiss={onCancelPress}>
         <Dialog.Content>
           <View style={styles.mainContainer}>
-            {registerInProgressComponent}
+            <View style={styles.messageContainer}>
+              <View style={styles.progressIconContainer}>
+                <Icon name="loader" size={24} color={'grey'} />
+              </View>
+              <View style={styles.messageTextContainer}>
+                <Text style={styles.messageText}>
+                  {t('CreatingGroupWithDeviceDialog_message')}
+                </Text>
+              </View>
+            </View>
           </View>
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={onCancelPress}>
-            {t('RegisteringDeviceInGroupDialog_cancelButton')}
+            {t('CreatingGroupWithDeviceDialog_cancelButton')}
           </Button>
         </Dialog.Actions>
       </Dialog>
@@ -45,16 +39,16 @@ const styles = StyleSheet.create({
     minHeight: 50,
     justifyContent: 'center',
   },
-  messageContainer: {
-    minHeight: 50,
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-  },
   progressIconContainer: {
     width: 50,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  messageContainer: {
+    minHeight: 50,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
   },
   messageTextContainer: {
     flex: 1,
@@ -66,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(RegisteringDeviceInGroupDialog);
+export default React.memo(CreatingGroupWithDeviceDialog);
