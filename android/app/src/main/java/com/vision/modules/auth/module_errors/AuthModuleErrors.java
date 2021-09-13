@@ -34,4 +34,24 @@ public class AuthModuleErrors {
     public static ModuleError groupNotExist() {
         return new ModuleError("8", "GROUP_NOT_EXIST");
     }
+
+    public static ModuleError groupAlreadyExist() {
+        return new ModuleError("9", "GROUP_ALREADY_EXIST");
+    }
+
+    public static ModuleError createGroupWithDeviceFirebaseFailure() {
+        return new ModuleError("10", "CREATE_GROUP_WITH_DEVICE_FIREBASE_FAILURE");
+    }
+
+    public static ModuleError registerDeviceInGroupFirebaseFailure() {
+        return new ModuleError("11", "REGISTER_DEVICE_IN_GROUP_FIREBASE_FAILURE");
+    }
+
+    public static ModuleError incorrectGroupPassword() {
+        return new ModuleError("12", "INCORRECT_GROUP_PASSWORD");
+    }
+
+    public static ModuleError deviceNameAlreadyExist() {
+        return new ModuleError("13", "DEVICE_NAME_ALREADY_EXIST");
+    }
 }

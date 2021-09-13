@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -76,8 +78,6 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         // Проверяем корректность пароля.
 
         // Проверяем, доступно ли такое имя устройства в данной группе.
-
-//        result.resolve(true);
     }
 
     private void checkIfGroupExist(RegisterDeviceInGroupPayload handlerPayload,
@@ -88,9 +88,11 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Log.d("tag", "SNAPSHOT_EXISTS");
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_EXIST");
+
+                    checkIfPasswordCorrect(handlerPayload, handlerResult);
                 } else {
-                    Log.d("tag", "SNAPSHOT_NOT_EXIST");
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_NOT_EXIST");
 
                     ModuleError error = AuthModuleErrors.groupNotExist();
                     handlerResult.reject(error.code(), error.message());
@@ -99,10 +101,100 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
+                handlerResult.reject(moduleError.code(), moduleError.message());
             }
         };
 
         FBSService.get().getValue(groupNamePath, listener);
+    }
+
+    private void checkIfPasswordCorrect(RegisterDeviceInGroupPayload handlerPayload,
+                                        Promise handlerResult) {
+        String groupName = handlerPayload.groupName();
+        String groupPassword = handlerPayload.groupPassword();
+
+        List<String> groupPasswordPath = FBSPathsService.get().groupPasswordPath(groupName, groupPassword);
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): PASSWORD_CORRECT");
+
+                    checkDeviceName(handlerPayload, handlerResult);
+                } else {
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): BAD_PASSWORD");
+
+                    ModuleError error = AuthModuleErrors.incorrectGroupPassword();
+                    handlerResult.reject(error.code(), error.message());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
+                handlerResult.reject(moduleError.code(), moduleError.message());
+            }
+        };
+
+        FBSService.get().getValue(groupPasswordPath, listener);
+    }
+
+    private void checkDeviceName(RegisterDeviceInGroupPayload handlerPayload,
+                                 Promise handlerResult) {
+        String groupName = handlerPayload.groupName();
+        String groupPassword = handlerPayload.groupPassword();
+        String deviceName = handlerPayload.deviceName();
+
+        List<String> devicePath = FBSPathsService.get().devicePath(groupName, groupPassword, deviceName);
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_ALREADY_EXIST");
+
+                    ModuleError error = AuthModuleErrors.deviceNameAlreadyExist();
+                    handlerResult.reject(error.code(), error.message());
+                } else {
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): BAD_PASSWORD");
+
+                    registerDeviceInGroup(handlerPayload, handlerResult);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
+                handlerResult.reject(moduleError.code(), moduleError.message());
+            }
+        };
+
+        FBSService.get().getValue(devicePath, listener);
+    }
+
+    private void registerDeviceInGroup(RegisterDeviceInGroupPayload handlerPayload,
+                                       Promise handlerResult) {
+        String groupName = handlerPayload.groupName();
+        String groupPassword = handlerPayload.groupPassword();
+        String deviceName = handlerPayload.deviceName();
+
+        List<String> devicePath = FBSPathsService.get().devicePath(groupName, groupPassword, deviceName);
+
+        OnCompleteListener<Void> onCompleteListener = task -> {
+            Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
+
+            handlerResult.resolve(true);
+        };
+
+        OnFailureListener onFailureListener = e -> {
+            Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onFailure: " + e.toString());
+
+            ModuleError error = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
+            handlerResult.reject(error.code(), error.message());
+        };
+
+        FBSService.get().setStringValue(devicePath, "CREATED", onCompleteListener, onFailureListener);
     }
 }

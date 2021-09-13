@@ -30,4 +30,12 @@ public class FBSPathsService {
     public List<String> groupNamePath(String groupName) {
         return Arrays.asList("vision", "groups", groupName);
     }
+
+    public List<String> groupPasswordPath(String groupName, String groupPassword) {
+        return Arrays.asList("vision", "groups", groupName, groupPassword);
+    }
+
+    public List<String> devicePath(String groupName, String groupPassword, String deviceName) {
+        return Arrays.asList("vision", "groups", groupName, groupPassword, deviceName);
+    }
 }

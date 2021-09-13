@@ -3,6 +3,8 @@ package com.vision.common.services.firebase;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -107,6 +109,22 @@ public class FBSService {
         }
 
         ref.setValue(value);
+    }
+
+    public void setStringValue(List<String> fields,
+                               String value,
+                               OnCompleteListener<Void> onCompleteListener,
+                               OnFailureListener onFailureListener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        ref.setValue(value)
+                .addOnCompleteListener(onCompleteListener)
+                .addOnFailureListener(onFailureListener);
     }
 
     public void addValueToList(List<String> fields, String value) {

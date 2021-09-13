@@ -17,6 +17,7 @@ const NativeAuth = () => {
     const action = NativeAuthActions.createGroupWithDeviceAction({
       groupName,
       groupPassword,
+      deviceName,
     });
     return await nativeAuthService.execute(action);
   };
