@@ -13,6 +13,16 @@ const ru = {
   LoginUserGroupDialog_registerButton: 'Регистрация',
   LoginUserGroupDialog_loginButton: 'ВОЙТИ',
   LoginUserGroupDialog_cancelButton: 'ОТМЕНА',
+
+  RegisterDeviceInGroupDialog_title: 'Регистрация в группе',
+  RegisterDeviceInGroupDialog_groupNamePlaceholder: 'Название группы',
+  RegisterDeviceInGroupDialog_groupPasswordPlaceholder: 'Пароль',
+  RegisterDeviceInGroupDialog_deviceNamePlaceholder: 'Имя устройства',
+  RegisterDeviceInGroupDialog_registerButton: 'ЗАРЕГИСТРИРОВАТЬ',
+  RegisterDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
+
+  RegisteringDeviceInGroupDialog_message: 'Регистрация устройства',
+  RegisteringDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
 };
 
 export default ru;

@@ -3,36 +3,36 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 import Services from '../../../../services/Services';
 import AppActions from '../../../actions/AppActions';
 
-function* as_registerDeviceSagaHandler(action) {
-  yield put(AppActions.auth.actions.registerDeviceBegin());
+function* as_loginInGroupSagaHandler(action) {
+  yield put(AppActions.auth.actions.loginDeviceBegin());
 
-  const {groupLogin, groupPassword, deviceName} = action.payload;
+  const {groupName, groupPassword, deviceName} = action.payload;
 
   try {
     const authService = Services.services().authService;
 
-    yield call(authService.registerDevice, {
-      groupLogin,
+    yield call(authService.loginInGroup, {
+      groupName,
       groupPassword,
       deviceName,
     });
 
     yield put(
-      AppActions.auth.actions.registerDeviceFinished({
-        groupLogin,
+      AppActions.auth.actions.loginDeviceFinished({
+        groupName,
         groupPassword,
         deviceName,
       }),
     );
   } catch (e) {
     SystemEventsHandler.onError({
-      err: 'as_registerDeviceSagaHandler()->ERROR: ' + e.toString(),
+      err: 'as_loginInGroupSagaHandler()->ERROR: ' + e.toString(),
     });
 
     const {code, message} = e;
 
-    yield put(AppActions.auth.actions.registerDeviceError({code, message}));
+    yield put(AppActions.auth.actions.loginDeviceError({code, message}));
   }
 }
 
-export default as_registerDeviceSagaHandler;
+export default as_loginInGroupSagaHandler;

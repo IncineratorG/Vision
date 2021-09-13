@@ -1,46 +1,87 @@
 const AuthActions = () => {
   const types = {
-    REGISTER_DEVICE: 'AA_REGISTER_DEVICE',
-    REGISTER_DEVICE_BEGIN: 'AA_REGISTER_DEVICE_BEGIN',
-    REGISTER_DEVICE_FINISHED: 'AA_REGISTER_DEVICE_FINISHED',
-    REGISTER_DEVICE_ERROR: 'AA_REGISTER_DEVICE_ERROR',
+    REGISTER_DEVICE_IN_GROUP: 'AA_REGISTER_DEVICE_IN_GROUP',
+    REGISTER_DEVICE_IN_GROUP_BEGIN: 'AA_REGISTER_DEVICE_IN_GROUP_BEGIN',
+    REGISTER_DEVICE_IN_GROUP_FINISHED: 'AA_REGISTER_DEVICE_IN_GROUP_FINISHED',
+    REGISTER_DEVICE_IN_GROUP_ERROR: 'AA_REGISTER_DEVICE_IN_GROUP_ERROR',
+
+    CREATE_GROUP_WITH_DEVICE: 'AA_CREATE_GROUP_WITH_DEVICE',
+    CREATE_GROUP_WITH_DEVICE_BEGIN: 'AA_CREATE_GROUP_WITH_DEVICE_BEGIN',
+    CREATE_GROUP_WITH_DEVICE_FINISHED: 'AA_CREATE_GROUP_WITH_DEVICE_FINISHED',
+    CREATE_GROUP_WITH_DEVICE_ERROR: 'AA_CREATE_GROUP_WITH_DEVICE_ERROR',
+
     LOGIN_DEVICE: 'AA_LOGIN_DEVICE',
     LOGIN_DEVICE_BEGIN: 'AA_LOGIN_DEVICE_BEGIN',
     LOGIN_DEVICE_FINISHED: 'AA_LOGIN_DEVICE_FINISHED',
     LOGIN_DEVICE_ERROR: 'AA_LOGIN_DEVICE_ERROR',
   };
 
-  const registerDevice = ({groupLogin, groupPassword, deviceName}) => {
+  const registerDeviceInGroup = ({groupName, groupPassword, deviceName}) => {
     return {
-      type: types.REGISTER_DEVICE,
-      payload: {groupLogin, groupPassword, deviceName},
+      type: types.REGISTER_DEVICE_IN_GROUP,
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
-  const registerDeviceBegin = () => {
+  const registerDeviceInGroupBegin = () => {
     return {
-      type: types.REGISTER_DEVICE_BEGIN,
+      type: types.REGISTER_DEVICE_IN_GROUP_BEGIN,
     };
   };
 
-  const registerDeviceFinished = ({groupLogin, groupPassword, deviceName}) => {
+  const registerDeviceInGroupFinished = ({
+    groupName,
+    groupPassword,
+    deviceName,
+  }) => {
     return {
-      type: types.REGISTER_DEVICE_FINISHED,
-      payload: {groupLogin, groupPassword, deviceName},
+      type: types.REGISTER_DEVICE_IN_GROUP_FINISHED,
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
-  const registerDeviceError = ({code, message}) => {
+  const registerDeviceInGroupError = ({code, message}) => {
     return {
-      type: types.REGISTER_DEVICE_ERROR,
+      type: types.REGISTER_DEVICE_IN_GROUP_ERROR,
       payload: {code, message},
     };
   };
 
-  const loginDevice = ({groupLogin, groupPassword, deviceName}) => {
+  const createGroupWithDevice = ({groupName, groupPassword, deviceName}) => {
+    return {
+      type: types.CREATE_GROUP_WITH_DEVICE,
+      payload: {groupName, groupPassword, deviceName},
+    };
+  };
+
+  const createGroupWithDeviceBegin = () => {
+    return {
+      type: types.CREATE_GROUP_WITH_DEVICE_BEGIN,
+    };
+  };
+
+  const createGroupWithDeviceFinished = ({
+    groupName,
+    groupPassword,
+    deviceName,
+  }) => {
+    return {
+      type: types.CREATE_GROUP_WITH_DEVICE_FINISHED,
+      payload: {groupName, groupPassword, deviceName},
+    };
+  };
+
+  const createGroupWithDeviceError = ({code, message}) => {
+    return {
+      type: types.CREATE_GROUP_WITH_DEVICE_ERROR,
+      payload: {code, message},
+    };
+  };
+
+  const loginDevice = ({groupName, groupPassword, deviceName}) => {
     return {
       type: types.LOGIN_DEVICE,
-      payload: {groupLogin, groupPassword, deviceName},
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
@@ -50,10 +91,10 @@ const AuthActions = () => {
     };
   };
 
-  const loginDeviceFinished = ({groupLogin, groupPassword, deviceName}) => {
+  const loginDeviceFinished = ({groupName, groupPassword, deviceName}) => {
     return {
       type: types.LOGIN_DEVICE_FINISHED,
-      payload: {groupLogin, groupPassword, deviceName},
+      payload: {groupName, groupPassword, deviceName},
     };
   };
 
@@ -67,10 +108,14 @@ const AuthActions = () => {
   return {
     types,
     actions: {
-      registerDevice,
-      registerDeviceBegin,
-      registerDeviceFinished,
-      registerDeviceError,
+      registerDeviceInGroup,
+      registerDeviceInGroupBegin,
+      registerDeviceInGroupFinished,
+      registerDeviceInGroupError,
+      createGroupWithDevice,
+      createGroupWithDeviceBegin,
+      createGroupWithDeviceFinished,
+      createGroupWithDeviceError,
       loginDevice,
       loginDeviceBegin,
       loginDeviceFinished,
