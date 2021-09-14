@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, FlatList, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import GroupDeviceItem from './item/GroupDeviceItem';
 import {FlatGrid} from 'react-native-super-grid';
 
@@ -38,25 +38,14 @@ const GroupDevicesList = () => {
   return (
     <View style={styles.mainContainer}>
       <FlatGrid
+        style={styles.gridView}
         itemDimension={130}
         data={items}
-        style={styles.gridView}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
       />
     </View>
   );
-
-  // return (
-  //   <View styles={styles.mainContainer}>
-  //     <FlatList
-  //       showsVerticalScrollIndicator={false}
-  //       data={data}
-  //       renderItem={renderItem}
-  //       keyExtractor={keyExtractor}
-  //     />
-  //   </View>
-  // );
 };
 
 const styles = StyleSheet.create({

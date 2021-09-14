@@ -22,25 +22,25 @@ const useMainController = (model) => {
   const startServicePressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'startServicePressHandler()'});
 
-    await Services.services().surveillanceForegroundService.startService();
+    // await Services.services().surveillanceForegroundService.startService();
   }, []);
 
   const stopServicePressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'stopServicePressHandler()'});
 
-    await Services.services().surveillanceForegroundService.stopService();
+    // await Services.services().surveillanceForegroundService.stopService();
   }, []);
 
   const isServiceRunningPressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'isServiceRunningPressHandler'});
 
-    await Services.services().surveillanceForegroundService.isServiceRunning();
+    // await Services.services().surveillanceForegroundService.isServiceRunning();
   }, []);
 
   const testRequestPressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'testRequestPressHandler'});
 
-    await Services.services().surveillanceForegroundService.testRequest();
+    // await Services.services().surveillanceForegroundService.testRequest();
   }, []);
 
   const openRegisterDeviceInGroupDialog = useCallback(() => {
