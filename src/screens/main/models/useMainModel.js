@@ -25,6 +25,13 @@ const useMainModel = () => {
   } = localState;
 
   const {
+    groupName: currentGroupName,
+    groupPassword: currentGroupPassword,
+    deviceName: currentDeviceName,
+    loggedIn,
+  } = useSelector((store) => store.auth.authInfo);
+
+  const {
     inProgress: registerDeviceInGroupInProgress,
     error: {
       hasError: registerDeviceInGroupHasError,
@@ -32,6 +39,7 @@ const useMainModel = () => {
       message: registerDeviceInGroupErrorMessage,
     },
   } = useSelector((store) => store.auth.registerDeviceInGroup);
+
   const {
     inProgress: createGroupWithDeviceInProgress,
     error: {
@@ -81,6 +89,10 @@ const useMainModel = () => {
       registerDeviceInGroupInProgress,
       createGroupWithDeviceInProgress,
       loginDeviceInGroupInProgress,
+      currentGroupName,
+      currentGroupPassword,
+      currentDeviceName,
+      loggedIn,
     },
     setters: {},
     dispatch,

@@ -7,10 +7,15 @@ import NeedCreateGroupDialog from '../../../components/specific/main/need-create
 import CreatingGroupWithDeviceDialog from '../../../components/specific/main/creating-group-with-device-dialog/CreatingGroupWithDeviceDialog';
 import LoginDeviceInGroupDialog from '../../../components/specific/main/login-device-in-group-dialog/LoginDeviceInGroupDialog';
 import LoggingDeviceInGroupDialog from '../../../components/specific/main/logging-device-in-group-dialog/LoggingDeviceInGroupDialog';
+import UserInfoBar from '../../../components/specific/main/user-info-bar/UserInfoBar';
 
 const MainView = ({model, controller}) => {
   const {
     data: {
+      currentGroupName,
+      currentGroupPassword,
+      currentDeviceName,
+      loggedIn,
       registerDeviceInGroupInProgress,
       createGroupWithDeviceInProgress,
       loginDeviceInGroupInProgress,
@@ -87,11 +92,20 @@ const MainView = ({model, controller}) => {
     />
   );
 
+  const currentUserInfoBarComponent = (
+    <UserInfoBar
+      groupName={currentGroupName}
+      groupPassword={currentGroupPassword}
+      deviceName={currentDeviceName}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.indicatorContainer}>
         <View style={styles.indicatorItemContainer} />
       </View>
+      {currentUserInfoBarComponent}
       <View style={styles.buttonContainer}>
         <SimpleButton
           title={'Register device in group'}
