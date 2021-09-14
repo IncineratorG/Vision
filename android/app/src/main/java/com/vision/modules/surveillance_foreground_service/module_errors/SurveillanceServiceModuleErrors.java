@@ -2,7 +2,7 @@ package com.vision.modules.surveillance_foreground_service.module_errors;
 
 import com.vision.modules.modules_common.data.error.ModuleError;
 
-public class SurveillanceForegroundServiceModuleErrors {
+public class SurveillanceServiceModuleErrors {
     public static ModuleError badAction() {
         return new ModuleError("1", "BAD_ACTION");
     }

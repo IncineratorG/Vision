@@ -1,11 +1,11 @@
 import FirebaseService from './firebase/FirebaseService';
 import AuthService from './auth/AuthService';
-import SurveillanceForegroundService from './surveillance-foreground/SurveillanceForegroundService';
+import SurveillanceService from './surveillance/SurveillanceService';
 
 const Services = () => {
   const firebaseService = FirebaseService();
   const authService = AuthService();
-  const surveillanceForegroundService = SurveillanceForegroundService();
+  const surveillanceService = SurveillanceService();
 
   const init = async () => {
     firebaseService.init();
@@ -17,7 +17,7 @@ const Services = () => {
     return {
       firebaseService,
       authService,
-      surveillanceForegroundService,
+      surveillanceService,
     };
   };
 

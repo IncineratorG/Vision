@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SurveillanceForegroundServicePackage implements ReactPackage {
+public class SurveillanceServicePackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new SurveillanceForegroundServiceModule(reactContext));
+        modules.add(new SurveillanceServiceModule(reactContext));
         return modules;
     }
 

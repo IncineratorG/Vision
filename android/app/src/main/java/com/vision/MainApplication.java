@@ -10,7 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.vision.modules.auth.AuthPackage;
 import com.vision.modules.firebase.FirebasePackage;
-import com.vision.modules.surveillance_foreground_service.SurveillanceForegroundServicePackage;
+import com.vision.modules.surveillance_foreground_service.SurveillanceServicePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -32,7 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());packages.add(new FirebasePackage());
           packages.add(new FirebasePackage());
           packages.add(new AuthPackage());
-          packages.add(new SurveillanceForegroundServicePackage());
+          packages.add(new SurveillanceServicePackage());
           return packages;
         }
 

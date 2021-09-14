@@ -1,9 +1,9 @@
-import NativeSurveillanceForegroundConstants from '../constants/NativeSurveillanceForegroundConstants';
+import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstants';
 
-const NativeSurveillanceForegroundActions = () => {
+const NativeSurveillanceActions = () => {
   const {
     actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE, TEST_REQUEST},
-  } = NativeSurveillanceForegroundConstants;
+  } = NativeSurveillanceConstants;
 
   const isRunningAction = () => {
     return {
@@ -37,4 +37,4 @@ const NativeSurveillanceForegroundActions = () => {
   };
 };
 
-export default NativeSurveillanceForegroundActions();
+export default NativeSurveillanceActions();

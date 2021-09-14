@@ -1,7 +1,7 @@
-import NativeSurveillanceForeground from '../native-libs/surveillance-foreground/NativeSurveillanceForeground';
+import NativeSurveillance from '../native-libs/surveillance/NativeSurveillance';
 
-const SurveillanceForegroundService = () => {
-  const nativeService = NativeSurveillanceForeground();
+const SurveillanceService = () => {
+  const nativeService = NativeSurveillance();
 
   const isServiceRunning = async () => {
     return nativeService.isServiceRunning();
@@ -27,4 +27,4 @@ const SurveillanceForegroundService = () => {
   };
 };
 
-export default SurveillanceForegroundService;
+export default SurveillanceService;

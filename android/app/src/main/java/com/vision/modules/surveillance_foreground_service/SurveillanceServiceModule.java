@@ -11,27 +11,27 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
-import com.vision.modules.surveillance_foreground_service.module_actions.types.SurveillanceForegroundServiceJSActionTypes;
-import com.vision.modules.surveillance_foreground_service.module_actions_executor.SurveillanceForegroundServiceJSActionsExecutor;
+import com.vision.modules.surveillance_foreground_service.module_actions.types.SurveillanceServiceJSActionTypes;
+import com.vision.modules.surveillance_foreground_service.module_actions_executor.SurveillanceServiceJSActionsExecutor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SurveillanceForegroundServiceModule extends ReactContextBaseJavaModule {
+public class SurveillanceServiceModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     private JSActionsExecutor mActionsExecutor;
 
-    public SurveillanceForegroundServiceModule(@Nullable ReactApplicationContext reactContext) {
+    public SurveillanceServiceModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
 
         mContext = reactContext;
-        mActionsExecutor = new SurveillanceForegroundServiceJSActionsExecutor();
+        mActionsExecutor = new SurveillanceServiceJSActionsExecutor();
     }
 
     @NonNull
     @Override
     public String getName() {
-        return "SurveillanceForegroundService";
+        return "SurveillanceService";
     }
 
     @Nullable
@@ -40,10 +40,10 @@ public class SurveillanceForegroundServiceModule extends ReactContextBaseJavaMod
         final Map<String, Object> constants = new HashMap<>();
 
         WritableMap actionTypesConstants = new WritableNativeMap();
-        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.IS_RUNNING, SurveillanceForegroundServiceJSActionTypes.IS_RUNNING);
-        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.START_SERVICE, SurveillanceForegroundServiceJSActionTypes.START_SERVICE);
-        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE, SurveillanceForegroundServiceJSActionTypes.STOP_SERVICE);
-        actionTypesConstants.putString(SurveillanceForegroundServiceJSActionTypes.TEST_REQUEST, SurveillanceForegroundServiceJSActionTypes.TEST_REQUEST);
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.IS_RUNNING, SurveillanceServiceJSActionTypes.IS_RUNNING);
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.START_SERVICE, SurveillanceServiceJSActionTypes.START_SERVICE);
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.STOP_SERVICE, SurveillanceServiceJSActionTypes.STOP_SERVICE);
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.TEST_REQUEST, SurveillanceServiceJSActionTypes.TEST_REQUEST);
 
         constants.put("actionTypes", actionTypesConstants);
 
