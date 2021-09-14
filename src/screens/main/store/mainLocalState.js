@@ -1,10 +1,4 @@
 const mainLocalState = {
-  registerUserGroupDialog: {
-    visible: false,
-  },
-  loginUserGroupDialog: {
-    visible: false,
-  },
   registerDeviceInGroupDialog: {
     visible: false,
     groupName: '',
@@ -16,6 +10,9 @@ const mainLocalState = {
     groupName: '',
     groupPassword: '',
     deviceName: '',
+  },
+  loginDeviceInGroupDialog: {
+    visible: false,
   },
 };
 

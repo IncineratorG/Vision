@@ -54,4 +54,8 @@ public class AuthModuleErrors {
     public static ModuleError deviceNameAlreadyExist() {
         return new ModuleError("13", "DEVICE_NAME_ALREADY_EXIST");
     }
+
+    public static ModuleError loginDeviceInGroupFirebaseFailure() {
+        return new ModuleError("14", "LOGIN_DEVICE_IN_GROUP_FIREBASE_FAILURE");
+    }
 }

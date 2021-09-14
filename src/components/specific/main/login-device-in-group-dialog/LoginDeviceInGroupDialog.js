@@ -3,24 +3,23 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 
-const LoginUserGroupDialog = ({
-  visible,
-  onLoginPress,
-  onRegisterPress,
-  onCancelPress,
-}) => {
+const LoginDeviceInGroupDialog = ({visible, onLoginPress, onCancelPress}) => {
   const {t} = useTranslation();
 
   const passwordInputRef = useRef(null);
   const deviceNameInputRef = useRef(null);
 
-  const [groupLogin, setGroupLogin] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
   const [deviceName, setDeviceName] = useState('');
 
   const loginPressHandler = () => {
     if (onLoginPress) {
-      onLoginPress({login: groupLogin, password: groupPassword, deviceName});
+      onLoginPress({
+        groupName,
+        groupPassword,
+        deviceName,
+      });
     }
   };
 
@@ -30,8 +29,8 @@ const LoginUserGroupDialog = ({
     }
   }, [onCancelPress]);
 
-  const groupLoginChangeHandler = useCallback((text) => {
-    setGroupLogin(text);
+  const groupNameChangeHandler = useCallback((text) => {
+    setGroupName(text);
   }, []);
 
   const groupPasswordChangeHandler = useCallback((text) => {
@@ -42,7 +41,7 @@ const LoginUserGroupDialog = ({
     setDeviceName(text);
   }, []);
 
-  const groupLoginSubmitEditingPressHandler = useCallback(() => {
+  const groupNameSubmitEditingPressHandler = useCallback(() => {
     passwordInputRef.current.focus();
   }, []);
 
@@ -56,7 +55,7 @@ const LoginUserGroupDialog = ({
 
   useEffect(() => {
     if (!visible) {
-      setGroupLogin('');
+      setGroupName('');
       setGroupPassword('');
       setDeviceName('');
     }
@@ -65,21 +64,23 @@ const LoginUserGroupDialog = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onCancelPress}>
-        <Dialog.Title>{t('LoginUserGroupDialog_title')}</Dialog.Title>
+        <Dialog.Title>{t('LoginDeviceInGroupDialog_title')}</Dialog.Title>
         <Dialog.Content>
           <View style={styles.mainContainer}>
-            <View style={styles.groupLoginContainer}>
+            <View style={styles.groupNameContainer}>
               <TextInput
                 style={{
                   fontSize: 18,
                   color: '#000000',
                   borderBottomColor: 'transparent',
                 }}
-                placeholder={t('LoginUserGroupDialog_groupLoginPlaceholder')}
-                defaultValue={groupLogin}
+                placeholder={t('LoginDeviceInGroupDialog_groupNamePlaceholder')}
+                defaultValue={groupName}
                 underlineColorAndroid={'transparent'}
-                onChangeText={groupLoginChangeHandler}
-                onSubmitEditing={groupLoginSubmitEditingPressHandler}
+                spellCheck={false}
+                autoCorrect={false}
+                onChangeText={groupNameChangeHandler}
+                onSubmitEditing={groupNameSubmitEditingPressHandler}
               />
             </View>
             <View style={styles.underline} />
@@ -91,9 +92,13 @@ const LoginUserGroupDialog = ({
                   color: '#000000',
                   borderBottomColor: 'transparent',
                 }}
-                placeholder={t('LoginUserGroupDialog_groupPasswordPlaceholder')}
+                placeholder={t(
+                  'LoginDeviceInGroupDialog_groupPasswordPlaceholder',
+                )}
                 defaultValue={groupPassword}
                 underlineColorAndroid={'transparent'}
+                spellCheck={false}
+                autoCorrect={false}
                 onChangeText={groupPasswordChangeHandler}
                 onSubmitEditing={groupPasswordSubmitEditingPressHandler}
               />
@@ -107,9 +112,13 @@ const LoginUserGroupDialog = ({
                   color: '#000000',
                   borderBottomColor: 'transparent',
                 }}
-                placeholder={t('LoginUserGroupDialog_deviceNamePlaceholder')}
+                placeholder={t(
+                  'LoginDeviceInGroupDialog_deviceNamePlaceholder',
+                )}
                 defaultValue={deviceName}
                 underlineColorAndroid={'transparent'}
+                spellCheck={false}
+                autoCorrect={false}
                 onChangeText={deviceNameChangeHandler}
                 onSubmitEditing={deviceNameSubmitEditingPressHandler}
               />
@@ -118,15 +127,11 @@ const LoginUserGroupDialog = ({
           </View>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={onRegisterPress}>
-            {t('LoginUserGroupDialog_registerButton')}
-          </Button>
-          <View style={{flex: 1}} />
           <Button onPress={loginPressHandler}>
-            {t('LoginUserGroupDialog_loginButton')}
+            {t('LoginDeviceInGroupDialog_loginButton')}
           </Button>
           <Button onPress={cancelPressHandler}>
-            {t('LoginUserGroupDialog_cancelButton')}
+            {t('LoginDeviceInGroupDialog_cancelButton')}
           </Button>
         </Dialog.Actions>
       </Dialog>
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'black',
   },
-  groupLoginContainer: {
+  groupNameContainer: {
     minHeight: 50,
   },
   groupPasswordContainer: {
@@ -153,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(LoginUserGroupDialog);
+export default React.memo(LoginDeviceInGroupDialog);

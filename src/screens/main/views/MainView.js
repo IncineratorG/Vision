@@ -1,28 +1,25 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import RegisterDeviceInGroupDialog from '../../../components/specific/main/register-device-in-group-dialog/RegisterDeviceInGroupDialog';
 import RegisteringDeviceInGroupDialog from '../../../components/specific/main/registering-device-in-group-dialog/RegisteringDeviceInGroupDialog';
 import NeedCreateGroupDialog from '../../../components/specific/main/need-create-group-dialog/NeedCreateGroupDialog';
 import CreatingGroupWithDeviceDialog from '../../../components/specific/main/creating-group-with-device-dialog/CreatingGroupWithDeviceDialog';
+import LoginDeviceInGroupDialog from '../../../components/specific/main/login-device-in-group-dialog/LoginDeviceInGroupDialog';
+import LoggingDeviceInGroupDialog from '../../../components/specific/main/logging-device-in-group-dialog/LoggingDeviceInGroupDialog';
 
 const MainView = ({model, controller}) => {
   const {
     data: {
       registerDeviceInGroupInProgress,
       createGroupWithDeviceInProgress,
+      loginDeviceInGroupInProgress,
       localState: {
         registerDeviceInGroupDialog: {
           visible: registerDeviceInGroupDialogVisible,
         },
         needCreateGroupDialog: {visible: needCreateGroupDialogVisible},
+        loginDeviceInGroupDialog: {visible: loginDeviceInGroupDialogVisible},
       },
     },
   } = model;
@@ -39,6 +36,10 @@ const MainView = ({model, controller}) => {
     needCreateGroupDialogCreatePressHandler,
     needCreateGroupDialogCancelPressHandler,
     creatingGroupWithDeviceDialogCancelPressHandler,
+    openLoginDeviceInGroupDialog,
+    loginDeviceInGroupDialogCancelHandler,
+    loginDeviceInGroupDialogLoginPressHandler,
+    loggingDeviceInGroupDialogCancelHandler,
   } = controller;
 
   const registerDeviceInGroupDialog = (
@@ -71,6 +72,21 @@ const MainView = ({model, controller}) => {
     />
   );
 
+  const loginDeviceInGroupDialog = (
+    <LoginDeviceInGroupDialog
+      visible={loginDeviceInGroupDialogVisible}
+      onLoginPress={loginDeviceInGroupDialogLoginPressHandler}
+      onCancelPress={loginDeviceInGroupDialogCancelHandler}
+    />
+  );
+
+  const loggingDeviceInGroupDialog = (
+    <LoggingDeviceInGroupDialog
+      visible={loginDeviceInGroupInProgress}
+      onCancelPress={loggingDeviceInGroupDialogCancelHandler}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.indicatorContainer}>
@@ -80,6 +96,12 @@ const MainView = ({model, controller}) => {
         <SimpleButton
           title={'Register device in group'}
           onPress={openRegisterDeviceInGroupDialog}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <SimpleButton
+          title={'Login device in group'}
+          onPress={openLoginDeviceInGroupDialog}
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -110,6 +132,8 @@ const MainView = ({model, controller}) => {
       {registeringDeviceInGroupDialog}
       {needCreateGroupDialog}
       {creatingGroupWithDeviceDialog}
+      {loginDeviceInGroupDialog}
+      {loggingDeviceInGroupDialog}
     </View>
   );
 };

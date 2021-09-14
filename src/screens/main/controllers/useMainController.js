@@ -19,119 +19,6 @@ const useMainController = (model) => {
     },
   } = model;
 
-  const callback1 = useCallback(async () => {
-    SystemEventsHandler.onInfo({info: 'callback1'});
-
-    Services.services().firebaseService.test();
-  }, []);
-
-  const callback2 = useCallback(async () => {
-    SystemEventsHandler.onInfo({info: 'callback2'});
-  }, []);
-
-  const openRegisterUserGroupDialog = useCallback(() => {
-    localDispatch(
-      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
-        visible: true,
-      }),
-    );
-  }, [localDispatch]);
-
-  const registerUserGroupDialogCancelHandler = useCallback(() => {
-    localDispatch(
-      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
-        visible: false,
-      }),
-    );
-  }, [localDispatch]);
-
-  const registerUserGroupCreatePressHandler = useCallback(
-    ({login, password, deviceName}) => {
-      SystemEventsHandler.onInfo({
-        info:
-          'useMainController->registerUserGroupCreatePressHandler(): ' +
-          login +
-          ' - ' +
-          password +
-          ' - ' +
-          deviceName,
-      });
-
-      // dispatch(
-      //   AppActions.auth.actions.registerDevice({
-      //     groupLogin: login,
-      //     groupPassword: password,
-      //     deviceName,
-      //   }),
-      // );
-
-      localDispatch(
-        MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
-          visible: false,
-        }),
-      );
-    },
-    [localDispatch],
-  );
-
-  const openLoginIntoUserGroupDialog = useCallback(() => {
-    localDispatch(
-      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
-        visible: true,
-      }),
-    );
-  }, [localDispatch]);
-
-  const loginIntoUserGroupDialogCancelHandler = useCallback(() => {
-    localDispatch(
-      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
-        visible: false,
-      }),
-    );
-  }, [localDispatch]);
-
-  const loginIntoUserGroupDialogLoginHandler = useCallback(
-    ({login, password, deviceName}) => {
-      SystemEventsHandler.onInfo({
-        info:
-          'useMainController->loginIntoUserGroupDialogLoginHandler(): ' +
-          login +
-          ' - ' +
-          password +
-          ' - ' +
-          deviceName,
-      });
-
-      // dispatch(
-      //   AppActions.auth.actions.loginDevice({
-      //     groupLogin: login,
-      //     groupPassword: password,
-      //     deviceName,
-      //   }),
-      // );
-
-      localDispatch(
-        MainLocalActions.actions.setLoginUserGroupDialogVisibility({
-          visible: false,
-        }),
-      );
-    },
-    [localDispatch],
-  );
-
-  const loginIntoUserGroupDialogRegisterHandler = useCallback(() => {
-    localDispatch(
-      MainLocalActions.actions.setLoginUserGroupDialogVisibility({
-        visible: false,
-      }),
-    );
-    localDispatch(
-      MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
-        visible: true,
-      }),
-    );
-  }, [localDispatch]);
-
   const startServicePressHandler = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'startServicePressHandler()'});
 
@@ -156,7 +43,6 @@ const useMainController = (model) => {
     await Services.services().surveillanceForegroundService.testRequest();
   }, []);
 
-  // ===
   const openRegisterDeviceInGroupDialog = useCallback(() => {
     localDispatch(
       MainLocalActions.actions.setRegisterDeviceInGroupDialogVisibility({
@@ -258,18 +144,58 @@ const useMainController = (model) => {
       info: 'creatingGroupWithDeviceDialogCancelPressHandler()',
     });
   }, []);
-  // ===
+
+  const openLoginDeviceInGroupDialog = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setLoginDeviceInGroupDialogVisibility({
+        visible: true,
+      }),
+    );
+  }, [localDispatch]);
+
+  const loginDeviceInGroupDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      MainLocalActions.actions.setLoginDeviceInGroupDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const loginDeviceInGroupDialogLoginPressHandler = useCallback(
+    ({groupName, groupPassword, deviceName}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'loginDeviceInGroupDialogLoginPressHandler()' +
+          groupName +
+          ' - ' +
+          groupPassword +
+          ' - ' +
+          deviceName,
+      });
+
+      localDispatch(
+        MainLocalActions.actions.setLoginDeviceInGroupDialogVisibility({
+          visible: false,
+        }),
+      );
+      dispatch(
+        AppActions.auth.actions.loginDevice({
+          groupName,
+          groupPassword,
+          deviceName,
+        }),
+      );
+    },
+    [localDispatch, dispatch],
+  );
+
+  const loggingDeviceInGroupDialogCancelHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'loggingDeviceInGroupDialogCancelHandler()',
+    });
+  }, []);
 
   return {
-    callback1,
-    callback2,
-    openRegisterUserGroupDialog,
-    registerUserGroupDialogCancelHandler,
-    registerUserGroupCreatePressHandler,
-    openLoginIntoUserGroupDialog,
-    loginIntoUserGroupDialogCancelHandler,
-    loginIntoUserGroupDialogLoginHandler,
-    loginIntoUserGroupDialogRegisterHandler,
     startServicePressHandler,
     stopServicePressHandler,
     isServiceRunningPressHandler,
@@ -281,7 +207,124 @@ const useMainController = (model) => {
     needCreateGroupDialogCreatePressHandler,
     needCreateGroupDialogCancelPressHandler,
     creatingGroupWithDeviceDialogCancelPressHandler,
+    openLoginDeviceInGroupDialog,
+    loginDeviceInGroupDialogCancelHandler,
+    loginDeviceInGroupDialogLoginPressHandler,
+    loggingDeviceInGroupDialogCancelHandler,
   };
 };
 
 export default useMainController;
+
+// const callback1 = useCallback(async () => {
+//   SystemEventsHandler.onInfo({info: 'callback1'});
+//
+//   Services.services().firebaseService.test();
+// }, []);
+//
+// const callback2 = useCallback(async () => {
+//   SystemEventsHandler.onInfo({info: 'callback2'});
+// }, []);
+//
+// const openRegisterUserGroupDialog = useCallback(() => {
+//   localDispatch(
+//     MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+//       visible: true,
+//     }),
+//   );
+// }, [localDispatch]);
+//
+// const registerUserGroupDialogCancelHandler = useCallback(() => {
+//   localDispatch(
+//     MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+//       visible: false,
+//     }),
+//   );
+// }, [localDispatch]);
+//
+// const registerUserGroupCreatePressHandler = useCallback(
+//   ({login, password, deviceName}) => {
+//     SystemEventsHandler.onInfo({
+//       info:
+//         'useMainController->registerUserGroupCreatePressHandler(): ' +
+//         login +
+//         ' - ' +
+//         password +
+//         ' - ' +
+//         deviceName,
+//     });
+//
+//     // dispatch(
+//     //   AppActions.auth.actions.registerDevice({
+//     //     groupLogin: login,
+//     //     groupPassword: password,
+//     //     deviceName,
+//     //   }),
+//     // );
+//
+//     localDispatch(
+//       MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+//         visible: false,
+//       }),
+//     );
+//   },
+//   [localDispatch],
+// );
+//
+// const openLoginIntoUserGroupDialog = useCallback(() => {
+//   localDispatch(
+//     MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+//       visible: true,
+//     }),
+//   );
+// }, [localDispatch]);
+//
+// const loginIntoUserGroupDialogCancelHandler = useCallback(() => {
+//   localDispatch(
+//     MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+//       visible: false,
+//     }),
+//   );
+// }, [localDispatch]);
+//
+// const loginIntoUserGroupDialogLoginHandler = useCallback(
+//   ({login, password, deviceName}) => {
+//     SystemEventsHandler.onInfo({
+//       info:
+//         'useMainController->loginIntoUserGroupDialogLoginHandler(): ' +
+//         login +
+//         ' - ' +
+//         password +
+//         ' - ' +
+//         deviceName,
+//     });
+//
+//     // dispatch(
+//     //   AppActions.auth.actions.loginDevice({
+//     //     groupLogin: login,
+//     //     groupPassword: password,
+//     //     deviceName,
+//     //   }),
+//     // );
+//
+//     localDispatch(
+//       MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+//         visible: false,
+//       }),
+//     );
+//   },
+//   [localDispatch],
+// );
+//
+// const loginIntoUserGroupDialogRegisterHandler = useCallback(() => {
+//   localDispatch(
+//     MainLocalActions.actions.setLoginUserGroupDialogVisibility({
+//       visible: false,
+//     }),
+//   );
+//   localDispatch(
+//     MainLocalActions.actions.setRegisterUserGroupDialogVisibility({
+//       visible: true,
+//     }),
+//   );
+// }, [localDispatch]);

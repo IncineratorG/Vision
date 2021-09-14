@@ -1,10 +1,5 @@
 const MainLocalActions = () => {
   const types = {
-    SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY:
-      'MLA_SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY',
-    SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY:
-      'MLA_SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY',
-
     SET_REGISTER_DEVICE_IN_GROUP_DIALOG_VISIBILITY:
       'MLA_SET_REGISTER_DEVICE_IN_GROUP_DIALOG_VISIBILITY',
     SET_REGISTER_DEVICE_IN_GROUP_DIALOG_DATA:
@@ -12,20 +7,8 @@ const MainLocalActions = () => {
     SET_NEED_CREATE_GROUP_DIALOG_VISIBILITY:
       'MLA_SET_NEED_CREATE_GROUP_DIALOG_VISIBILITY',
     SET_NEED_CREATE_GROUP_DIALOG_DATA: 'MLA_SET_NEED_CREATE_GROUP_DIALOG_DATA',
-  };
-
-  const setRegisterUserGroupDialogVisibility = ({visible}) => {
-    return {
-      type: types.SET_REGISTER_USER_GROUP_DIALOG_VISIBILITY,
-      payload: {visible},
-    };
-  };
-
-  const setLoginUserGroupDialogVisibility = ({visible}) => {
-    return {
-      type: types.SET_LOGIN_USER_GROUP_DIALOG_VISIBILITY,
-      payload: {visible},
-    };
+    SET_LOGIN_DEVICE_IN_GROUP_DIALOG_VISIBILITY:
+      'MLA_SET_LOGIN_DEVICE_IN_GROUP_DIALOG_VISIBILITY',
   };
 
   const setRegisterDeviceInGroupDialogData = ({
@@ -64,15 +47,21 @@ const MainLocalActions = () => {
     };
   };
 
+  const setLoginDeviceInGroupDialogVisibility = ({visible}) => {
+    return {
+      type: types.SET_LOGIN_DEVICE_IN_GROUP_DIALOG_VISIBILITY,
+      payload: {visible},
+    };
+  };
+
   return {
     types,
     actions: {
-      setRegisterUserGroupDialogVisibility,
-      setLoginUserGroupDialogVisibility,
       setRegisterDeviceInGroupDialogData,
       setRegisterDeviceInGroupDialogVisibility,
       setNeedCreateGroupDialogData,
       setNeedCreateGroupDialogVisibility,
+      setLoginDeviceInGroupDialogVisibility,
     },
   };
 };

@@ -41,6 +41,15 @@ const useMainModel = () => {
     },
   } = useSelector((store) => store.auth.createGroupWithDevice);
 
+  const {
+    inProgress: loginDeviceInGroupInProgress,
+    error: {
+      hasError: loginDeviceInGroupHasError,
+      code: loginDeviceInGroupErrorCode,
+      message: loginDeviceInGroupErrorMessage,
+    },
+  } = useSelector((store) => store.auth.loginDeviceInGroup);
+
   useEffect(() => {
     if (registerDeviceInGroupErrorCode) {
       if (registerDeviceInGroupErrorCode === '8') {
@@ -71,6 +80,7 @@ const useMainModel = () => {
       localState,
       registerDeviceInGroupInProgress,
       createGroupWithDeviceInProgress,
+      loginDeviceInGroupInProgress,
     },
     setters: {},
     dispatch,

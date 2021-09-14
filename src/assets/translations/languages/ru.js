@@ -1,19 +1,4 @@
 const ru = {
-  RegisterUserGroupDialog_title: 'Регистрация',
-  RegisterUserGroupDialog_groupLoginPlaceholder: 'Логин группы',
-  RegisterUserGroupDialog_groupPasswordPlaceholder: 'Пароль',
-  RegisterUserGroupDialog_deviceNamePlaceholder: 'Имя устройства',
-  RegisterUserGroupDialog_createButton: 'СОЗДАТЬ',
-  RegisterUserGroupDialog_cancelButton: 'ОТМЕНА',
-
-  LoginUserGroupDialog_title: 'Вход',
-  LoginUserGroupDialog_groupLoginPlaceholder: 'Логин группы',
-  LoginUserGroupDialog_groupPasswordPlaceholder: 'Пароль',
-  LoginUserGroupDialog_deviceNamePlaceholder: 'Имя устройства',
-  LoginUserGroupDialog_registerButton: 'Регистрация',
-  LoginUserGroupDialog_loginButton: 'ВОЙТИ',
-  LoginUserGroupDialog_cancelButton: 'ОТМЕНА',
-
   RegisterDeviceInGroupDialog_title: 'Регистрация в группе',
   RegisterDeviceInGroupDialog_groupNamePlaceholder: 'Название группы',
   RegisterDeviceInGroupDialog_groupPasswordPlaceholder: 'Пароль',
@@ -31,6 +16,16 @@ const ru = {
   CreatingGroupWithDeviceDialog_message:
     'Создание группы и регистрация устройства',
   CreatingGroupWithDeviceDialog_cancelButton: 'ОТМЕНА',
+
+  LoginDeviceInGroupDialog_title: 'Войти в группу',
+  LoginDeviceInGroupDialog_groupNamePlaceholder: 'Название группы',
+  LoginDeviceInGroupDialog_groupPasswordPlaceholder: 'Пароль',
+  LoginDeviceInGroupDialog_deviceNamePlaceholder: 'Имя устройства',
+  LoginDeviceInGroupDialog_loginButton: 'ВОЙТИ',
+  LoginDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
+
+  LoggingDeviceInGroupDialog_message: 'Вход в группу',
+  LoggingDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
 };
 
 export default ru;

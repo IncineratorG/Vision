@@ -72,12 +72,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
 
         Log.d("tag", "RegisterDeviceInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        // Проверяем, существует ли данная группа.
         checkIfGroupExist(payload, result);
-
-        // Проверяем корректность пароля.
-
-        // Проверяем, доступно ли такое имя устройства в данной группе.
     }
 
     private void checkIfGroupExist(RegisterDeviceInGroupPayload handlerPayload,
@@ -158,7 +153,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
                     ModuleError error = AuthModuleErrors.deviceNameAlreadyExist();
                     handlerResult.reject(error.code(), error.message());
                 } else {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): BAD_PASSWORD");
+                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_NOT_EXIST");
 
                     registerDeviceInGroup(handlerPayload, handlerResult);
                 }

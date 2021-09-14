@@ -64,9 +64,11 @@ const AuthService = () => {
         deviceName,
     });
 
-    await wait(1000);
-
-    return true;
+    return nativeAuthService.loginDeviceInGroup({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
   };
 
   return {
