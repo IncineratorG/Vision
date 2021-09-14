@@ -8,6 +8,7 @@ import CreatingGroupWithDeviceDialog from '../../../components/specific/main/cre
 import LoginDeviceInGroupDialog from '../../../components/specific/main/login-device-in-group-dialog/LoginDeviceInGroupDialog';
 import LoggingDeviceInGroupDialog from '../../../components/specific/main/logging-device-in-group-dialog/LoggingDeviceInGroupDialog';
 import UserInfoBar from '../../../components/specific/main/user-info-bar/UserInfoBar';
+import GroupDevicesList from '../../../components/specific/main/group-devices-list/GroupDevicesList';
 
 const MainView = ({model, controller}) => {
   const {
@@ -100,6 +101,8 @@ const MainView = ({model, controller}) => {
     />
   );
 
+  const groupDevicesListComponent = <GroupDevicesList />;
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.indicatorContainer}>
@@ -142,6 +145,9 @@ const MainView = ({model, controller}) => {
           onPress={testRequestPressHandler}
         />
       </View>
+      <View style={styles.groupDevicesListContainer}>
+        {groupDevicesListComponent}
+      </View>
       {registerDeviceInGroupDialog}
       {registeringDeviceInGroupDialog}
       {needCreateGroupDialog}
@@ -180,6 +186,10 @@ const styles = StyleSheet.create({
   freeSpace: {
     height: 10,
     backgroundColor: 'red',
+  },
+  groupDevicesListContainer: {
+    flex: 1,
+    alignSelf: 'stretch',
   },
 });
 
