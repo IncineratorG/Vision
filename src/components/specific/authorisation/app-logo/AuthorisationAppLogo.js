@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
   logoOuterContainer: {
     height: 200,
     width: 180,
-    // backgroundColor: 'black',
   },
   logoContainer: {
     flex: 1,
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   },
   appNameContainer: {
     height: 40,
-    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
