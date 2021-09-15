@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
@@ -175,7 +176,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         String groupPassword = handlerPayload.groupPassword();
         String deviceName = handlerPayload.deviceName();
 
-        List<String> devicePath = FBSPathsService.get().devicePath(groupName, groupPassword, deviceName);
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(groupName, groupPassword, deviceName);
 
         OnCompleteListener<Void> onCompleteListener = task -> {
             Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
@@ -190,6 +191,14 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
             handlerResult.reject(error.code(), error.message());
         };
 
-        FBSService.get().setStringValue(devicePath, "CREATED", onCompleteListener, onFailureListener);
+        DeviceInfo deviceInfo = new DeviceInfo();
+        deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+
+        FBSService.get().setMapValue(
+                deviceInfoPath,
+                deviceInfo.toServiceObject(),
+                onCompleteListener,
+                onFailureListener
+        );
     }
 }

@@ -127,6 +127,33 @@ public class FBSService {
                 .addOnFailureListener(onFailureListener);
     }
 
+    public void setMapValue(List<String> fields, Map<String, Object> value) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        ref.updateChildren(value);
+    }
+
+    public void setMapValue(List<String> fields,
+                            Map<String, Object> value,
+                            OnCompleteListener<Void> onCompleteListener,
+                            OnFailureListener onFailureListener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        ref.updateChildren(value)
+                .addOnCompleteListener(onCompleteListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
     public void addValueToList(List<String> fields, String value) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 

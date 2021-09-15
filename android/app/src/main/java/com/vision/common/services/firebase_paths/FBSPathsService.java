@@ -9,6 +9,8 @@ public class FBSPathsService {
 
     private final String APP_PATH = "vision";
     private final String GROUPS_PATH = "groups";
+    private final String REQUESTS_PATH = "requests";
+    private final String DEVICE_INFO_PATH = "deviceInfo";
 
     public FBSPathsService() {
 
@@ -44,6 +46,14 @@ public class FBSPathsService {
 
     public List<String> groupRootPath(String groupName, String groupPassword) {
         return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword);
+    }
+
+    public List<String> deviceInfoPath(String groupName, String groupPassword, String deviceName) {
+        return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, DEVICE_INFO_PATH);
+    }
+
+    public List<String> requestsPath(String groupName, String groupPassword, String deviceName) {
+        return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, REQUESTS_PATH);
     }
 
     // ===

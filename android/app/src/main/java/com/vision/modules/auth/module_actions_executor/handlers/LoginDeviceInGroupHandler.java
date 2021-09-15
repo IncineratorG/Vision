@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
@@ -140,13 +141,24 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         String groupPassword = handlerPayload.groupPassword();
         String deviceName = handlerPayload.deviceName();
 
-        List<String> devicePath = FBSPathsService.get().devicePath(groupName, groupPassword, deviceName);
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(groupName, groupPassword, deviceName);
 
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_EXIST");
+
+                    Object value = snapshot.getValue();
+                    if (value != null) {
+                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName()->VALUE: " + value.toString());
+                        DeviceInfo deviceInfo = new DeviceInfo(value);
+                        deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+
+                        updateDeviceInfo(deviceInfoPath, deviceInfo);
+                    } else {
+                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
+                    }
 
                     handlerResult.resolve(true);
                 } else {
@@ -164,6 +176,10 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
             }
         };
 
-        FBSService.get().getValue(devicePath, listener);
+        FBSService.get().getValue(deviceInfoPath, listener);
+    }
+
+    private void updateDeviceInfo(List<String> deviceInfoPath, DeviceInfo updatedDeviceInfo) {
+        FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }
 }

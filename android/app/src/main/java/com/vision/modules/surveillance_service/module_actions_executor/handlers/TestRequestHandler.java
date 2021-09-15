@@ -57,11 +57,15 @@ public class TestRequestHandler implements JSActionHandler {
 
         DeviceInfo deviceInfo = new DeviceInfo();
 
-        FBSPathsService fbsPathsService = FBSPathsService.get();
-        List<String> testPath = fbsPathsService.test();
-
-        FBSService fbsService = FBSService.get();
-        fbsService.test(testPath, deviceInfo.toServiceObject());
+        // ===
+//        DeviceInfo deviceInfo = new DeviceInfo();
+//
+//        FBSPathsService fbsPathsService = FBSPathsService.get();
+//        List<String> testPath = fbsPathsService.test();
+//
+//        FBSService fbsService = FBSService.get();
+//        fbsService.test(testPath, deviceInfo.toServiceObject());
+        // ===
 
 //        FBSPathsService fbsPathsService = FBSPathsService.get();
 //        List<String> testPath = fbsPathsService.test();
