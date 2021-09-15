@@ -158,6 +158,11 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         updateDeviceInfo(deviceInfoPath, deviceInfo);
                     } else {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
+
+                        DeviceInfo deviceInfo = new DeviceInfo();
+                        deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+
+                        updateDeviceInfo(deviceInfoPath, deviceInfo);
                     }
 
                     handlerResult.resolve(true);
