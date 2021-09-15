@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'grey',
   },
 });
 
