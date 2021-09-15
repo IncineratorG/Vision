@@ -1,4 +1,6 @@
 const ru = {
+  AppName: 'Vision',
+
   RegisterDeviceInGroupDialog_title: 'Регистрация в группе',
   RegisterDeviceInGroupDialog_groupNamePlaceholder: 'Название группы',
   RegisterDeviceInGroupDialog_groupPasswordPlaceholder: 'Пароль',

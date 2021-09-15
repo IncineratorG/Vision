@@ -1,8 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import useTranslation from '../../../../utils/common/localization';
 
 const AuthorisationAppLogo = () => {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoOuterContainer}>
@@ -10,7 +13,7 @@ const AuthorisationAppLogo = () => {
           <MaterialIcon name="camera" size={96} color="#0098ef" />
         </View>
         <View style={styles.appNameContainer}>
-          <Text style={styles.appName}>{'Vision'}</Text>
+          <Text style={styles.appName}>{t('AppName')}</Text>
         </View>
       </View>
     </View>
