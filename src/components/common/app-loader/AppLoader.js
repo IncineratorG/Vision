@@ -4,11 +4,15 @@ import useAppLoaderModel from './model/useAppLoaderModel';
 import AppLoading from '../app-loading/AppLoading';
 
 const AppLoader = () => {
-  const model = useAppLoaderModel();
+  const {
+    data: {servicesReady, loggedIn},
+  } = useAppLoaderModel();
 
-  return <AppNavigation />;
-
-  // return <AppLoading />;
+  if (!servicesReady) {
+    return <AppLoading />;
+  } else {
+    return <AppNavigation />;
+  }
 };
 
 export default React.memo(AppLoader);

@@ -8,7 +8,7 @@ const Services = () => {
   const surveillanceService = SurveillanceService();
 
   const init = async () => {
-    firebaseService.init();
+    // firebaseService.init();
   };
 
   const dispose = () => {};

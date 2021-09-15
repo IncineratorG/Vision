@@ -1,5 +1,4 @@
 import AppActions from '../../actions/AppActions';
-import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const initialState = {
   authInfo: {
