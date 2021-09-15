@@ -1,34 +1,39 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import AuthorisationButton from './button/AuthorisationButton';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 import useTranslation from '../../../../utils/common/localization';
 
-const AuthorisationButtons = () => {
+const AuthorisationButtons = ({
+  loginMode,
+  registerMode,
+  onLoginButtonPress,
+  onLoginTextPress,
+  onRegisterButtonPress,
+  onRegisterTextPress,
+}) => {
   const {t} = useTranslation();
 
-  const modes = useMemo(() => {
-    return {
-      login: 'login',
-      register: 'register',
-    };
-  }, []);
-
-  const [currentMode, setCurrentMode] = useState(modes.login);
-
   const loginButtonPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({info: 'loginButtonPressHandler()'});
-  }, []);
+    if (onLoginButtonPress) {
+      onLoginButtonPress();
+    }
+  }, [onLoginButtonPress]);
   const loginTextPressHandler = useCallback(() => {
-    setCurrentMode(modes.login);
-  }, [modes.login]);
+    if (onLoginTextPress) {
+      onLoginTextPress();
+    }
+  }, [onLoginTextPress]);
 
   const registerButtonPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({info: 'registerButtonPressHandler()'});
-  }, []);
+    if (onRegisterButtonPress) {
+      onRegisterButtonPress();
+    }
+  }, [onRegisterButtonPress]);
   const registerTextPressHandler = useCallback(() => {
-    setCurrentMode(modes.register);
-  }, [modes.register]);
+    if (onRegisterTextPress) {
+      onRegisterTextPress();
+    }
+  }, [onRegisterTextPress]);
 
   const loginButton = (
     <AuthorisationButton
@@ -62,10 +67,8 @@ const AuthorisationButtons = () => {
     </TouchableOpacity>
   );
 
-  const loginButtonComponent =
-    currentMode === modes.login ? loginButton : loginText;
-  const registerButtonComponent =
-    currentMode === modes.register ? registerButton : registerText;
+  const loginButtonComponent = loginMode ? loginButton : loginText;
+  const registerButtonComponent = registerMode ? registerButton : registerText;
 
   return (
     <View style={styles.mainContainer}>

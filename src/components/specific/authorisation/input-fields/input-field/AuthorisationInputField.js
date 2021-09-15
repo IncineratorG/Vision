@@ -1,13 +1,16 @@
-import React, {useCallback} from 'react';
+import React, {useRef, useCallback, useEffect} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 
 const AuthorisationInputField = ({
   icon,
   value,
   placeholder,
+  forceFocus,
   onChangeText,
   onSubmitEditing,
 }) => {
+  const inputFieldRef = useRef(null);
+
   const changeTextHandler = useCallback(
     (updatedText) => {
       if (onChangeText) {
@@ -23,6 +26,12 @@ const AuthorisationInputField = ({
     }
   }, [onSubmitEditing]);
 
+  useEffect(() => {
+    if (forceFocus) {
+      inputFieldRef.current.focus();
+    }
+  }, [forceFocus]);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.iconContainer}>
@@ -30,6 +39,7 @@ const AuthorisationInputField = ({
       </View>
       <View style={styles.inputContainer}>
         <TextInput
+          ref={inputFieldRef}
           style={styles.input}
           placeholder={placeholder}
           defaultValue={value}

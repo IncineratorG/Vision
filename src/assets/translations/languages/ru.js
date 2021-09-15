@@ -37,6 +37,10 @@ const ru = {
   AuthorisationInputFields_groupNameFieldPlaceholder: 'Название группы',
   AuthorisationInputFields_groupPasswordFieldPlaceholder: 'Пароль группы',
   AuthorisationInputFields_deviceNameFieldPlaceholder: 'Имя устройства',
+
+  AuthorisationStatus_registerDeviceInGroupInProgress: 'Регистрация в группе',
+  AuthorisationStatus_createGroupWithDeviceInProgress: 'Создание группы',
+  AuthorisationStatus_loginDeviceInGroupInProgress: 'Вход в группу',
 };
 
 export default ru;

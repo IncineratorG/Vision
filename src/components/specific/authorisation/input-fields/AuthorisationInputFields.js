@@ -1,11 +1,23 @@
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useState, useMemo, useCallback, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import AuthorisationInputField from './input-field/AuthorisationInputField';
 import useTranslation from '../../../../utils/common/localization';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
-const AuthorisationInputFields = () => {
+const AuthorisationInputFields = ({
+  groupName,
+  groupPassword,
+  deviceName,
+  forceGroupNameFieldFocus,
+  forceGroupPasswordFieldFocus,
+  forceDeviceNameFieldFocus,
+  onGroupNameChange,
+  onGroupPasswordChange,
+  onDeviceNameChange,
+  onGroupNameSubmitEditing,
+  onGroupPasswordSubmitEditing,
+  onDeviceNameSubmitEditing,
+}) => {
   const {t} = useTranslation();
 
   const [innerGroupName, setInnerGroupName] = useState('');
@@ -24,35 +36,53 @@ const AuthorisationInputFields = () => {
     );
   }, []);
 
-  const groupNameChangeTextHandler = useCallback((text) => {
-    setInnerGroupName(text);
-  }, []);
+  const groupNameChangeTextHandler = useCallback(
+    (text) => {
+      if (onGroupNameChange) {
+        onGroupNameChange(text);
+      }
+    },
+    [onGroupNameChange],
+  );
   const groupNameSubmitEditingPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({info: 'groupNameSubmitEditingPressHandler()'});
-  }, []);
+    if (onGroupNameSubmitEditing) {
+      onGroupNameSubmitEditing();
+    }
+  }, [onGroupNameSubmitEditing]);
 
-  const groupPasswordChangeTextHandler = useCallback((text) => {
-    setInnerGroupPassword(text);
-  }, []);
+  const groupPasswordChangeTextHandler = useCallback(
+    (text) => {
+      if (onGroupPasswordChange) {
+        onGroupPasswordChange(text);
+      }
+    },
+    [onGroupPasswordChange],
+  );
   const groupPasswordSubmitEditingPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info: 'groupPasswordSubmitEditingPressHandler()',
-    });
-  }, []);
+    if (onGroupPasswordSubmitEditing) {
+      onGroupPasswordSubmitEditing();
+    }
+  }, [onGroupPasswordSubmitEditing]);
 
-  const deviceNameChangeTextHandler = useCallback((text) => {
-    setInnerDeviceName(text);
-  }, []);
+  const deviceNameChangeTextHandler = useCallback(
+    (text) => {
+      if (onDeviceNameChange) {
+        onDeviceNameChange(text);
+      }
+    },
+    [onDeviceNameChange],
+  );
   const deviceNameSubmitEditingPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info: 'deviceNameSubmitEditingPressHandler()',
-    });
-  }, []);
+    if (onDeviceNameSubmitEditing) {
+      onDeviceNameSubmitEditing();
+    }
+  }, [onDeviceNameSubmitEditing]);
 
   const groupNameInputFieldComponent = (
     <AuthorisationInputField
       icon={groupNameIcon}
       value={innerGroupName}
+      forceFocus={forceGroupNameFieldFocus}
       placeholder={t('AuthorisationInputFields_groupNameFieldPlaceholder')}
       onChangeText={groupNameChangeTextHandler}
       onSubmitEditing={groupNameSubmitEditingPressHandler}
@@ -62,6 +92,7 @@ const AuthorisationInputFields = () => {
     <AuthorisationInputField
       icon={groupPasswordIcon}
       value={innerGroupPassword}
+      forceFocus={forceGroupPasswordFieldFocus}
       placeholder={t('AuthorisationInputFields_groupPasswordFieldPlaceholder')}
       onChangeText={groupPasswordChangeTextHandler}
       onSubmitEditing={groupPasswordSubmitEditingPressHandler}
@@ -71,11 +102,24 @@ const AuthorisationInputFields = () => {
     <AuthorisationInputField
       icon={deviceNameIcon}
       value={innerDeviceName}
+      forceFocus={forceDeviceNameFieldFocus}
       placeholder={t('AuthorisationInputFields_deviceNameFieldPlaceholder')}
       onChangeText={deviceNameChangeTextHandler}
       onSubmitEditing={deviceNameSubmitEditingPressHandler}
     />
   );
+
+  useEffect(() => {
+    setInnerGroupName(groupName);
+  }, [groupName]);
+
+  useEffect(() => {
+    setInnerGroupPassword(groupPassword);
+  }, [groupPassword]);
+
+  useEffect(() => {
+    setInnerDeviceName(deviceName);
+  }, [deviceName]);
 
   return (
     <View style={styles.mainContainer}>
