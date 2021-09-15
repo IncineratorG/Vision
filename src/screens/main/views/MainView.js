@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import RegisterDeviceInGroupDialog from '../../../components/specific/main/register-device-in-group-dialog/RegisterDeviceInGroupDialog';
 import RegisteringDeviceInGroupDialog from '../../../components/specific/main/registering-device-in-group-dialog/RegisteringDeviceInGroupDialog';
-import NeedCreateGroupDialog from '../../../components/specific/main/need-create-group-dialog/NeedCreateGroupDialog';
+import NeedCreateGroupDialog from '../../../components/specific/authorisation/need-create-group-dialog/NeedCreateGroupDialog';
 import CreatingGroupWithDeviceDialog from '../../../components/specific/main/creating-group-with-device-dialog/CreatingGroupWithDeviceDialog';
 import LoginDeviceInGroupDialog from '../../../components/specific/main/login-device-in-group-dialog/LoginDeviceInGroupDialog';
 import LoggingDeviceInGroupDialog from '../../../components/specific/main/logging-device-in-group-dialog/LoggingDeviceInGroupDialog';

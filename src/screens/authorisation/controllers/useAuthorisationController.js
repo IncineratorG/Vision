@@ -1,5 +1,6 @@
 import {useCallback} from 'react';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppActions from '../../../store/actions/AppActions';
 
 const useAuthorisationController = (model) => {
   const {
@@ -19,28 +20,62 @@ const useAuthorisationController = (model) => {
       setForceGroupNameFieldFocus,
       setForceGroupPasswordFieldFocus,
       setForceDeviceNameFieldFocus,
+      setNeedCreateGroupDialogVisible,
     },
+    dispatch,
   } = model;
 
   const loginButtonPressHandler = useCallback(() => {
     SystemEventsHandler.onInfo({
       info: 'useAuthorisationController()->loginButtonPressHandler()',
     });
-  }, []);
+    dispatch(
+      AppActions.auth.actions.loginDevice({
+        groupName,
+        groupPassword,
+        deviceName,
+      }),
+    );
+  }, [groupName, groupPassword, deviceName, dispatch]);
 
   const loginTextPressHandler = useCallback(() => {
     setCurrentAuthorisationMode(authorisationModes.login);
-  }, [authorisationModes.login, setCurrentAuthorisationMode]);
+    setGroupName('');
+    setGroupPassword('');
+    setDeviceName('');
+  }, [
+    authorisationModes.login,
+    setCurrentAuthorisationMode,
+    setGroupName,
+    setGroupPassword,
+    setDeviceName,
+  ]);
 
   const registerButtonPressHandler = useCallback(() => {
     SystemEventsHandler.onInfo({
       info: 'useAuthorisationController()->registerButtonPressHandler()',
     });
-  }, []);
+    dispatch(
+      AppActions.auth.actions.registerDeviceInGroup({
+        groupName,
+        groupPassword,
+        deviceName,
+      }),
+    );
+  }, [groupName, groupPassword, deviceName, dispatch]);
 
   const registerTextPressHandler = useCallback(() => {
     setCurrentAuthorisationMode(authorisationModes.register);
-  }, [authorisationModes.register, setCurrentAuthorisationMode]);
+    setGroupName('');
+    setGroupPassword('');
+    setDeviceName('');
+  }, [
+    authorisationModes.register,
+    setCurrentAuthorisationMode,
+    setGroupName,
+    setGroupPassword,
+    setDeviceName,
+  ]);
 
   const groupNameChangeHandler = useCallback(
     (text) => {
@@ -96,14 +131,72 @@ const useAuthorisationController = (model) => {
     setForceGroupNameFieldFocus(false);
     setForceGroupPasswordFieldFocus(false);
     setForceDeviceNameFieldFocus(false);
+
+    if (currentAuthorisationMode === authorisationModes.login) {
+      dispatch(
+        AppActions.auth.actions.loginDevice({
+          groupName,
+          groupPassword,
+          deviceName,
+        }),
+      );
+    } else if (currentAuthorisationMode === authorisationModes.register) {
+      dispatch(
+        AppActions.auth.actions.registerDeviceInGroup({
+          groupName,
+          groupPassword,
+          deviceName,
+        }),
+      );
+    } else {
+      SystemEventsHandler.onInfo({
+        info:
+          'useAuthorisationController()->deviceNameSubmitEditingPressHandler()->UNKNOWN_AUTHORISATION_MODE: ' +
+          currentAuthorisationMode,
+      });
+    }
   }, [
+    authorisationModes,
+    currentAuthorisationMode,
     groupName,
     groupPassword,
     deviceName,
     setForceGroupNameFieldFocus,
     setForceGroupPasswordFieldFocus,
     setForceDeviceNameFieldFocus,
+    dispatch,
   ]);
+
+  const needCreateGroupDialogCreatePressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info:
+        'useAuthorisationController()->needCreateGroupDialogCreatePressHandler(): ' +
+        groupName +
+        ' - ' +
+        groupPassword +
+        ' - ' +
+        deviceName,
+    });
+    setNeedCreateGroupDialogVisible(false);
+
+    dispatch(
+      AppActions.auth.actions.createGroupWithDevice({
+        groupName,
+        groupPassword,
+        deviceName,
+      }),
+    );
+  }, [
+    groupName,
+    groupPassword,
+    deviceName,
+    setNeedCreateGroupDialogVisible,
+    dispatch,
+  ]);
+
+  const needCreateGroupDialogCancelPressHandler = useCallback(() => {
+    setNeedCreateGroupDialogVisible(false);
+  }, [setNeedCreateGroupDialogVisible]);
 
   return {
     loginButtonPressHandler,
@@ -116,6 +209,8 @@ const useAuthorisationController = (model) => {
     groupNameSubmitEditingPressHandler,
     groupPasswordSubmitEditingPressHandler,
     deviceNameSubmitEditingPressHandler,
+    needCreateGroupDialogCreatePressHandler,
+    needCreateGroupDialogCancelPressHandler,
   };
 };
 

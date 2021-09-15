@@ -1,7 +1,8 @@
 import {useState, useCallback, useEffect, useMemo} from 'react';
-import {useNavigation} from '@react-navigation/core';
+import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import useTranslation from '../../../utils/common/localization';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const useAuthorisationModel = () => {
   const navigation = useNavigation();
@@ -29,6 +30,8 @@ const useAuthorisationModel = () => {
   const [forceGroupPasswordFieldFocus, setForceGroupPasswordFieldFocus] =
     useState(false);
   const [forceDeviceNameFieldFocus, setForceDeviceNameFieldFocus] =
+    useState(false);
+  const [needCreateGroupDialogVisible, setNeedCreateGroupDialogVisible] =
     useState(false);
 
   const {
@@ -88,6 +91,28 @@ const useAuthorisationModel = () => {
     t,
   ]);
 
+  useEffect(() => {
+    if (
+      registerDeviceInGroupErrorCode &&
+      registerDeviceInGroupErrorCode === '8'
+    ) {
+      setNeedCreateGroupDialogVisible(true);
+    }
+  }, [registerDeviceInGroupErrorCode]);
+
+  const focusChangedCallback = useCallback(() => {
+    if (loggedIn) {
+      SystemEventsHandler.onInfo({info: 'useAuthorisationModel()->LOGGED_IN'});
+
+      navigation.navigate('Group');
+    } else {
+      SystemEventsHandler.onInfo({
+        info: 'useAuthorisationModel()->NOT_LOGGED_IN',
+      });
+    }
+  }, [loggedIn, navigation]);
+  useFocusEffect(focusChangedCallback);
+
   return {
     data: {
       authorisationModes,
@@ -99,6 +124,7 @@ const useAuthorisationModel = () => {
       forceGroupNameFieldFocus,
       forceGroupPasswordFieldFocus,
       forceDeviceNameFieldFocus,
+      needCreateGroupDialogVisible,
     },
     setters: {
       setCurrentAuthorisationMode,
@@ -108,6 +134,7 @@ const useAuthorisationModel = () => {
       setForceGroupNameFieldFocus,
       setForceGroupPasswordFieldFocus,
       setForceDeviceNameFieldFocus,
+      setNeedCreateGroupDialogVisible,
     },
     navigation,
     dispatch,

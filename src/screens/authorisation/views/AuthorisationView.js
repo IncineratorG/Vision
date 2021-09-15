@@ -4,6 +4,7 @@ import AuthorisationAppLogo from '../../../components/specific/authorisation/app
 import AuthorisationInputFields from '../../../components/specific/authorisation/input-fields/AuthorisationInputFields';
 import AuthorisationButtons from '../../../components/specific/authorisation/buttons/AuthorisationButtons';
 import AuthorisationStatus from '../../../components/specific/authorisation/status/AuthorisationStatus';
+import NeedCreateGroupDialog from '../../../components/specific/authorisation/need-create-group-dialog/NeedCreateGroupDialog';
 
 const AuthorisationView = ({model, controller}) => {
   const {
@@ -17,6 +18,7 @@ const AuthorisationView = ({model, controller}) => {
       forceGroupNameFieldFocus,
       forceGroupPasswordFieldFocus,
       forceDeviceNameFieldFocus,
+      needCreateGroupDialogVisible,
     },
   } = model;
 
@@ -31,6 +33,8 @@ const AuthorisationView = ({model, controller}) => {
     groupNameSubmitEditingPressHandler,
     groupPasswordSubmitEditingPressHandler,
     deviceNameSubmitEditingPressHandler,
+    needCreateGroupDialogCreatePressHandler,
+    needCreateGroupDialogCancelPressHandler,
   } = controller;
 
   const appLogoComponent = <AuthorisationAppLogo />;
@@ -67,12 +71,21 @@ const AuthorisationView = ({model, controller}) => {
     />
   );
 
+  const needCreateGroupDialog = (
+    <NeedCreateGroupDialog
+      visible={needCreateGroupDialogVisible}
+      onCreatePress={needCreateGroupDialogCreatePressHandler}
+      onCancelPress={needCreateGroupDialogCancelPressHandler}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.topContainer}>{appLogoComponent}</View>
       <View style={styles.statusContainer}>{statusComponent}</View>
       <View style={styles.inputFieldsContainer}>{inputFieldsComponent}</View>
       <View style={styles.buttonsContainer}>{buttonsComponent}</View>
+      {needCreateGroupDialog}
     </View>
   );
 };
