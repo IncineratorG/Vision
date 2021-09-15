@@ -1,4 +1,4 @@
-package com.vision.common.services.surveillance.data.service_error;
+package com.vision.common.data.service_error;
 
 
 public class ServiceError {

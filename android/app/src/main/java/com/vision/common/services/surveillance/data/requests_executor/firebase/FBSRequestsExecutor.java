@@ -4,17 +4,17 @@ package com.vision.common.services.surveillance.data.requests_executor.firebase;
 import android.content.Context;
 import android.util.Log;
 
-import com.vision.common.services.surveillance.data.request.Request;
-import com.vision.common.services.surveillance.data.request_handler.ServiceRequestHandler;
+import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.unknown.UnknownRequestServiceHandler;
-import com.vision.common.services.surveillance.data.requests_executor.RequestsExecutor;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.services.surveillance.data.service_request_types.SurveillanceServiceRequestTypes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FBSRequestsExecutor implements RequestsExecutor {
+public class FBSRequestsExecutor implements ServiceRequestsExecutor {
     private final String UNKNOWN_REQUEST_HANDLER_KEY = "unknown";
     private Map<String, ServiceRequestHandler> mHandlers;
 
@@ -47,7 +47,7 @@ public class FBSRequestsExecutor implements RequestsExecutor {
             Log.d("tag", "FirebaseRequestsExecutor->execute(): PARAMS_HAS_NO_KEY");
         }
 
-        Request request = new Request(stringifiedRequest);
+        ServiceRequest request = new ServiceRequest(stringifiedRequest);
 
         String requestKey = (String) params.get("requestKey");
         if (requestKey != null) {

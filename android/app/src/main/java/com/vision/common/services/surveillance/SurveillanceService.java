@@ -7,29 +7,29 @@ import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
+import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
-import com.vision.common.services.surveillance.data.request.Request;
-import com.vision.common.services.surveillance.data.request_sender.OnDeliveredCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnErrorCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnResponseCallback;
-import com.vision.common.services.surveillance.data.request_sender.RequestSender;
+import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.services.surveillance.data.request_sender.firebase.FBSRequestSender;
-import com.vision.common.services.surveillance.data.requests_executor.RequestsExecutor;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.services.surveillance.data.requests_executor.firebase.FBSRequestsExecutor;
-import com.vision.common.services.surveillance.data.response.Response;
-import com.vision.common.services.surveillance.data.response_sender.ResponseSender;
+import com.vision.common.data.service_response.ServiceResponse;
+import com.vision.common.interfaces.service_response_sender.ResponseSender;
 import com.vision.common.services.surveillance.data.service_requests.SurveillanceServiceRequests;
 
 import java.util.List;
 
-public class SurveillanceService implements ResponseSender, RequestSender {
+public class SurveillanceService implements ResponseSender, ServiceRequestSender {
     private static SurveillanceService sInstance;
 
     private ForegroundServiceWork mForegroundServiceWork;
-    private RequestsExecutor mRequestsExecutor;
+    private ServiceRequestsExecutor mRequestsExecutor;
     private SurveillanceServiceRequests mRequests;
-    private RequestSender mRequestsSender;
+    private ServiceRequestSender mRequestsSender;
 
     private SurveillanceService() {
         mRequestsExecutor = new FBSRequestsExecutor();
@@ -104,7 +104,7 @@ public class SurveillanceService implements ResponseSender, RequestSender {
 
     @Override
     public void sendRequest(String receiverLogin,
-                            Request request,
+                            ServiceRequest request,
                             OnDeliveredCallback deliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
@@ -120,7 +120,7 @@ public class SurveillanceService implements ResponseSender, RequestSender {
     }
 
     @Override
-    public void sendResponse(Response response) {
+    public void sendResponse(ServiceResponse response) {
         Log.d("tag", "SurveillanceService->sendResponse()");
     }
 

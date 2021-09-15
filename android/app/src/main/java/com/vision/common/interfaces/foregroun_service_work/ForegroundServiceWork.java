@@ -1,4 +1,4 @@
-package com.vision.common.services.surveillance.data.foreground_service_work;
+package com.vision.common.interfaces.foregroun_service_work;
 
 
 import android.content.Context;

@@ -10,22 +10,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.vision.MainActivity;
 import com.vision.R;
-import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.surveillance.SurveillanceService;
-import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class SurveillanceForegroundService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";

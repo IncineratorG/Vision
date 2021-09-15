@@ -1,16 +1,16 @@
-package com.vision.common.services.surveillance.data.request;
+package com.vision.common.data.service_request;
 
 
 import android.util.Log;
 
-import com.vision.common.services.surveillance.data.stringifiable.Stringifiable;
+import com.vision.common.interfaces.stringifiable.Stringifiable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
-public class Request implements Stringifiable {
+public class ServiceRequest implements Stringifiable {
     public static final String EMPTY = "empty";
 
     private final String ID_FIELD = "id";
@@ -21,7 +21,7 @@ public class Request implements Stringifiable {
 
     private JSONObject mRequest;
 
-    public Request() {
+    public ServiceRequest() {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
         String type = EMPTY;
@@ -37,7 +37,7 @@ public class Request implements Stringifiable {
         }
     }
 
-    public Request(String type, JSONObject payload) {
+    public ServiceRequest(String type, JSONObject payload) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
 
@@ -55,7 +55,7 @@ public class Request implements Stringifiable {
         }
     }
 
-    public Request(String stringifiedRequest) {
+    public ServiceRequest(String stringifiedRequest) {
         try {
             mRequest = new JSONObject(stringifiedRequest);
         } catch (JSONException e) {
@@ -78,7 +78,7 @@ public class Request implements Stringifiable {
             e.printStackTrace();
         }
 
-        return id == null || type == null || type.equalsIgnoreCase(Request.EMPTY);
+        return id == null || type == null || type.equalsIgnoreCase(ServiceRequest.EMPTY);
     }
 
     public String key() {

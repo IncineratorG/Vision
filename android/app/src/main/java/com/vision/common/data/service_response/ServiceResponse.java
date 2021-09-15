@@ -1,16 +1,16 @@
-package com.vision.common.services.surveillance.data.response;
+package com.vision.common.data.service_response;
 
 
 import android.util.Log;
 
-import com.vision.common.services.surveillance.data.stringifiable.Stringifiable;
+import com.vision.common.interfaces.stringifiable.Stringifiable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
-public class Response implements Stringifiable {
+public class ServiceResponse implements Stringifiable {
     private final String ID_FIELD = "id";
     private final String TIMESTAMP_FIELD = "timestamp";
     private final String KEY_FIELD = "key";
@@ -19,7 +19,7 @@ public class Response implements Stringifiable {
 
     private JSONObject mResponse;
 
-    public Response() {
+    public ServiceResponse() {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
 
@@ -33,7 +33,7 @@ public class Response implements Stringifiable {
         }
     }
 
-    public Response(String requestId, JSONObject payload) {
+    public ServiceResponse(String requestId, JSONObject payload) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
 
@@ -51,7 +51,7 @@ public class Response implements Stringifiable {
         }
     }
 
-    public Response(String stringifiedResponse) {
+    public ServiceResponse(String stringifiedResponse) {
         try {
             mResponse = new JSONObject(stringifiedResponse);
         } catch (JSONException e) {

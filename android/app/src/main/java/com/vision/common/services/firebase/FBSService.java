@@ -169,6 +169,16 @@ public class FBSService {
 
         ref.updateChildren(map);
     }
+
+    public void test2(List<String> fields, ValueEventListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+        ref.addValueEventListener(listener);
+    }
     // ===
 }
 

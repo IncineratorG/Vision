@@ -12,8 +12,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
-import com.vision.common.services.surveillance.data.foreground_service_work.ForegroundServiceWork;
-import com.vision.common.services.surveillance.data.requests_executor.RequestsExecutor;
+import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +21,11 @@ import java.util.Map;
 
 public class FBSForegroundServiceWork implements ForegroundServiceWork {
     private FBSListenerId mRequestListenerId;
-    private RequestsExecutor mRequestsExecutor;
+    private ServiceRequestsExecutor mRequestsExecutor;
     private List<String> mRequestPath;
     private Map<String, Object> mRequestParams;
 
-    public FBSForegroundServiceWork(RequestsExecutor requestsExecutor,
+    public FBSForegroundServiceWork(ServiceRequestsExecutor requestsExecutor,
                                     List<String> requestPath) {
         mRequestsExecutor = requestsExecutor;
         mRequestPath = requestPath;

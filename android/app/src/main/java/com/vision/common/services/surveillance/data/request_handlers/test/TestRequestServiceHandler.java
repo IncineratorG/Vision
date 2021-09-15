@@ -6,14 +6,14 @@ import android.util.Log;
 
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.services.surveillance.data.request.Request;
-import com.vision.common.services.surveillance.data.request_handler.ServiceRequestHandler;
+import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 
 import java.util.List;
 
 public class TestRequestServiceHandler implements ServiceRequestHandler {
     @Override
-    public void handle(Context context, Request request) {
+    public void handle(Context context, ServiceRequest request) {
         Log.d("tag", "TestRequestServiceHandler->handle(): " + request.stringify());
 
         List<String> requestsPath = FBSPathsService.get().currentRequestsPath();

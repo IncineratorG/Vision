@@ -5,22 +5,22 @@ import android.util.Log;
 
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.services.surveillance.data.request.Request;
-import com.vision.common.services.surveillance.data.request_sender.OnDeliveredCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnErrorCallback;
-import com.vision.common.services.surveillance.data.request_sender.OnResponseCallback;
-import com.vision.common.services.surveillance.data.request_sender.RequestSender;
+import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 
 import java.util.List;
 
-public class FBSRequestSender implements RequestSender {
+public class FBSRequestSender implements ServiceRequestSender {
     public FBSRequestSender() {
 
     }
 
     @Override
     public void sendRequest(String receiverLogin,
-                            Request request,
+                            ServiceRequest request,
                             OnDeliveredCallback deliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
