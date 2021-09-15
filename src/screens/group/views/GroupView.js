@@ -3,12 +3,15 @@ import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 
 const GroupView = ({model, controller}) => {
-  const {updateDevicesInGroupData} = controller;
+  const {testRequest, updateDevicesInGroupData} = controller;
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.contentContainer} />
       <View style={styles.buttons}>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Test request'} onPress={testRequest} />
+        </View>
         <View style={styles.buttonContainer}>
           <SimpleButton
             title={'Update devices in group data'}

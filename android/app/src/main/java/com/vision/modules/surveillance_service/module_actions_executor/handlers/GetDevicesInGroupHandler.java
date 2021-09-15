@@ -2,14 +2,23 @@ package com.vision.modules.surveillance_service.module_actions_executor.handlers
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
 import com.vision.modules.surveillance_service.module_actions.payloads.payloads.GetDevicesInGroupPayload;
 import com.vision.modules.surveillance_service.module_errors.SurveillanceServiceModuleErrors;
+
+import java.util.List;
 
 public class GetDevicesInGroupHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
@@ -60,6 +69,30 @@ public class GetDevicesInGroupHandler implements JSActionHandler {
 
         Log.d("tag", "GetDevicesInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        result.resolve(true);
+        List<String> groupRootPath = FBSPathsService.get().groupRootPath(groupName, groupPassword);
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String key = childSnapshot.getKey();
+                        Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_IN_GROUP: " + key);
+                    }
+                } else {
+                    Log.d("tag", "GetDevicesInGroupHandler->handle()->ROOT_SNAPSHOT_NOT_EXIST");
+                }
+
+                result.resolve(true);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                ModuleError moduleError = SurveillanceServiceModuleErrors.getDevicesInGroupFirebaseFailure();
+                result.reject(moduleError.code(), moduleError.message());
+            }
+        };
+
+        FBSService.get().getValue(groupRootPath, listener);
     }
 }

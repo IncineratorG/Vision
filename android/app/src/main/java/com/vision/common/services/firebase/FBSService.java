@@ -157,6 +157,19 @@ public class FBSService {
 
         ref.updateChildren(childUpdates);
     }
+
+    // ===
+    public void test(List<String> fields, Map<String, Object> map) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        ref.updateChildren(map);
+    }
+    // ===
 }
 
 //    public void test() {

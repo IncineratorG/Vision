@@ -2,12 +2,21 @@ import {useCallback} from 'react';
 import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
+import Services from '../../../services/Services';
 
 const useGroupController = (model) => {
   const {
     data: {currentGroupName, currentGroupPassword, currentDeviceName, loggedIn},
     dispatch,
   } = model;
+
+  const testRequest = useCallback(async () => {
+    SystemEventsHandler.onInfo({
+      info: 'useGroupController()->testRequest()',
+    });
+
+    await Services.services().surveillanceService.testRequest();
+  }, []);
 
   const backButtonPressHandler = useCallback(() => {
     BackHandler.exitApp();
@@ -28,6 +37,7 @@ const useGroupController = (model) => {
   }, [currentGroupName, currentGroupPassword, currentDeviceName, dispatch]);
 
   return {
+    testRequest,
     backButtonPressHandler,
     updateDevicesInGroupData,
   };

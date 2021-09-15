@@ -34,4 +34,8 @@ public class SurveillanceServiceModuleErrors {
     public static ModuleError groupNotExist() {
         return new ModuleError("8", "GROUP_NOT_EXIST");
     }
+
+    public static ModuleError getDevicesInGroupFirebaseFailure() {
+        return new ModuleError("9", "GET_DEVICES_IN_GROUP_FIREBASE_FAILURE");
+    }
 }
