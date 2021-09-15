@@ -1,11 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const AuthorisationAppLogo = () => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.logoOuterContainer}>
-        <View style={styles.logoContainer} />
+        <View style={styles.logoContainer}>
+          <MaterialIcon name="camera" size={96} color="#0098ef" />
+        </View>
         <View style={styles.appNameContainer}>
           <Text style={styles.appName}>{'Vision'}</Text>
         </View>
@@ -17,7 +20,8 @@ const AuthorisationAppLogo = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'oldlace',
+    // backgroundColor: 'oldlace',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -28,8 +32,11 @@ const styles = StyleSheet.create({
   logoContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    backgroundColor: 'coral',
+    // backgroundColor: 'coral',
+    // backgroundColor: '#0098ef',
     borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   appNameContainer: {
     height: 40,

@@ -1,6 +1,5 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
-import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const AuthorisationInputField = ({
   icon,
@@ -27,9 +26,7 @@ const AuthorisationInputField = ({
   return (
     <View style={styles.mainContainer}>
       <View style={styles.iconContainer}>
-        <View
-          style={{width: 20, height: 20, backgroundColor: 'mediumseagreen'}}
-        />
+        <View style={styles.iconInnerContainer}>{icon}</View>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -49,10 +46,10 @@ const AuthorisationInputField = ({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    height: 50,
-    width: 300,
+    height: 40,
+    width: 250,
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5F5',
     // borderWidth: 1,
   },
   iconContainer: {
@@ -62,13 +59,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  iconInnerContainer: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    /*backgroundColor: 'mediumseagreen' backgroundColor: 'coral'*/
+  },
   inputContainer: {
     flex: 1,
     alignSelf: 'stretch',
     // backgroundColor: 'grey',
+    justifyContent: 'center',
   },
   input: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#000000',
     borderBottomColor: 'transparent',
   },

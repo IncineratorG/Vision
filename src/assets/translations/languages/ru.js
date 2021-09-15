@@ -26,6 +26,15 @@ const ru = {
 
   LoggingDeviceInGroupDialog_message: 'Вход в группу',
   LoggingDeviceInGroupDialog_cancelButton: 'ОТМЕНА',
+
+  AuthorisationButtons_loginText: 'Войти',
+  AuthorisationButtons_loginButtonText: 'Войти',
+  AuthorisationButtons_registerText: 'Регистрация',
+  AuthorisationButtons_registerButtonText: 'Регистрация',
+
+  AuthorisationInputFields_groupNameFieldPlaceholder: 'Название группы',
+  AuthorisationInputFields_groupPasswordFieldPlaceholder: 'Пароль группы',
+  AuthorisationInputFields_deviceNameFieldPlaceholder: 'Имя устройства',
 };
 
 export default ru;

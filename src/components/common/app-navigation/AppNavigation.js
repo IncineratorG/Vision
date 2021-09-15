@@ -17,6 +17,7 @@ const AppNavigation = () => {
           options={{
             title: 'Authorisation',
             headerStatusBarHeight: 0,
+            headerShown: false,
           }}
         />
         <MainStack.Screen
