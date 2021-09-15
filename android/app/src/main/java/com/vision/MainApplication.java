@@ -10,7 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.vision.modules.auth.AuthPackage;
 import com.vision.modules.firebase.FirebasePackage;
-import com.vision.modules.surveillance_foreground_service.SurveillanceServicePackage;
+import com.vision.modules.surveillance_service.SurveillanceServicePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

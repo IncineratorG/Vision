@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers;
+package com.vision.modules.surveillance_service.module_actions_executor.handlers;
 
 
 import android.util.Log;
@@ -6,13 +6,9 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.services.firebase.FBSService;
-import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.request.Request;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
-
-import java.util.List;
 
 public class TestRequestHandler implements JSActionHandler {
     @Override

@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers;
+package com.vision.modules.surveillance_service.module_actions_executor.handlers;
 
 import android.util.Log;
 

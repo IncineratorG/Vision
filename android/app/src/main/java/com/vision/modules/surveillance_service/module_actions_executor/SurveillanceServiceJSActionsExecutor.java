@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_foreground_service.module_actions_executor;
+package com.vision.modules.surveillance_service.module_actions_executor;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -6,12 +6,13 @@ import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
-import com.vision.modules.surveillance_foreground_service.module_actions.types.SurveillanceServiceJSActionTypes;
-import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.IsServiceRunningHandler;
-import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.StartServiceHandler;
-import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.StopServiceHandler;
-import com.vision.modules.surveillance_foreground_service.module_actions_executor.handlers.TestRequestHandler;
-import com.vision.modules.surveillance_foreground_service.module_errors.SurveillanceServiceModuleErrors;
+import com.vision.modules.surveillance_service.module_actions.types.SurveillanceServiceJSActionTypes;
+import com.vision.modules.surveillance_service.module_actions_executor.handlers.GetDevicesInGroupHandler;
+import com.vision.modules.surveillance_service.module_actions_executor.handlers.IsServiceRunningHandler;
+import com.vision.modules.surveillance_service.module_actions_executor.handlers.StartServiceHandler;
+import com.vision.modules.surveillance_service.module_actions_executor.handlers.StopServiceHandler;
+import com.vision.modules.surveillance_service.module_actions_executor.handlers.TestRequestHandler;
+import com.vision.modules.surveillance_service.module_errors.SurveillanceServiceModuleErrors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class SurveillanceServiceJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(SurveillanceServiceJSActionTypes.START_SERVICE, new StartServiceHandler());
         mHandlers.put(SurveillanceServiceJSActionTypes.STOP_SERVICE, new StopServiceHandler());
         mHandlers.put(SurveillanceServiceJSActionTypes.TEST_REQUEST, new TestRequestHandler());
+        mHandlers.put(SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP, new GetDevicesInGroupHandler());
     }
 
     @Override

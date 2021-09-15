@@ -24,11 +24,21 @@ const NativeSurveillance = () => {
     return await nativeService.execute(action);
   };
 
+  const getDevicesInGroup = async ({groupName, groupPassword, deviceName}) => {
+    const action = NativeSurveillanceActions.getDevicesInGroupAction({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
+    return await nativeService.execute(action);
+  };
+
   return {
     isServiceRunning,
     startService,
     stopService,
     testRequest,
+    getDevicesInGroup,
   };
 };
 

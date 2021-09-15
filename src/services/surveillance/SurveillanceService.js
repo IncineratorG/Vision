@@ -19,11 +19,20 @@ const SurveillanceService = () => {
     return await nativeService.testRequest();
   };
 
+  const getDevicesInGroup = async ({groupName, groupPassword, deviceName}) => {
+    return await nativeService.getDevicesInGroup({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
+  };
+
   return {
     isServiceRunning,
     startService,
     stopService,
     testRequest,
+    getDevicesInGroup,
   };
 };
 

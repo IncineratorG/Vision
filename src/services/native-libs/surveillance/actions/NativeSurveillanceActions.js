@@ -2,7 +2,13 @@ import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstant
 
 const NativeSurveillanceActions = () => {
   const {
-    actionTypes: {IS_RUNNING, START_SERVICE, STOP_SERVICE, TEST_REQUEST},
+    actionTypes: {
+      IS_RUNNING,
+      START_SERVICE,
+      STOP_SERVICE,
+      TEST_REQUEST,
+      GET_DEVICES_IN_GROUP,
+    },
   } = NativeSurveillanceConstants;
 
   const isRunningAction = () => {
@@ -29,11 +35,19 @@ const NativeSurveillanceActions = () => {
     };
   };
 
+  const getDevicesInGroupAction = ({groupName, groupPassword, deviceName}) => {
+    return {
+      type: GET_DEVICES_IN_GROUP,
+      payload: {groupName, groupPassword, deviceName},
+    };
+  };
+
   return {
     isRunningAction,
     startServiceAction,
     stopServiceAction,
     testRequestAction,
+    getDevicesInGroupAction,
   };
 };
 

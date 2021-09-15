@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_foreground_service;
+package com.vision.modules.surveillance_service;
 
 import androidx.annotation.NonNull;
 
