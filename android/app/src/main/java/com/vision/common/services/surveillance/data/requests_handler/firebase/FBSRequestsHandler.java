@@ -1,4 +1,4 @@
-package com.vision.common.services.surveillance.data.requests_executor.firebase;
+package com.vision.common.services.surveillance.data.requests_handler.firebase;
 
 
 import android.content.Context;
@@ -8,24 +8,24 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.unknown.UnknownRequestServiceHandler;
-import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
+import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
 import com.vision.common.services.surveillance.data.service_request_types.SurveillanceServiceRequestTypes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FBSRequestsExecutor implements ServiceRequestsExecutor {
+public class FBSRequestsHandler implements ServiceRequestsHandler {
     private final String UNKNOWN_REQUEST_HANDLER_KEY = "unknown";
     private Map<String, ServiceRequestHandler> mHandlers;
 
-    public FBSRequestsExecutor() {
+    public FBSRequestsHandler() {
         mHandlers = new HashMap<>();
         mHandlers.put(UNKNOWN_REQUEST_HANDLER_KEY, new UnknownRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST, new TestRequestServiceHandler());
     }
 
     @Override
-    public void execute(Context context, String stringifiedRequest, Map<String, Object> params) {
+    public void handle(Context context, String stringifiedRequest, Map<String, Object> params) {
         Log.d("tag", "FirebaseRequestsExecutor->execute(): " + stringifiedRequest + " - " + (context == null));
 
         if (context == null) {

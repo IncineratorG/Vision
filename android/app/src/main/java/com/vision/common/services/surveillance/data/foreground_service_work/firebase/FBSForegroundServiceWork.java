@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
-import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
+import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,13 +21,13 @@ import java.util.Map;
 
 public class FBSForegroundServiceWork implements ForegroundServiceWork {
     private FBSListenerId mRequestListenerId;
-    private ServiceRequestsExecutor mRequestsExecutor;
+    private ServiceRequestsHandler mRequestsHandler;
     private List<String> mRequestPath;
     private Map<String, Object> mRequestParams;
 
-    public FBSForegroundServiceWork(ServiceRequestsExecutor requestsExecutor,
+    public FBSForegroundServiceWork(ServiceRequestsHandler requestsHandler,
                                     List<String> requestPath) {
-        mRequestsExecutor = requestsExecutor;
+        mRequestsHandler = requestsHandler;
         mRequestPath = requestPath;
 
         mRequestParams = new HashMap<>();
@@ -56,7 +56,7 @@ public class FBSForegroundServiceWork implements ForegroundServiceWork {
                 mRequestParams.clear();
                 mRequestParams.put("requestKey", key);
 
-                mRequestsExecutor.execute(context, value, mRequestParams);
+                mRequestsHandler.handle(context, value, mRequestParams);
             }
 
             @Override

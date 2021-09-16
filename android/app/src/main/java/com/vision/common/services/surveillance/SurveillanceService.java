@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
+import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
@@ -15,15 +16,17 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCall
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.services.surveillance.data.request_sender.firebase.FBSRequestSender;
-import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
-import com.vision.common.services.surveillance.data.requests_executor.firebase.FBSRequestsExecutor;
+import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
 import com.vision.common.data.service_response.ServiceResponse;
-import com.vision.common.interfaces.service_response_sender.ResponseSender;
+import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
+import com.vision.common.services.surveillance.data.requests_handler.firebase.FBSRequestsHandler;
+import com.vision.common.services.surveillance.data.response_sender.firebase.FBSResponseSender;
+import com.vision.common.services.surveillance.data.responses_handler.firebase.FBSResponsesHandler;
 import com.vision.common.services.surveillance.data.service_requests.SurveillanceServiceRequests;
 
 import java.util.List;
 
-public class SurveillanceService implements ResponseSender, ServiceRequestSender {
+public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender {
     private static SurveillanceService sInstance;
 
     private String mCurrentGroupName;
@@ -31,15 +34,21 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
     private String mCurrentDeviceName;
 
     private ForegroundServiceWork mForegroundServiceWork;
-    private ServiceRequestsExecutor mRequestsExecutor;
+    private ServiceRequestsHandler mRequestsHandler;
     private SurveillanceServiceRequests mRequests;
     private ServiceRequestSender mRequestsSender;
 
-    private SurveillanceService() {
-        mRequestsExecutor = new FBSRequestsExecutor();
+    private ServiceResponsesHandler mResponsesHandler;
+    private ServiceResponseSender mResponseSender;
 
+    private SurveillanceService() {
         mRequests = new SurveillanceServiceRequests();
+
+        mRequestsHandler = new FBSRequestsHandler();
         mRequestsSender = new FBSRequestSender();
+
+        mResponsesHandler = new FBSResponsesHandler();
+        mResponseSender = new FBSResponseSender();
     }
 
     public static synchronized SurveillanceService get() {
@@ -146,8 +155,18 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
     }
 
     @Override
-    public void sendResponse(ServiceResponse response) {
+    public void sendResponse(String groupName,
+                             String groupPassword,
+                             String receiverDeviceName,
+                             ServiceResponse response) {
         Log.d("tag", "SurveillanceService->sendResponse()");
+
+        mResponseSender.sendResponse(
+                groupName,
+                groupPassword,
+                receiverDeviceName,
+                response
+        );
     }
 
     public ForegroundServiceWork foregroundServiceWork() {
@@ -157,7 +176,7 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
                 mCurrentDeviceName
         );
 
-        mForegroundServiceWork = new FBSForegroundServiceWork(mRequestsExecutor, currentRequestsPath);
+        mForegroundServiceWork = new FBSForegroundServiceWork(mRequestsHandler, currentRequestsPath);
         return mForegroundServiceWork;
     }
 }

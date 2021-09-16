@@ -17,6 +17,7 @@ public class ServiceRequest implements Stringifiable {
     private final String TYPE_FIELD = "type";
     private final String TIMESTAMP_FIELD = "timestamp";
     private final String KEY_FIELD = "key";
+    private final String SENDER_DEVICE_NAME_FIELD = "senderDeviceName";
     private final String PAYLOAD_FIELD = "payload";
 
     private JSONObject mRequest;
@@ -30,6 +31,7 @@ public class ServiceRequest implements Stringifiable {
         try {
             mRequest.put(ID_FIELD, id);
             mRequest.put(TYPE_FIELD, type);
+            mRequest.put(SENDER_DEVICE_NAME_FIELD, "");
             mRequest.put(TIMESTAMP_FIELD, timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -37,7 +39,7 @@ public class ServiceRequest implements Stringifiable {
         }
     }
 
-    public ServiceRequest(String type, JSONObject payload) {
+    public ServiceRequest(String senderDeviceName, String type, JSONObject payload) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
 
@@ -45,6 +47,7 @@ public class ServiceRequest implements Stringifiable {
         try {
             mRequest.put(ID_FIELD, id);
             mRequest.put(TYPE_FIELD, type);
+            mRequest.put(SENDER_DEVICE_NAME_FIELD, senderDeviceName);
             mRequest.put(TIMESTAMP_FIELD, timestamp);
             if (payload != null) {
                 mRequest.put(PAYLOAD_FIELD, payload);
@@ -141,6 +144,21 @@ public class ServiceRequest implements Stringifiable {
             e.printStackTrace();
         }
         return type;
+    }
+
+    public String senderDeviceName() {
+        if (mRequest == null) {
+            Log.d("tag", "Request->senderDeviceName(): REQUEST_IS_NULL");
+            return null;
+        }
+
+        String senderDeviceName = null;
+        try {
+            senderDeviceName = mRequest.getString(SENDER_DEVICE_NAME_FIELD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return senderDeviceName;
     }
 
     public JSONObject payload() {

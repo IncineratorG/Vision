@@ -10,6 +10,7 @@ public class FBSPathsService {
     public final String APP_PATH = "vision";
     public final String GROUPS_PATH = "groups";
     public final String REQUESTS_PATH = "requests";
+    public final String RESPONSES_PATH = "responses";
     public final String DEVICE_INFO_PATH = "deviceInfo";
 
     public FBSPathsService() {
@@ -27,10 +28,6 @@ public class FBSPathsService {
     public List<String> currentRequestsPath() {
         return Arrays.asList("emulatorTestField", "testSubfield", "REQUEST");
     }
-
-//    public List<String> receiverRequestsPath(String groupName, String groupPassword, String receiverDeviceName) {
-//        return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, receiverDeviceName, REQUESTS_PATH);
-//    }
 
     public List<String> groupNamePath(String groupName) {
         return Arrays.asList(APP_PATH, GROUPS_PATH, groupName);
@@ -54,6 +51,10 @@ public class FBSPathsService {
 
     public List<String> requestsPath(String groupName, String groupPassword, String deviceName) {
         return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, REQUESTS_PATH);
+    }
+
+    public List<String> responsesPath(String groupName, String groupPassword, String deviceName) {
+        return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, RESPONSES_PATH);
     }
 
     // ===

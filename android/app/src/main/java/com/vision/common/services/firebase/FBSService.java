@@ -155,6 +155,24 @@ public class FBSService {
     }
 
     public void addValueToList(List<String> fields,
+                               String value) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = database.getReference();
+        for (int i = 0; i < fields.size(); ++i) {
+            ref = ref.child(fields.get(i));
+        }
+
+        String key = ref.push().getKey();
+        Log.d("tag", "KEY: " + key);
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(key, value);
+
+        ref.updateChildren(childUpdates);
+    }
+
+    public void addValueToList(List<String> fields,
                                String value,
                                OnCompleteListener<Void> onCompleteListener,
                                OnFailureListener onFailureListener) {

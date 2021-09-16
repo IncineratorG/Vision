@@ -54,7 +54,7 @@ public class TestRequestHandler implements JSActionHandler {
 
         SurveillanceService service = SurveillanceService.get();
 
-        ServiceRequest testRequest = service.requests().testRequest();
+        ServiceRequest testRequest = service.requests().testRequest(service.currentDeviceName());
 
         service.sendRequest(
                 groupName,

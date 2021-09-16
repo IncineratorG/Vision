@@ -4,6 +4,7 @@ package com.vision.common.services.surveillance.data.request_handlers.test;
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.data.service_request.ServiceRequest;
@@ -22,6 +23,19 @@ public class TestRequestServiceHandler implements ServiceRequestHandler {
         String currentGroupName = surveillanceService.currentGroupName();
         String currentGroupPassword = surveillanceService.currentGroupPassword();
         String currentDeviceName = surveillanceService.currentDeviceName();
+
+        // ===
+        String requestSenderDeviceName = request.senderDeviceName();
+
+        ServiceResponse response = new ServiceResponse(request.id(), null);
+
+        surveillanceService.sendResponse(
+                currentGroupName,
+                currentGroupPassword,
+                requestSenderDeviceName,
+                response
+        );
+        // ===
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
         if (request.key() != null) {
