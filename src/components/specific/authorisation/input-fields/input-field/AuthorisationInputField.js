@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#F5F5F5',
     // borderWidth: 1,
+    borderRadius: 4,
   },
   iconContainer: {
     width: 50,

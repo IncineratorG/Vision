@@ -8,6 +8,7 @@ const NativeAuthConstants = () => {
       CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
+      LOGOUT_DEVICE_FROM_GROUP,
     },
   } = NativeAuthLib.getConstants();
 
@@ -18,6 +19,7 @@ const NativeAuthConstants = () => {
       CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
+      LOGOUT_DEVICE_FROM_GROUP,
     },
   };
 };

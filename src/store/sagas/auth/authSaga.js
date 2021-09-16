@@ -4,6 +4,7 @@ import AppActions from '../../actions/AppActions';
 import as_registerDeviceInGroupSagaHandler from './handlers/as_registerDeviceInGroupSagaHandler';
 import as_createGroupWithDeviceSagaHandler from './handlers/as_createGroupWithDeviceSagaHandler';
 import as_loginInGroupSagaHandler from './handlers/as_loginInGroupSagaHandler';
+import as_logoutFromGroupSagaHandler from './handlers/as_logoutFromGroupSagaHandler';
 
 function* authSaga() {
   SystemEventsHandler.onInfo({info: 'authSaga'});
@@ -19,6 +20,10 @@ function* authSaga() {
   yield takeLatest(
     AppActions.auth.types.LOGIN_DEVICE,
     as_loginInGroupSagaHandler,
+  );
+  yield takeLatest(
+    AppActions.auth.types.LOGOUT_DEVICE,
+    as_logoutFromGroupSagaHandler,
   );
 }
 

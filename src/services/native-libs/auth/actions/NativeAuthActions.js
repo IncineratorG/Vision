@@ -8,6 +8,7 @@ const NativeFirebaseActions = () => {
       CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
       LOGIN_DEVICE_IN_GROUP,
+      LOGOUT_DEVICE_FROM_GROUP,
     },
   } = NativeAuthConstants;
 
@@ -54,12 +55,24 @@ const NativeFirebaseActions = () => {
     };
   };
 
+  const logoutDeviceFromGroupAction = ({
+    groupName,
+    groupPassword,
+    deviceName,
+  }) => {
+    return {
+      type: LOGOUT_DEVICE_FROM_GROUP,
+      payload: {groupName, groupPassword, deviceName},
+    };
+  };
+
   return {
     isDeviceGroupExistAction,
     createGroupWithDeviceAction,
     isDeviceNameAvailable,
     registerDeviceInGroupAction,
     loginDeviceInGroupAction,
+    logoutDeviceFromGroupAction,
   };
 };
 

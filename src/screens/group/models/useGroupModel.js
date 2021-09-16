@@ -2,6 +2,7 @@ import {useState, useCallback, useEffect, useMemo} from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppRoutes from '../../../data/common/routes/AppRoutes';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -25,6 +26,13 @@ const useGroupModel = () => {
     },
   } = useSelector((state) => state.surveillance.devicesInGroup);
 
+  const focusChangedCallback = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
+    });
+  }, []);
+  useFocusEffect(focusChangedCallback);
+
   // ===
   useEffect(() => {
     SystemEventsHandler.onInfo({
@@ -34,12 +42,11 @@ const useGroupModel = () => {
   }, [loadingDevicesInGroup]);
   // ===
 
-  const focusChangedCallback = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
-    });
-  }, []);
-  useFocusEffect(focusChangedCallback);
+  useEffect(() => {
+    if (!loggedIn) {
+      navigation.navigate(AppRoutes.Authorisation);
+    }
+  }, [loggedIn, navigation]);
 
   return {
     data: {

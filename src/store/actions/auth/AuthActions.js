@@ -14,6 +14,11 @@ const AuthActions = () => {
     LOGIN_DEVICE_BEGIN: 'AA_LOGIN_DEVICE_BEGIN',
     LOGIN_DEVICE_FINISHED: 'AA_LOGIN_DEVICE_FINISHED',
     LOGIN_DEVICE_ERROR: 'AA_LOGIN_DEVICE_ERROR',
+
+    LOGOUT_DEVICE: 'AA_LOGOUT_DEVICE',
+    LOGOUT_DEVICE_BEGIN: 'AA_LOGOUT_DEVICE_BEGIN',
+    LOGOUT_DEVICE_FINISHED: 'AA_LOGOUT_DEVICE_FINISHED',
+    LOGOUT_DEVICE_ERROR: 'AA_LOGOUT_DEVICE_ERROR',
   };
 
   const registerDeviceInGroup = ({groupName, groupPassword, deviceName}) => {
@@ -105,6 +110,31 @@ const AuthActions = () => {
     };
   };
 
+  const logoutDevice = () => {
+    return {
+      type: types.LOGOUT_DEVICE,
+    };
+  };
+
+  const logoutDeviceBegin = () => {
+    return {
+      type: types.LOGOUT_DEVICE_BEGIN,
+    };
+  };
+
+  const logoutDeviceFinished = () => {
+    return {
+      type: types.LOGOUT_DEVICE_FINISHED,
+    };
+  };
+
+  const logoutDeviceError = ({code, message}) => {
+    return {
+      type: types.LOGOUT_DEVICE_ERROR,
+      payload: {code, message},
+    };
+  };
+
   return {
     types,
     actions: {
@@ -120,6 +150,10 @@ const AuthActions = () => {
       loginDeviceBegin,
       loginDeviceFinished,
       loginDeviceError,
+      logoutDevice,
+      logoutDeviceBegin,
+      logoutDeviceFinished,
+      logoutDeviceError,
     },
   };
 };

@@ -71,10 +71,29 @@ const AuthService = () => {
     });
   };
 
+  const logoutFromGroup = async ({groupName, groupPassword, deviceName}) => {
+    SystemEventsHandler.onInfo({
+      info:
+        'AuthService->logoutFromGroup(): ' +
+        groupName +
+        ' - ' +
+        groupPassword +
+        ' - ' +
+        deviceName,
+    });
+
+    return nativeAuthService.logoutDeviceFromGroup({
+      groupName,
+      groupPassword,
+      deviceName,
+    });
+  };
+
   return {
     registerDeviceInGroup,
     createGroupWithDevice,
     loginInGroup,
+    logoutFromGroup,
   };
 };
 

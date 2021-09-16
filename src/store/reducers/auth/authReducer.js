@@ -31,6 +31,14 @@ const initialState = {
       message: '',
     },
   },
+  logoutDeviceFromGroup: {
+    inProgress: false,
+    error: {
+      hasError: false,
+      code: '',
+      message: '',
+    },
+  },
 };
 
 const authReducer = (state = initialState, action) => {
@@ -196,6 +204,60 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loginDeviceInGroup: {
           ...state.loginDeviceInGroup,
+          inProgress: false,
+          error: {
+            hasError: true,
+            code,
+            message,
+          },
+        },
+      };
+    }
+
+    case AppActions.auth.types.LOGOUT_DEVICE_BEGIN: {
+      return {
+        ...state,
+        logoutDeviceFromGroup: {
+          ...state.logoutDeviceFromGroup,
+          inProgress: true,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.auth.types.LOGOUT_DEVICE_FINISHED: {
+      return {
+        ...state,
+        authInfo: {
+          ...state.authInfo,
+          groupName: '',
+          groupPassword: '',
+          deviceName: '',
+          loggedIn: false,
+        },
+        logoutDeviceFromGroup: {
+          ...state.logoutDeviceFromGroup,
+          inProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.auth.types.LOGOUT_DEVICE_ERROR: {
+      const {code, message} = action.payload;
+
+      return {
+        ...state,
+        logoutDeviceFromGroup: {
+          ...state.logoutDeviceFromGroup,
           inProgress: false,
           error: {
             hasError: true,

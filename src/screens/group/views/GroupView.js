@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 
 const GroupView = ({model, controller}) => {
-  const {testRequest, updateDevicesInGroupData} = controller;
+  const {testRequest, updateDevicesInGroupData, logout} = controller;
 
   return (
     <View style={styles.mainContainer}>
@@ -17,6 +17,9 @@ const GroupView = ({model, controller}) => {
             title={'Update devices in group data'}
             onPress={updateDevicesInGroupData}
           />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Logout'} onPress={logout} />
         </View>
       </View>
     </View>

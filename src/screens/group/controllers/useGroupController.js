@@ -36,10 +36,17 @@ const useGroupController = (model) => {
     );
   }, [currentGroupName, currentGroupPassword, currentDeviceName, dispatch]);
 
+  const logout = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'logout()'});
+
+    dispatch(AppActions.auth.actions.logoutDevice());
+  }, [dispatch]);
+
   return {
     testRequest,
     backButtonPressHandler,
     updateDevicesInGroupData,
+    logout,
   };
 };
 

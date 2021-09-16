@@ -8,6 +8,7 @@ import com.vision.modules.auth.module_actions_executor.handlers.CreateGroupWithD
 import com.vision.modules.auth.module_actions_executor.handlers.IsDeviceGroupExistHandler;
 import com.vision.modules.auth.module_actions_executor.handlers.IsDeviceNameAvailableHandler;
 import com.vision.modules.auth.module_actions_executor.handlers.LoginDeviceInGroupHandler;
+import com.vision.modules.auth.module_actions_executor.handlers.LogoutDeviceFromGroupHandler;
 import com.vision.modules.auth.module_actions_executor.handlers.RegisterDeviceInGroupHandler;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
 import com.vision.modules.modules_common.data.error.ModuleError;
@@ -28,6 +29,7 @@ public class AuthJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE, new IsDeviceNameAvailableHandler());
         mHandlers.put(AuthJSActionTypes.CREATE_GROUP_WITH_DEVICE, new CreateGroupWithDeviceHandler());
         mHandlers.put(AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP, new LoginDeviceInGroupHandler());
+        mHandlers.put(AuthJSActionTypes.LOGOUT_DEVICE_FROM_GROUP, new LogoutDeviceFromGroupHandler());
     }
 
     @Override

@@ -3,6 +3,7 @@ import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import useTranslation from '../../../utils/common/localization';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppRoutes from '../../../data/common/routes/AppRoutes';
 
 const useAuthorisationModel = () => {
   const navigation = useNavigation();
@@ -104,7 +105,7 @@ const useAuthorisationModel = () => {
     if (loggedIn) {
       SystemEventsHandler.onInfo({info: 'useAuthorisationModel()->LOGGED_IN'});
 
-      navigation.navigate('Group');
+      navigation.navigate(AppRoutes.Group);
     } else {
       SystemEventsHandler.onInfo({
         info: 'useAuthorisationModel()->NOT_LOGGED_IN',

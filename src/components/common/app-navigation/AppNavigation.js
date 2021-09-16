@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Main from '../../../screens/main/Main';
 import Authorisation from '../../../screens/authorisation/Authorisation';
 import Group from '../../../screens/group/Group';
+import AppRoutes from '../../../data/common/routes/AppRoutes';
 
 const MainStack = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ const AppNavigation = () => {
     return (
       <MainStack.Navigator mode="card">
         <MainStack.Screen
-          name={'Authorisation'}
+          name={AppRoutes.Authorisation}
           component={Authorisation}
           options={{
             title: 'Authorisation',
@@ -23,7 +24,7 @@ const AppNavigation = () => {
           }}
         />
         <MainStack.Screen
-          name={'Group'}
+          name={AppRoutes.Group}
           component={Group}
           options={({navigation, route}) => ({
             headerShown: true,
@@ -41,7 +42,7 @@ const AppNavigation = () => {
           // }}
         />
         <MainStack.Screen
-          name={'Main'}
+          name={AppRoutes.Main}
           component={Main}
           options={{
             title: 'Main',
