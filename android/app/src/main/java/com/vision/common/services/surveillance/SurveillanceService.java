@@ -37,14 +37,8 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
 
     private SurveillanceService() {
         mRequestsExecutor = new FBSRequestsExecutor();
-        List<String> requestPath = FBSPathsService.get().currentRequestsPath();
+
         mRequests = new SurveillanceServiceRequests();
-
-        mForegroundServiceWork = new FBSForegroundServiceWork(
-                mRequestsExecutor,
-                requestPath
-        );
-
         mRequestsSender = new FBSRequestSender();
     }
 
@@ -157,6 +151,13 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
     }
 
     public ForegroundServiceWork foregroundServiceWork() {
+        List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
+                mCurrentGroupName,
+                mCurrentGroupPassword,
+                mCurrentDeviceName
+        );
+
+        mForegroundServiceWork = new FBSForegroundServiceWork(mRequestsExecutor, currentRequestsPath);
         return mForegroundServiceWork;
     }
 }

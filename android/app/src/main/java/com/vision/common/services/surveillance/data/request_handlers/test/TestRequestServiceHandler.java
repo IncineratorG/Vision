@@ -8,6 +8,7 @@ import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
+import com.vision.common.services.surveillance.SurveillanceService;
 
 import java.util.List;
 
@@ -16,7 +17,13 @@ public class TestRequestServiceHandler implements ServiceRequestHandler {
     public void handle(Context context, ServiceRequest request) {
         Log.d("tag", "TestRequestServiceHandler->handle(): " + request.stringify());
 
-        List<String> requestsPath = FBSPathsService.get().currentRequestsPath();
+        SurveillanceService surveillanceService = SurveillanceService.get();
+
+        String currentGroupName = surveillanceService.currentGroupName();
+        String currentGroupPassword = surveillanceService.currentGroupPassword();
+        String currentDeviceName = surveillanceService.currentDeviceName();
+
+        List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
         if (request.key() != null) {
             FBSService.get().removeValueFromList(requestsPath, request.key());
         } else {
