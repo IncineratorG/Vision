@@ -13,7 +13,7 @@ public class StopServiceHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "StopServiceHandler");
 
-        SurveillanceService.get().stop(context);
+        SurveillanceService.get().stopForegroundService(context);
 
         result.resolve(true);
     }

@@ -192,7 +192,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                                   String groupName,
                                   String groupPassword,
                                   String deviceName) {
-        SurveillanceService.get().setCurrentUserData(groupName, groupPassword, deviceName);
+        SurveillanceService.get().init(groupName, groupPassword, deviceName);
 
         FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }

@@ -62,7 +62,11 @@ public class LogoutDeviceFromGroupHandler implements JSActionHandler {
 
         Log.d("tag", "LogoutDeviceFromGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        SurveillanceService.get().clearCurrentUserData();
+        SurveillanceService surveillanceService = SurveillanceService.get();
+        if (surveillanceService.isRunning(context)) {
+            surveillanceService.stopForegroundService(context);
+        }
+        surveillanceService.dispose();
 
         result.resolve(true);
     }

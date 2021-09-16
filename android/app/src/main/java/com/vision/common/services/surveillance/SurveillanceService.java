@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
+import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
+import com.vision.common.services.surveillance.data.communication_manager.firebase.FBSCommunicationManager;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
@@ -29,6 +31,7 @@ import java.util.List;
 public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender {
     private static SurveillanceService sInstance;
 
+    private boolean mInitialized;
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
@@ -41,14 +44,10 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     private ServiceResponsesHandler mResponsesHandler;
     private ServiceResponseSender mResponseSender;
 
+    private ServiceCommunicationManager mCommunicationManager;
+
     private SurveillanceService() {
         mRequests = new SurveillanceServiceRequests();
-
-        mRequestsHandler = new FBSRequestsHandler();
-        mRequestsSender = new FBSRequestSender();
-
-        mResponsesHandler = new FBSResponsesHandler();
-        mResponseSender = new FBSResponseSender();
     }
 
     public static synchronized SurveillanceService get() {
@@ -57,6 +56,52 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         }
 
         return sInstance;
+    }
+
+    public void init(String groupName, String groupPassword, String deviceName) {
+        mCurrentGroupName = groupName;
+        mCurrentGroupPassword = groupPassword;
+        mCurrentDeviceName = deviceName;
+
+        mInitialized = true;
+
+        List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
+                mCurrentGroupName,
+                mCurrentGroupPassword,
+                mCurrentDeviceName
+        );
+        List<String> currentResponsesPath = FBSPathsService.get().responsesPath(
+                mCurrentGroupName,
+                mCurrentGroupPassword,
+                mCurrentDeviceName
+        );
+
+        mRequestsHandler = new FBSRequestsHandler();
+        mRequestsSender = new FBSRequestSender();
+
+        mResponsesHandler = new FBSResponsesHandler();
+        mResponseSender = new FBSResponseSender();
+
+        mCommunicationManager = new FBSCommunicationManager(
+                mRequestsHandler,
+                mResponsesHandler,
+                mRequestsSender,
+                mResponseSender,
+                currentRequestsPath,
+                currentResponsesPath
+        );
+    }
+
+    public boolean isInitialized() {
+        return mInitialized;
+    }
+
+    public void dispose() {
+        mCurrentGroupName = null;
+        mCurrentGroupPassword = null;
+        mCurrentDeviceName = null;
+
+        mInitialized = false;
     }
 
     public String currentGroupName() {
@@ -71,28 +116,16 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return mCurrentDeviceName;
     }
 
-    public void setCurrentUserData(String groupName, String groupPassword, String deviceName) {
-        mCurrentGroupName = groupName;
-        mCurrentGroupPassword = groupPassword;
-        mCurrentDeviceName = deviceName;
-    }
-
-    public void clearCurrentUserData() {
-        mCurrentGroupName = null;
-        mCurrentGroupPassword = null;
-        mCurrentDeviceName = null;
-    }
-
-    public void start(Context context) {
-        Log.d("tag", "SurveillanceService->start()");
+    public void startForegroundService(Context context) {
+        Log.d("tag", "SurveillanceService->startForegroundService()");
 
         if (context == null) {
-            Log.d("tag", "SurveillanceService->start(): CONTEXT_IS_NULL");
+            Log.d("tag", "SurveillanceService->startForegroundService(): CONTEXT_IS_NULL");
             return;
         }
 
         if (isRunning(context)) {
-            Log.d("tag", "SurveillanceService->start(): SERVICE_IS_ALREADY_RUNNING");
+            Log.d("tag", "SurveillanceService->startForegroundService(): SERVICE_IS_ALREADY_RUNNING");
             return;
         }
 
@@ -101,16 +134,16 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         context.startService(serviceIntent);
     }
 
-    public void stop(Context context) {
-        Log.d("tag", "SurveillanceService->stop()");
+    public void stopForegroundService(Context context) {
+        Log.d("tag", "SurveillanceService->stopForegroundService()");
 
         if (context == null) {
-            Log.d("tag", "SurveillanceService->stop(): CONTEXT_IS_NULL");
+            Log.d("tag", "SurveillanceService->stopForegroundService(): CONTEXT_IS_NULL");
             return;
         }
 
         if (!isRunning(context)) {
-            Log.d("tag", "SurveillanceService->stop(): SERVICE_ALREADY_NOT_RUNNING");
+            Log.d("tag", "SurveillanceService->stopForegroundService(): SERVICE_ALREADY_NOT_RUNNING");
             return;
         }
 
@@ -138,17 +171,17 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                             String groupPassword,
                             String receiverDeviceName,
                             ServiceRequest request,
-                            OnDeliveredCallback deliveredCallback,
+                            OnDeliveredCallback onDeliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
         Log.d("tag", "SurveillanceService->sendRequest()");
 
-        mRequestsSender.sendRequest(
+        mCommunicationManager.sendRequest(
                 groupName,
                 groupPassword,
                 receiverDeviceName,
                 request,
-                deliveredCallback,
+                onDeliveredCallback,
                 onResponseCallback,
                 onErrorCallback
         );
@@ -161,22 +194,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                              ServiceResponse response) {
         Log.d("tag", "SurveillanceService->sendResponse()");
 
-        mResponseSender.sendResponse(
-                groupName,
-                groupPassword,
-                receiverDeviceName,
-                response
-        );
+        mCommunicationManager.sendResponse(groupName, groupPassword, receiverDeviceName, response);
     }
 
     public ForegroundServiceWork foregroundServiceWork() {
-        List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
-                mCurrentGroupName,
-                mCurrentGroupPassword,
-                mCurrentDeviceName
-        );
-
-        mForegroundServiceWork = new FBSForegroundServiceWork(mRequestsHandler, currentRequestsPath);
+        mForegroundServiceWork = new FBSForegroundServiceWork(mCommunicationManager);
         return mForegroundServiceWork;
     }
 }

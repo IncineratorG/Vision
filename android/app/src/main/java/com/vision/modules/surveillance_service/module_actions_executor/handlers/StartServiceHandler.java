@@ -13,7 +13,7 @@ public class StartServiceHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "StartServiceHandler");
 
-        SurveillanceService.get().start(context);
+        SurveillanceService.get().startForegroundService(context);
 
         result.resolve(true);
     }
