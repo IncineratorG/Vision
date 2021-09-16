@@ -1,13 +1,21 @@
-import {useState, useCallback, useEffect, useMemo} from 'react';
+import {useState, useCallback, useEffect, useReducer, useMemo} from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
+import AppActions from '../../../store/actions/AppActions';
+import groupLocalReducer from '../store/groupLocalReducer';
+import groupLocalState from '../store/groupLocalState';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
+
+  const [localState, localDispatch] = useReducer(
+    groupLocalReducer,
+    groupLocalState,
+  );
 
   const {
     groupName: currentGroupName,
@@ -30,7 +38,15 @@ const useGroupModel = () => {
     SystemEventsHandler.onInfo({
       info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
     });
-  }, []);
+
+    dispatch(
+      AppActions.surveillance.actions.getDevicesInGroup({
+        groupName: currentGroupName,
+        groupPassword: currentGroupPassword,
+        deviceName: currentDeviceName,
+      }),
+    );
+  }, [currentGroupName, currentGroupPassword, currentDeviceName, dispatch]);
   useFocusEffect(focusChangedCallback);
 
   // ===
@@ -61,15 +77,18 @@ const useGroupModel = () => {
 
   return {
     data: {
+      localState,
       currentGroupName,
       currentGroupPassword,
       currentDeviceName,
       loggedIn,
+      loadingDevicesInGroup,
       devicesInGroupArray,
     },
     setters: {},
-    navigation,
     dispatch,
+    localDispatch,
+    navigation,
   };
 };
 

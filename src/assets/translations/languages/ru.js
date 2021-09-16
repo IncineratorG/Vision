@@ -41,6 +41,8 @@ const ru = {
   AuthorisationStatus_registerDeviceInGroupInProgress: 'Регистрация в группе',
   AuthorisationStatus_createGroupWithDeviceInProgress: 'Создание группы',
   AuthorisationStatus_loginDeviceInGroupInProgress: 'Вход в группу',
+
+  DeviceRequestDialog_cancelButton: 'ОТМЕНА',
 };
 
 export default ru;

@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import GroupDeviceItem from './item/GroupDeviceItem';
 import {FlatGrid} from 'react-native-super-grid';
 
-const GroupDevicesList = ({devices}) => {
+const GroupDevicesList = ({devices, onDevicePress}) => {
   const [items, setItems] = useState([
     {name: 'TURQUOISE', code: '#1abc9c'},
     {name: 'EMERALD', code: '#2ecc71'},
@@ -27,9 +27,12 @@ const GroupDevicesList = ({devices}) => {
     {name: 'ASBESTOS', code: '#7f8c8d'},
   ]);
 
-  const renderItem = useCallback(({item}) => {
-    return <GroupDeviceItem device={item} />;
-  }, []);
+  const renderItem = useCallback(
+    ({item}) => {
+      return <GroupDeviceItem device={item} onDevicePress={onDevicePress} />;
+    },
+    [onDevicePress],
+  );
 
   const keyExtractor = useCallback((item) => {
     return item.deviceName;

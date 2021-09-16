@@ -1,12 +1,20 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const GroupDeviceItem = ({device}) => {
+const GroupDeviceItem = ({device, onDevicePress}) => {
+  const {deviceName, lastLoginTimestamp} = device;
+
+  const devicePressHandler = useCallback(() => {
+    onDevicePress({deviceName});
+  }, [deviceName, onDevicePress]);
+
   return (
-    <View style={[styles.itemContainer /*{backgroundColor: item.code}*/]}>
-      <Text style={styles.itemName}>{device.deviceName}</Text>
-      <Text style={styles.itemCode}>{device.lastLoginTimestamp}</Text>
-    </View>
+    <TouchableOpacity activeOpacity={0.5} onPress={devicePressHandler}>
+      <View style={[styles.itemContainer /*{backgroundColor: item.code}*/]}>
+        <Text style={styles.itemName}>{deviceName}</Text>
+        <Text style={styles.itemCode}>{lastLoginTimestamp}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

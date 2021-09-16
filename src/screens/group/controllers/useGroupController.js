@@ -3,11 +3,24 @@ import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
 import Services from '../../../services/Services';
+import GroupLocalActions from '../store/GroupLocalActions';
 
 const useGroupController = (model) => {
   const {
-    data: {currentGroupName, currentGroupPassword, currentDeviceName, loggedIn},
+    data: {
+      currentGroupName,
+      currentGroupPassword,
+      currentDeviceName,
+      loggedIn,
+      localState: {
+        deviceRequestsDialog: {
+          visible: deviceRequestsDialogVisible,
+          selectedDeviceName: deviceRequestsDialogSelectedDeviceName,
+        },
+      },
+    },
     dispatch,
+    localDispatch,
   } = model;
 
   const testRequest = useCallback(async () => {
@@ -42,11 +55,41 @@ const useGroupController = (model) => {
     dispatch(AppActions.auth.actions.logoutDevice());
   }, [dispatch]);
 
+  const devicePressHandler = useCallback(
+    ({deviceName}) => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupModel()->devicePressHandler(): ' + deviceName,
+      });
+
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogData({
+          selectedDeviceName: deviceName,
+        }),
+      );
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+          visible: true,
+        }),
+      );
+    },
+    [localDispatch],
+  );
+
+  const deviceRequestsDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
   return {
     testRequest,
     backButtonPressHandler,
     updateDevicesInGroupData,
     logout,
+    devicePressHandler,
+    deviceRequestsDialogCancelHandler,
   };
 };
 

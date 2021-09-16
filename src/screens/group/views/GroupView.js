@@ -2,15 +2,39 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
+import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 
 const GroupView = ({model, controller}) => {
   const {
-    data: {devicesInGroupArray},
+    data: {
+      devicesInGroupArray,
+      localState: {
+        deviceRequestsDialog: {visible: deviceRequestsDialogVisible},
+      },
+    },
   } = model;
 
-  const {testRequest, updateDevicesInGroupData, logout} = controller;
+  const {
+    testRequest,
+    updateDevicesInGroupData,
+    logout,
+    devicePressHandler,
+    deviceRequestsDialogCancelHandler,
+  } = controller;
 
-  const devicesList = <GroupDevicesList devices={devicesInGroupArray} />;
+  const devicesList = (
+    <GroupDevicesList
+      devices={devicesInGroupArray}
+      onDevicePress={devicePressHandler}
+    />
+  );
+
+  const deviceRequestsDialog = (
+    <DeviceRequestsDialog
+      visible={deviceRequestsDialogVisible}
+      onCancelPress={deviceRequestsDialogCancelHandler}
+    />
+  );
 
   return (
     <View style={styles.mainContainer}>
@@ -29,6 +53,7 @@ const GroupView = ({model, controller}) => {
           <SimpleButton title={'Logout'} onPress={logout} />
         </View>
       </View>
+      {deviceRequestsDialog}
     </View>
   );
 };
