@@ -123,7 +123,20 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 String key = snapshot.getKey();
                 String value = snapshot.getValue(String.class);
 
-                Log.d("tag", "FBSCommunicationManager->startResponsesListener()->KEY: " + key);
+                if (key == null) {
+                    Log.d("tag", "FBSCommunicationManager->startResponsesListener()->KEY_IS_NULL");
+                    return;
+                }
+
+                if (value == null) {
+                    Log.d("tag", "FBSCommunicationManager->startResponsesListener()->VALUE_IS_NULL");
+                    return;
+                }
+
+                Map<String, Object> responseParams = new HashMap<>();
+                responseParams.put("responseKey", key);
+
+                mResponsesHandler.handle(context, value, responseParams);
             }
 
             @Override
