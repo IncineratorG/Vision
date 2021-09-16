@@ -96,12 +96,15 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return mInitialized;
     }
 
-    public void dispose() {
+    public void dispose(Context context) {
         mCurrentGroupName = null;
         mCurrentGroupPassword = null;
         mCurrentDeviceName = null;
 
         mInitialized = false;
+
+        stopListenToResponses(context);
+        stopForegroundService(context);
     }
 
     public String currentGroupName() {
@@ -116,6 +119,24 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return mCurrentDeviceName;
     }
 
+    public void startListenToResponses(Context context) {
+        if (mCommunicationManager == null) {
+            Log.d("tag", "SurveillanceService->startListenToResponses(): COMMUNICATION_MANAGER_NOT_INITIALIZED");
+            return;
+        }
+
+        mCommunicationManager.startResponsesListener(context);
+    }
+
+    public void stopListenToResponses(Context context) {
+        if (mCommunicationManager == null) {
+            Log.d("tag", "SurveillanceService->stopListenToResponses(): COMMUNICATION_MANAGER_NOT_INITIALIZED");
+            return;
+        }
+
+        mCommunicationManager.stopResponsesListener(context);
+    }
+
     public void startForegroundService(Context context) {
         Log.d("tag", "SurveillanceService->startForegroundService()");
 
@@ -124,7 +145,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
             return;
         }
 
-        if (isRunning(context)) {
+        if (isForegroundServiceRunning(context)) {
             Log.d("tag", "SurveillanceService->startForegroundService(): SERVICE_IS_ALREADY_RUNNING");
             return;
         }
@@ -142,7 +163,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
             return;
         }
 
-        if (!isRunning(context)) {
+        if (!isForegroundServiceRunning(context)) {
             Log.d("tag", "SurveillanceService->stopForegroundService(): SERVICE_ALREADY_NOT_RUNNING");
             return;
         }
@@ -152,7 +173,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         context.startService(serviceIntent);
     }
 
-    public boolean isRunning(Context context) {
+    public boolean isForegroundServiceRunning(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (SurveillanceForegroundService.class.getName().equals(service.service.getClassName())) {

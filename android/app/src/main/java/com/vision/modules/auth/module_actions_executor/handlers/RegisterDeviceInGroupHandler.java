@@ -1,6 +1,7 @@
 package com.vision.modules.auth.module_actions_executor.handlers;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -74,10 +75,11 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
 
         Log.d("tag", "RegisterDeviceInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        checkIfGroupExist(payload, result);
+        checkIfGroupExist(context, payload, result);
     }
 
-    private void checkIfGroupExist(RegisterDeviceInGroupPayload handlerPayload,
+    private void checkIfGroupExist(Context context,
+                                   RegisterDeviceInGroupPayload handlerPayload,
                                    Promise handlerResult) {
         List<String> groupNamePath = FBSPathsService.get().groupNamePath(handlerPayload.groupName());
 
@@ -87,7 +89,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
                 if (snapshot.exists()) {
                     Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_EXIST");
 
-                    checkIfPasswordCorrect(handlerPayload, handlerResult);
+                    checkIfPasswordCorrect(context, handlerPayload, handlerResult);
                 } else {
                     Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_NOT_EXIST");
 
@@ -106,7 +108,8 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(groupNamePath, listener);
     }
 
-    private void checkIfPasswordCorrect(RegisterDeviceInGroupPayload handlerPayload,
+    private void checkIfPasswordCorrect(Context context,
+                                        RegisterDeviceInGroupPayload handlerPayload,
                                         Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
@@ -119,7 +122,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
                 if (snapshot.exists()) {
                     Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): PASSWORD_CORRECT");
 
-                    checkDeviceName(handlerPayload, handlerResult);
+                    checkDeviceName(context, handlerPayload, handlerResult);
                 } else {
                     Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): BAD_PASSWORD");
 
@@ -138,7 +141,8 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(groupPasswordPath, listener);
     }
 
-    private void checkDeviceName(RegisterDeviceInGroupPayload handlerPayload,
+    private void checkDeviceName(Context context,
+                                 RegisterDeviceInGroupPayload handlerPayload,
                                  Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
@@ -157,7 +161,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
                 } else {
                     Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_NOT_EXIST");
 
-                    registerDeviceInGroup(handlerPayload, handlerResult);
+                    registerDeviceInGroup(context, handlerPayload, handlerResult);
                 }
             }
 
@@ -171,7 +175,8 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(devicePath, listener);
     }
 
-    private void registerDeviceInGroup(RegisterDeviceInGroupPayload handlerPayload,
+    private void registerDeviceInGroup(Context context,
+                                       RegisterDeviceInGroupPayload handlerPayload,
                                        Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
@@ -183,6 +188,7 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
             Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
 
             SurveillanceService.get().init(groupName, groupPassword, deviceName);
+            SurveillanceService.get().startListenToResponses(context);
 
             handlerResult.resolve(true);
         };

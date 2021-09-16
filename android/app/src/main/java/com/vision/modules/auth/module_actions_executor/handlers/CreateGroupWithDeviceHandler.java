@@ -1,5 +1,6 @@
 package com.vision.modules.auth.module_actions_executor.handlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -73,12 +74,13 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
 
         Log.d("tag", "CreateGroupWithDeviceHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        checkIfGroupExist(payload, result);
+        checkIfGroupExist(context, payload, result);
 
         result.resolve(true);
     }
 
-    private void checkIfGroupExist(CreateGroupWithDevicePayload handlerPayload,
+    private void checkIfGroupExist(Context context,
+                                   CreateGroupWithDevicePayload handlerPayload,
                                    Promise handlerResult) {
         List<String> groupNamePath = FBSPathsService.get().groupNamePath(handlerPayload.groupName());
 
@@ -93,7 +95,7 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
                 } else {
                     Log.d("tag", "CreateGroupWithDeviceHandler->checkIfGroupExist(): GROUP_NOT_EXIST");
 
-                    createGroupWithDevice(handlerPayload, handlerResult);
+                    createGroupWithDevice(context, handlerPayload, handlerResult);
                 }
             }
 
@@ -107,7 +109,8 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
         FBSService.get().getValue(groupNamePath, listener);
     }
 
-    private void createGroupWithDevice(CreateGroupWithDevicePayload handlerPayload,
+    private void createGroupWithDevice(Context context,
+                                       CreateGroupWithDevicePayload handlerPayload,
                                        Promise handlerResult) {
         Log.d("tag", "CreateGroupWithDeviceHandler->createGroupWithDevice()");
 
@@ -121,6 +124,7 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
             Log.d("tag", "CreateGroupWithDeviceHandler->createGroupWithDevice()->onComplete");
 
             SurveillanceService.get().init(groupName, groupPassword, deviceName);
+            SurveillanceService.get().startListenToResponses(context);
 
             handlerResult.resolve(true);
         };

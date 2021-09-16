@@ -1,5 +1,6 @@
 package com.vision.modules.auth.module_actions_executor.handlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -72,10 +73,11 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
 
         Log.d("tag", "LoginDeviceInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
 
-        checkIfGroupExist(payload, result);
+        checkIfGroupExist(context, payload, result);
     }
 
-    private void checkIfGroupExist(LoginDeviceInGroupPayload handlerPayload,
+    private void checkIfGroupExist(Context context,
+                                   LoginDeviceInGroupPayload handlerPayload,
                                    Promise handlerResult) {
         List<String> groupNamePath = FBSPathsService.get().groupNamePath(handlerPayload.groupName());
 
@@ -85,7 +87,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                 if (snapshot.exists()) {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfGroupExist(): GROUP_EXIST");
 
-                    checkIfPasswordCorrect(handlerPayload, handlerResult);
+                    checkIfPasswordCorrect(context, handlerPayload, handlerResult);
                 } else {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfGroupExist(): GROUP_NOT_EXIST");
 
@@ -104,7 +106,8 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(groupNamePath, listener);
     }
 
-    private void checkIfPasswordCorrect(LoginDeviceInGroupPayload handlerPayload,
+    private void checkIfPasswordCorrect(Context context,
+                                        LoginDeviceInGroupPayload handlerPayload,
                                         Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
@@ -117,7 +120,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                 if (snapshot.exists()) {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfPasswordCorrect(): PASSWORD_CORRECT");
 
-                    checkDeviceName(handlerPayload, handlerResult);
+                    checkDeviceName(context, handlerPayload, handlerResult);
                 } else {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfPasswordCorrect(): BAD_PASSWORD");
 
@@ -136,7 +139,8 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(groupPasswordPath, listener);
     }
 
-    private void checkDeviceName(LoginDeviceInGroupPayload handlerPayload,
+    private void checkDeviceName(Context context,
+                                 LoginDeviceInGroupPayload handlerPayload,
                                  Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
@@ -157,7 +161,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
                         deviceInfo.setDeviceName(deviceName);
 
-                        updateDeviceInfo(deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
+                        updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     } else {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
 
@@ -165,7 +169,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
                         deviceInfo.setDeviceName(deviceName);
 
-                        updateDeviceInfo(deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
+                        updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     }
 
                     handlerResult.resolve(true);
@@ -187,12 +191,14 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(deviceInfoPath, listener);
     }
 
-    private void updateDeviceInfo(List<String> deviceInfoPath,
+    private void updateDeviceInfo(Context context,
+                                  List<String> deviceInfoPath,
                                   DeviceInfo updatedDeviceInfo,
                                   String groupName,
                                   String groupPassword,
                                   String deviceName) {
         SurveillanceService.get().init(groupName, groupPassword, deviceName);
+        SurveillanceService.get().startListenToResponses(context);
 
         FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }

@@ -62,12 +62,12 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 String value = snapshot.getValue(String.class);
 
                 if (key == null) {
-                    Log.d("tag", "FBSForegroundServiceWork->KEY_IS_NULL");
+                    Log.d("tag", "FBSCommunicationManager->startRequestsListener()->KEY_IS_NULL");
                     return;
                 }
 
                 if (value == null) {
-                    Log.d("tag", "FBSForegroundServiceWork->VALUE_IS_NULL");
+                    Log.d("tag", "FBSCommunicationManager->startRequestsListener()->VALUE_IS_NULL");
                     return;
                 }
 
@@ -115,12 +115,51 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
     @Override
     public void startResponsesListener(Context context) {
+        FBSService.get().setStringValue(mResponsesPath, null);
 
+        ChildEventListener listener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String key = snapshot.getKey();
+                String value = snapshot.getValue(String.class);
+
+                Log.d("tag", "FBSCommunicationManager->startResponsesListener()->KEY: " + key);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        if (mResponseListenerId != null) {
+            FBSService.get().removeListener(mResponseListenerId);
+        }
+
+        mResponseListenerId = FBSService.get().addListener(mResponsesPath, listener);
     }
 
     @Override
     public void stopResponsesListener(Context context) {
-
+        if (mResponseListenerId != null) {
+            FBSService.get().removeListener(mResponseListenerId);
+            mResponseListenerId = null;
+        }
     }
 
     @Override
