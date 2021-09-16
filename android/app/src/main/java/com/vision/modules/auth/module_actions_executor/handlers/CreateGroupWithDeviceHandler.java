@@ -131,6 +131,7 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
 
         DeviceInfo deviceInfo = new DeviceInfo();
         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+        deviceInfo.setDeviceName(deviceName);
 
         FBSService.get().setMapValue(
                 deviceInfoPath,

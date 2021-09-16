@@ -1,13 +1,20 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
+import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 
 const GroupView = ({model, controller}) => {
+  const {
+    data: {devicesInGroupArray},
+  } = model;
+
   const {testRequest, updateDevicesInGroupData, logout} = controller;
+
+  const devicesList = <GroupDevicesList devices={devicesInGroupArray} />;
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.contentContainer} />
+      <View style={styles.contentContainer}>{devicesList}</View>
       <View style={styles.buttons}>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Test request'} onPress={testRequest} />
@@ -29,11 +36,11 @@ const GroupView = ({model, controller}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'coral',
+    // backgroundColor: 'coral',
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
   },
   buttons: {},
   buttonContainer: {

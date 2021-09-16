@@ -8,7 +8,7 @@ import CreatingGroupWithDeviceDialog from '../../../components/specific/main/cre
 import LoginDeviceInGroupDialog from '../../../components/specific/main/login-device-in-group-dialog/LoginDeviceInGroupDialog';
 import LoggingDeviceInGroupDialog from '../../../components/specific/main/logging-device-in-group-dialog/LoggingDeviceInGroupDialog';
 import UserInfoBar from '../../../components/specific/main/user-info-bar/UserInfoBar';
-import GroupDevicesList from '../../../components/specific/main/group-devices-list/GroupDevicesList';
+import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 
 const MainView = ({model, controller}) => {
   const {

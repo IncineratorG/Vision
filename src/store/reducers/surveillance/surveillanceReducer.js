@@ -1,6 +1,10 @@
 import AppActions from '../../actions/AppActions';
 
 const initialState = {
+  deviceInfo: {
+    lastLoginTimestamp: -1,
+    deviceName: '',
+  },
   devicesInGroup: {
     inProgress: false,
     devices: [],

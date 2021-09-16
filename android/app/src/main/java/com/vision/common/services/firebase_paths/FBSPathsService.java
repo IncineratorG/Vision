@@ -7,10 +7,10 @@ import java.util.List;
 public class FBSPathsService {
     private static FBSPathsService sInstance;
 
-    private final String APP_PATH = "vision";
-    private final String GROUPS_PATH = "groups";
-    private final String REQUESTS_PATH = "requests";
-    private final String DEVICE_INFO_PATH = "deviceInfo";
+    public final String APP_PATH = "vision";
+    public final String GROUPS_PATH = "groups";
+    public final String REQUESTS_PATH = "requests";
+    public final String DEVICE_INFO_PATH = "deviceInfo";
 
     public FBSPathsService() {
 

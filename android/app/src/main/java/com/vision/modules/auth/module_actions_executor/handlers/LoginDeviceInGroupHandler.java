@@ -154,6 +154,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName()->VALUE: " + value.toString());
                         DeviceInfo deviceInfo = new DeviceInfo(value);
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+                        deviceInfo.setDeviceName(deviceName);
 
                         updateDeviceInfo(deviceInfoPath, deviceInfo);
                     } else {
@@ -161,6 +162,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
 
                         DeviceInfo deviceInfo = new DeviceInfo();
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+                        deviceInfo.setDeviceName(deviceName);
 
                         updateDeviceInfo(deviceInfoPath, deviceInfo);
                     }

@@ -31,7 +31,7 @@ function* ss_getDevicesInGroupSagaHandler(action) {
         groupName,
         groupPassword,
         deviceName,
-        devicesArray: [],
+        devicesArray: [...result],
       }),
     );
   } catch (e) {

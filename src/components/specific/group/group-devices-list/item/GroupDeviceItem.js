@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const GroupDeviceItem = ({item}) => {
+const GroupDeviceItem = ({device}) => {
   return (
     <View style={[styles.itemContainer /*{backgroundColor: item.code}*/]}>
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemCode}>{item.code}</Text>
+      <Text style={styles.itemName}>{device.deviceName}</Text>
+      <Text style={styles.itemCode}>{device.lastLoginTimestamp}</Text>
     </View>
   );
 };
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     // borderWidth: 1,
     // borderColor: 'grey',
-    backgroundColor: 'purple',
+    backgroundColor: 'orange',
     padding: 10,
     height: 150,
   },

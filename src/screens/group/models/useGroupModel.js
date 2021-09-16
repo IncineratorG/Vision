@@ -48,12 +48,24 @@ const useGroupModel = () => {
     }
   }, [loggedIn, navigation]);
 
+  useEffect(() => {
+    SystemEventsHandler.onInfo({
+      info: 'useGroupModel(): ' + devicesInGroupArray.length,
+    });
+    for (let i = 0; i < devicesInGroupArray.length; ++i) {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupModel(): ' + JSON.stringify(devicesInGroupArray[i]),
+      });
+    }
+  }, [devicesInGroupArray]);
+
   return {
     data: {
       currentGroupName,
       currentGroupPassword,
       currentDeviceName,
       loggedIn,
+      devicesInGroupArray,
     },
     setters: {},
     navigation,
