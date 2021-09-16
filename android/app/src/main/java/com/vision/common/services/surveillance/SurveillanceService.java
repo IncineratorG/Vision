@@ -26,6 +26,10 @@ import java.util.List;
 public class SurveillanceService implements ResponseSender, ServiceRequestSender {
     private static SurveillanceService sInstance;
 
+    private String mCurrentGroupName;
+    private String mCurrentGroupPassword;
+    private String mCurrentDeviceName;
+
     private ForegroundServiceWork mForegroundServiceWork;
     private ServiceRequestsExecutor mRequestsExecutor;
     private SurveillanceServiceRequests mRequests;
@@ -50,6 +54,30 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
         }
 
         return sInstance;
+    }
+
+    public String currentGroupName() {
+        return mCurrentGroupName;
+    }
+
+    public String currentGroupPassword() {
+        return mCurrentGroupPassword;
+    }
+
+    public String currentDeviceName() {
+        return mCurrentDeviceName;
+    }
+
+    public void setCurrentUserData(String groupName, String groupPassword, String deviceName) {
+        mCurrentGroupName = groupName;
+        mCurrentGroupPassword = groupPassword;
+        mCurrentDeviceName = deviceName;
+    }
+
+    public void clearCurrentUserData() {
+        mCurrentGroupName = null;
+        mCurrentGroupPassword = null;
+        mCurrentDeviceName = null;
     }
 
     public void start(Context context) {
@@ -103,7 +131,9 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
     }
 
     @Override
-    public void sendRequest(String receiverLogin,
+    public void sendRequest(String groupName,
+                            String groupPassword,
+                            String receiverDeviceName,
                             ServiceRequest request,
                             OnDeliveredCallback deliveredCallback,
                             OnResponseCallback onResponseCallback,
@@ -111,7 +141,9 @@ public class SurveillanceService implements ResponseSender, ServiceRequestSender
         Log.d("tag", "SurveillanceService->sendRequest()");
 
         mRequestsSender.sendRequest(
-                receiverLogin,
+                groupName,
+                groupPassword,
+                receiverDeviceName,
                 request,
                 deliveredCallback,
                 onResponseCallback,

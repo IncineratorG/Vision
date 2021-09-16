@@ -154,7 +154,10 @@ public class FBSService {
                 .addOnFailureListener(onFailureListener);
     }
 
-    public void addValueToList(List<String> fields, String value) {
+    public void addValueToList(List<String> fields,
+                               String value,
+                               OnCompleteListener<Void> onCompleteListener,
+                               OnFailureListener onFailureListener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference();
@@ -168,7 +171,9 @@ public class FBSService {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, value);
 
-        ref.updateChildren(childUpdates);
+        ref.updateChildren(childUpdates)
+                .addOnCompleteListener(onCompleteListener)
+                .addOnFailureListener(onFailureListener);
     }
 
     public void removeValueFromList(List<String> fields, String key) {

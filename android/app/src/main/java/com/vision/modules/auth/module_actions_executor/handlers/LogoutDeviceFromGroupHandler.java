@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.LogoutDeviceFromGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
@@ -60,6 +61,8 @@ public class LogoutDeviceFromGroupHandler implements JSActionHandler {
         String deviceName = payload.deviceName();
 
         Log.d("tag", "LogoutDeviceFromGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
+
+        SurveillanceService.get().clearCurrentUserData();
 
         result.resolve(true);
     }

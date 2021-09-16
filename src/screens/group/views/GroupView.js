@@ -16,6 +16,8 @@ const GroupView = ({model, controller}) => {
 
   const {
     testRequest,
+    startService,
+    stopService,
     updateDevicesInGroupData,
     logout,
     devicePressHandler,
@@ -42,6 +44,12 @@ const GroupView = ({model, controller}) => {
       <View style={styles.buttons}>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Test request'} onPress={testRequest} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Start service'} onPress={startService} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Stop service'} onPress={stopService} />
         </View>
         <View style={styles.buttonContainer}>
           <SimpleButton

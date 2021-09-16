@@ -31,6 +31,16 @@ const useGroupController = (model) => {
     await Services.services().surveillanceService.testRequest();
   }, []);
 
+  const startService = useCallback(async () => {
+    SystemEventsHandler.onInfo({info: 'useGroupController()->startService()'});
+    await Services.services().surveillanceService.startService();
+  }, []);
+
+  const stopService = useCallback(async () => {
+    SystemEventsHandler.onInfo({info: 'useGroupController()->stopService()'});
+    await Services.services().surveillanceService.stopService();
+  }, []);
+
   const backButtonPressHandler = useCallback(() => {
     BackHandler.exitApp();
   }, []);
@@ -85,6 +95,8 @@ const useGroupController = (model) => {
 
   return {
     testRequest,
+    startService,
+    stopService,
     backButtonPressHandler,
     updateDevicesInGroupData,
     logout,

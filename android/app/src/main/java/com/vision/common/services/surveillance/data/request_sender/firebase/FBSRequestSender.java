@@ -3,6 +3,9 @@ package com.vision.common.services.surveillance.data.request_sender.firebase;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.data.service_request.ServiceRequest;
@@ -19,15 +22,26 @@ public class FBSRequestSender implements ServiceRequestSender {
     }
 
     @Override
-    public void sendRequest(String receiverLogin,
+    public void sendRequest(String groupName,
+                            String groupPassword,
+                            String receiverDeviceName,
                             ServiceRequest request,
-                            OnDeliveredCallback deliveredCallback,
+                            OnDeliveredCallback onDeliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
-        Log.d("tag", "FBSRequestSender->sendRequest(): " + receiverLogin + " - " + request.stringify());
+        Log.d("tag", "FBSRequestSender->sendRequest(): " + receiverDeviceName + " - " + request.stringify());
 
-        List<String> receiverRequestsPath = FBSPathsService.get().receiverRequestsPath(receiverLogin);
+        List<String> receiverRequestsPath = FBSPathsService.get().requestsPath(groupName, groupPassword, receiverDeviceName);
 
-        FBSService.get().addValueToList(receiverRequestsPath, request.stringify());
+        OnCompleteListener<Void> onCompleteListener = task -> {
+            onDeliveredCallback.handle();
+        };
+
+        OnFailureListener onFailureListener = e -> {
+            onErrorCallback.handle(new ServiceError("1", "FAILURE"));
+        };
+
+        FBSService fbsService = FBSService.get();
+        fbsService.addValueToList(receiverRequestsPath, request.stringify(), onCompleteListener, onFailureListener);
     }
 }

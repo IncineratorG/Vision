@@ -7,9 +7,11 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCall
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 
 public interface ServiceRequestSender {
-    void sendRequest(String receiverLogin,
+    void sendRequest(String groupName,
+                     String groupPassword,
+                     String receiverDeviceName,
                      ServiceRequest request,
-                     OnDeliveredCallback deliveredCallback,
+                     OnDeliveredCallback onDeliveredCallback,
                      OnResponseCallback onResponseCallback,
                      OnErrorCallback onErrorCallback);
 

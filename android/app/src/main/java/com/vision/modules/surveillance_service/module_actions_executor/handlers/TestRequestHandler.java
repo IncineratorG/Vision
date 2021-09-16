@@ -12,8 +12,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.data.service_error.ServiceError;
+import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.data.service_response.ServiceResponse;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 import java.util.ArrayList;
@@ -26,7 +33,46 @@ public class TestRequestHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "TestRequestHandler->handle()");
 
-        send();
+        String groupName = "a";
+        String groupPassword = "b";
+        String receiverDeviceName = "c";
+
+        FBSPathsService fbsPathsService = FBSPathsService.get();
+//        List<String> receiverRequestsPath = FBSPathsService.get().receiverRequestsPath(groupName, groupPassword, receiverDeviceName);
+
+        // ===
+        // =====
+        OnDeliveredCallback onDeliveredCallback = () -> {
+            Log.d("tag", "TestRequestHandler->onDeliveredCallback()");
+        };
+        OnResponseCallback onResponseCallback = response -> {
+            Log.d("tag", "TestRequestHandler->onResponseCallback()");
+        };
+        OnErrorCallback onErrorCallback = error -> {
+            Log.d("tag", "TestRequestHandler->onErrorCallback()");
+        };
+
+        SurveillanceService service = SurveillanceService.get();
+
+        ServiceRequest testRequest = service.requests().testRequest();
+
+        service.sendRequest(
+                groupName,
+                groupPassword,
+                receiverDeviceName,
+                testRequest,
+                onDeliveredCallback,
+                onResponseCallback,
+                onErrorCallback
+        );
+        // =====
+
+        FBSService fbsService = FBSService.get();
+        // ===
+
+        result.resolve(true);
+
+//        send();
 //        receive();
 
 //        SurveillanceService service = SurveillanceService.get();
@@ -49,7 +95,7 @@ public class TestRequestHandler implements JSActionHandler {
 //                }
 //        );
 
-        result.resolve(true);
+//        result.resolve(true);
     }
 
     private void send() {

@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
@@ -180,6 +181,8 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
 
         OnCompleteListener<Void> onCompleteListener = task -> {
             Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
+
+            SurveillanceService.get().setCurrentUserData(groupName, groupPassword, deviceName);
 
             handlerResult.resolve(true);
         };

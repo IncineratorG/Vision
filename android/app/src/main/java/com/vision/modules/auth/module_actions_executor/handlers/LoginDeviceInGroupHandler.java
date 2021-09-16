@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.LoginDeviceInGroupPayload;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
@@ -156,7 +157,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
                         deviceInfo.setDeviceName(deviceName);
 
-                        updateDeviceInfo(deviceInfoPath, deviceInfo);
+                        updateDeviceInfo(deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     } else {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
 
@@ -164,7 +165,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
                         deviceInfo.setDeviceName(deviceName);
 
-                        updateDeviceInfo(deviceInfoPath, deviceInfo);
+                        updateDeviceInfo(deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     }
 
                     handlerResult.resolve(true);
@@ -186,7 +187,13 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(deviceInfoPath, listener);
     }
 
-    private void updateDeviceInfo(List<String> deviceInfoPath, DeviceInfo updatedDeviceInfo) {
+    private void updateDeviceInfo(List<String> deviceInfoPath,
+                                  DeviceInfo updatedDeviceInfo,
+                                  String groupName,
+                                  String groupPassword,
+                                  String deviceName) {
+        SurveillanceService.get().setCurrentUserData(groupName, groupPassword, deviceName);
+
         FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }
 }
