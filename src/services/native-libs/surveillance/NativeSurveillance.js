@@ -22,7 +22,10 @@ const NativeSurveillance = () => {
       if (requestCallbacksMap.has(requestId)) {
         const {onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
+
         onComplete(payload);
+
+        requestCallbacksMap.delete(requestId);
       } else {
         SystemEventsHandler.onInfo({
           info:
@@ -45,7 +48,10 @@ const NativeSurveillance = () => {
       if (requestCallbacksMap.has(requestId)) {
         const {onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
+
         onError({code, message});
+
+        requestCallbacksMap.delete(requestId);
       } else {
         SystemEventsHandler.onInfo({
           info:
