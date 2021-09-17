@@ -16,7 +16,12 @@ public class SurveillanceServiceEventsJSPayloads {
     public static WritableMap testRequestResponseEventPayload(String requestId, String resultOne) {
         WritableMap jsPayload = new WritableNativeMap();
         jsPayload.putString("requestId", requestId);
-        jsPayload.putString("resultOne", resultOne);
+
+        WritableMap payload = new WritableNativeMap();
+        payload.putString("resultOne", resultOne);
+
+        jsPayload.putMap("payload", payload);
+
         return jsPayload;
     }
 }

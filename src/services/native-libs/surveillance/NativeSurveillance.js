@@ -7,6 +7,8 @@ const NativeSurveillance = () => {
   const nativeService = NativeSurveillanceLib;
   const nativeServiceEventEmitter = NativeSurveillanceEvents.eventEmitter;
 
+  const requestCallbacksMap = new Map();
+
   // ===
   nativeServiceEventEmitter.addListener(
     NativeSurveillanceEvents.types.RESPONSE_RECEIVED,
@@ -14,8 +16,20 @@ const NativeSurveillance = () => {
       SystemEventsHandler.onInfo({
         info: 'NativeSurveillance->onResponseReceived: ' + JSON.stringify(data),
       });
-      const payload =
+      const {requestId, payload} =
         NativeSurveillanceEvents.payloads.responseReceivedEventPayload(data);
+
+      if (requestCallbacksMap.has(requestId)) {
+        const {onComplete, onCancel, onError} =
+          requestCallbacksMap.get(requestId);
+        onComplete(payload);
+      } else {
+        SystemEventsHandler.onInfo({
+          info:
+            'NativeSurveillance->onResponseReceived->NO_SUCH_REQUEST_CALLBACKS: ' +
+            JSON.stringify(data),
+        });
+      }
     },
   );
 
@@ -27,6 +41,18 @@ const NativeSurveillance = () => {
       });
       const {requestId, code, message} =
         NativeSurveillanceEvents.payloads.requestErrorEventPayload(data);
+
+      if (requestCallbacksMap.has(requestId)) {
+        const {onComplete, onCancel, onError} =
+          requestCallbacksMap.get(requestId);
+        onError({code, message});
+      } else {
+        SystemEventsHandler.onInfo({
+          info:
+            'NativeSurveillance->onError->NO_SUCH_REQUEST_CALLBACKS: ' +
+            JSON.stringify(data),
+        });
+      }
     },
   );
   // ===
@@ -60,17 +86,11 @@ const NativeSurveillance = () => {
     return await nativeService.execute(action);
   };
 
-  const sendRequest = async ({
-    receiverDeviceName,
-    requestType,
-    requestPayload,
-  }) => {
-    const action = NativeSurveillanceActions.sendRequest({
-      receiverDeviceName,
-      requestType,
-      requestPayload,
-    });
-    return await nativeService.execute(action);
+  const sendRequest = async ({request, onComplete, onCancel, onError}) => {
+    const action = NativeSurveillanceActions.sendRequest(request);
+    const requestId = await nativeService.execute(action);
+    requestCallbacksMap.set(requestId, {onComplete, onCancel, onError});
+    return true;
   };
 
   return {

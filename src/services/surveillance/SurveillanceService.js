@@ -42,7 +42,12 @@ const SurveillanceService = () => {
   }) => {
     SystemEventsHandler.onInfo({info: 'SurveillanceService->sendRequest()'});
 
-    const result = await nativeService.sendRequest(request);
+    const result = await nativeService.sendRequest({
+      request,
+      onComplete,
+      onCancel,
+      onError,
+    });
 
     SystemEventsHandler.onInfo({
       info:
