@@ -24,21 +24,19 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.services.surveillance.data.requests_handler.firebase.FBSRequestsHandler;
 import com.vision.common.services.surveillance.data.response_sender.firebase.FBSResponseSender;
 import com.vision.common.services.surveillance.data.responses_handler.firebase.FBSResponsesHandler;
-import com.vision.common.services.surveillance.data.service_requests.SurveillanceServiceRequests;
+import com.vision.common.services.surveillance.data.service_requests.requests.SurveillanceServiceRequests;
 
 import java.util.List;
 
 public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender {
     private static SurveillanceService sInstance;
 
-    private boolean mInitialized;
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
 
     private ForegroundServiceWork mForegroundServiceWork;
     private ServiceRequestsHandler mRequestsHandler;
-    private SurveillanceServiceRequests mRequests;
     private ServiceRequestSender mRequestsSender;
 
     private ServiceResponsesHandler mResponsesHandler;
@@ -47,7 +45,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     private ServiceCommunicationManager mCommunicationManager;
 
     private SurveillanceService() {
-        mRequests = new SurveillanceServiceRequests();
+
     }
 
     public static synchronized SurveillanceService get() {
@@ -62,8 +60,6 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         mCurrentGroupName = groupName;
         mCurrentGroupPassword = groupPassword;
         mCurrentDeviceName = deviceName;
-
-        mInitialized = true;
 
         List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
                 mCurrentGroupName,
@@ -93,15 +89,18 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     }
 
     public boolean isInitialized() {
-        return mInitialized;
+        return mCurrentGroupName != null &&
+                !mCurrentGroupName.isEmpty() &&
+                mCurrentGroupPassword != null &&
+                !mCurrentGroupPassword.isEmpty() &&
+                mCurrentDeviceName != null &&
+                !mCurrentDeviceName.isEmpty();
     }
 
     public void dispose(Context context) {
         mCurrentGroupName = null;
         mCurrentGroupPassword = null;
         mCurrentDeviceName = null;
-
-        mInitialized = false;
 
         stopListenToResponses(context);
         stopForegroundService(context);
@@ -183,9 +182,9 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return false;
     }
 
-    public SurveillanceServiceRequests requests() {
-        return mRequests;
-    }
+//    public SurveillanceServiceRequests requests() {
+//        return mRequests;
+//    }
 
     @Override
     public void sendRequest(String groupName,

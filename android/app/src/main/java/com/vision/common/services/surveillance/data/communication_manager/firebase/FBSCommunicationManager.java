@@ -11,6 +11,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
@@ -26,6 +27,7 @@ import com.vision.common.services.firebase.data.FBSListenerId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FBSCommunicationManager implements ServiceCommunicationManager {
     private FBSListenerId mRequestListenerId;
@@ -36,6 +38,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private ServiceResponsesHandler mResponsesHandler;
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
+    private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
 
     public FBSCommunicationManager(ServiceRequestsHandler requestsHandler,
                                    ServiceResponsesHandler responsesHandler,
@@ -49,6 +52,8 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mResponseSender = responseSender;
         mRequestsPath = requestsPath;
         mResponsesPath = responsesPath;
+
+        mRequestCallbacksMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -136,7 +141,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 Map<String, Object> responseParams = new HashMap<>();
                 responseParams.put("responseKey", key);
 
-                mResponsesHandler.handle(context, value, responseParams);
+                mResponsesHandler.handle(context, value, mRequestCallbacksMap, responseParams);
             }
 
             @Override
@@ -183,6 +188,15 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                             OnDeliveredCallback onDeliveredCallback,
                             OnResponseCallback onResponseCallback,
                             OnErrorCallback onErrorCallback) {
+        mRequestCallbacksMap.put(
+                request.id(),
+                new ServiceRequestCallbacks(
+                        onDeliveredCallback,
+                        onResponseCallback,
+                        onErrorCallback
+                )
+        );
+
         mRequestSender.sendRequest(
                 groupName,
                 groupPassword,

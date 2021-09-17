@@ -8,6 +8,7 @@ const NativeSurveillanceConstants = () => {
       STOP_SERVICE,
       TEST_REQUEST,
       GET_DEVICES_IN_GROUP,
+      SEND_REQUEST,
     },
   } = NativeSurveillanceLib.getConstants();
 
@@ -18,6 +19,7 @@ const NativeSurveillanceConstants = () => {
       STOP_SERVICE,
       TEST_REQUEST,
       GET_DEVICES_IN_GROUP,
+      SEND_REQUEST,
     },
   };
 };

@@ -8,6 +8,7 @@ const NativeSurveillanceActions = () => {
       STOP_SERVICE,
       TEST_REQUEST,
       GET_DEVICES_IN_GROUP,
+      SEND_REQUEST,
     },
   } = NativeSurveillanceConstants;
 
@@ -42,12 +43,20 @@ const NativeSurveillanceActions = () => {
     };
   };
 
+  const sendRequest = ({receiverDeviceName, requestType, requestPayload}) => {
+    return {
+      type: SEND_REQUEST,
+      payload: {receiverDeviceName, requestType, requestPayload},
+    };
+  };
+
   return {
     isRunningAction,
     startServiceAction,
     stopServiceAction,
     testRequestAction,
     getDevicesInGroupAction,
+    sendRequest,
   };
 };
 

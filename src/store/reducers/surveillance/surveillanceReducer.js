@@ -14,6 +14,40 @@ const initialState = {
       message: '',
     },
   },
+  // ===
+  // =====
+  testSendRequest: {
+    requestId: null,
+    requestInProgress: false,
+    cancelInProgress: false,
+    requestComplete: false,
+    requestCancelled: false,
+    result: null,
+    error: {
+      hasError: false,
+      code: '',
+      message: '',
+    },
+  },
+
+  request: {
+    currentRequestId: '',
+    currentRequestType: '',
+    requestInProgress: false,
+    cancelInProgress: false,
+    complete: false,
+    cancelled: false,
+    result: {
+      testRequest: null,
+    },
+    error: {
+      hasError: false,
+      code: '',
+      message: '',
+    },
+  },
+  // =====
+  // ===
 };
 
 const surveillanceReducer = (state = initialState, action) => {

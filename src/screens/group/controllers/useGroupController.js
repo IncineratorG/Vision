@@ -28,7 +28,20 @@ const useGroupController = (model) => {
       info: 'useGroupController()->testRequest()',
     });
 
-    await Services.services().surveillanceService.testRequest();
+    const receiverDeviceName = 'c';
+    const requestType = 'TEST_REQUEST_WITH_PAYLOAD';
+    const requestPayload = {
+      valueOne: 'V1',
+      valueTwo: 'V2',
+    };
+
+    await Services.services().surveillanceService.sendRequest({
+      receiverDeviceName,
+      requestType,
+      requestPayload,
+    });
+
+    // await Services.services().surveillanceService.testRequest();
   }, []);
 
   const startService = useCallback(async () => {

@@ -33,12 +33,26 @@ const NativeSurveillance = () => {
     return await nativeService.execute(action);
   };
 
+  const sendRequest = async ({
+    receiverDeviceName,
+    requestType,
+    requestPayload,
+  }) => {
+    const action = NativeSurveillanceActions.sendRequest({
+      receiverDeviceName,
+      requestType,
+      requestPayload,
+    });
+    return await nativeService.execute(action);
+  };
+
   return {
     isServiceRunning,
     startService,
     stopService,
     testRequest,
     getDevicesInGroup,
+    sendRequest,
   };
 };
 

@@ -4,9 +4,15 @@ package com.vision.common.services.surveillance.data.responses_handler.firebase;
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
+import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 
+import java.util.List;
 import java.util.Map;
 
 public class FBSResponsesHandler implements ServiceResponsesHandler {
@@ -15,7 +21,10 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
     }
 
     @Override
-    public void handle(Context context, String stringifiedResponse, Map<String, Object> params) {
+    public void handle(Context context,
+                       String stringifiedResponse,
+                       Map<String, ServiceRequestCallbacks> requestCallbacksMap,
+                       Map<String, Object> params) {
         Log.d("tag", "FBSResponsesHandler->handle(): " + stringifiedResponse + " - " + (context == null));
 
         if (context == null) {
@@ -44,6 +53,35 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
             response.setKey(responseKey);
         } else {
             Log.d("tag", "FBSResponsesHandler->handle(): BAD_RESPONSE_KEY");
+        }
+
+        // ===
+        String requestId = response.requestId();
+        ServiceRequestCallbacks requestCallbacks = requestCallbacksMap.get(requestId);
+        if (requestCallbacks != null) {
+            OnResponseCallback responseCallback = requestCallbacks.responseCallback();
+            if (responseCallback != null) {
+                responseCallback.handle(response);
+            } else {
+                Log.d("tag", "FBSResponsesHandler->handle(): RESPONSE_CALLBACK_IS_NULL");
+            }
+        } else {
+            Log.d("tag", "FBSResponsesHandler->handle(): REQUEST_CALLBACKS_IS_NULL");
+        }
+        requestCallbacksMap.remove(requestId);
+        // ===
+
+        SurveillanceService surveillanceService = SurveillanceService.get();
+
+        String currentGroupName = surveillanceService.currentGroupName();
+        String currentGroupPassword = surveillanceService.currentGroupPassword();
+        String currentDeviceName = surveillanceService.currentDeviceName();
+
+        List<String> responsesPath = FBSPathsService.get().responsesPath(currentGroupName, currentGroupPassword, currentDeviceName);
+        if (response.key() != null) {
+            FBSService.get().removeValueFromList(responsesPath, response.key());
+        } else {
+            Log.d("tag", "FBSResponsesHandler->handle()->BAD_RESPONSE_KEY: " + response.stringify());
         }
     }
 }

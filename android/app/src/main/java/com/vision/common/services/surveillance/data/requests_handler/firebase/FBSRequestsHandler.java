@@ -7,9 +7,10 @@ import android.util.Log;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
+import com.vision.common.services.surveillance.data.request_handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.unknown.UnknownRequestServiceHandler;
 import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
-import com.vision.common.services.surveillance.data.service_request_types.SurveillanceServiceRequestTypes;
+import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class FBSRequestsHandler implements ServiceRequestsHandler {
         mHandlers = new HashMap<>();
         mHandlers.put(UNKNOWN_REQUEST_HANDLER_KEY, new UnknownRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST, new TestRequestServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadServiceHandler());
     }
 
     @Override

@@ -40,10 +40,13 @@ public class SurveillanceServiceModule extends ReactContextBaseJavaModule {
         final Map<String, Object> constants = new HashMap<>();
 
         WritableMap actionTypesConstants = new WritableNativeMap();
+        // ===
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.TEST_REQUEST, SurveillanceServiceJSActionTypes.TEST_REQUEST);
+        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.SEND_REQUEST, SurveillanceServiceJSActionTypes.SEND_REQUEST);
+        // ===
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.IS_RUNNING, SurveillanceServiceJSActionTypes.IS_RUNNING);
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.START_SERVICE, SurveillanceServiceJSActionTypes.START_SERVICE);
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.STOP_SERVICE, SurveillanceServiceJSActionTypes.STOP_SERVICE);
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.TEST_REQUEST, SurveillanceServiceJSActionTypes.TEST_REQUEST);
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP, SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP);
 
         constants.put("actionTypes", actionTypesConstants);

@@ -38,4 +38,12 @@ public class SurveillanceServiceModuleErrors {
     public static ModuleError getDevicesInGroupFirebaseFailure() {
         return new ModuleError("9", "GET_DEVICES_IN_GROUP_FIREBASE_FAILURE");
     }
+
+    public static ModuleError serviceNotInitialized() {
+        return new ModuleError("10", "SERVICE_NOT_INITIALIZED");
+    }
+
+    public static ModuleError generalRequestCallbackError() {
+        return new ModuleError("11", "GENERAL_REQUEST_CALLBACK_ERROR");
+    }
 }

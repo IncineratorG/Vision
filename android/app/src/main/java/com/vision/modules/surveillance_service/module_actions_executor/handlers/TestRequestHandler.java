@@ -54,17 +54,17 @@ public class TestRequestHandler implements JSActionHandler {
 
         SurveillanceService service = SurveillanceService.get();
 
-        ServiceRequest testRequest = service.requests().testRequest(service.currentDeviceName());
+//        ServiceRequest testRequest = service.requests().testRequest(service.currentDeviceName());
 
-        service.sendRequest(
-                groupName,
-                groupPassword,
-                receiverDeviceName,
-                testRequest,
-                onDeliveredCallback,
-                onResponseCallback,
-                onErrorCallback
-        );
+//        service.sendRequest(
+//                groupName,
+//                groupPassword,
+//                receiverDeviceName,
+//                testRequest,
+//                onDeliveredCallback,
+//                onResponseCallback,
+//                onErrorCallback
+//        );
         // =====
 
         FBSService fbsService = FBSService.get();
