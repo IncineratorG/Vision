@@ -10,6 +10,8 @@ const NativeSurveillanceConstants = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
     },
+    requestTypes: {TEST_REQUEST_WITH_PAYLOAD},
+    eventTypes: {REQUEST_ERROR, RESPONSE_RECEIVED},
   } = NativeSurveillanceLib.getConstants();
 
   return {
@@ -21,6 +23,8 @@ const NativeSurveillanceConstants = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
     },
+    requestTypes: {TEST_REQUEST_WITH_PAYLOAD},
+    eventTypes: {REQUEST_ERROR, RESPONSE_RECEIVED},
   };
 };
 

@@ -35,10 +35,29 @@ const useGroupController = (model) => {
       valueTwo: 'V2',
     };
 
+    const onComplete = (data) => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupController()->onComplete(): ' + JSON.stringify(data),
+      });
+    };
+    const onCancel = () => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupController()->onCancel()',
+      });
+    };
+    const onError = (data) => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupController()->onError(): ' + JSON.stringify(data),
+      });
+    };
+
     await Services.services().surveillanceService.sendRequest({
       receiverDeviceName,
       requestType,
       requestPayload,
+      onComplete,
+      onCancel,
+      onError,
     });
 
     // await Services.services().surveillanceService.testRequest();

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
@@ -18,6 +19,8 @@ import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHa
 import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
 import com.vision.modules.surveillance_service.module_actions.payloads.payloads.SendRequestPayload;
 import com.vision.modules.surveillance_service.module_errors.SurveillanceServiceModuleErrors;
+import com.vision.modules.surveillance_service.module_events.payloads.SurveillanceServiceEventsJSPayloads;
+import com.vision.modules.surveillance_service.module_events.types.SurveillanceServiceEventTypes;
 
 public class SendRequestHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
@@ -72,6 +75,16 @@ public class SendRequestHandler implements JSActionHandler {
                         SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload(response.payload());
 
                 Log.d("tag", "SendRequestHandler->onResponseCallback()->RESULT_ONE: " + responsePayload.resultOne());
+
+                context
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit(
+                                SurveillanceServiceEventTypes.RESPONSE_RECEIVED,
+                                SurveillanceServiceEventsJSPayloads.testRequestResponseEventPayload(
+                                        response.requestId(),
+                                        responsePayload.resultOne()
+                                )
+                        );
             } else {
                 Log.d("tag", "SendRequestHandler->onResponseCallback(): RESPONSE_IS_NULL");
             }
@@ -79,12 +92,16 @@ public class SendRequestHandler implements JSActionHandler {
         OnErrorCallback onErrorCallback = error -> {
             Log.d("tag", "SendRequestHandler->onErrorCallback()");
 
-//            context
-//                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-//                    .emit(
-//                            BackupEventTypes.CREATE_BACKUP_PROGRESS_CHANGED,
-//                            BackupEventsJSPayloads.createBackupProgressChangedEventPayload(progress)
-//                    );
+            context
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(
+                            SurveillanceServiceEventTypes.REQUEST_ERROR,
+                            SurveillanceServiceEventsJSPayloads.requestError(
+                                    request.id(),
+                                    error.code(),
+                                    error.message()
+                            )
+                    );
         };
 
         surveillanceService.sendRequest(

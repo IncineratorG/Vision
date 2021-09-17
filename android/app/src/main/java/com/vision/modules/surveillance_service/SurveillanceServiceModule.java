@@ -10,9 +10,11 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
 import com.vision.modules.surveillance_service.module_actions.types.SurveillanceServiceJSActionTypes;
 import com.vision.modules.surveillance_service.module_actions_executor.SurveillanceServiceJSActionsExecutor;
+import com.vision.modules.surveillance_service.module_events.types.SurveillanceServiceEventTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +51,16 @@ public class SurveillanceServiceModule extends ReactContextBaseJavaModule {
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.STOP_SERVICE, SurveillanceServiceJSActionTypes.STOP_SERVICE);
         actionTypesConstants.putString(SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP, SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP);
 
+        WritableMap requestTypes = new WritableNativeMap();
+        requestTypes.putString(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD);
+
+        WritableMap eventTypes = new WritableNativeMap();
+        eventTypes.putString(SurveillanceServiceEventTypes.REQUEST_ERROR, SurveillanceServiceEventTypes.REQUEST_ERROR);
+        eventTypes.putString(SurveillanceServiceEventTypes.RESPONSE_RECEIVED, SurveillanceServiceEventTypes.RESPONSE_RECEIVED);
+
         constants.put("actionTypes", actionTypesConstants);
+        constants.put("requestTypes", requestTypes);
+        constants.put("eventTypes", eventTypes);
 
         return constants;
     }
