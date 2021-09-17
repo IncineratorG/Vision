@@ -4,8 +4,8 @@ package com.vision.modules.surveillance_service.module_actions.payloads.payloads
 import android.util.Log;
 
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.services.surveillance.data.service_requests.payloads.SurveillanceServiceRequestPayloads;
-import com.vision.common.services.surveillance.data.service_requests.payloads.payloads.TestRequestWithPayloadRequestPayload;
+import com.vision.common.services.surveillance.data.service_requests.request_payloads.SurveillanceServiceRequestPayloads;
+import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TestRequestWithPayloadRequestPayload;
 import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.interfaces.js_payload.JSPayload;
 

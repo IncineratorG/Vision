@@ -24,7 +24,6 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.services.surveillance.data.requests_handler.firebase.FBSRequestsHandler;
 import com.vision.common.services.surveillance.data.response_sender.firebase.FBSResponseSender;
 import com.vision.common.services.surveillance.data.responses_handler.firebase.FBSResponsesHandler;
-import com.vision.common.services.surveillance.data.service_requests.requests.SurveillanceServiceRequests;
 
 import java.util.List;
 

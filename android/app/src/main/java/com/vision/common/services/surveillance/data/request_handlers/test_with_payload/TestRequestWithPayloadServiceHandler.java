@@ -10,6 +10,8 @@ import com.vision.common.interfaces.service_request_handler.ServiceRequestHandle
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TestRequestWithPayloadResponsePayload;
 
 import java.util.List;
 
@@ -27,7 +29,10 @@ public class TestRequestWithPayloadServiceHandler implements ServiceRequestHandl
         // ===
         String requestSenderDeviceName = request.senderDeviceName();
 
-        ServiceResponse response = new ServiceResponse(request.id(), null);
+        TestRequestWithPayloadResponsePayload responsePayload =
+                SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload("My Result");
+
+        ServiceResponse response = new ServiceResponse(request.id(), responsePayload.jsonObject());
 
         surveillanceService.sendResponse(
                 currentGroupName,

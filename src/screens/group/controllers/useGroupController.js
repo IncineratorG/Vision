@@ -28,7 +28,7 @@ const useGroupController = (model) => {
       info: 'useGroupController()->testRequest()',
     });
 
-    const receiverDeviceName = 'c';
+    const receiverDeviceName = 'a';
     const requestType = 'TEST_REQUEST_WITH_PAYLOAD';
     const requestPayload = {
       valueOne: 'V1',

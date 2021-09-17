@@ -6,14 +6,11 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
-import com.vision.common.services.surveillance.data.service_requests.requests.SurveillanceServiceRequests;
-import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
@@ -51,12 +48,13 @@ public class SendRequestHandler implements JSActionHandler {
 
         String groupName = surveillanceService.currentGroupName();
         String groupPassword = surveillanceService.currentGroupPassword();
+        String deviceName = surveillanceService.currentDeviceName();
         String receiverDeviceName = payload.receiverDeviceName();
 
         ServiceRequest request = new ServiceRequest(
-            payload.receiverDeviceName(),
-            payload.requestType(),
-            payload.requestPayload()
+                deviceName,
+                payload.requestType(),
+                payload.requestPayload()
         );
 
         Log.d("tag", "SendRequestHandler->handle(): " + payload.receiverDeviceName() + " - " + payload.requestType() + " - " + payload.requestPayload());
