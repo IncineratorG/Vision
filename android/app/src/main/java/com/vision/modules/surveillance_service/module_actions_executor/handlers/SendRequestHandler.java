@@ -11,6 +11,8 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnDelivered
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TestRequestWithPayloadResponsePayload;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
@@ -64,6 +66,15 @@ public class SendRequestHandler implements JSActionHandler {
         };
         OnResponseCallback onResponseCallback = response -> {
             Log.d("tag", "SendRequestHandler->onResponseCallback()");
+
+            if (response != null) {
+                TestRequestWithPayloadResponsePayload responsePayload =
+                        SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload(response.payload());
+
+                Log.d("tag", "SendRequestHandler->onResponseCallback()->RESULT_ONE: " + responsePayload.resultOne());
+            } else {
+                Log.d("tag", "SendRequestHandler->onResponseCallback(): RESPONSE_IS_NULL");
+            }
         };
         OnErrorCallback onErrorCallback = error -> {
             Log.d("tag", "SendRequestHandler->onErrorCallback()");

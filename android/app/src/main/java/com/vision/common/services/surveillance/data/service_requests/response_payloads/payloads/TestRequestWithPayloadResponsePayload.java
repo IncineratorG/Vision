@@ -21,6 +21,29 @@ public class TestRequestWithPayloadResponsePayload implements ServiceResponsePay
         }
     }
 
+    public TestRequestWithPayloadResponsePayload(JSONObject jsonObject) {
+        try {
+            mJsonObject = new JSONObject(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String resultOne() {
+        if (mJsonObject == null) {
+            return null;
+        }
+
+        String resultOne = null;
+        try {
+            resultOne = mJsonObject.getString(RESULT_ONE_FIELD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultOne;
+    }
+
+    @Override
     public JSONObject jsonObject() {
         return mJsonObject;
     }
