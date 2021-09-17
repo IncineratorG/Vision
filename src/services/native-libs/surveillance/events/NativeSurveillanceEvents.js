@@ -7,6 +7,11 @@ const NativeSurveillanceEvents = () => {
 
   const requestErrorEventPayload = (data) => {
     const {requestId, code, message} = data;
+    return {
+      requestId,
+      code,
+      message,
+    };
   };
 
   const responseReceivedEventPayload = (data) => {

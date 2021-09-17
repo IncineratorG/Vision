@@ -32,20 +32,17 @@ const SurveillanceService = () => {
   const map = new Map();
 
   const sendRequest = async ({
-    receiverDeviceName,
-    requestType,
-    requestPayload,
+    request,
+    // receiverDeviceName,
+    // requestType,
+    // requestPayload,
     onComplete,
     onCancel,
     onError,
   }) => {
     SystemEventsHandler.onInfo({info: 'SurveillanceService->sendRequest()'});
 
-    const result = await nativeService.sendRequest({
-      receiverDeviceName,
-      requestType,
-      requestPayload,
-    });
+    const result = await nativeService.sendRequest(request);
 
     SystemEventsHandler.onInfo({
       info:

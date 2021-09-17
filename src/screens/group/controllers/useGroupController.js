@@ -4,6 +4,7 @@ import {SystemEventsHandler} from '../../../utils/common/system-events-handler/S
 import AppActions from '../../../store/actions/AppActions';
 import Services from '../../../services/Services';
 import GroupLocalActions from '../store/GroupLocalActions';
+import NativeSurveillanceRequests from '../../../services/native-libs/surveillance/requests/NativeSurveillanceRequests';
 
 const useGroupController = (model) => {
   const {
@@ -51,10 +52,14 @@ const useGroupController = (model) => {
       });
     };
 
-    await Services.services().surveillanceService.sendRequest({
+    const request = NativeSurveillanceRequests.testRequestWithPayload({
       receiverDeviceName,
-      requestType,
-      requestPayload,
+      valueOne: 'V_11',
+      valueTwo: 'V_22',
+    });
+
+    await Services.services().surveillanceService.sendRequest({
+      request,
       onComplete,
       onCancel,
       onError,

@@ -1,8 +1,35 @@
 import NativeSurveillanceLib from './lib/NativeSurveillanceLib';
 import NativeSurveillanceActions from './actions/NativeSurveillanceActions';
+import NativeSurveillanceEvents from './events/NativeSurveillanceEvents';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const NativeSurveillance = () => {
   const nativeService = NativeSurveillanceLib;
+  const nativeServiceEventEmitter = NativeSurveillanceEvents.eventEmitter;
+
+  // ===
+  nativeServiceEventEmitter.addListener(
+    NativeSurveillanceEvents.types.RESPONSE_RECEIVED,
+    (data) => {
+      SystemEventsHandler.onInfo({
+        info: 'NativeSurveillance->onResponseReceived: ' + JSON.stringify(data),
+      });
+      const payload =
+        NativeSurveillanceEvents.payloads.responseReceivedEventPayload(data);
+    },
+  );
+
+  nativeServiceEventEmitter.addListener(
+    NativeSurveillanceEvents.types.REQUEST_ERROR,
+    (data) => {
+      SystemEventsHandler.onInfo({
+        info: 'NativeSurveillance->onError: ' + JSON.stringify(data),
+      });
+      const {requestId, code, message} =
+        NativeSurveillanceEvents.payloads.requestErrorEventPayload(data);
+    },
+  );
+  // ===
 
   const isServiceRunning = async () => {
     const action = NativeSurveillanceActions.isRunningAction();
