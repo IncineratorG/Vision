@@ -1,4 +1,5 @@
 import AppActions from '../../actions/AppActions';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const initialState = {
   deviceInfo: {
@@ -91,6 +92,10 @@ const surveillanceReducer = (state = initialState, action) => {
     }
 
     case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN: {
+      SystemEventsHandler.onInfo({
+        info: 'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN',
+      });
+
       return {
         ...state,
         testRequestWithPayloadPayload: {
@@ -116,6 +121,12 @@ const surveillanceReducer = (state = initialState, action) => {
 
     case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: {
       const {requestId} = action.payload;
+
+      SystemEventsHandler.onInfo({
+        info:
+          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: ' +
+          JSON.stringify(action),
+      });
 
       return {
         ...state,
@@ -144,6 +155,12 @@ const surveillanceReducer = (state = initialState, action) => {
       .SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: {
       const {requestId, resultOne} = action.payload;
 
+      SystemEventsHandler.onInfo({
+        info:
+          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: ' +
+          JSON.stringify(action),
+      });
+
       return {
         ...state,
         testRequestWithPayloadPayload: {
@@ -170,6 +187,12 @@ const surveillanceReducer = (state = initialState, action) => {
     case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: {
       const {code, message} = action.payload;
 
+      SystemEventsHandler.onInfo({
+        info:
+          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: ' +
+          JSON.stringify(action),
+      });
+
       return {
         ...state,
         testRequestWithPayloadPayload: {
@@ -193,6 +216,12 @@ const surveillanceReducer = (state = initialState, action) => {
     }
 
     case AppActions.surveillance.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD: {
+      SystemEventsHandler.onInfo({
+        info:
+          'surveillanceReducer->CANCEL_TEST_REQUEST_WITH_PAYLOAD: ' +
+          JSON.stringify(action),
+      });
+
       return {
         ...state,
         testRequestWithPayloadPayload: {
@@ -216,6 +245,12 @@ const surveillanceReducer = (state = initialState, action) => {
     }
 
     case AppActions.surveillance.types.TEST_REQUEST_WITH_PAYLOAD_CANCELLED: {
+      SystemEventsHandler.onInfo({
+        info:
+          'surveillanceReducer->TEST_REQUEST_WITH_PAYLOAD_CANCELLED: ' +
+          JSON.stringify(action),
+      });
+
       return {
         ...state,
         testRequestWithPayloadPayload: {
