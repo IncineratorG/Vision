@@ -14,31 +14,17 @@ const initialState = {
       message: '',
     },
   },
-  // ===
-  // =====
-  testSendRequest: {
+  testRequestWithPayloadPayload: {
     requestId: null,
-    requestInProgress: false,
+    inProgress: false,
+    completed: false,
+    cancellable: true,
     cancelInProgress: false,
-    requestComplete: false,
-    requestCancelled: false,
-    result: null,
-    error: {
-      hasError: false,
-      code: '',
-      message: '',
-    },
-  },
-
-  request: {
-    currentRequestId: '',
-    currentRequestType: '',
-    requestInProgress: false,
-    cancelInProgress: false,
-    complete: false,
     cancelled: false,
-    result: {
-      testRequest: null,
+    response: {
+      payload: {
+        resultOne: '',
+      },
     },
     error: {
       hasError: false,
@@ -46,8 +32,6 @@ const initialState = {
       message: '',
     },
   },
-  // =====
-  // ===
 };
 
 const surveillanceReducer = (state = initialState, action) => {
@@ -101,6 +85,154 @@ const surveillanceReducer = (state = initialState, action) => {
             hasError: true,
             code,
             message,
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN: {
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          requestId: null,
+          inProgress: true,
+          completed: false,
+          cancelInProgress: false,
+          cancelled: false,
+          response: {
+            payload: {
+              resultOne: '',
+            },
+          },
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: {
+      const {requestId} = action.payload;
+
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          requestId,
+          inProgress: true,
+          completed: false,
+          cancelInProgress: false,
+          cancelled: false,
+          response: {
+            payload: {
+              resultOne: '',
+            },
+          },
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types
+      .SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: {
+      const {requestId, resultOne} = action.payload;
+
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          requestId,
+          inProgress: false,
+          completed: true,
+          cancelInProgress: false,
+          cancelled: false,
+          response: {
+            payload: {
+              resultOne,
+            },
+          },
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: {
+      const {code, message} = action.payload;
+
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          inProgress: false,
+          completed: false,
+          cancelInProgress: false,
+          cancelled: false,
+          response: {
+            payload: {
+              resultOne: '',
+            },
+          },
+          error: {
+            hasError: true,
+            code,
+            message,
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD: {
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          inProgress: true,
+          completed: false,
+          cancelInProgress: true,
+          cancelled: false,
+          response: {
+            payload: {
+              resultOne: '',
+            },
+          },
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.TEST_REQUEST_WITH_PAYLOAD_CANCELLED: {
+      return {
+        ...state,
+        testRequestWithPayloadPayload: {
+          ...state.testRequestWithPayloadPayload,
+          inProgress: false,
+          completed: false,
+          cancelInProgress: false,
+          cancelled: true,
+          response: {
+            payload: {
+              resultOne: '',
+            },
+          },
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
           },
         },
       };
