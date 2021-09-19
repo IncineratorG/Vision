@@ -7,8 +7,17 @@ const NativeSurveillanceResponses = () => {
     };
   };
 
+  const getDeviceAvailableActions = (data) => {
+    const {actionsArray} = data;
+
+    return {
+      actionsArray,
+    };
+  };
+
   return {
     testRequestWithPayloadResponse,
+    getDeviceAvailableActions,
   };
 };
 

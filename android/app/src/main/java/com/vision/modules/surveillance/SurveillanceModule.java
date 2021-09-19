@@ -53,6 +53,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule {
 
         WritableMap requestTypes = new WritableNativeMap();
         requestTypes.putString(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD);
+        requestTypes.putString(SurveillanceServiceRequestTypes.GET_DEVICE_AVAILABLE_ACTIONS, SurveillanceServiceRequestTypes.GET_DEVICE_AVAILABLE_ACTIONS);
 
         WritableMap eventTypes = new WritableNativeMap();
         eventTypes.putString(SurveillanceEventTypes.REQUEST_ERROR, SurveillanceEventTypes.REQUEST_ERROR);

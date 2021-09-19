@@ -85,6 +85,10 @@ public class SendRequestPayload implements JSPayload {
                 return requestPayload.jsonObject();
             }
 
+            case (SurveillanceServiceRequestTypes.GET_DEVICE_AVAILABLE_ACTIONS): {
+                return null;
+            }
+
             default: {
                 return null;
             }
