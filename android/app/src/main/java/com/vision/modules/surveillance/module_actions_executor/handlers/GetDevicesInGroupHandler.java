@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service.module_actions_executor.handlers;
+package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 import android.util.Log;
 
@@ -16,11 +16,10 @@ import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
-import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
-import com.vision.modules.surveillance_service.module_actions.payloads.payloads.GetDevicesInGroupPayload;
-import com.vision.modules.surveillance_service.module_errors.SurveillanceServiceModuleErrors;
+import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;
+import com.vision.modules.surveillance.module_actions.payloads.payloads.GetDevicesInGroupPayload;
+import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,36 +32,36 @@ public class GetDevicesInGroupHandler implements JSActionHandler {
 
         ReadableMap payloadMap = action.getMap(ACTION_PAYLOAD);
         if (payloadMap == null) {
-            ModuleError error = SurveillanceServiceModuleErrors.badPayload();
+            ModuleError error = SurveillanceModuleErrors.badPayload();
             result.reject(error.code(), error.message());
             return;
         }
 
-        GetDevicesInGroupPayload payload = SurveillanceServiceJSActionsPayloads
+        GetDevicesInGroupPayload payload = SurveillanceJSActionsPayloads
                 .getDevicesInGroupPayload(payloadMap);
         if (!payload.isValid()) {
             String groupName = payload.groupName();
             if (groupName == null || groupName.isEmpty()) {
-                ModuleError error = SurveillanceServiceModuleErrors.emptyGroupName();
+                ModuleError error = SurveillanceModuleErrors.emptyGroupName();
                 result.reject(error.code(), error.message());
                 return;
             }
 
             String groupPassword = payload.groupPassword();
             if (groupPassword == null || groupPassword.isEmpty()) {
-                ModuleError error = SurveillanceServiceModuleErrors.emptyGroupPassword();
+                ModuleError error = SurveillanceModuleErrors.emptyGroupPassword();
                 result.reject(error.code(), error.message());
                 return;
             }
 
             String deviceName = payload.deviceName();
             if (deviceName == null || deviceName.isEmpty()) {
-                ModuleError error = SurveillanceServiceModuleErrors.emptyDeviceName();
+                ModuleError error = SurveillanceModuleErrors.emptyDeviceName();
                 result.reject(error.code(), error.message());
                 return;
             }
 
-            ModuleError error = SurveillanceServiceModuleErrors.badPayload();
+            ModuleError error = SurveillanceModuleErrors.badPayload();
             result.reject(error.code(), error.message());
             return;
         }
@@ -117,7 +116,7 @@ public class GetDevicesInGroupHandler implements JSActionHandler {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                ModuleError moduleError = SurveillanceServiceModuleErrors.getDevicesInGroupFirebaseFailure();
+                ModuleError moduleError = SurveillanceModuleErrors.getDevicesInGroupFirebaseFailure();
                 result.reject(moduleError.code(), moduleError.message());
             }
         };

@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service.module_actions_executor.handlers;
+package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 
 import android.util.Log;
@@ -16,11 +16,11 @@ import com.vision.common.services.surveillance.data.service_requests.response_pa
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TestRequestWithPayloadResponsePayload;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
-import com.vision.modules.surveillance_service.module_actions.payloads.SurveillanceServiceJSActionsPayloads;
-import com.vision.modules.surveillance_service.module_actions.payloads.payloads.SendRequestPayload;
-import com.vision.modules.surveillance_service.module_errors.SurveillanceServiceModuleErrors;
-import com.vision.modules.surveillance_service.module_events.payloads.SurveillanceServiceEventsJSPayloads;
-import com.vision.modules.surveillance_service.module_events.types.SurveillanceServiceEventTypes;
+import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;
+import com.vision.modules.surveillance.module_actions.payloads.payloads.SendRequestPayload;
+import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
+import com.vision.modules.surveillance.module_events.payloads.SurveillanceEventsJSPayloads;
+import com.vision.modules.surveillance.module_events.types.SurveillanceEventTypes;
 
 public class SendRequestHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
@@ -31,22 +31,22 @@ public class SendRequestHandler implements JSActionHandler {
 
         ReadableMap payloadMap = action.getMap(ACTION_PAYLOAD);
         if (payloadMap == null) {
-            ModuleError error = SurveillanceServiceModuleErrors.badPayload();
+            ModuleError error = SurveillanceModuleErrors.badPayload();
             result.reject(error.code(), error.message());
             return;
         }
 
-        SendRequestPayload payload = SurveillanceServiceJSActionsPayloads
+        SendRequestPayload payload = SurveillanceJSActionsPayloads
                 .sendRequestPayload(payloadMap);
         if (!payload.isValid()) {
-            ModuleError error = SurveillanceServiceModuleErrors.badPayload();
+            ModuleError error = SurveillanceModuleErrors.badPayload();
             result.reject(error.code(), error.message());
             return;
         }
 
         SurveillanceService surveillanceService = SurveillanceService.get();
         if (!surveillanceService.isInitialized()) {
-            ModuleError error = SurveillanceServiceModuleErrors.serviceNotInitialized();
+            ModuleError error = SurveillanceModuleErrors.serviceNotInitialized();
             result.reject(error.code(), error.message());
             return;
         }
@@ -79,8 +79,8 @@ public class SendRequestHandler implements JSActionHandler {
                 context
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit(
-                                SurveillanceServiceEventTypes.RESPONSE_RECEIVED,
-                                SurveillanceServiceEventsJSPayloads.testRequestResponseEventPayload(
+                                SurveillanceEventTypes.RESPONSE_RECEIVED,
+                                SurveillanceEventsJSPayloads.testRequestResponseEventPayload(
                                         response.requestId(),
                                         responsePayload.resultOne()
                                 )
@@ -95,8 +95,8 @@ public class SendRequestHandler implements JSActionHandler {
             context
                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                     .emit(
-                            SurveillanceServiceEventTypes.REQUEST_ERROR,
-                            SurveillanceServiceEventsJSPayloads.requestError(
+                            SurveillanceEventTypes.REQUEST_ERROR,
+                            SurveillanceEventsJSPayloads.requestError(
                                     request.id(),
                                     error.code(),
                                     error.message()

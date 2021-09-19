@@ -1,10 +1,10 @@
-package com.vision.modules.surveillance_service.module_events.payloads;
+package com.vision.modules.surveillance.module_events.payloads;
 
 
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 
-public class SurveillanceServiceEventsJSPayloads {
+public class SurveillanceEventsJSPayloads {
     public static WritableMap requestError(String requestId, String errorCode, String errorMessage) {
         WritableMap jsPayload = new WritableNativeMap();
         jsPayload.putString("requestId", requestId);

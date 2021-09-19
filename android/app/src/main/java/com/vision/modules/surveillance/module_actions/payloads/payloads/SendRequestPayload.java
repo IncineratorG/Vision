@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service.module_actions.payloads.payloads;
+package com.vision.modules.surveillance.module_actions.payloads.payloads;
 
 
 import android.util.Log;

@@ -1,6 +1,6 @@
-package com.vision.modules.surveillance_service.module_actions.types;
+package com.vision.modules.surveillance.module_actions.types;
 
-public class SurveillanceServiceJSActionTypes {
+public class SurveillanceJSActionTypes {
     // ===
     public static final String TEST_REQUEST = "TEST_REQUEST";
     public static final String SEND_REQUEST = "SEND_REQUEST";

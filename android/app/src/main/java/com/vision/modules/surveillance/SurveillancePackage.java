@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service;
+package com.vision.modules.surveillance;
 
 import androidx.annotation.NonNull;
 
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SurveillanceServicePackage implements ReactPackage {
+public class SurveillancePackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new SurveillanceServiceModule(reactContext));
+        modules.add(new SurveillanceModule(reactContext));
         return modules;
     }
 

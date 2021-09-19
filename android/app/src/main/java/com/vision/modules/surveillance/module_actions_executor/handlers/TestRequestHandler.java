@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service.module_actions_executor.handlers;
+package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 
 import android.util.Log;
@@ -12,9 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.data.service_error.ServiceError;
-import com.vision.common.data.service_request.ServiceRequest;
-import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
@@ -23,8 +20,6 @@ import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance_service;
+package com.vision.modules.surveillance;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,22 +12,22 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
-import com.vision.modules.surveillance_service.module_actions.types.SurveillanceServiceJSActionTypes;
-import com.vision.modules.surveillance_service.module_actions_executor.SurveillanceServiceJSActionsExecutor;
-import com.vision.modules.surveillance_service.module_events.types.SurveillanceServiceEventTypes;
+import com.vision.modules.surveillance.module_actions.types.SurveillanceJSActionTypes;
+import com.vision.modules.surveillance.module_actions_executor.SurveillanceJSActionsExecutor;
+import com.vision.modules.surveillance.module_events.types.SurveillanceEventTypes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SurveillanceServiceModule extends ReactContextBaseJavaModule {
+public class SurveillanceModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     private JSActionsExecutor mActionsExecutor;
 
-    public SurveillanceServiceModule(@Nullable ReactApplicationContext reactContext) {
+    public SurveillanceModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
 
         mContext = reactContext;
-        mActionsExecutor = new SurveillanceServiceJSActionsExecutor();
+        mActionsExecutor = new SurveillanceJSActionsExecutor();
     }
 
     @NonNull
@@ -43,20 +43,20 @@ public class SurveillanceServiceModule extends ReactContextBaseJavaModule {
 
         WritableMap actionTypesConstants = new WritableNativeMap();
         // ===
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.TEST_REQUEST, SurveillanceServiceJSActionTypes.TEST_REQUEST);
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.SEND_REQUEST, SurveillanceServiceJSActionTypes.SEND_REQUEST);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_REQUEST, SurveillanceJSActionTypes.SEND_REQUEST);
         // ===
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.IS_RUNNING, SurveillanceServiceJSActionTypes.IS_RUNNING);
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.START_SERVICE, SurveillanceServiceJSActionTypes.START_SERVICE);
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.STOP_SERVICE, SurveillanceServiceJSActionTypes.STOP_SERVICE);
-        actionTypesConstants.putString(SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP, SurveillanceServiceJSActionTypes.GET_DEVICES_IN_GROUP);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.START_SERVICE, SurveillanceJSActionTypes.START_SERVICE);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.STOP_SERVICE, SurveillanceJSActionTypes.STOP_SERVICE);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.GET_DEVICES_IN_GROUP, SurveillanceJSActionTypes.GET_DEVICES_IN_GROUP);
 
         WritableMap requestTypes = new WritableNativeMap();
         requestTypes.putString(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD);
 
         WritableMap eventTypes = new WritableNativeMap();
-        eventTypes.putString(SurveillanceServiceEventTypes.REQUEST_ERROR, SurveillanceServiceEventTypes.REQUEST_ERROR);
-        eventTypes.putString(SurveillanceServiceEventTypes.RESPONSE_RECEIVED, SurveillanceServiceEventTypes.RESPONSE_RECEIVED);
+        eventTypes.putString(SurveillanceEventTypes.REQUEST_ERROR, SurveillanceEventTypes.REQUEST_ERROR);
+        eventTypes.putString(SurveillanceEventTypes.RESPONSE_RECEIVED, SurveillanceEventTypes.RESPONSE_RECEIVED);
 
         constants.put("actionTypes", actionTypesConstants);
         constants.put("requestTypes", requestTypes);
