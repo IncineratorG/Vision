@@ -15,6 +15,17 @@ const initialState = {
       message: '',
     },
   },
+  service: {
+    running: false,
+    startInProgress: false,
+    stopInProgress: false,
+    checkInProgress: false,
+    error: {
+      hasError: false,
+      code: '',
+      message: '',
+    },
+  },
   testRequestWithPayloadPayload: {
     requestId: null,
     inProgress: false,
@@ -83,6 +94,176 @@ const surveillanceReducer = (state = initialState, action) => {
           devices: [],
           error: {
             ...state.devicesInGroup.error,
+            hasError: true,
+            code,
+            message,
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.START_SERVICE_BEGIN: {
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          startInProgress: true,
+          stopInProgress: false,
+          // checkInProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.START_SERVICE_FINISHED: {
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          running: true,
+          startInProgress: false,
+          stopInProgress: false,
+          // checkInProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.START_SERVICE_ERROR: {
+      const {code, message} = action.payload;
+
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          startInProgress: false,
+          stopInProgress: false,
+          // checkInProgress: false,
+          error: {
+            hasError: true,
+            code,
+            message,
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.STOP_SERVICE_BEGIN: {
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          startInProgress: false,
+          stopInProgress: true,
+          // checkInProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.STOP_SERVICE_FINISHED: {
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          running: false,
+          startInProgress: false,
+          stopInProgress: false,
+          // checkInProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.STOP_SERVICE_ERROR: {
+      const {code, message} = action.payload;
+
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          startInProgress: false,
+          stopInProgress: false,
+          // checkInProgress: false,
+          error: {
+            hasError: true,
+            code,
+            message,
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_BEGIN: {
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          // startInProgress: false,
+          // stopInProgress: false,
+          checkInProgress: true,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_FINISHED: {
+      const {isRunning} = action.payload;
+
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          running: isRunning,
+          // startInProgress: false,
+          // stopInProgress: false,
+          checkInProgress: false,
+          error: {
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
+    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_ERROR: {
+      const {code, message} = action.payload;
+
+      return {
+        ...state,
+        service: {
+          ...state.service,
+          // running: false,
+          // startInProgress: false,
+          // stopInProgress: false,
+          checkInProgress: false,
+          error: {
             hasError: true,
             code,
             message,
