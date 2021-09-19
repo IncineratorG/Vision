@@ -153,7 +153,7 @@ const surveillanceReducer = (state = initialState, action) => {
 
     case AppActions.surveillance.types
       .SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: {
-      const {requestId, resultOne} = action.payload;
+      const {resultOne} = action.payload;
 
       SystemEventsHandler.onInfo({
         info:
@@ -165,7 +165,6 @@ const surveillanceReducer = (state = initialState, action) => {
         ...state,
         testRequestWithPayloadPayload: {
           ...state.testRequestWithPayloadPayload,
-          requestId,
           inProgress: false,
           completed: true,
           cancelInProgress: false,

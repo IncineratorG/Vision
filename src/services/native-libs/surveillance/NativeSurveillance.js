@@ -9,7 +9,6 @@ const NativeSurveillance = () => {
 
   const requestCallbacksMap = new Map();
 
-  // ===
   nativeServiceEventEmitter.addListener(
     NativeSurveillanceEvents.types.RESPONSE_RECEIVED,
     (data) => {
@@ -61,7 +60,6 @@ const NativeSurveillance = () => {
       }
     },
   );
-  // ===
 
   const isServiceRunning = async () => {
     const action = NativeSurveillanceActions.isRunningAction();
@@ -96,7 +94,13 @@ const NativeSurveillance = () => {
     const action = NativeSurveillanceActions.sendRequest(request);
     const requestId = await nativeService.execute(action);
     requestCallbacksMap.set(requestId, {onComplete, onCancel, onError});
-    return true;
+    return requestId;
+  };
+
+  const cancelRequest = async ({requestId}) => {
+    SystemEventsHandler.onInfo({
+      info: 'NativeSurveillance->cancelRequest(): ' + requestId,
+    });
   };
 
   return {
@@ -106,6 +110,7 @@ const NativeSurveillance = () => {
     testRequest,
     getDevicesInGroup,
     sendRequest,
+    cancelRequest,
   };
 };
 

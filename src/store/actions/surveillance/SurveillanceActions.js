@@ -75,10 +75,10 @@ const SurveillanceActions = () => {
     };
   };
 
-  const sendTestRequestWithPayloadCompleted = ({requestId, resultOne}) => {
+  const sendTestRequestWithPayloadCompleted = ({resultOne}) => {
     return {
       type: types.SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED,
-      payload: {requestId, resultOne},
+      payload: {resultOne},
     };
   };
 

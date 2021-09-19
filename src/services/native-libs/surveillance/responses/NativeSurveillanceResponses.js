@@ -1,9 +1,8 @@
 const NativeSurveillanceResponses = () => {
   const testRequestWithPayloadResponse = (data) => {
-    const {requestId, resultOne} = data;
+    const {resultOne} = data;
 
     return {
-      requestId,
       resultOne,
     };
   };

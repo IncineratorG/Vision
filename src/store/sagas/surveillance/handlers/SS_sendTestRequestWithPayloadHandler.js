@@ -3,18 +3,13 @@ import {call, put} from '@redux-saga/core/effects';
 import AppActions from '../../../actions/AppActions';
 import Services from '../../../../services/Services';
 import NativeSurveillanceRequests from '../../../../services/native-libs/surveillance/requests/NativeSurveillanceRequests';
+import NativeSurveillanceResponses from '../../../../services/native-libs/surveillance/responses/NativeSurveillanceResponses';
 
 const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
   const actionsChannel = channel;
 
   const handler = function* (action) {
     const {receiverDeviceName, valueOne, valueTwo} = action.payload;
-
-    SystemEventsHandler.onInfo({
-      info:
-        'SS_sendTestRequestWithPayloadHandler->handler(): ' +
-        JSON.stringify(action),
-    });
 
     yield put(
       AppActions.surveillance.actions.sendTestRequestWithPayloadBegin(),
@@ -30,29 +25,43 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
       });
 
       const onComplete = (data) => {
-        SystemEventsHandler.onInfo({
-          info:
-            'SS_sendTestRequestWithPayloadHandler->onComplete(): ' +
-            JSON.stringify(data),
-        });
+        const {resultOne} =
+          NativeSurveillanceResponses.testRequestWithPayloadResponse(data);
 
         actionsChannel.put(
           AppActions.surveillance.actions.sendTestRequestWithPayloadCompleted({
-            requestId: 'NONE_requestId',
-            resultOne: 'NONE_resultOne',
+            resultOne,
           }),
         );
       };
 
-      const onCancel = () => {};
-      const onError = (data) => {};
+      const onCancel = () => {
+        actionsChannel.put(
+          AppActions.surveillance.actions.cancelTestRequestWithPayload(),
+        );
+      };
 
-      yield call(surveillanceService.sendRequest, {
+      const onError = ({code, message}) => {
+        actionsChannel.put(
+          AppActions.surveillance.actions.sendTestRequestWithPayloadError({
+            code,
+            message,
+          }),
+        );
+      };
+
+      const requestId = yield call(surveillanceService.sendRequest, {
         request,
         onComplete,
         onCancel,
         onError,
       });
+
+      yield put(
+        AppActions.surveillance.actions.sendTestRequestWithPayloadSended({
+          requestId,
+        }),
+      );
     } catch (e) {
       SystemEventsHandler.onError({
         err: 'SS_sendTestRequestWithPayloadHandler()->ERROR: ' + e.toString(),
