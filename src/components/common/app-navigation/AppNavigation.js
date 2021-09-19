@@ -8,6 +8,7 @@ import Authorisation from '../../../screens/authorisation/Authorisation';
 import Group from '../../../screens/group/Group';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Loader from '../../../screens/loader/Loader';
+import Service from '../../../screens/service/Service';
 
 const MainStack = createNativeStackNavigator();
 
@@ -24,6 +25,18 @@ const AppNavigation = () => {
               return null;
             },
             title: 'Loader',
+            headerStatusBarHeight: 0,
+          })}
+        />
+        <MainStack.Screen
+          name={AppRoutes.Service}
+          component={Service}
+          options={({navigation, route}) => ({
+            headerShown: false,
+            headerLeft: (props) => {
+              return null;
+            },
+            title: 'Service',
             headerStatusBarHeight: 0,
           })}
         />

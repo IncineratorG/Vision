@@ -34,6 +34,10 @@ const useGroupModel = () => {
     },
   } = useSelector((state) => state.surveillance.devicesInGroup);
 
+  const {running: serviceRunning} = useSelector(
+    (state) => state.surveillance.service,
+  );
+
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({
       info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
@@ -63,6 +67,12 @@ const useGroupModel = () => {
       navigation.navigate(AppRoutes.Authorisation);
     }
   }, [loggedIn, navigation]);
+
+  useEffect(() => {
+    if (serviceRunning) {
+      navigation.navigate(AppRoutes.Service);
+    }
+  }, [serviceRunning, navigation]);
 
   useEffect(() => {
     SystemEventsHandler.onInfo({

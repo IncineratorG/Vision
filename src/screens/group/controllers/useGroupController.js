@@ -20,6 +20,7 @@ const useGroupController = (model) => {
         },
       },
     },
+    navigation,
     dispatch,
     localDispatch,
   } = model;
