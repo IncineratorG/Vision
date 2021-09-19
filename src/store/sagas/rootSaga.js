@@ -1,10 +1,19 @@
 import {all, spawn, call} from 'redux-saga/effects';
 import {SystemEventsHandler} from '../../utils/common/system-events-handler/SystemEventsHandler';
-import authSaga from './auth/authSaga';
-import surveillanceSaga from './surveillance/surveillanceSaga';
+import SurveillanceSaga from './surveillance/SurveillanceSaga';
+import AuthSaga from './auth/AuthSaga';
 
 function* rootSaga() {
-  const sagas = [authSaga, surveillanceSaga];
+  const {handlers: authSagaHandlers, events: authSagaEvents} = AuthSaga;
+  const {handlers: surveillanceSagaHandlers, events: surveillanceSagaEvents} =
+    SurveillanceSaga;
+
+  const sagas = [
+    authSagaHandlers,
+    authSagaEvents,
+    surveillanceSagaHandlers,
+    surveillanceSagaEvents,
+  ];
 
   yield all(
     sagas.map((saga) =>
