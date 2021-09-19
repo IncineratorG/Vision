@@ -2,8 +2,6 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 import {call, put} from '@redux-saga/core/effects';
 import AppActions from '../../../actions/AppActions';
 import Services from '../../../../services/Services';
-import NativeSurveillanceRequests from '../../../../services/native-libs/surveillance/requests/NativeSurveillanceRequests';
-import NativeSurveillanceResponses from '../../../../services/native-libs/surveillance/responses/NativeSurveillanceResponses';
 
 const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
   const actionsChannel = channel;
@@ -18,7 +16,7 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
     try {
       const surveillanceService = Services.services().surveillanceService;
 
-      const request = NativeSurveillanceRequests.testRequestWithPayload({
+      const request = surveillanceService.requests.testRequestWithPayload({
         receiverDeviceName,
         valueOne,
         valueTwo,
@@ -26,7 +24,7 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
 
       const onComplete = (data) => {
         const {resultOne} =
-          NativeSurveillanceResponses.testRequestWithPayloadResponse(data);
+          surveillanceService.responses.testRequestWithPayloadResponse(data);
 
         actionsChannel.put(
           AppActions.surveillance.actions.sendTestRequestWithPayloadCompleted({

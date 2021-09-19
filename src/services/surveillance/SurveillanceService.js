@@ -46,6 +46,8 @@ const SurveillanceService = () => {
   };
 
   return {
+    requests: nativeService.requests,
+    responses: nativeService.responses,
     isServiceRunning,
     startService,
     stopService,

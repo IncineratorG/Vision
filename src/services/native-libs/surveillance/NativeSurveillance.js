@@ -2,10 +2,15 @@ import NativeSurveillanceLib from './lib/NativeSurveillanceLib';
 import NativeSurveillanceActions from './actions/NativeSurveillanceActions';
 import NativeSurveillanceEvents from './events/NativeSurveillanceEvents';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import NativeSurveillanceRequests from './requests/NativeSurveillanceRequests';
+import NativeSurveillanceResponses from './responses/NativeSurveillanceResponses';
 
 const NativeSurveillance = () => {
   const nativeService = NativeSurveillanceLib;
   const nativeServiceEventEmitter = NativeSurveillanceEvents.eventEmitter;
+
+  const requests = NativeSurveillanceRequests;
+  const responses = NativeSurveillanceResponses;
 
   const requestCallbacksMap = new Map();
 
@@ -104,6 +109,8 @@ const NativeSurveillance = () => {
   };
 
   return {
+    requests,
+    responses,
     isServiceRunning,
     startService,
     stopService,
