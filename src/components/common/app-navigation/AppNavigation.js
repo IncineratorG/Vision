@@ -7,6 +7,7 @@ import Main from '../../../screens/main/Main';
 import Authorisation from '../../../screens/authorisation/Authorisation';
 import Group from '../../../screens/group/Group';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
+import Loader from '../../../screens/loader/Loader';
 
 const MainStack = createNativeStackNavigator();
 
@@ -14,6 +15,18 @@ const AppNavigation = () => {
   const mainStack = useMemo(() => {
     return (
       <MainStack.Navigator mode="card">
+        <MainStack.Screen
+          name={AppRoutes.Loader}
+          component={Loader}
+          options={({navigation, route}) => ({
+            headerShown: false,
+            headerLeft: (props) => {
+              return null;
+            },
+            title: 'Loader',
+            headerStatusBarHeight: 0,
+          })}
+        />
         <MainStack.Screen
           name={AppRoutes.Authorisation}
           component={Authorisation}

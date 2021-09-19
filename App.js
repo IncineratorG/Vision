@@ -1,8 +1,8 @@
 import React from 'react';
 import {Provider as StoreProvider} from 'react-redux';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
-import AppLoader from './src/components/common/app-loader/AppLoader';
 import store from './src/store';
+import AppNavigation from './src/components/common/app-navigation/AppNavigation';
 
 const theme = {
   ...DefaultTheme,
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <StoreProvider store={store}>
       <PaperProvider theme={theme}>
-        <AppLoader />
+        <AppNavigation />
       </PaperProvider>
     </StoreProvider>
   );
