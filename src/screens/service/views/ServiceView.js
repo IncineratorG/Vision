@@ -1,13 +1,21 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import ServiceDeviceInfo from '../../../components/specific/service/device-info/ServiceDeviceInfo';
 
 const ServiceView = ({model, controller}) => {
+  const {
+    data: {groupName, groupPassword, deviceName},
+  } = model;
+
   const {stopService} = controller;
 
   const serviceDeviceInfoComponent = (
-    <ServiceDeviceInfo onStopServicePress={stopService} />
+    <ServiceDeviceInfo
+      groupName={groupName}
+      groupPassword={groupPassword}
+      deviceName={deviceName}
+      onStopServicePress={stopService}
+    />
   );
 
   return (
@@ -26,7 +34,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'pink',
   },
   buttons: {},
   buttonContainer: {

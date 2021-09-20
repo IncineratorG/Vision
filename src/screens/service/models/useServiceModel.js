@@ -23,6 +23,11 @@ const useServiceModel = () => {
   }, [serviceRunning, navigation]);
 
   return {
+    data: {
+      groupName,
+      groupPassword,
+      deviceName,
+    },
     navigation,
     dispatch,
   };
