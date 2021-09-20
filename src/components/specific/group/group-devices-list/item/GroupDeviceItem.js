@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const GroupDeviceItem = ({device, onDevicePress}) => {
   const {
@@ -14,8 +15,19 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const activeOptionColor = '#2ecc71';
   const notActiveOptionColor = 'lightgrey';
 
+  // const backgroundColor =
+  //   deviceMode === 'user' ? notActiveOptionColor : activeOptionColor;
+
+  SystemEventsHandler.onInfo({
+    info: 'DEF: ' + deviceName + ': ' + (Date.now() - lastUpdateTimestamp),
+  });
+
   const backgroundColor =
-    deviceMode === 'user' ? notActiveOptionColor : activeOptionColor;
+    deviceMode === 'user'
+      ? notActiveOptionColor
+      : Date.now() - lastUpdateTimestamp > 90000
+      ? '#d35400'
+      : activeOptionColor;
 
   const hasBackCameraIndicatorColor = hasBackCamera
     ? activeOptionColor

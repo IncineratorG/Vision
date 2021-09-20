@@ -64,7 +64,7 @@ const useGroupModel = () => {
           deviceName: currentDeviceName,
         }),
       );
-    }, 10000);
+    }, 30000);
 
     return () => {
       SystemEventsHandler.onInfo({

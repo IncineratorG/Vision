@@ -110,6 +110,17 @@ const useGroupController = (model) => {
             visible: true,
           }),
         );
+      } else if (Date.now() - lastUpdateTimestamp > 90000) {
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+            message: t('SelectedDeviceError_deviceNotRespond'),
+          }),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+            visible: true,
+          }),
+        );
       } else {
         localDispatch(
           GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
