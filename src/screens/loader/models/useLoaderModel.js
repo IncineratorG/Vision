@@ -3,8 +3,14 @@ import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Services from '../../../services/Services';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import useGainFocus from '../../../utils/common/hooks/useGainFocus';
 
 const useLoaderModel = () => {
+  // ===
+  useGainFocus();
+  // ===
+
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -30,6 +36,11 @@ const useLoaderModel = () => {
   //   checkIsLoggedIn();
   // }, []);
   // ===
+
+  // const gainFocusCallback = useCallback(() => {
+  //   SystemEventsHandler.onInfo({info: 'useLoaderModel()->GAIN_FOCUS'});
+  // }, []);
+  // useFocusEffect(gainFocusCallback);
 
   return {
     dispatch,

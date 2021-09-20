@@ -1,4 +1,5 @@
 import {useCallback} from 'react';
+import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
 
@@ -24,6 +25,12 @@ const useAuthorisationController = (model) => {
     },
     dispatch,
   } = model;
+
+  const backButtonPressHandler = useCallback(() => {
+    BackHandler.exitApp();
+
+    return true;
+  }, []);
 
   const loginButtonPressHandler = useCallback(() => {
     SystemEventsHandler.onInfo({
@@ -199,6 +206,7 @@ const useAuthorisationController = (model) => {
   }, [setNeedCreateGroupDialogVisible]);
 
   return {
+    backButtonPressHandler,
     loginButtonPressHandler,
     loginTextPressHandler,
     registerButtonPressHandler,

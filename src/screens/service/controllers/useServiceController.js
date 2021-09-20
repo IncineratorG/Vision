@@ -8,6 +8,8 @@ const useServiceController = (model) => {
 
   const backButtonPressHandler = useCallback(() => {
     BackHandler.exitApp();
+
+    return true;
   }, []);
 
   const stopService = useCallback(() => {

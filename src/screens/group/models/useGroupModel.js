@@ -6,8 +6,13 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import AppActions from '../../../store/actions/AppActions';
 import groupLocalReducer from '../store/groupLocalReducer';
 import groupLocalState from '../store/groupLocalState';
+import useGainFocus from '../../../utils/common/hooks/useGainFocus';
 
 const useGroupModel = () => {
+  // ===
+  useGainFocus();
+  // ===
+
   const navigation = useNavigation();
 
   const dispatch = useDispatch();

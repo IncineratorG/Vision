@@ -35,15 +35,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttons: {},
-  buttonContainer: {
-    height: 50,
-    padding: 8,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'grey',
-  },
+  // buttons: {},
+  // buttonContainer: {
+  //   height: 50,
+  //   padding: 8,
+  //   backgroundColor: 'green',
+  //   justifyContent: 'center',
+  //   borderWidth: 1,
+  //   borderColor: 'grey',
+  // },
 });
 
 export default React.memo(ServiceView);

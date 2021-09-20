@@ -4,8 +4,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import useTranslation from '../../../utils/common/localization';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
+import useGainFocus from '../../../utils/common/hooks/useGainFocus';
 
 const useAuthorisationModel = () => {
+  // ===
+  useGainFocus();
+  // ===
+
   const navigation = useNavigation();
 
   const dispatch = useDispatch();

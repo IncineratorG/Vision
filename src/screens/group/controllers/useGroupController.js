@@ -98,6 +98,8 @@ const useGroupController = (model) => {
 
   const backButtonPressHandler = useCallback(() => {
     BackHandler.exitApp();
+
+    return true;
   }, []);
 
   const updateDevicesInGroupData = useCallback(() => {
