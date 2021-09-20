@@ -19,6 +19,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     public final String LAST_UPDATE_TIMESTAMP_KEY = "lastUpdateTimestamp";
     public final String DEVICE_NAME_KEY = "deviceName";
     public final String DEVICE_MODE_KEY = "deviceMode";
+    public final String HAS_FRONT_CAMERA_KEY = "hasFrontCamera";
+    public final String HAS_BACK_CAMERA_KEY = "hasBackCamera";
 
     private final String UNKNOWN_DEVICE_NAME = "Unknown";
 
@@ -26,12 +28,16 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     private long mLastUpdateTimestamp = -1;
     private String mDeviceName = UNKNOWN_DEVICE_NAME;
     private String mDeviceMode;
+    private boolean mHasFrontCamera;
+    private boolean mHasBackCamera;
 
     public DeviceInfo() {
         mLastLoginTimestamp = -1;
         mLastUpdateTimestamp = -1;
         mDeviceName = UNKNOWN_DEVICE_NAME;
         mDeviceMode = AppConstants.DEVICE_MODE_USER;
+        mHasFrontCamera = false;
+        mHasBackCamera = false;
     }
 
     public DeviceInfo(DeviceInfo other) {
@@ -39,6 +45,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mLastUpdateTimestamp = other.mLastUpdateTimestamp;
         mDeviceName = other.mDeviceName;
         mDeviceMode = other.mDeviceMode;
+        mHasFrontCamera = other.mHasFrontCamera;
+        mHasBackCamera = other.mHasBackCamera;
     }
 
     public DeviceInfo(Object object) {
@@ -100,6 +108,28 @@ public class DeviceInfo implements ServiceObject, HybridObject {
             } else {
                 Log.d("tag", "DeviceInfo->NO_DEVICE_MODE");
             }
+
+            if (map.containsKey(HAS_FRONT_CAMERA_KEY)) {
+                Boolean hasFrontCamera = (Boolean) map.get(HAS_FRONT_CAMERA_KEY);
+                if (hasFrontCamera != null) {
+                    mHasFrontCamera = hasFrontCamera;
+                } else {
+                    Log.d("tag", "DeviceInfo->FRONT_CAMERA_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_FRONT_CAMERA_VALUE");
+            }
+
+            if (map.containsKey(HAS_BACK_CAMERA_KEY)) {
+                Boolean hasBackCamera = (Boolean) map.get(HAS_BACK_CAMERA_KEY);
+                if (hasBackCamera != null) {
+                    mHasBackCamera = hasBackCamera;
+                } else {
+                    Log.d("tag", "DeviceInfo->BACK_CAMERA_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_BACK_CAMERA_VALUE");
+            }
         } else {
             Log.d("tag", "DeviceInfo->BAD_OBJECT_MAP");
         }
@@ -121,6 +151,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         return mDeviceMode;
     }
 
+    public boolean hasFrontCamera() {
+        return mHasFrontCamera;
+    }
+
+    public boolean hasBackCamera() {
+        return mHasBackCamera;
+    }
+
     public void setLastLoginTimestamp(long timestamp) {
         mLastLoginTimestamp = timestamp;
     }
@@ -137,6 +175,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMode = deviceMode;
     }
 
+    public void setHasFrontCamera(boolean hasFrontCamera) {
+        mHasFrontCamera = hasFrontCamera;
+    }
+
+    public void setHasBackCamera(boolean hasBackCamera) {
+        mHasBackCamera = hasBackCamera;
+    }
+
     @Override
     public boolean isEmpty() {
         return mLastLoginTimestamp == -1 && mDeviceName.equalsIgnoreCase(UNKNOWN_DEVICE_NAME);
@@ -150,6 +196,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         writableMap.putDouble(LAST_UPDATE_TIMESTAMP_KEY, mLastUpdateTimestamp);
         writableMap.putString(DEVICE_NAME_KEY, mDeviceName);
         writableMap.putString(DEVICE_MODE_KEY, mDeviceMode);
+        writableMap.putBoolean(HAS_FRONT_CAMERA_KEY, mHasFrontCamera);
+        writableMap.putBoolean(HAS_BACK_CAMERA_KEY, mHasBackCamera);
 
         return writableMap;
     }
@@ -171,6 +219,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         serviceObjectMap.put(LAST_UPDATE_TIMESTAMP_KEY, String.valueOf(mLastUpdateTimestamp));
         serviceObjectMap.put(DEVICE_NAME_KEY, mDeviceName);
         serviceObjectMap.put(DEVICE_MODE_KEY, mDeviceMode);
+        serviceObjectMap.put(HAS_FRONT_CAMERA_KEY, mHasFrontCamera);
+        serviceObjectMap.put(HAS_BACK_CAMERA_KEY, mHasBackCamera);
 
         return serviceObjectMap;
     }

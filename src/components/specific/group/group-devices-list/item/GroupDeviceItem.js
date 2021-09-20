@@ -5,7 +5,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const {deviceName, deviceMode, lastLoginTimestamp, lastUpdateTimestamp} =
     device;
 
-  const backgroundColor = deviceMode === 'user' ? 'grey' : 'EMERALD';
+  const backgroundColor = deviceMode === 'user' ? 'grey' : '#2ecc71';
 
   const devicePressHandler = useCallback(() => {
     onDevicePress({deviceName});
