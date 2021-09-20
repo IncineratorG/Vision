@@ -7,6 +7,7 @@ const NativeFirebaseActions = () => {
       IS_DEVICE_NAME_AVAILABLE,
       CREATE_GROUP_WITH_DEVICE,
       REGISTER_DEVICE_IN_GROUP,
+      IS_LOGGED_IN,
       LOGIN_DEVICE_IN_GROUP,
       LOGOUT_DEVICE_FROM_GROUP,
     },
@@ -48,6 +49,12 @@ const NativeFirebaseActions = () => {
     };
   };
 
+  const isLoggedInAction = () => {
+    return {
+      type: IS_LOGGED_IN,
+    };
+  };
+
   const loginDeviceInGroupAction = ({groupName, groupPassword, deviceName}) => {
     return {
       type: LOGIN_DEVICE_IN_GROUP,
@@ -71,6 +78,7 @@ const NativeFirebaseActions = () => {
     createGroupWithDeviceAction,
     isDeviceNameAvailable,
     registerDeviceInGroupAction,
+    isLoggedInAction,
     loginDeviceInGroupAction,
     logoutDeviceFromGroupAction,
   };

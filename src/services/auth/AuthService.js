@@ -53,6 +53,10 @@ const AuthService = () => {
     });
   };
 
+  const isLoggedIn = async () => {
+    return await nativeAuthService.isLoggedIn();
+  };
+
   const loginInGroup = async ({groupName, groupPassword, deviceName}) => {
     SystemEventsHandler.onInfo({
       info:
@@ -92,6 +96,7 @@ const AuthService = () => {
   return {
     registerDeviceInGroup,
     createGroupWithDevice,
+    isLoggedIn,
     loginInGroup,
     logoutFromGroup,
   };

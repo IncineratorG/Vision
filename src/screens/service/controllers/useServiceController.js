@@ -1,9 +1,14 @@
 import {useCallback} from 'react';
+import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
 
 const useServiceController = (model) => {
   const {navigation, dispatch} = model;
+
+  const backButtonPressHandler = useCallback(() => {
+    BackHandler.exitApp();
+  }, []);
 
   const stopService = useCallback(() => {
     SystemEventsHandler.onInfo({info: 'useServiceController()->stopService()'});
@@ -12,6 +17,7 @@ const useServiceController = (model) => {
   }, [dispatch]);
 
   return {
+    backButtonPressHandler,
     stopService,
   };
 };

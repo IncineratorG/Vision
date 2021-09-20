@@ -44,6 +44,7 @@ public class AuthModule extends ReactContextBaseJavaModule {
         actionTypesConstants.putString(AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE, AuthJSActionTypes.IS_DEVICE_NAME_AVAILABLE);
         actionTypesConstants.putString(AuthJSActionTypes.CREATE_GROUP_WITH_DEVICE, AuthJSActionTypes.CREATE_GROUP_WITH_DEVICE);
         actionTypesConstants.putString(AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP, AuthJSActionTypes.REGISTER_DEVICE_IN_GROUP);
+        actionTypesConstants.putString(AuthJSActionTypes.IS_LOGGED_IN, AuthJSActionTypes.IS_LOGGED_IN);
         actionTypesConstants.putString(AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP, AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP);
         actionTypesConstants.putString(AuthJSActionTypes.LOGOUT_DEVICE_FROM_GROUP, AuthJSActionTypes.LOGOUT_DEVICE_FROM_GROUP);
 
