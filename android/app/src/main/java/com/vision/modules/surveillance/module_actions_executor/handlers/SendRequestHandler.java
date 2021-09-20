@@ -1,7 +1,6 @@
 package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 
-import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
@@ -15,7 +14,7 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCall
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.GetDeviceAvailableActionsResponsePayload;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.IsDeviceAliveResponsePayload;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TestRequestWithPayloadResponsePayload;
 import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.data.error.ModuleError;
@@ -78,21 +77,6 @@ public class SendRequestHandler implements JSActionHandler {
 
             if (response != null) {
                 processResponse(context, requestType, response);
-
-//                TestRequestWithPayloadResponsePayload responsePayload =
-//                        SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload(response.payload());
-//
-//                Log.d("tag", "SendRequestHandler->onResponseCallback()->RESULT_ONE: " + responsePayload.resultOne());
-//
-//                context
-//                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-//                        .emit(
-//                                SurveillanceEventTypes.RESPONSE_RECEIVED,
-//                                SurveillanceEventsJSPayloads.testRequestResponseEventPayload(
-//                                        response.requestId(),
-//                                        responsePayload.resultOne()
-//                                )
-//                        );
             } else {
                 Log.d("tag", "SendRequestHandler->onResponseCallback(): RESPONSE_IS_NULL");
             }
@@ -143,16 +127,17 @@ public class SendRequestHandler implements JSActionHandler {
                 break;
             }
 
-            case (SurveillanceServiceRequestTypes.GET_DEVICE_AVAILABLE_ACTIONS): {
-                GetDeviceAvailableActionsResponsePayload responsePayload =
-                        SurveillanceServiceResponsePayloads.getDeviceAvailableActionsResponsePayload(response.payload());
+            case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
+                IsDeviceAliveResponsePayload responsePayload =
+                        SurveillanceServiceResponsePayloads.isDeviceAliveResponsePayload(response.payload());
 
                 context
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit(
                                 SurveillanceEventTypes.RESPONSE_RECEIVED,
-                                SurveillanceEventsJSPayloads.getDeviceAvailableActionsResponseEventPayload(
-                                        responsePayload.actionsList()
+                                SurveillanceEventsJSPayloads.isDeviceAliveResponseEventPayload(
+                                        response.requestId(),
+                                        responsePayload.isAlive()
                                 )
                         );
                 break;

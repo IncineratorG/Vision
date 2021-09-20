@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
-import com.vision.common.services.surveillance.data.request_handlers.get_device_available_actions.GetDeviceAvailableActionsServiceHandler;
+import com.vision.common.services.surveillance.data.request_handlers.is_device_alive.IsDeviceAliveServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.unknown.UnknownRequestServiceHandler;
@@ -25,7 +25,7 @@ public class FBSRequestsHandler implements ServiceRequestsHandler {
         mHandlers.put(UNKNOWN_REQUEST_HANDLER_KEY, new UnknownRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST, new TestRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadServiceHandler());
-        mHandlers.put(SurveillanceServiceRequestTypes.GET_DEVICE_AVAILABLE_ACTIONS, new GetDeviceAvailableActionsServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveServiceHandler());
     }
 
     @Override

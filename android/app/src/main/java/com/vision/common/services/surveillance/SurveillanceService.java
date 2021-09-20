@@ -70,6 +70,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                 mCurrentGroupPassword,
                 mCurrentDeviceName
         );
+        List<String> currentUpdateFieldPath = FBSPathsService.get().updateFieldPath(
+                mCurrentGroupName,
+                mCurrentGroupPassword,
+                mCurrentDeviceName
+        );
 
         mRequestsHandler = new FBSRequestsHandler();
         mRequestsSender = new FBSRequestSender();
@@ -83,7 +88,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                 mRequestsSender,
                 mResponseSender,
                 currentRequestsPath,
-                currentResponsesPath
+                currentResponsesPath,
+                currentUpdateFieldPath
         );
     }
 

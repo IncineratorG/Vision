@@ -1,4 +1,4 @@
-package com.vision.common.services.surveillance.data.request_handlers.get_device_available_actions;
+package com.vision.common.services.surveillance.data.request_handlers.is_device_alive;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,15 +10,14 @@ import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.GetDeviceAvailableActionsResponsePayload;
+import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.IsDeviceAliveResponsePayload;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class GetDeviceAvailableActionsServiceHandler implements ServiceRequestHandler {
+public class IsDeviceAliveServiceHandler implements ServiceRequestHandler {
     @Override
     public void handle(Context context, ServiceRequest request) {
-        Log.d("tag", "GetDeviceAvailableActionsServiceHandler->handle(): " + request.stringify());
+        Log.d("tag", "IsDeviceAliveServiceHandler->handle(): " + request.stringify());
 
         SurveillanceService surveillanceService = SurveillanceService.get();
 
@@ -29,8 +28,8 @@ public class GetDeviceAvailableActionsServiceHandler implements ServiceRequestHa
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        GetDeviceAvailableActionsResponsePayload responsePayload =
-                SurveillanceServiceResponsePayloads.getDeviceAvailableActionsResponsePayload(new ArrayList<>());
+        IsDeviceAliveResponsePayload responsePayload =
+                SurveillanceServiceResponsePayloads.isDeviceAliveResponsePayload(true);
 
         ServiceResponse response = new ServiceResponse(request.id(), responsePayload.jsonObject());
 
@@ -46,7 +45,7 @@ public class GetDeviceAvailableActionsServiceHandler implements ServiceRequestHa
         if (request.key() != null) {
             FBSService.get().removeValueFromList(requestsPath, request.key());
         } else {
-            Log.d("tag", "GetDeviceAvailableActionsServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
+            Log.d("tag", "IsDeviceAliveServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
         }
     }
 }

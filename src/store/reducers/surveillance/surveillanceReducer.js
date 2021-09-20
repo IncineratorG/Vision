@@ -48,6 +48,24 @@ const initialState = {
       message: '',
     },
   },
+  isDeviceAliveRequest: {
+    requestId: null,
+    inProgress: false,
+    completed: false,
+    cancellable: true,
+    cancelInProgress: false,
+    cancelled: false,
+    response: {
+      payload: {
+        isAlive: false,
+      },
+    },
+    error: {
+      hasError: false,
+      code: '',
+      message: '',
+    },
+  },
 };
 
 const surveillanceReducer = (state = initialState, action) => {

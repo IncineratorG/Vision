@@ -12,6 +12,7 @@ public class FBSPathsService {
     public final String REQUESTS_PATH = "requests";
     public final String RESPONSES_PATH = "responses";
     public final String DEVICE_INFO_PATH = "deviceInfo";
+    public final String UPDATE_FIELD_PATH = "lastUpdateTimestamp";
 
     public FBSPathsService() {
 
@@ -55,6 +56,10 @@ public class FBSPathsService {
 
     public List<String> responsesPath(String groupName, String groupPassword, String deviceName) {
         return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, RESPONSES_PATH);
+    }
+
+    public List<String> updateFieldPath(String groupName, String groupPassword, String deviceName) {
+        return Arrays.asList(APP_PATH, GROUPS_PATH, groupName, groupPassword, deviceName, DEVICE_INFO_PATH, UPDATE_FIELD_PATH);
     }
 
     // ===

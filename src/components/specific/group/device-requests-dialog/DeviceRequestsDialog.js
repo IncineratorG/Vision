@@ -103,6 +103,14 @@ const DeviceRequestsDialog = ({
     }
   }, [device, requestTypes, t]);
 
+  // ===
+  useEffect(() => {
+    SystemEventsHandler.onInfo({
+      info: 'DeviceRequestsDialog->VISIBLE: ' + visible,
+    });
+  }, [visible]);
+  // ===
+
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onCancelPress}>

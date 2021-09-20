@@ -23,7 +23,10 @@ const NativeSurveillanceConstants = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
     },
-    requestTypes: {TEST_REQUEST_WITH_PAYLOAD, GET_DEVICE_AVAILABLE_ACTIONS},
+    requestTypes: {
+      TEST_REQUEST_WITH_PAYLOAD,
+      GET_DEVICE_AVAILABLE_ACTIONS,
+    },
     eventTypes: {REQUEST_ERROR, RESPONSE_RECEIVED},
   };
 };

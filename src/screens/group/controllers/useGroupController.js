@@ -40,44 +40,6 @@ const useGroupController = (model) => {
         valueTwo: 'VAL_2',
       }),
     );
-
-    // const receiverDeviceName = 'a';
-    // const requestType = 'TEST_REQUEST_WITH_PAYLOAD';
-    // const requestPayload = {
-    //   valueOne: 'V1',
-    //   valueTwo: 'V2',
-    // };
-    //
-    // const onComplete = (data) => {
-    //   SystemEventsHandler.onInfo({
-    //     info: 'useGroupController()->onComplete(): ' + JSON.stringify(data),
-    //   });
-    // };
-    // const onCancel = () => {
-    //   SystemEventsHandler.onInfo({
-    //     info: 'useGroupController()->onCancel()',
-    //   });
-    // };
-    // const onError = (data) => {
-    //   SystemEventsHandler.onInfo({
-    //     info: 'useGroupController()->onError(): ' + JSON.stringify(data),
-    //   });
-    // };
-    //
-    // const request = NativeSurveillanceRequests.testRequestWithPayload({
-    //   receiverDeviceName,
-    //   valueOne: 'V_11',
-    //   valueTwo: 'V_22',
-    // });
-    //
-    // await Services.services().surveillanceService.sendRequest({
-    //   request,
-    //   onComplete,
-    //   onCancel,
-    //   onError,
-    // });
-
-    // await Services.services().surveillanceService.testRequest();
   }, [dispatch]);
 
   const startService = useCallback(async () => {

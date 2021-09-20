@@ -23,10 +23,14 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
+import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FBSCommunicationManager implements ServiceCommunicationManager {
@@ -34,24 +38,29 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private FBSListenerId mResponseListenerId;
     private List<String> mRequestsPath;
     private List<String> mResponsesPath;
+    private List<String> mUpdateInfoPath;
     private ServiceRequestsHandler mRequestsHandler;
     private ServiceResponsesHandler mResponsesHandler;
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
     private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
 
+    private Timer mTimer;
+
     public FBSCommunicationManager(ServiceRequestsHandler requestsHandler,
                                    ServiceResponsesHandler responsesHandler,
                                    ServiceRequestSender requestSender,
                                    ServiceResponseSender responseSender,
                                    List<String> requestsPath,
-                                   List<String> responsesPath) {
+                                   List<String> responsesPath,
+                                   List<String> updateInfoPath) {
         mRequestsHandler = requestsHandler;
         mResponsesHandler = responsesHandler;
         mRequestSender = requestSender;
         mResponseSender = responseSender;
         mRequestsPath = requestsPath;
         mResponsesPath = responsesPath;
+        mUpdateInfoPath = updateInfoPath;
 
         mRequestCallbacksMap = new ConcurrentHashMap<>();
     }
@@ -59,6 +68,14 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     @Override
     public void startRequestsListener(Context context) {
         FBSService.get().setStringValue(mRequestsPath, null);
+
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setServiceAliveStatus();
+            }
+        }, 1000, 60000);
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
@@ -112,6 +129,11 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
     @Override
     public void stopRequestsListener(Context context) {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+
         if (mRequestListenerId != null) {
             FBSService.get().removeListener(mRequestListenerId);
             mRequestListenerId = null;
@@ -214,5 +236,12 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                              String receiverDeviceName,
                              ServiceResponse response) {
         mResponseSender.sendResponse(groupName, groupPassword, receiverDeviceName, response);
+    }
+
+    private void setServiceAliveStatus() {
+        FBSService.get().setStringValue(
+                mUpdateInfoPath,
+                String.valueOf(System.currentTimeMillis())
+        );
     }
 }

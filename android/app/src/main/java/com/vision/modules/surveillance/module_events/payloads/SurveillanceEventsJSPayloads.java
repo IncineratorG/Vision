@@ -29,14 +29,14 @@ public class SurveillanceEventsJSPayloads {
         return jsPayload;
     }
 
-    public static WritableMap getDeviceAvailableActionsResponseEventPayload(List<String> actions) {
+    public static WritableMap isDeviceAliveResponseEventPayload(String requestId, boolean isAlive) {
         WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("requestId", requestId);
 
-        WritableArray actionsArray = new WritableNativeArray();
-        for (int i = 0; i < actions.size(); ++i) {
-            actionsArray.pushString(actions.get(i));
-        }
-        jsPayload.putArray("actionsArray", actionsArray);
+        WritableMap payload = new WritableNativeMap();
+        payload.putBoolean("isAlive", isAlive);
+
+        jsPayload.putMap("payload", payload);
 
         return jsPayload;
     }

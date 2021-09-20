@@ -7,17 +7,13 @@ const NativeSurveillanceResponses = () => {
     };
   };
 
-  const getDeviceAvailableActions = (data) => {
-    const {actionsArray} = data;
-
-    return {
-      actionsArray,
-    };
+  const isDeviceAlive = (data) => {
+    return null;
   };
 
   return {
     testRequestWithPayloadResponse,
-    getDeviceAvailableActions,
+    isDeviceAlive,
   };
 };
 

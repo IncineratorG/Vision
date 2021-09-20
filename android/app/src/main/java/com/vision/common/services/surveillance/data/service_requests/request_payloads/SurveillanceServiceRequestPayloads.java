@@ -1,7 +1,7 @@
 package com.vision.common.services.surveillance.data.service_requests.request_payloads;
 
 
-import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.GetDeviceAvailableActionsRequestPayload;
+import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.IsDeviceAliveRequestPayload;
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TestRequestWithPayloadRequestPayload;
 
 public class SurveillanceServiceRequestPayloads {
@@ -10,7 +10,7 @@ public class SurveillanceServiceRequestPayloads {
         return new TestRequestWithPayloadRequestPayload(valueOne, valueTwo);
     }
 
-    public static GetDeviceAvailableActionsRequestPayload getDeviceAvailableActionsRequestPayload() {
-        return new GetDeviceAvailableActionsRequestPayload();
+    public static IsDeviceAliveRequestPayload isDeviceAliveRequestPayload() {
+        return new IsDeviceAliveRequestPayload();
     }
 }

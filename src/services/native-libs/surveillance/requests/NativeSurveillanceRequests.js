@@ -2,7 +2,7 @@ import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstant
 
 const NativeSurveillanceRequests = () => {
   const {
-    requestTypes: {TEST_REQUEST_WITH_PAYLOAD, GET_DEVICE_AVAILABLE_ACTIONS},
+    requestTypes: {TEST_REQUEST_WITH_PAYLOAD, IS_DEVICE_ALIVE},
   } = NativeSurveillanceConstants;
 
   const testRequestWithPayload = ({receiverDeviceName, valueOne, valueTwo}) => {
@@ -16,16 +16,16 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
-  const getDeviceAvailableActions = ({receiverDeviceName}) => {
+  const isDeviceAlive = ({receiverDeviceName}) => {
     return {
-      requestType: GET_DEVICE_AVAILABLE_ACTIONS,
+      requestType: IS_DEVICE_ALIVE,
       receiverDeviceName,
     };
   };
 
   return {
     testRequestWithPayload,
-    getDeviceAvailableActions,
+    isDeviceAlive,
   };
 };
 
