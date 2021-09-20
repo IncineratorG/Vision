@@ -3,13 +3,21 @@ import {View, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
+import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
 
 const GroupView = ({model, controller}) => {
   const {
     data: {
       devicesInGroupArray,
       localState: {
-        deviceRequestsDialog: {visible: deviceRequestsDialogVisible},
+        deviceRequestsDialog: {
+          visible: deviceRequestsDialogVisible,
+          device: deviceRequestsDialogSelectedDevice,
+        },
+        selectedDeviceErrorDialog: {
+          visible: selectedDeviceErrorDialogVisible,
+          message: selectedDeviceErrorDialogMessage,
+        },
       },
     },
   } = model;
@@ -22,6 +30,7 @@ const GroupView = ({model, controller}) => {
     logout,
     devicePressHandler,
     deviceRequestsDialogCancelHandler,
+    selectedDeviceErrorDialogCancelHandler,
   } = controller;
 
   const devicesList = (
@@ -34,7 +43,16 @@ const GroupView = ({model, controller}) => {
   const deviceRequestsDialog = (
     <DeviceRequestsDialog
       visible={deviceRequestsDialogVisible}
+      device={deviceRequestsDialogSelectedDevice}
       onCancelPress={deviceRequestsDialogCancelHandler}
+    />
+  );
+
+  const selectedDeviceErrorDialog = (
+    <SelectedDeviceErrorDialog
+      visible={selectedDeviceErrorDialogVisible}
+      errorText={selectedDeviceErrorDialogMessage}
+      onCancelPress={selectedDeviceErrorDialogCancelHandler}
     />
   );
 
@@ -62,6 +80,7 @@ const GroupView = ({model, controller}) => {
         </View>
       </View>
       {deviceRequestsDialog}
+      {selectedDeviceErrorDialog}
     </View>
   );
 };

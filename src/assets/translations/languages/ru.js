@@ -43,6 +43,11 @@ const ru = {
   AuthorisationStatus_loginDeviceInGroupInProgress: 'Вход в группу',
 
   DeviceRequestDialog_cancelButton: 'ОТМЕНА',
+
+  SelectedDeviceErrorDialog_cancelButton: 'ОТМЕНА',
+
+  SelectedDeviceError_notInServiceMode:
+    'Выбранное устройство не переведено в режим исполнения запросов.',
 };
 
 export default ru;

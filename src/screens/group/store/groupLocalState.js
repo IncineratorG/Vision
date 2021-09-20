@@ -1,7 +1,11 @@
 const groupLocalState = {
   deviceRequestsDialog: {
     visible: false,
-    selectedDeviceName: '',
+    device: null,
+  },
+  selectedDeviceErrorDialog: {
+    visible: false,
+    message: '',
   },
 };
 

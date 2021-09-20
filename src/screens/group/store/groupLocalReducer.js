@@ -13,13 +13,34 @@ const groupLocalReducer = (state, action) => {
     }
 
     case GroupLocalActions.types.SET_DEVICE_REQUESTS_DIALOG_DATA: {
-      const {selectedDeviceName} = action.payload;
+      const {device} = action.payload;
 
       return {
         ...state,
         deviceRequestsDialog: {
           ...state.deviceRequestsDialog,
-          selectedDeviceName,
+          device: {...device},
+        },
+      };
+    }
+
+    case GroupLocalActions.types.SET_SELECTED_DEVICE_ERROR_DIALOG_VISIBILITY: {
+      return {
+        ...state,
+        selectedDeviceErrorDialog: {
+          ...state.selectedDeviceErrorDialog,
+          visible: action.payload.visible,
+        },
+      };
+    }
+
+    case GroupLocalActions.types
+      .SET_SELECTED_DEVICE_ERROR_DIALOG_ERROR_MESSAGE: {
+      return {
+        ...state,
+        selectedDeviceErrorDialog: {
+          ...state.selectedDeviceErrorDialog,
+          message: action.payload.message,
         },
       };
     }

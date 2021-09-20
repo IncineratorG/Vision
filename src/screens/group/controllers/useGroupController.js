@@ -5,8 +5,11 @@ import AppActions from '../../../store/actions/AppActions';
 import Services from '../../../services/Services';
 import GroupLocalActions from '../store/GroupLocalActions';
 import NativeSurveillanceRequests from '../../../services/native-libs/surveillance/requests/NativeSurveillanceRequests';
+import useTranslation from '../../../utils/common/localization';
 
 const useGroupController = (model) => {
+  const {t} = useTranslation();
+
   const {
     data: {
       currentGroupName,
@@ -132,23 +135,42 @@ const useGroupController = (model) => {
         info: 'useGroupModel()->devicePressHandler(): ' + deviceName,
       });
 
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogData({
-          selectedDeviceName: deviceName,
-        }),
-      );
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-          visible: true,
-        }),
-      );
+      if (deviceMode !== 'service') {
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+            message: t('SelectedDeviceError_notInServiceMode'),
+          }),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+            visible: true,
+          }),
+        );
+      } else {
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+            visible: true,
+          }),
+        );
+      }
     },
-    [localDispatch],
+    [localDispatch, t],
   );
 
   const deviceRequestsDialogCancelHandler = useCallback(() => {
     localDispatch(
       GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
+  const selectedDeviceErrorDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
         visible: false,
       }),
     );
@@ -163,6 +185,7 @@ const useGroupController = (model) => {
     logout,
     devicePressHandler,
     deviceRequestsDialogCancelHandler,
+    selectedDeviceErrorDialogCancelHandler,
   };
 };
 
