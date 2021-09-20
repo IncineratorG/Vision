@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
@@ -25,6 +26,7 @@ import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +46,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
     private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
+    private Map<String, Timer> mRequestTimeoutsMap;
 
     private Timer mTimer;
 
@@ -63,6 +66,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mUpdateInfoPath = updateInfoPath;
 
         mRequestCallbacksMap = new ConcurrentHashMap<>();
+        mRequestTimeoutsMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -163,7 +167,13 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 Map<String, Object> responseParams = new HashMap<>();
                 responseParams.put("responseKey", key);
 
-                mResponsesHandler.handle(context, value, mRequestCallbacksMap, responseParams);
+                mResponsesHandler.handle(
+                        context,
+                        value,
+                        mRequestCallbacksMap,
+                        mRequestTimeoutsMap,
+                        responseParams
+                );
             }
 
             @Override
@@ -217,6 +227,27 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                         onResponseCallback,
                         onErrorCallback
                 )
+        );
+
+        Timer requestTimeout = new Timer();
+        requestTimeout.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ServiceRequestCallbacks callbacks = mRequestCallbacksMap.get(request.id());
+                if (callbacks != null) {
+                    callbacks.errorCallback().handle(
+                            SurveillanceServiceErrors.requestTimeout()
+                    );
+                }
+
+                mRequestCallbacksMap.remove(request.id());
+                mRequestTimeoutsMap.remove(request.id());
+            }
+        }, 10000);
+
+        mRequestTimeoutsMap.put(
+                request.id(),
+                requestTimeout
         );
 
         mRequestSender.sendRequest(

@@ -14,6 +14,7 @@ import com.vision.common.services.surveillance.SurveillanceService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 public class FBSResponsesHandler implements ServiceResponsesHandler {
     public FBSResponsesHandler() {
@@ -24,6 +25,7 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
     public void handle(Context context,
                        String stringifiedResponse,
                        Map<String, ServiceRequestCallbacks> requestCallbacksMap,
+                       Map<String, Timer> requestTimeoutsMap,
                        Map<String, Object> params) {
         Log.d("tag", "FBSResponsesHandler->handle(): " + stringifiedResponse + " - " + (context == null));
 
@@ -57,6 +59,7 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
 
         // ===
         String requestId = response.requestId();
+
         ServiceRequestCallbacks requestCallbacks = requestCallbacksMap.get(requestId);
         if (requestCallbacks != null) {
             OnResponseCallback responseCallback = requestCallbacks.responseCallback();
@@ -69,6 +72,12 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
             Log.d("tag", "FBSResponsesHandler->handle(): REQUEST_CALLBACKS_IS_NULL");
         }
         requestCallbacksMap.remove(requestId);
+
+        Timer requestTimeout = requestTimeoutsMap.get(requestId);
+        if (requestTimeout != null) {
+            requestTimeout.cancel();
+            requestTimeoutsMap.remove(requestId);
+        }
         // ===
 
         SurveillanceService surveillanceService = SurveillanceService.get();

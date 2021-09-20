@@ -7,4 +7,8 @@ public class SurveillanceServiceErrors {
     public static ServiceError requestFailure() {
         return new ServiceError("1", "REQUEST_FAILURE");
     }
+
+    public static ServiceError requestTimeout() {
+        return new ServiceError("2", "REQUEST_TIMEOUT");
+    }
 }

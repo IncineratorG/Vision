@@ -48,7 +48,7 @@ const ru = {
 
   SelectedDeviceError_notInServiceMode:
     'Выбранное устройство не переведено в режим исполнения запросов.',
-  SelectedDeviceError_deviceNotRespond: 'Выбранное устройство не отвечает',
+  SelectedDeviceError_deviceNotRespond: 'Выбранное устройство не отвечает.',
 
   DeviceRequestsDialog_title: 'Доступные запросы',
   DeviceRequestsDialog_getFrontCameraImage: 'Изображение передней камеры',
