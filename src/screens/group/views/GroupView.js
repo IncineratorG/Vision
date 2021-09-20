@@ -9,6 +9,7 @@ const GroupView = ({model, controller}) => {
   const {
     data: {
       devicesInGroupArray,
+      loadingDevicesInGroup,
       localState: {
         deviceRequestsDialog: {
           visible: deviceRequestsDialogVisible,
@@ -34,6 +35,10 @@ const GroupView = ({model, controller}) => {
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
   } = controller;
+
+  const updateDataIndicator = loadingDevicesInGroup ? (
+    <View style={styles.updateDataIndicator} />
+  ) : null;
 
   const devicesList = (
     <GroupDevicesList
@@ -87,6 +92,7 @@ const GroupView = ({model, controller}) => {
           <SimpleButton title={'Logout'} onPress={logout} />
         </View>
       </View>
+      {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
     </View>
@@ -96,11 +102,21 @@ const GroupView = ({model, controller}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // backgroundColor: 'coral',
+    backgroundColor: 'white',
   },
   contentContainer: {
     flex: 1,
     // backgroundColor: 'pink',
+  },
+  updateDataIndicator: {
+    width: 20,
+    height: 20,
+    backgroundColor: 'coral',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    // marginTop: 10,
+    // marginRight: 10,
   },
   buttons: {},
   buttonContainer: {

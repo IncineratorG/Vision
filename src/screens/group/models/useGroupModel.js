@@ -9,10 +9,6 @@ import groupLocalState from '../store/groupLocalState';
 import useGainFocus from '../../../utils/common/hooks/useGainFocus';
 
 const useGroupModel = () => {
-  // ===
-  useGainFocus();
-  // ===
-
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -55,17 +51,30 @@ const useGroupModel = () => {
         deviceName: currentDeviceName,
       }),
     );
+
+    const intervalId = setInterval(() => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
+      });
+
+      dispatch(
+        AppActions.surveillance.actions.getDevicesInGroup({
+          groupName: currentGroupName,
+          groupPassword: currentGroupPassword,
+          deviceName: currentDeviceName,
+        }),
+      );
+    }, 10000);
+
+    return () => {
+      SystemEventsHandler.onInfo({
+        info: 'useGroupModel()->WILL_STOP_UPDATE_GROUP_DATA',
+      });
+
+      clearInterval(intervalId);
+    };
   }, [currentGroupName, currentGroupPassword, currentDeviceName, dispatch]);
   useFocusEffect(focusChangedCallback);
-
-  // ===
-  useEffect(() => {
-    SystemEventsHandler.onInfo({
-      info:
-        'useGroupModel()->LOADING_DEVICES_IN_GROUP: ' + loadingDevicesInGroup,
-    });
-  }, [loadingDevicesInGroup]);
-  // ===
 
   useEffect(() => {
     if (!loggedIn) {
@@ -79,16 +88,16 @@ const useGroupModel = () => {
     }
   }, [serviceRunning, navigation]);
 
-  useEffect(() => {
-    SystemEventsHandler.onInfo({
-      info: 'useGroupModel(): ' + devicesInGroupArray.length,
-    });
-    for (let i = 0; i < devicesInGroupArray.length; ++i) {
-      SystemEventsHandler.onInfo({
-        info: 'useGroupModel(): ' + JSON.stringify(devicesInGroupArray[i]),
-      });
-    }
-  }, [devicesInGroupArray]);
+  // useEffect(() => {
+  //   SystemEventsHandler.onInfo({
+  //     info: 'useGroupModel(): ' + devicesInGroupArray.length,
+  //   });
+  //   for (let i = 0; i < devicesInGroupArray.length; ++i) {
+  //     SystemEventsHandler.onInfo({
+  //       info: 'useGroupModel(): ' + JSON.stringify(devicesInGroupArray[i]),
+  //     });
+  //   }
+  // }, [devicesInGroupArray]);
 
   return {
     data: {
