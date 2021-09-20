@@ -7,6 +7,8 @@ const initialState = {
     lastUpdateTimestamp: -1,
     deviceName: '',
     deviceMode: '',
+    hasFrontCamera: false,
+    hasBackCamera: false,
   },
   devicesInGroup: {
     inProgress: false,

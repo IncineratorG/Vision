@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.services.device_info.DeviceInfoService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -159,25 +160,25 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                     if (value != null) {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName()->VALUE: " + value.toString());
 
-                        long timestamp = System.currentTimeMillis();
-
                         DeviceInfo deviceInfo = new DeviceInfo(value);
-                        deviceInfo.setLastLoginTimestamp(timestamp);
-                        deviceInfo.setLastUpdateTimestamp(timestamp);
-                        deviceInfo.setDeviceName(deviceName);
-                        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_USER);
+                        DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
 
-                        updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
+                        updateDeviceInfo(
+                                context,
+                                deviceInfoPath,
+                                updatedDeviceInfo,
+                                groupName,
+                                groupPassword,
+                                deviceName
+                        );
                     } else {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
 
-                        long timestamp = System.currentTimeMillis();
-
-                        DeviceInfo deviceInfo = new DeviceInfo();
-                        deviceInfo.setLastLoginTimestamp(timestamp);
-                        deviceInfo.setLastUpdateTimestamp(timestamp);
-                        deviceInfo.setDeviceName(deviceName);
-                        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_USER);
+                        DeviceInfo deviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                deviceName,
+                                AppConstants.DEVICE_MODE_USER
+                        );
 
                         updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     }

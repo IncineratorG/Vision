@@ -118,7 +118,16 @@ const useGroupController = (model) => {
   }, [dispatch]);
 
   const devicePressHandler = useCallback(
-    ({deviceName}) => {
+    ({device}) => {
+      const {
+        deviceName,
+        deviceMode,
+        lastLoginTimestamp,
+        lastUpdateTimestamp,
+        hasFrontCamera,
+        hasBackCamera,
+      } = device;
+
       SystemEventsHandler.onInfo({
         info: 'useGroupModel()->devicePressHandler(): ' + deviceName,
       });

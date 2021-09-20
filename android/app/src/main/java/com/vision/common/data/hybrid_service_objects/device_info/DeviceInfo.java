@@ -27,7 +27,7 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     private long mLastLoginTimestamp = -1;
     private long mLastUpdateTimestamp = -1;
     private String mDeviceName = UNKNOWN_DEVICE_NAME;
-    private String mDeviceMode;
+    private String mDeviceMode = AppConstants.DEVICE_MODE_USER;
     private boolean mHasFrontCamera;
     private boolean mHasBackCamera;
 

@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.services.device_info.DeviceInfoService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -54,15 +55,15 @@ public class StartServiceHandler implements JSActionHandler {
 
                     Object value = snapshot.getValue();
                     if (value != null) {
-                        long timestamp = System.currentTimeMillis();
-
-                        DeviceInfo deviceInfo = new DeviceInfo(value);
-                        deviceInfo.setLastUpdateTimestamp(timestamp);
-                        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_SERVICE);
-
                         SurveillanceService.get().startForegroundService(context);
 
-                        updateDeviceInfo(deviceInfoPath, deviceInfo);
+                        DeviceInfo currentDeviceInfo = new DeviceInfo(value);
+                        DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+                                AppConstants.DEVICE_MODE_SERVICE,
+                                currentDeviceInfo
+                        );
+
+                        updateDeviceInfo(deviceInfoPath, updatedDeviceInfo);
 
                         handlerResult.resolve(true);
                     } else {

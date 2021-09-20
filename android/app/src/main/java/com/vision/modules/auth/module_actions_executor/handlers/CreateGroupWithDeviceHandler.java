@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.services.device_info.DeviceInfoService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -137,13 +138,11 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
             handlerResult.reject(error.code(), error.message());
         };
 
-        long timestamp = System.currentTimeMillis();
-
-        DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setLastLoginTimestamp(timestamp);
-        deviceInfo.setLastUpdateTimestamp(timestamp);
-        deviceInfo.setDeviceName(deviceName);
-        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_USER);
+        DeviceInfo deviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                context,
+                deviceName,
+                AppConstants.DEVICE_MODE_USER
+        );
 
         FBSService.get().setMapValue(
                 deviceInfoPath,
