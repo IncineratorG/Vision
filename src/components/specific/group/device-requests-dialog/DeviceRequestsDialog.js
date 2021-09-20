@@ -1,31 +1,112 @@
-import React, {useCallback, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 import DeviceRequestsDialogRequestsList from './requests-list/DeviceRequestsDialogRequestsList';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
-const DeviceRequestsDialog = ({visible, device, onCancelPress}) => {
+const DeviceRequestsDialog = ({
+  visible,
+  device,
+  onGetFrontCameraRequestPress,
+  onGetBackCameraRequestPress,
+  onCancelPress,
+}) => {
   const {t} = useTranslation();
 
-  const requestPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info: 'DeviceRequestsDialog->requestPressHandler()',
-    });
+  const requestTypes = useMemo(() => {
+    return {
+      GET_FRONT_CAMERA_IMAGE: 'getFrontCameraImage',
+      GET_BACK_CAMERA_IMAGE: 'getBackCameraImage',
+    };
   }, []);
 
-  // const requestsListComponent = <DeviceRequestsDialogRequestsList />;
-  const requestsListComponent = null;
+  const [availableRequests, setAvailableRequests] = useState([]);
+
+  const requestPressHandler = useCallback(
+    ({type}) => {
+      SystemEventsHandler.onInfo({
+        info: 'DeviceRequestsDialog->requestPressHandler(): ' + type,
+      });
+
+      switch (type) {
+        case requestTypes.GET_FRONT_CAMERA_IMAGE: {
+          if (onGetFrontCameraRequestPress) {
+            onGetFrontCameraRequestPress({selectedDevice: device});
+          }
+          break;
+        }
+
+        case requestTypes.GET_BACK_CAMERA_IMAGE: {
+          if (onGetBackCameraRequestPress) {
+            onGetBackCameraRequestPress({selectedDevice: device});
+          }
+          break;
+        }
+
+        default: {
+          SystemEventsHandler.onInfo({
+            info:
+              'DeviceRequestsDialog->requestPressHandler()->UNKNOWN_REQUEST_TYPE: ' +
+              type,
+          });
+        }
+      }
+    },
+    [
+      device,
+      requestTypes,
+      onGetFrontCameraRequestPress,
+      onGetBackCameraRequestPress,
+    ],
+  );
+
+  const requestsListComponent = (
+    <DeviceRequestsDialogRequestsList
+      requestsList={availableRequests}
+      onRequestPress={requestPressHandler}
+    />
+  );
 
   useEffect(() => {
     SystemEventsHandler.onInfo({
       info: 'DeviceRequestsDialog->SELECTED_DEVICE: ' + JSON.stringify(device),
     });
-  }, [device]);
+
+    if (device) {
+      const {
+        deviceName,
+        deviceMode,
+        lastLoginTimestamp,
+        lastUpdateTimestamp,
+        hasFrontCamera,
+        hasBackCamera,
+      } = device;
+
+      const requests = [];
+      if (hasFrontCamera) {
+        requests.push({
+          type: requestTypes.GET_FRONT_CAMERA_IMAGE,
+          name: t('DeviceRequestsDialog_getFrontCameraImage'),
+        });
+      }
+      if (hasBackCamera) {
+        requests.push({
+          type: requestTypes.GET_BACK_CAMERA_IMAGE,
+          name: t('DeviceRequestsDialog_getBackCameraImage'),
+        });
+      }
+
+      setAvailableRequests(requests);
+    } else {
+      setAvailableRequests([]);
+    }
+  }, [device, requestTypes, t]);
 
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onCancelPress}>
+        <Dialog.Title>{t('DeviceRequestsDialog_title')}</Dialog.Title>
         <Dialog.Content>
           <View style={styles.mainContainer}>{requestsListComponent}</View>
         </Dialog.Content>
@@ -41,7 +122,7 @@ const DeviceRequestsDialog = ({visible, device, onCancelPress}) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    minHeight: 250,
+    minHeight: 150,
     justifyContent: 'center',
   },
 });

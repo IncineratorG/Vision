@@ -1,20 +1,35 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useCallback} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const DeviceRequestsDialogRequestsListItem = () => {
+const DeviceRequestsDialogRequestsListItem = ({type, name, onPress}) => {
+  const itemPressHandler = useCallback(() => {
+    if (onPress) {
+      onPress({type});
+    }
+  }, [type, onPress]);
+
   return (
-    <View style={styles.mainContainer}>
-      <View />
-    </View>
+    <TouchableOpacity onPress={itemPressHandler}>
+      <View style={styles.mainContainer}>
+        <Text style={styles.text}>{name}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
-    height: 50,
-    width: 300,
+    minHeight: 30,
+    // width: 300,
     marginTop: 8,
-    backgroundColor: 'coral',
+    backgroundColor: '#03A9F4',
+    padding: 8,
+    justifyContent: 'center',
+    borderRadius: 4,
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

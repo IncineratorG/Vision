@@ -168,6 +168,41 @@ const useGroupController = (model) => {
     );
   }, [localDispatch]);
 
+  const deviceRequestsDialogGetFrontCameraImageRequestPressHandler =
+    useCallback(
+      ({selectedDevice}) => {
+        SystemEventsHandler.onInfo({
+          info:
+            'useGroupController->deviceRequestsDialogGetFrontCameraImageRequestPressHandler(): ' +
+            JSON.stringify(selectedDevice),
+        });
+
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+            visible: false,
+          }),
+        );
+      },
+      [localDispatch],
+    );
+
+  const deviceRequestsDialogGetBackCameraImageRequestPressHandler = useCallback(
+    ({selectedDevice}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'useGroupController->deviceRequestsDialogGetBackCameraImageRequestPressHandler(): ' +
+          JSON.stringify(selectedDevice),
+      });
+
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+          visible: false,
+        }),
+      );
+    },
+    [localDispatch],
+  );
+
   const selectedDeviceErrorDialogCancelHandler = useCallback(() => {
     localDispatch(
       GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
@@ -185,6 +220,8 @@ const useGroupController = (model) => {
     logout,
     devicePressHandler,
     deviceRequestsDialogCancelHandler,
+    deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
+    deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
   };
 };

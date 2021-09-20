@@ -1,21 +1,33 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import DeviceRequestsDialogRequestsListItem from './item/DeviceRequestsDialogRequestsListItem';
+import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const DeviceRequestsDialogRequestsList = ({requestsList, onRequestPress}) => {
-  const renderItem = useCallback(({item}) => {
-    return <DeviceRequestsDialogRequestsListItem />;
-  }, []);
+  const renderItem = useCallback(
+    ({item}) => {
+      const {type, name} = item;
 
-  const keyExtractor = useCallback(() => {
-    return -1;
+      return (
+        <DeviceRequestsDialogRequestsListItem
+          type={type}
+          name={name}
+          onPress={onRequestPress}
+        />
+      );
+    },
+    [onRequestPress],
+  );
+
+  const keyExtractor = useCallback((item) => {
+    return item.type;
   }, []);
 
   return (
     <View style={styles.mainContainer}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        // data={categoriesList}
+        data={requestsList}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
       />

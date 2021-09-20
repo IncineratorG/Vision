@@ -29,16 +29,18 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       style={[
         styles.statusBarIndicator,
         {backgroundColor: hasBackCameraIndicatorColor},
-      ]}
-    />
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'BC'}</Text>
+    </View>
   );
   const hasFrontCameraIndicator = (
     <View
       style={[
         styles.statusBarIndicator,
         {backgroundColor: hasFrontCameraIndicatorColor},
-      ]}
-    />
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'FC'}</Text>
+    </View>
   );
 
   const devicePressHandler = useCallback(() => {
@@ -103,6 +105,12 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: 'red',
     marginLeft: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statusBarIndicatorText: {
+    fontSize: 6,
+    color: 'white',
   },
 });
 // const styles = StyleSheet.create({

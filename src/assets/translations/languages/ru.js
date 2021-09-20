@@ -48,6 +48,10 @@ const ru = {
 
   SelectedDeviceError_notInServiceMode:
     'Выбранное устройство не переведено в режим исполнения запросов.',
+
+  DeviceRequestsDialog_title: 'Доступные запросы',
+  DeviceRequestsDialog_getFrontCameraImage: 'Изображение передней камеры',
+  DeviceRequestsDialog_getBackCameraImage: 'Изображение задней камеры',
 };
 
 export default ru;

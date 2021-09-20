@@ -30,6 +30,8 @@ const GroupView = ({model, controller}) => {
     logout,
     devicePressHandler,
     deviceRequestsDialogCancelHandler,
+    deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
+    deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
   } = controller;
 
@@ -44,6 +46,12 @@ const GroupView = ({model, controller}) => {
     <DeviceRequestsDialog
       visible={deviceRequestsDialogVisible}
       device={deviceRequestsDialogSelectedDevice}
+      onGetFrontCameraRequestPress={
+        deviceRequestsDialogGetFrontCameraImageRequestPressHandler
+      }
+      onGetBackCameraRequestPress={
+        deviceRequestsDialogGetBackCameraImageRequestPressHandler
+      }
       onCancelPress={deviceRequestsDialogCancelHandler}
     />
   );

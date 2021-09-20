@@ -26,7 +26,7 @@ const SelectedDeviceErrorDialog = ({visible, errorText, onCancelPress}) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    minHeight: 100,
+    minHeight: 50,
     justifyContent: 'center',
   },
   messageText: {
