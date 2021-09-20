@@ -46,4 +46,16 @@ public class SurveillanceModuleErrors {
     public static ModuleError generalRequestCallbackError() {
         return new ModuleError("11", "GENERAL_REQUEST_CALLBACK_ERROR");
     }
+
+    public static ModuleError startServiceFirebaseFailure() {
+        return new ModuleError("12", "START_SERVICE_FIREBASE_FAILURE");
+    }
+
+    public static ModuleError badRemoteDeviceInfo() {
+        return new ModuleError("13", "BAD_REMOTE_DEVICE_INFO");
+    }
+
+    public static ModuleError stopServiceFirebaseFailure() {
+        return new ModuleError("14", "STOP_SERVICE_FIREBASE_FAILURE");
+    }
 }

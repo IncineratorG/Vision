@@ -2,7 +2,10 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const GroupDeviceItem = ({device, onDevicePress}) => {
-  const {deviceName, lastLoginTimestamp} = device;
+  const {deviceName, deviceMode, lastLoginTimestamp, lastUpdateTimestamp} =
+    device;
+
+  const backgroundColor = deviceMode === 'user' ? 'grey' : 'EMERALD';
 
   const devicePressHandler = useCallback(() => {
     onDevicePress({deviceName});
@@ -10,9 +13,10 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
 
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={devicePressHandler}>
-      <View style={[styles.itemContainer /*{backgroundColor: item.code}*/]}>
+      <View style={[styles.itemContainer, {backgroundColor}]}>
         <Text style={styles.itemName}>{deviceName}</Text>
         <Text style={styles.itemCode}>{lastLoginTimestamp}</Text>
+        <Text style={styles.itemCode}>{lastUpdateTimestamp}</Text>
       </View>
     </TouchableOpacity>
   );

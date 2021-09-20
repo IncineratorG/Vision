@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
@@ -157,17 +158,26 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                     Object value = snapshot.getValue();
                     if (value != null) {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName()->VALUE: " + value.toString());
+
+                        long timestamp = System.currentTimeMillis();
+
                         DeviceInfo deviceInfo = new DeviceInfo(value);
-                        deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+                        deviceInfo.setLastLoginTimestamp(timestamp);
+                        deviceInfo.setLastUpdateTimestamp(timestamp);
                         deviceInfo.setDeviceName(deviceName);
+                        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_USER);
 
                         updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     } else {
                         Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
 
+                        long timestamp = System.currentTimeMillis();
+
                         DeviceInfo deviceInfo = new DeviceInfo();
-                        deviceInfo.setLastLoginTimestamp(System.currentTimeMillis());
+                        deviceInfo.setLastLoginTimestamp(timestamp);
+                        deviceInfo.setLastUpdateTimestamp(timestamp);
                         deviceInfo.setDeviceName(deviceName);
+                        deviceInfo.setDeviceMode(AppConstants.DEVICE_MODE_USER);
 
                         updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
                     }

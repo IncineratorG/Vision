@@ -3,8 +3,10 @@ import {SystemEventsHandler} from '../../../utils/common/system-events-handler/S
 
 const initialState = {
   deviceInfo: {
-    deviceName: '',
     lastLoginTimestamp: -1,
+    lastUpdateTimestamp: -1,
+    deviceName: '',
+    deviceMode: '',
   },
   devicesInGroup: {
     inProgress: false,
