@@ -189,8 +189,8 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
         OnCompleteListener<Void> onCompleteListener = task -> {
             Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
 
-            SurveillanceService.get().init(groupName, groupPassword, deviceName);
-            SurveillanceService.get().startListenToResponses(context);
+            SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
+//            SurveillanceService.get().startListenToResponses(context);
 
             handlerResult.resolve(true);
         };

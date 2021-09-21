@@ -19,7 +19,6 @@ import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.LoginDeviceInGroupPayload;
-import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
@@ -122,7 +121,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                 if (snapshot.exists()) {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfPasswordCorrect(): PASSWORD_CORRECT");
 
-                    checkDeviceName(context, handlerPayload, handlerResult);
+                    checkDeviceNameAndIsAliveStatus(context, handlerPayload, handlerResult);
                 } else {
                     Log.d("tag", "LoginDeviceInGroupHandler->checkIfPasswordCorrect(): BAD_PASSWORD");
 
@@ -141,9 +140,9 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(groupPasswordPath, listener);
     }
 
-    private void checkDeviceName(Context context,
-                                 LoginDeviceInGroupPayload handlerPayload,
-                                 Promise handlerResult) {
+    private void checkDeviceNameAndIsAliveStatus(Context context,
+                                                 LoginDeviceInGroupPayload handlerPayload,
+                                                 Promise handlerResult) {
         String groupName = handlerPayload.groupName();
         String groupPassword = handlerPayload.groupPassword();
         String deviceName = handlerPayload.deviceName();
@@ -154,14 +153,21 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_EXIST");
+                    Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): DEVICE_NAME_EXIST");
 
                     Object value = snapshot.getValue();
                     if (value != null) {
-                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName()->VALUE: " + value.toString());
+                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus()->VALUE: " + value.toString());
 
                         DeviceInfo deviceInfo = new DeviceInfo(value);
                         DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
+
+                        // ===
+                        long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();
+                        if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 2000) {
+                            Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): DEVICE_IS_ALREADY_LOGGED_IN");
+                        }
+                        // ===
 
                         updateDeviceInfo(
                                 context,
@@ -172,20 +178,27 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                                 deviceName
                         );
                     } else {
-                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): VALUE_IS_NULL");
+                        Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): VALUE_IS_NULL");
 
-                        DeviceInfo deviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                        DeviceInfo updatedDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
                                 context,
                                 deviceName,
                                 AppConstants.DEVICE_MODE_USER
                         );
 
-                        updateDeviceInfo(context, deviceInfoPath, deviceInfo, groupName, groupPassword, deviceName);
+                        updateDeviceInfo(
+                                context,
+                                deviceInfoPath,
+                                updatedDeviceInfo,
+                                groupName,
+                                groupPassword,
+                                deviceName
+                        );
                     }
 
                     handlerResult.resolve(true);
                 } else {
-                    Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_NOT_EXIST");
+                    Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): DEVICE_NAME_NOT_EXIST");
 
                     ModuleError moduleError = AuthModuleErrors.loginDeviceInGroupFirebaseFailure();
                     handlerResult.reject(moduleError.code(), moduleError.message());
@@ -208,8 +221,8 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                                   String groupName,
                                   String groupPassword,
                                   String deviceName) {
-        SurveillanceService.get().init(groupName, groupPassword, deviceName);
-        SurveillanceService.get().startListenToResponses(context);
+        SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
+//        SurveillanceService.get().startListenToResponses(context);
 
         FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }

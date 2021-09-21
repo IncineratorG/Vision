@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.vision.common.data.service_error.ServiceError;
+import com.vision.common.constants.AppConstants;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
@@ -24,8 +24,6 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
-import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 
 import java.util.HashMap;
@@ -48,7 +46,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
     private Map<String, Timer> mRequestTimeoutsMap;
 
-    private Timer mTimer;
+    private Timer mIsAliveSignalingTimer;
 
     public FBSCommunicationManager(ServiceRequestsHandler requestsHandler,
                                    ServiceResponsesHandler responsesHandler,
@@ -70,16 +68,27 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     }
 
     @Override
-    public void startRequestsListener(Context context) {
-        FBSService.get().setStringValue(mRequestsPath, null);
-
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
+    public void startIsAliveSignaling(Context context) {
+        mIsAliveSignalingTimer = new Timer();
+        mIsAliveSignalingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 setServiceAliveStatus();
             }
-        }, 1000, 60000);
+        }, 1000, AppConstants.IS_ALIVE_SIGNALING_PERIOD);
+    }
+
+    @Override
+    public void stopIsAliveSignaling(Context context) {
+        if (mIsAliveSignalingTimer != null) {
+            mIsAliveSignalingTimer.cancel();
+            mIsAliveSignalingTimer = null;
+        }
+    }
+
+    @Override
+    public void startRequestsListener(Context context) {
+        FBSService.get().setStringValue(mRequestsPath, null);
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
@@ -133,11 +142,6 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
     @Override
     public void stopRequestsListener(Context context) {
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-
         if (mRequestListenerId != null) {
             FBSService.get().removeListener(mRequestListenerId);
             mRequestListenerId = null;
@@ -243,7 +247,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 mRequestCallbacksMap.remove(request.id());
                 mRequestTimeoutsMap.remove(request.id());
             }
-        }, 10000);
+        }, AppConstants.REQUEST_TIMEOUT_PERIOD);
 
         mRequestTimeoutsMap.put(
                 request.id(),

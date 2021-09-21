@@ -4,8 +4,10 @@ package com.vision.common.services.surveillance.data.requests_handler.firebase;
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.common.constants.AppConstants;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.request_handlers.is_device_alive.IsDeviceAliveServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
@@ -59,6 +61,19 @@ public class FBSRequestsHandler implements ServiceRequestsHandler {
         } else {
             Log.d("tag", "FirebaseRequestsExecutor->execute(): BAD_REQUEST_KEY");
         }
+
+        // ===
+//        SurveillanceService surveillanceService = SurveillanceService.get();
+//        if (surveillanceService.currentServiceMode().equalsIgnoreCase(AppConstants.DEVICE_MODE_USER)) {
+//
+//        } else if (surveillanceService.currentServiceMode().equalsIgnoreCase(AppConstants.DEVICE_MODE_SERVICE)) {
+//            if (mHandlers.containsKey(request.type())) {
+//                mHandlers.get(request.type()).handle(context, request);
+//            } else {
+//                mHandlers.get(UNKNOWN_REQUEST_HANDLER_KEY).handle(context, request);
+//            }
+//        }
+        // ===
 
         if (mHandlers.containsKey(request.type())) {
             mHandlers.get(request.type()).handle(context, request);

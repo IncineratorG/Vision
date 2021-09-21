@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
+import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
+import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.communication_manager.firebase.FBSCommunicationManager;
@@ -33,6 +35,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
+    private String mCurrentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
 
     private ForegroundServiceWork mForegroundServiceWork;
     private ServiceRequestsHandler mRequestsHandler;
@@ -55,10 +58,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return sInstance;
     }
 
-    public void init(String groupName, String groupPassword, String deviceName) {
+    public void init(Context context, String groupName, String groupPassword, String deviceName) {
         mCurrentGroupName = groupName;
         mCurrentGroupPassword = groupPassword;
         mCurrentDeviceName = deviceName;
+        mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
 
         List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
                 mCurrentGroupName,
@@ -91,6 +95,9 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                 currentResponsesPath,
                 currentUpdateFieldPath
         );
+
+        mCommunicationManager.startIsAliveSignaling(context);
+        startListenToResponses(context);
     }
 
     public boolean isInitialized() {
@@ -103,12 +110,23 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     }
 
     public void dispose(Context context) {
+        List<String> currentUpdateFieldPath = FBSPathsService.get().updateFieldPath(
+                mCurrentGroupName,
+                mCurrentGroupPassword,
+                mCurrentDeviceName
+        );
+        FBSService.get().setStringValue(
+                currentUpdateFieldPath,
+                String.valueOf(-1)
+        );
+
         mCurrentGroupName = null;
         mCurrentGroupPassword = null;
         mCurrentDeviceName = null;
 
         stopListenToResponses(context);
         stopForegroundService(context);
+        mCommunicationManager.stopIsAliveSignaling(context);
     }
 
     public String currentGroupName() {
@@ -123,7 +141,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         return mCurrentDeviceName;
     }
 
-    public void startListenToResponses(Context context) {
+    public String currentServiceMode() {
+        return mCurrentServiceMode;
+    }
+
+    private void startListenToResponses(Context context) {
         if (mCommunicationManager == null) {
             Log.d("tag", "SurveillanceService->startListenToResponses(): COMMUNICATION_MANAGER_NOT_INITIALIZED");
             return;
@@ -132,7 +154,7 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         mCommunicationManager.startResponsesListener(context);
     }
 
-    public void stopListenToResponses(Context context) {
+    private void stopListenToResponses(Context context) {
         if (mCommunicationManager == null) {
             Log.d("tag", "SurveillanceService->stopListenToResponses(): COMMUNICATION_MANAGER_NOT_INITIALIZED");
             return;
@@ -154,6 +176,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
             return;
         }
 
+        mCurrentServiceMode = AppConstants.DEVICE_MODE_SERVICE;
+
         Intent serviceIntent = new Intent(context, SurveillanceForegroundService.class);
         serviceIntent.setAction("start");
         context.startService(serviceIntent);
@@ -172,6 +196,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
             return;
         }
 
+        mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
+
         Intent serviceIntent = new Intent(context, SurveillanceForegroundService.class);
         serviceIntent.setAction("stop");
         context.startService(serviceIntent);
@@ -186,10 +212,6 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         }
         return false;
     }
-
-//    public SurveillanceServiceRequests requests() {
-//        return mRequests;
-//    }
 
     @Override
     public void sendRequest(String groupName,
