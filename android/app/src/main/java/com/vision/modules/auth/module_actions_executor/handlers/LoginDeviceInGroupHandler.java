@@ -162,14 +162,16 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         DeviceInfo deviceInfo = new DeviceInfo(value);
                         DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
 
-                        // ===
                         long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();
-                        if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 2000) {
+                        if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 5000) {
                             Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): DEVICE_IS_ALREADY_LOGGED_IN");
-                        }
-                        // ===
 
-                        updateDeviceInfo(
+                            ModuleError moduleError = AuthModuleErrors.deviceAlreadyLoggedIn();
+                            handlerResult.reject(moduleError.code(), moduleError.message());
+                            return;
+                        }
+
+                        loginDevice(
                                 context,
                                 deviceInfoPath,
                                 updatedDeviceInfo,
@@ -186,7 +188,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                                 AppConstants.DEVICE_MODE_USER
                         );
 
-                        updateDeviceInfo(
+                        loginDevice(
                                 context,
                                 deviceInfoPath,
                                 updatedDeviceInfo,
@@ -215,14 +217,13 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
         FBSService.get().getValue(deviceInfoPath, listener);
     }
 
-    private void updateDeviceInfo(Context context,
-                                  List<String> deviceInfoPath,
-                                  DeviceInfo updatedDeviceInfo,
-                                  String groupName,
-                                  String groupPassword,
-                                  String deviceName) {
+    private void loginDevice(Context context,
+                             List<String> deviceInfoPath,
+                             DeviceInfo updatedDeviceInfo,
+                             String groupName,
+                             String groupPassword,
+                             String deviceName) {
         SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
-//        SurveillanceService.get().startListenToResponses(context);
 
         FBSService.get().setMapValue(deviceInfoPath, updatedDeviceInfo.toServiceObject());
     }

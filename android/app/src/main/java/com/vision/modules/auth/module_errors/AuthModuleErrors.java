@@ -58,4 +58,8 @@ public class AuthModuleErrors {
     public static ModuleError loginDeviceInGroupFirebaseFailure() {
         return new ModuleError("14", "LOGIN_DEVICE_IN_GROUP_FIREBASE_FAILURE");
     }
+
+    public static ModuleError deviceAlreadyLoggedIn() {
+        return new ModuleError("15", "DEVICE_ALREADY_LOGGED_IN");
+    }
 }
