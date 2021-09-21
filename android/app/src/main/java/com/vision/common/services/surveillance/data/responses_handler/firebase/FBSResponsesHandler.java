@@ -76,8 +76,8 @@ public class FBSResponsesHandler implements ServiceResponsesHandler {
         Timer requestTimeout = requestTimeoutsMap.get(requestId);
         if (requestTimeout != null) {
             requestTimeout.cancel();
-            requestTimeoutsMap.remove(requestId);
         }
+        requestTimeoutsMap.remove(requestId);
         // ===
 
         SurveillanceService surveillanceService = SurveillanceService.get();

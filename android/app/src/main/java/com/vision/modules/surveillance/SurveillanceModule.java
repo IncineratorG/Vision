@@ -44,12 +44,13 @@ public class SurveillanceModule extends ReactContextBaseJavaModule {
         WritableMap actionTypesConstants = new WritableNativeMap();
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
-        actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_REQUEST, SurveillanceJSActionTypes.SEND_REQUEST);
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);
         actionTypesConstants.putString(SurveillanceJSActionTypes.START_SERVICE, SurveillanceJSActionTypes.START_SERVICE);
         actionTypesConstants.putString(SurveillanceJSActionTypes.STOP_SERVICE, SurveillanceJSActionTypes.STOP_SERVICE);
         actionTypesConstants.putString(SurveillanceJSActionTypes.GET_DEVICES_IN_GROUP, SurveillanceJSActionTypes.GET_DEVICES_IN_GROUP);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_REQUEST, SurveillanceJSActionTypes.SEND_REQUEST);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.CANCEL_REQUEST, SurveillanceJSActionTypes.CANCEL_REQUEST);
 
         WritableMap requestTypes = new WritableNativeMap();
         requestTypes.putString(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD);

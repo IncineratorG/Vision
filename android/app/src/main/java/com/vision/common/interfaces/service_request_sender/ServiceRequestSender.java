@@ -14,5 +14,4 @@ public interface ServiceRequestSender {
                      OnDeliveredCallback onDeliveredCallback,
                      OnResponseCallback onResponseCallback,
                      OnErrorCallback onErrorCallback);
-
 }

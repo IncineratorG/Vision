@@ -8,6 +8,7 @@ import android.util.Log;
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
+import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
@@ -29,7 +30,7 @@ import com.vision.common.services.surveillance.data.responses_handler.firebase.F
 
 import java.util.List;
 
-public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender {
+public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender, ServiceRequestInterrupter {
     private static SurveillanceService sInstance;
 
     private String mCurrentGroupName;
@@ -232,6 +233,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                 onResponseCallback,
                 onErrorCallback
         );
+    }
+
+    @Override
+    public boolean cancelRequest(String requestId) {
+        return mCommunicationManager.cancelRequest(requestId);
     }
 
     @Override

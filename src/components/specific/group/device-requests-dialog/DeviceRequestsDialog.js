@@ -4,6 +4,8 @@ import {Button, Dialog, Portal} from 'react-native-paper';
 import useTranslation from '../../../../utils/common/localization';
 import DeviceRequestsDialogRequestsList from './requests-list/DeviceRequestsDialogRequestsList';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
+import CheckingSelectedDevice from './checking-selected-device/CheckingSelectedDevice';
+import SelectedDeviceNotAvailable from './selected-device-not-available/SelectedDeviceNotAvailable';
 
 const DeviceRequestsDialog = ({
   visible,
@@ -73,9 +75,6 @@ const DeviceRequestsDialog = ({
     );
   }, [availableRequests, requestPressHandler]);
 
-  // const contentComponent = requestsListComponent;
-  // const contentComponent = <View style={{flex: 1, backgroundColor: 'grey'}} />;
-
   useEffect(() => {
     SystemEventsHandler.onInfo({
       info: 'DeviceRequestsDialog->SELECTED_DEVICE: ' + JSON.stringify(device),
@@ -111,37 +110,19 @@ const DeviceRequestsDialog = ({
     }
   }, [device, requestTypes, t]);
 
-  // ===
   useEffect(() => {
-    SystemEventsHandler.onInfo({
-      info: 'DeviceRequestsDialog->VISIBLE: ' + visible,
-    });
-  }, [visible]);
-
-  useEffect(() => {
-    // setContentComponent(requestsListComponent);
-    //
-    // SystemEventsHandler.onInfo({
-    //   info:
-    //     'DeviceRequestsDialog->' +
-    //     checkingSelectedDeviceAvailability +
-    //     ' - ' +
-    //     selectedDeviceAvailable,
-    // });
-
     if (checkingSelectedDeviceAvailability) {
-      setContentComponent(<View style={{flex: 1, backgroundColor: 'grey'}} />);
+      setContentComponent(<CheckingSelectedDevice />);
     } else if (selectedDeviceAvailable) {
       setContentComponent(requestsListComponent);
     } else {
-      setContentComponent(<View style={{flex: 1, backgroundColor: 'red'}} />);
+      setContentComponent(<SelectedDeviceNotAvailable />);
     }
   }, [
     checkingSelectedDeviceAvailability,
     selectedDeviceAvailable,
     requestsListComponent,
   ]);
-  // ===
 
   return (
     <Portal>

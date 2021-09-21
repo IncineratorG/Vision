@@ -106,6 +106,17 @@ const NativeSurveillance = () => {
     SystemEventsHandler.onInfo({
       info: 'NativeSurveillance->cancelRequest(): ' + requestId,
     });
+
+    const action = NativeSurveillanceActions.cancelRequestAction({requestId});
+    const {successful} = await nativeService.execute(action);
+    if (successful) {
+      if (requestCallbacksMap.has(requestId)) {
+        const {onComplete, onCancel, onError} =
+          requestCallbacksMap.get(requestId);
+        onCancel();
+      }
+    }
+    return successful;
   };
 
   return {

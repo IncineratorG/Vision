@@ -7,6 +7,7 @@ import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
 import com.vision.modules.surveillance.module_actions.types.SurveillanceJSActionTypes;
+import com.vision.modules.surveillance.module_actions_executor.handlers.CancelRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetDevicesInGroupHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.SendRequestHandler;
@@ -26,12 +27,13 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers = new HashMap<>();
         // ===
         mHandlers.put(SurveillanceJSActionTypes.TEST_REQUEST, new TestRequestHandler());
-        mHandlers.put(SurveillanceJSActionTypes.SEND_REQUEST, new SendRequestHandler());
         // ===
         mHandlers.put(SurveillanceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());
         mHandlers.put(SurveillanceJSActionTypes.START_SERVICE, new StartServiceHandler());
         mHandlers.put(SurveillanceJSActionTypes.STOP_SERVICE, new StopServiceHandler());
         mHandlers.put(SurveillanceJSActionTypes.GET_DEVICES_IN_GROUP, new GetDevicesInGroupHandler());
+        mHandlers.put(SurveillanceJSActionTypes.SEND_REQUEST, new SendRequestHandler());
+        mHandlers.put(SurveillanceJSActionTypes.CANCEL_REQUEST, new CancelRequestHandler());
     }
 
     @Override

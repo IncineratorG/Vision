@@ -9,6 +9,7 @@ const NativeSurveillanceActions = () => {
       TEST_REQUEST,
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
+      CANCEL_REQUEST,
     },
   } = NativeSurveillanceConstants;
 
@@ -50,6 +51,13 @@ const NativeSurveillanceActions = () => {
     };
   };
 
+  const cancelRequestAction = ({requestId}) => {
+    return {
+      type: CANCEL_REQUEST,
+      payload: {requestId},
+    };
+  };
+
   return {
     isRunningAction,
     startServiceAction,
@@ -57,6 +65,7 @@ const NativeSurveillanceActions = () => {
     testRequestAction,
     getDevicesInGroupAction,
     sendRequest,
+    cancelRequestAction,
   };
 };
 

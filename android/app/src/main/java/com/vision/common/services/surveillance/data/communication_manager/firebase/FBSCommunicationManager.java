@@ -266,6 +266,19 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     }
 
     @Override
+    public boolean cancelRequest(String requestId) {
+        mRequestCallbacksMap.remove(requestId);
+
+        Timer requestTimeout = mRequestTimeoutsMap.get(requestId);
+        if (requestTimeout != null) {
+            requestTimeout.cancel();
+        }
+        mRequestTimeoutsMap.remove(requestId);
+
+        return true;
+    }
+
+    @Override
     public void sendResponse(String groupName,
                              String groupPassword,
                              String receiverDeviceName,
