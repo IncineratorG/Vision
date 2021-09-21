@@ -38,6 +38,19 @@ const useGroupModel = () => {
     (state) => state.surveillanceCommon.service,
   );
 
+  const {
+    inProgress: isDeviceAliveRequestInProgress,
+    response: {
+      payload: {isAlive: selectedDeviceAlive},
+    },
+    error: {
+      hasError: isDeviceAliveRequestHasError,
+      code: isDeviceAliveRequestErrorCode,
+    },
+  } = useSelector(
+    (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
+  );
+
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({
       info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
@@ -107,6 +120,8 @@ const useGroupModel = () => {
       loggedIn,
       loadingDevicesInGroup,
       devicesInGroupArray,
+      isDeviceAliveRequestInProgress,
+      selectedDeviceAlive,
     },
     setters: {},
     dispatch,

@@ -10,6 +10,8 @@ const GroupView = ({model, controller}) => {
     data: {
       devicesInGroupArray,
       loadingDevicesInGroup,
+      isDeviceAliveRequestInProgress,
+      selectedDeviceAlive,
       localState: {
         deviceRequestsDialog: {
           visible: deviceRequestsDialogVisible,
@@ -51,6 +53,8 @@ const GroupView = ({model, controller}) => {
     <DeviceRequestsDialog
       visible={deviceRequestsDialogVisible}
       device={deviceRequestsDialogSelectedDevice}
+      checkingSelectedDeviceAvailability={isDeviceAliveRequestInProgress}
+      selectedDeviceAvailable={selectedDeviceAlive}
       onGetFrontCameraRequestPress={
         deviceRequestsDialogGetFrontCameraImageRequestPressHandler
       }

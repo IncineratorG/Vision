@@ -13,74 +13,68 @@ const SS_sendIsDeviceAliveRequestHandler = ({channel}) => {
       info: 'SS_sendIsDeviceAliveRequestHandler: ' + receiverDeviceName,
     });
 
-    // yield put(
-    //   AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadBegin(),
-    // );
+    yield put(
+      AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestBegin(),
+    );
 
     try {
-      // const surveillanceService = Services.services().surveillanceService;
-      //
-      // const request = surveillanceService.requests.testRequestWithPayload({
-      //   receiverDeviceName,
-      //   valueOne,
-      //   valueTwo,
-      // });
-      //
-      // const onComplete = (data) => {
-      //   const {resultOne} =
-      //     surveillanceService.responses.testRequestWithPayloadResponse(data);
-      //
-      //   actionsChannel.put(
-      //     AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadCompleted(
-      //       {
-      //         resultOne,
-      //       },
-      //     ),
-      //   );
-      // };
-      //
-      // const onCancel = () => {
-      //   actionsChannel.put(
-      //     AppActions.surveillanceCommon.actions.cancelTestRequestWithPayload(),
-      //   );
-      // };
-      //
-      // const onError = ({code, message}) => {
-      //   actionsChannel.put(
-      //     AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadError(
-      //       {
-      //         code,
-      //         message,
-      //       },
-      //     ),
-      //   );
-      // };
-      //
-      // const requestId = yield call(surveillanceService.sendRequest, {
-      //   request,
-      //   onComplete,
-      //   onCancel,
-      //   onError,
-      // });
-      //
-      // yield put(
-      //   AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadSended({
-      //     requestId,
-      //   }),
-      // );
+      const surveillanceService = Services.services().surveillanceService;
+
+      const request = surveillanceService.requests.isDeviceAlive({
+        receiverDeviceName,
+      });
+
+      const onComplete = (data) => {
+        const {isAlive} = surveillanceService.responses.isDeviceAlive(data);
+
+        actionsChannel.put(
+          AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestCompleted(
+            {isAlive},
+          ),
+        );
+      };
+
+      const onCancel = () => {
+        actionsChannel.put(
+          AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestCancelled(),
+        );
+      };
+
+      const onError = ({code, message}) => {
+        actionsChannel.put(
+          AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestError(
+            {code, message},
+          ),
+        );
+      };
+
+      const requestId = yield call(surveillanceService.sendRequest, {
+        request,
+        onComplete,
+        onCancel,
+        onError,
+      });
+
+      yield put(
+        AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestSended(
+          {requestId},
+        ),
+      );
     } catch (e) {
       SystemEventsHandler.onError({
         err: 'SS_sendIsDeviceAliveRequestHandler()->ERROR: ' + e.toString(),
       });
 
-      // const {code, message} = e;
-      //
-      // yield put(
-      //   AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadError({
-      //     code,
-      //     message,
-      //   }),
-      // );
+      const {code, message} = e;
+
+      yield put(
+        AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestError(
+          {
+            code,
+            message,
+          },
+        ),
+      );
     }
   };
 

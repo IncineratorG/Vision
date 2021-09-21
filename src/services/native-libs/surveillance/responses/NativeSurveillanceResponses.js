@@ -8,7 +8,11 @@ const NativeSurveillanceResponses = () => {
   };
 
   const isDeviceAlive = (data) => {
-    return null;
+    const {isAlive} = data;
+
+    return {
+      isAlive,
+    };
   };
 
   return {

@@ -119,15 +119,23 @@ const DeviceRequestsDialog = ({
   }, [visible]);
 
   useEffect(() => {
-    setContentComponent(requestsListComponent);
+    // setContentComponent(requestsListComponent);
+    //
+    // SystemEventsHandler.onInfo({
+    //   info:
+    //     'DeviceRequestsDialog->' +
+    //     checkingSelectedDeviceAvailability +
+    //     ' - ' +
+    //     selectedDeviceAvailable,
+    // });
 
-    // if (checkingSelectedDeviceAvailability) {
-    //   setContentComponent(<View style={{flex: 1, backgroundColor: 'grey'}} />);
-    // } else if (selectedDeviceAvailable) {
-    //   setContentComponent(requestsListComponent);
-    // } else {
-    //   setContentComponent(<View style={{flex: 1, backgroundColor: 'red'}} />);
-    // }
+    if (checkingSelectedDeviceAvailability) {
+      setContentComponent(<View style={{flex: 1, backgroundColor: 'grey'}} />);
+    } else if (selectedDeviceAvailable) {
+      setContentComponent(requestsListComponent);
+    } else {
+      setContentComponent(<View style={{flex: 1, backgroundColor: 'red'}} />);
+    }
   }, [
     checkingSelectedDeviceAvailability,
     selectedDeviceAvailable,

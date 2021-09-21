@@ -94,50 +94,63 @@ const useGroupController = (model) => {
       });
 
       // ===
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
-      );
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-          visible: true,
-        }),
-      );
+      // dispatch(
+      //   AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequest({
+      //     receiverDeviceName: deviceName,
+      //   }),
+      // );
+      //
+      // localDispatch(
+      //   GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
+      // );
+      // localDispatch(
+      //   GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+      //     visible: true,
+      //   }),
+      // );
       // ===
 
-      // if (deviceMode !== 'service') {
-      //   localDispatch(
-      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
-      //       message: t('SelectedDeviceError_notInServiceMode'),
-      //     }),
-      //   );
-      //   localDispatch(
-      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
-      //       visible: true,
-      //     }),
-      //   );
-      // } else if (Date.now() - lastUpdateTimestamp > 90000) {
-      //   localDispatch(
-      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
-      //       message: t('SelectedDeviceError_deviceNotRespond'),
-      //     }),
-      //   );
-      //   localDispatch(
-      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
-      //       visible: true,
-      //     }),
-      //   );
-      // } else {
-      //   localDispatch(
-      //     GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
-      //   );
-      //   localDispatch(
-      //     GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-      //       visible: true,
-      //     }),
-      //   );
-      // }
+      if (deviceMode !== 'service') {
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+            message: t('SelectedDeviceError_notInServiceMode'),
+          }),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+            visible: true,
+          }),
+        );
+      } else if (Date.now() - lastUpdateTimestamp > 90000) {
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+            message: t('SelectedDeviceError_deviceNotRespond'),
+          }),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+            visible: true,
+          }),
+        );
+      } else {
+        dispatch(
+          AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequest(
+            {
+              receiverDeviceName: deviceName,
+            },
+          ),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
+        );
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+            visible: true,
+          }),
+        );
+      }
     },
-    [localDispatch, t],
+    [localDispatch, dispatch, t],
   );
 
   const deviceRequestsDialogCancelHandler = useCallback(() => {
