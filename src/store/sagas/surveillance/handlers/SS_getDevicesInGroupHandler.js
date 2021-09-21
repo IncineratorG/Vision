@@ -9,7 +9,7 @@ const SS_getDevicesInGroupSaga = ({channel}) => {
       info: 'SS_getDevicesInGroupSaga->handler(): ' + JSON.stringify(action),
     });
 
-    yield put(AppActions.surveillance.actions.getDevicesInGroupBegin());
+    yield put(AppActions.surveillanceCommon.actions.getDevicesInGroupBegin());
 
     const {groupName, groupPassword, deviceName} = action.payload;
 
@@ -29,7 +29,7 @@ const SS_getDevicesInGroupSaga = ({channel}) => {
       });
 
       yield put(
-        AppActions.surveillance.actions.getDevicesInGroupFinished({
+        AppActions.surveillanceCommon.actions.getDevicesInGroupFinished({
           groupName,
           groupPassword,
           deviceName,
@@ -44,7 +44,10 @@ const SS_getDevicesInGroupSaga = ({channel}) => {
       const {code, message} = e;
 
       yield put(
-        AppActions.surveillance.actions.getDevicesInGroupError({code, message}),
+        AppActions.surveillanceCommon.actions.getDevicesInGroupError({
+          code,
+          message,
+        }),
       );
     }
   };

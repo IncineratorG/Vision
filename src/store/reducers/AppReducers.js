@@ -1,16 +1,20 @@
 import tempReducer from './temp/tempReducer';
 import authReducer from './auth/authReducer';
-import surveillanceReducer from './surveillance/surveillanceReducer';
+import surveillanceCommonReducer from './surveillance/surveillanceCommonReducer';
+import surveillanceIsDeviceAliveRequestReducer from './surveillance/surveillanceIsDeviceAliveRequestReducer';
 
 const AppReducers = () => {
   const temp = tempReducer;
   const auth = authReducer;
-  const surveillance = surveillanceReducer;
+  const surveillanceCommon = surveillanceCommonReducer;
+  const surveillanceIsDeviceAliveRequest =
+    surveillanceIsDeviceAliveRequestReducer;
 
   return {
     temp,
     auth,
-    surveillance,
+    surveillanceCommon,
+    surveillanceIsDeviceAliveRequest,
   };
 };
 

@@ -1,13 +1,17 @@
 import AuthActions from './auth/AuthActions';
-import SurveillanceActions from './surveillance/SurveillanceActions';
+import SurveillanceCommonActions from './surveillance/SurveillanceCommonActions';
+import SurveillanceIsDeviceAliveRequestActions from './surveillance/SurveillanceIsDeviceAliveRequestActions';
 
 const AppActions = () => {
   const auth = AuthActions();
-  const surveillance = SurveillanceActions();
+  const surveillanceCommon = SurveillanceCommonActions();
+  const surveillanceIsDeviceAliveRequest =
+    SurveillanceIsDeviceAliveRequestActions();
 
   return {
     auth,
-    surveillance,
+    surveillanceCommon,
+    surveillanceIsDeviceAliveRequest,
   };
 };
 

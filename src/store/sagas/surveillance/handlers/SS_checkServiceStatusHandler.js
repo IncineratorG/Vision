@@ -5,7 +5,7 @@ import Services from '../../../../services/Services';
 
 const SS_checkServiceStatusHandler = ({channel}) => {
   const handler = function* (action) {
-    yield put(AppActions.surveillance.actions.checkServiceStatusBegin());
+    yield put(AppActions.surveillanceCommon.actions.checkServiceStatusBegin());
 
     try {
       const surveillanceService = Services.services().surveillanceService;
@@ -13,7 +13,9 @@ const SS_checkServiceStatusHandler = ({channel}) => {
       const isRunning = yield call(surveillanceService.isServiceRunning);
 
       yield put(
-        AppActions.surveillance.actions.checkServiceStatusFinished({isRunning}),
+        AppActions.surveillanceCommon.actions.checkServiceStatusFinished({
+          isRunning,
+        }),
       );
     } catch (e) {
       SystemEventsHandler.onError({
@@ -23,7 +25,7 @@ const SS_checkServiceStatusHandler = ({channel}) => {
       const {code, message} = e;
 
       yield put(
-        AppActions.surveillance.actions.checkServiceStatusError({
+        AppActions.surveillanceCommon.actions.checkServiceStatusError({
           code,
           message,
         }),

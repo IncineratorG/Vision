@@ -190,7 +190,6 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
             Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
 
             SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
-//            SurveillanceService.get().startListenToResponses(context);
 
             handlerResult.resolve(true);
         };

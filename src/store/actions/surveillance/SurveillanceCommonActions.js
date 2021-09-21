@@ -1,4 +1,4 @@
-const SurveillanceActions = () => {
+const SurveillanceCommonActions = () => {
   const types = {
     GET_DEVICES_IN_GROUP: 'SA_GET_DEVICES_IN_GROUP',
     GET_DEVICES_IN_GROUP_BEGIN: 'SA_GET_DEVICES_IN_GROUP_BEGIN',
@@ -222,4 +222,4 @@ const SurveillanceActions = () => {
   };
 };
 
-export default SurveillanceActions;
+export default SurveillanceCommonActions;

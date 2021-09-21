@@ -10,7 +10,7 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
     const {receiverDeviceName, valueOne, valueTwo} = action.payload;
 
     yield put(
-      AppActions.surveillance.actions.sendTestRequestWithPayloadBegin(),
+      AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadBegin(),
     );
 
     try {
@@ -27,24 +27,28 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
           surveillanceService.responses.testRequestWithPayloadResponse(data);
 
         actionsChannel.put(
-          AppActions.surveillance.actions.sendTestRequestWithPayloadCompleted({
-            resultOne,
-          }),
+          AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadCompleted(
+            {
+              resultOne,
+            },
+          ),
         );
       };
 
       const onCancel = () => {
         actionsChannel.put(
-          AppActions.surveillance.actions.cancelTestRequestWithPayload(),
+          AppActions.surveillanceCommon.actions.cancelTestRequestWithPayload(),
         );
       };
 
       const onError = ({code, message}) => {
         actionsChannel.put(
-          AppActions.surveillance.actions.sendTestRequestWithPayloadError({
-            code,
-            message,
-          }),
+          AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadError(
+            {
+              code,
+              message,
+            },
+          ),
         );
       };
 
@@ -56,7 +60,7 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
       });
 
       yield put(
-        AppActions.surveillance.actions.sendTestRequestWithPayloadSended({
+        AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadSended({
           requestId,
         }),
       );
@@ -68,7 +72,7 @@ const SS_sendTestRequestWithPayloadHandler = ({channel}) => {
       const {code, message} = e;
 
       yield put(
-        AppActions.surveillance.actions.sendTestRequestWithPayloadError({
+        AppActions.surveillanceCommon.actions.sendTestRequestWithPayloadError({
           code,
           message,
         }),

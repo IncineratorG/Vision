@@ -126,7 +126,6 @@ public class CreateGroupWithDeviceHandler implements JSActionHandler {
             Log.d("tag", "CreateGroupWithDeviceHandler->createGroupWithDevice()->onComplete");
 
             SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
-//            SurveillanceService.get().startListenToResponses(context);
 
             handlerResult.resolve(true);
         };

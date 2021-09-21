@@ -8,6 +8,7 @@ import SS_cancelTestRequestWithPayloadHandler from './handlers/SS_cancelTestRequ
 import SS_startServiceHandler from './handlers/SS_startServiceHandler';
 import SS_stopServiceHandler from './handlers/SS_stopServiceHandler';
 import SS_checkServiceStatusHandler from './handlers/SS_checkServiceStatusHandler';
+import SS_sendIsDeviceAliveRequestHandler from './handlers/SS_sendIsDeviceAliveRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -28,33 +29,39 @@ const SurveillanceSaga = () => {
     SS_sendTestRequestWithPayloadHandler({channel: sagaChannel});
   const {handler: cancelTestRequestWithPayloadHandler} =
     SS_cancelTestRequestWithPayloadHandler({channel: sagaChannel});
+  const {handler: sendIsDeviceAliveRequestHandler} =
+    SS_sendIsDeviceAliveRequestHandler({channel: sagaChannel});
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
 
     yield takeLatest(
-      AppActions.surveillance.types.GET_DEVICES_IN_GROUP,
+      AppActions.surveillanceCommon.types.GET_DEVICES_IN_GROUP,
       getDevicesInGroupHandler,
     );
     yield takeLatest(
-      AppActions.surveillance.types.START_SERVICE,
+      AppActions.surveillanceCommon.types.START_SERVICE,
       startServiceHandler,
     );
     yield takeLatest(
-      AppActions.surveillance.types.STOP_SERVICE,
+      AppActions.surveillanceCommon.types.STOP_SERVICE,
       stopServiceHandler,
     );
     yield takeLatest(
-      AppActions.surveillance.types.CHECK_SERVICE_STATUS,
+      AppActions.surveillanceCommon.types.CHECK_SERVICE_STATUS,
       checkServiceStatusHandler,
     );
     yield takeLatest(
-      AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD,
+      AppActions.surveillanceCommon.types.SEND_TEST_REQUEST_WITH_PAYLOAD,
       sendTestRequestWithPayloadHandler,
     );
     yield takeLatest(
-      AppActions.surveillance.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD,
+      AppActions.surveillanceCommon.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD,
       cancelTestRequestWithPayloadHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceIsDeviceAliveRequest.types.SEND_IS_ALIVE_REQUEST,
+      sendIsDeviceAliveRequestHandler,
     );
   };
 

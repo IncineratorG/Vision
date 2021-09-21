@@ -7,6 +7,8 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 
 const DeviceRequestsDialog = ({
   visible,
+  checkingSelectedDeviceAvailability,
+  selectedDeviceAvailable,
   device,
   onGetFrontCameraRequestPress,
   onGetBackCameraRequestPress,
@@ -21,6 +23,7 @@ const DeviceRequestsDialog = ({
     };
   }, []);
 
+  const [contentComponent, setContentComponent] = useState(null);
   const [availableRequests, setAvailableRequests] = useState([]);
 
   const requestPressHandler = useCallback(
@@ -61,12 +64,17 @@ const DeviceRequestsDialog = ({
     ],
   );
 
-  const requestsListComponent = (
-    <DeviceRequestsDialogRequestsList
-      requestsList={availableRequests}
-      onRequestPress={requestPressHandler}
-    />
-  );
+  const requestsListComponent = useMemo(() => {
+    return (
+      <DeviceRequestsDialogRequestsList
+        requestsList={availableRequests}
+        onRequestPress={requestPressHandler}
+      />
+    );
+  }, [availableRequests, requestPressHandler]);
+
+  // const contentComponent = requestsListComponent;
+  // const contentComponent = <View style={{flex: 1, backgroundColor: 'grey'}} />;
 
   useEffect(() => {
     SystemEventsHandler.onInfo({
@@ -109,6 +117,22 @@ const DeviceRequestsDialog = ({
       info: 'DeviceRequestsDialog->VISIBLE: ' + visible,
     });
   }, [visible]);
+
+  useEffect(() => {
+    setContentComponent(requestsListComponent);
+
+    // if (checkingSelectedDeviceAvailability) {
+    //   setContentComponent(<View style={{flex: 1, backgroundColor: 'grey'}} />);
+    // } else if (selectedDeviceAvailable) {
+    //   setContentComponent(requestsListComponent);
+    // } else {
+    //   setContentComponent(<View style={{flex: 1, backgroundColor: 'red'}} />);
+    // }
+  }, [
+    checkingSelectedDeviceAvailability,
+    selectedDeviceAvailable,
+    requestsListComponent,
+  ]);
   // ===
 
   return (
@@ -116,7 +140,7 @@ const DeviceRequestsDialog = ({
       <Dialog visible={visible} onDismiss={onCancelPress}>
         <Dialog.Title>{t('DeviceRequestsDialog_title')}</Dialog.Title>
         <Dialog.Content>
-          <View style={styles.mainContainer}>{requestsListComponent}</View>
+          <View style={styles.mainContainer}>{contentComponent}</View>
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={onCancelPress}>

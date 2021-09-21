@@ -15,7 +15,7 @@ const useServiceController = (model) => {
   const stopService = useCallback(() => {
     SystemEventsHandler.onInfo({info: 'useServiceController()->stopService()'});
 
-    dispatch(AppActions.surveillance.actions.stopService());
+    dispatch(AppActions.surveillanceCommon.actions.stopService());
   }, [dispatch]);
 
   return {

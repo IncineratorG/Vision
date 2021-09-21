@@ -68,9 +68,9 @@ const initialState = {
   },
 };
 
-const surveillanceReducer = (state = initialState, action) => {
+const surveillanceCommonReducer = (state = initialState, action) => {
   switch (action.type) {
-    case AppActions.surveillance.types.GET_DEVICES_IN_GROUP_BEGIN: {
+    case AppActions.surveillanceCommon.types.GET_DEVICES_IN_GROUP_BEGIN: {
       return {
         ...state,
         devicesInGroup: {
@@ -86,7 +86,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.GET_DEVICES_IN_GROUP_FINISHED: {
+    case AppActions.surveillanceCommon.types.GET_DEVICES_IN_GROUP_FINISHED: {
       const {devicesArray} = action.payload;
 
       return {
@@ -105,7 +105,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.GET_DEVICES_IN_GROUP_ERROR: {
+    case AppActions.surveillanceCommon.types.GET_DEVICES_IN_GROUP_ERROR: {
       const {code, message} = action.payload;
 
       return {
@@ -124,7 +124,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.START_SERVICE_BEGIN: {
+    case AppActions.surveillanceCommon.types.START_SERVICE_BEGIN: {
       return {
         ...state,
         service: {
@@ -142,7 +142,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.START_SERVICE_FINISHED: {
+    case AppActions.surveillanceCommon.types.START_SERVICE_FINISHED: {
       return {
         ...state,
         service: {
@@ -160,7 +160,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.START_SERVICE_ERROR: {
+    case AppActions.surveillanceCommon.types.START_SERVICE_ERROR: {
       const {code, message} = action.payload;
 
       return {
@@ -180,7 +180,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.STOP_SERVICE_BEGIN: {
+    case AppActions.surveillanceCommon.types.STOP_SERVICE_BEGIN: {
       return {
         ...state,
         service: {
@@ -198,7 +198,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.STOP_SERVICE_FINISHED: {
+    case AppActions.surveillanceCommon.types.STOP_SERVICE_FINISHED: {
       return {
         ...state,
         service: {
@@ -216,7 +216,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.STOP_SERVICE_ERROR: {
+    case AppActions.surveillanceCommon.types.STOP_SERVICE_ERROR: {
       const {code, message} = action.payload;
 
       return {
@@ -236,7 +236,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_BEGIN: {
+    case AppActions.surveillanceCommon.types.CHECK_SERVICE_STATUS_BEGIN: {
       return {
         ...state,
         service: {
@@ -254,7 +254,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_FINISHED: {
+    case AppActions.surveillanceCommon.types.CHECK_SERVICE_STATUS_FINISHED: {
       const {isRunning} = action.payload;
 
       return {
@@ -274,7 +274,7 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.CHECK_SERVICE_STATUS_ERROR: {
+    case AppActions.surveillanceCommon.types.CHECK_SERVICE_STATUS_ERROR: {
       const {code, message} = action.payload;
 
       return {
@@ -294,9 +294,10 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN: {
+    case AppActions.surveillanceCommon.types
+      .SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN: {
       SystemEventsHandler.onInfo({
-        info: 'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN',
+        info: 'surveillanceCommonReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_BEGIN',
       });
 
       return {
@@ -322,12 +323,13 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: {
+    case AppActions.surveillanceCommon.types
+      .SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: {
       const {requestId} = action.payload;
 
       SystemEventsHandler.onInfo({
         info:
-          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: ' +
+          'surveillanceCommonReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_SENDED: ' +
           JSON.stringify(action),
       });
 
@@ -354,13 +356,13 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types
+    case AppActions.surveillanceCommon.types
       .SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: {
       const {resultOne} = action.payload;
 
       SystemEventsHandler.onInfo({
         info:
-          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: ' +
+          'surveillanceCommonReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_COMPLETED: ' +
           JSON.stringify(action),
       });
 
@@ -386,12 +388,13 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: {
+    case AppActions.surveillanceCommon.types
+      .SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: {
       const {code, message} = action.payload;
 
       SystemEventsHandler.onInfo({
         info:
-          'surveillanceReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: ' +
+          'surveillanceCommonReducer->SEND_TEST_REQUEST_WITH_PAYLOAD_ERROR: ' +
           JSON.stringify(action),
       });
 
@@ -417,10 +420,10 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD: {
+    case AppActions.surveillanceCommon.types.CANCEL_TEST_REQUEST_WITH_PAYLOAD: {
       SystemEventsHandler.onInfo({
         info:
-          'surveillanceReducer->CANCEL_TEST_REQUEST_WITH_PAYLOAD: ' +
+          'surveillanceCommonReducer->CANCEL_TEST_REQUEST_WITH_PAYLOAD: ' +
           JSON.stringify(action),
       });
 
@@ -446,10 +449,11 @@ const surveillanceReducer = (state = initialState, action) => {
       };
     }
 
-    case AppActions.surveillance.types.TEST_REQUEST_WITH_PAYLOAD_CANCELLED: {
+    case AppActions.surveillanceCommon.types
+      .TEST_REQUEST_WITH_PAYLOAD_CANCELLED: {
       SystemEventsHandler.onInfo({
         info:
-          'surveillanceReducer->TEST_REQUEST_WITH_PAYLOAD_CANCELLED: ' +
+          'surveillanceCommonReducer->TEST_REQUEST_WITH_PAYLOAD_CANCELLED: ' +
           JSON.stringify(action),
       });
 
@@ -481,4 +485,4 @@ const surveillanceReducer = (state = initialState, action) => {
   }
 };
 
-export default surveillanceReducer;
+export default surveillanceCommonReducer;

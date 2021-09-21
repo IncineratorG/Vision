@@ -6,7 +6,6 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import AppActions from '../../../store/actions/AppActions';
 import groupLocalReducer from '../store/groupLocalReducer';
 import groupLocalState from '../store/groupLocalState';
-import useGainFocus from '../../../utils/common/hooks/useGainFocus';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -33,10 +32,10 @@ const useGroupModel = () => {
       code: devicesInGroupErrorCode,
       message: devicesInGroupErrorMessage,
     },
-  } = useSelector((state) => state.surveillance.devicesInGroup);
+  } = useSelector((state) => state.surveillanceCommon.devicesInGroup);
 
   const {running: serviceRunning} = useSelector(
-    (state) => state.surveillance.service,
+    (state) => state.surveillanceCommon.service,
   );
 
   const focusChangedCallback = useCallback(() => {
@@ -45,7 +44,7 @@ const useGroupModel = () => {
     });
 
     dispatch(
-      AppActions.surveillance.actions.getDevicesInGroup({
+      AppActions.surveillanceCommon.actions.getDevicesInGroup({
         groupName: currentGroupName,
         groupPassword: currentGroupPassword,
         deviceName: currentDeviceName,
@@ -58,7 +57,7 @@ const useGroupModel = () => {
       });
 
       dispatch(
-        AppActions.surveillance.actions.getDevicesInGroup({
+        AppActions.surveillanceCommon.actions.getDevicesInGroup({
           groupName: currentGroupName,
           groupPassword: currentGroupPassword,
           deviceName: currentDeviceName,

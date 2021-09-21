@@ -2,9 +2,7 @@ import {useCallback} from 'react';
 import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
-import Services from '../../../services/Services';
 import GroupLocalActions from '../store/GroupLocalActions';
-import NativeSurveillanceRequests from '../../../services/native-libs/surveillance/requests/NativeSurveillanceRequests';
 import useTranslation from '../../../utils/common/localization';
 
 const useGroupController = (model) => {
@@ -34,7 +32,7 @@ const useGroupController = (model) => {
     });
 
     dispatch(
-      AppActions.surveillance.actions.sendTestRequestWithPayload({
+      AppActions.surveillanceCommon.actions.sendTestRequestWithPayload({
         receiverDeviceName: 'a',
         valueOne: 'VAL_1',
         valueTwo: 'VAL_2',
@@ -45,17 +43,13 @@ const useGroupController = (model) => {
   const startService = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'useGroupController()->startService()'});
 
-    dispatch(AppActions.surveillance.actions.startService());
-
-    // await Services.services().surveillanceService.startService();
+    dispatch(AppActions.surveillanceCommon.actions.startService());
   }, [dispatch]);
 
   const stopService = useCallback(async () => {
     SystemEventsHandler.onInfo({info: 'useGroupController()->stopService()'});
 
-    dispatch(AppActions.surveillance.actions.stopService());
-
-    // await Services.services().surveillanceService.stopService();
+    dispatch(AppActions.surveillanceCommon.actions.stopService());
   }, [dispatch]);
 
   const backButtonPressHandler = useCallback(() => {
@@ -70,7 +64,7 @@ const useGroupController = (model) => {
     });
 
     dispatch(
-      AppActions.surveillance.actions.getDevicesInGroup({
+      AppActions.surveillanceCommon.actions.getDevicesInGroup({
         groupName: currentGroupName,
         groupPassword: currentGroupPassword,
         deviceName: currentDeviceName,
@@ -99,38 +93,49 @@ const useGroupController = (model) => {
         info: 'useGroupModel()->devicePressHandler(): ' + deviceName,
       });
 
-      if (deviceMode !== 'service') {
-        localDispatch(
-          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
-            message: t('SelectedDeviceError_notInServiceMode'),
-          }),
-        );
-        localDispatch(
-          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
-            visible: true,
-          }),
-        );
-      } else if (Date.now() - lastUpdateTimestamp > 90000) {
-        localDispatch(
-          GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
-            message: t('SelectedDeviceError_deviceNotRespond'),
-          }),
-        );
-        localDispatch(
-          GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
-            visible: true,
-          }),
-        );
-      } else {
-        localDispatch(
-          GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
-        );
-        localDispatch(
-          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-            visible: true,
-          }),
-        );
-      }
+      // ===
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
+      );
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+          visible: true,
+        }),
+      );
+      // ===
+
+      // if (deviceMode !== 'service') {
+      //   localDispatch(
+      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+      //       message: t('SelectedDeviceError_notInServiceMode'),
+      //     }),
+      //   );
+      //   localDispatch(
+      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+      //       visible: true,
+      //     }),
+      //   );
+      // } else if (Date.now() - lastUpdateTimestamp > 90000) {
+      //   localDispatch(
+      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogErrorMessage({
+      //       message: t('SelectedDeviceError_deviceNotRespond'),
+      //     }),
+      //   );
+      //   localDispatch(
+      //     GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
+      //       visible: true,
+      //     }),
+      //   );
+      // } else {
+      //   localDispatch(
+      //     GroupLocalActions.actions.setDeviceRequestsDialogData({device}),
+      //   );
+      //   localDispatch(
+      //     GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+      //       visible: true,
+      //     }),
+      //   );
+      // }
     },
     [localDispatch, t],
   );

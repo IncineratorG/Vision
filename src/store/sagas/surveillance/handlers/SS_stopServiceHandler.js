@@ -5,14 +5,14 @@ import Services from '../../../../services/Services';
 
 const SS_stopServiceHandler = ({channel}) => {
   const handler = function* (action) {
-    yield put(AppActions.surveillance.actions.stopServiceBegin());
+    yield put(AppActions.surveillanceCommon.actions.stopServiceBegin());
 
     try {
       const surveillanceService = Services.services().surveillanceService;
 
       yield call(surveillanceService.stopService);
 
-      yield put(AppActions.surveillance.actions.stopServiceFinished());
+      yield put(AppActions.surveillanceCommon.actions.stopServiceFinished());
     } catch (e) {
       SystemEventsHandler.onError({
         err: 'SS_stopServiceHandler->handler()->ERROR: ' + e.toString(),
@@ -21,7 +21,7 @@ const SS_stopServiceHandler = ({channel}) => {
       const {code, message} = e;
 
       yield put(
-        AppActions.surveillance.actions.stopServiceError({code, message}),
+        AppActions.surveillanceCommon.actions.stopServiceError({code, message}),
       );
     }
   };

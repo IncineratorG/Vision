@@ -18,7 +18,7 @@ const useServiceModel = () => {
   );
 
   const {running: serviceRunning} = useSelector(
-    (state) => state.surveillance.service,
+    (state) => state.surveillanceCommon.service,
   );
 
   useEffect(() => {
