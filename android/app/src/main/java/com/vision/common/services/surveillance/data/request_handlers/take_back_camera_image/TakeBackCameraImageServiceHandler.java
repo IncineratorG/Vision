@@ -3,6 +3,8 @@ package com.vision.common.services.surveillance.data.request_handlers.take_back_
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -10,6 +12,9 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,9 +29,9 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TakeBackCameraImageResponsePayload;
 
+import java.io.IOException;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler {
     @Override
     public void handle(Context context, ServiceRequest request) {
@@ -42,7 +47,7 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         // ===
         // =====
-//        test(context);
+        test(context);
         // =====
         TakeBackCameraImageResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload("image-data");
@@ -65,24 +70,24 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
         }
     }
 
-    protected CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
-        @Override
-        public void onOpened(@NonNull CameraDevice camera) {
-            Log.d("tag", "CameraDevice.StateCallback onOpened");
-//            cameraDevice = camera;
-//            actOnReadyCameraDevice();
-        }
-
-        @Override
-        public void onDisconnected(@NonNull CameraDevice camera) {
-            Log.w("tag", "CameraDevice.StateCallback onDisconnected");
-        }
-
-        @Override
-        public void onError(@NonNull CameraDevice camera, int error) {
-            Log.e("tag", "CameraDevice.StateCallback onError " + error);
-        }
-    };
+//    protected CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
+//        @Override
+//        public void onOpened(@NonNull CameraDevice camera) {
+//            Log.d("tag", "CameraDevice.StateCallback onOpened");
+////            cameraDevice = camera;
+////            actOnReadyCameraDevice();
+//        }
+//
+//        @Override
+//        public void onDisconnected(@NonNull CameraDevice camera) {
+//            Log.w("tag", "CameraDevice.StateCallback onDisconnected");
+//        }
+//
+//        @Override
+//        public void onError(@NonNull CameraDevice camera, int error) {
+//            Log.e("tag", "CameraDevice.StateCallback onError " + error);
+//        }
+//    };
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 //    private void test_2(Context context) {
@@ -124,6 +129,7 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
     Camera camera;
     CameraPreview cameraPreview;
+    WindowManager mWindowManager;
     private void test(Context context) {
         Log.d("tag", "===> TEST <===");
 
@@ -153,6 +159,8 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
         // ===
         Camera.PictureCallback jpegPictureCallback = (bytes, cam) -> {
             Log.d("tag", "==> IN_JPEG_PICTURE_CALLBACK");
+
+            camera.release();
         };
 
         Camera.PictureCallback rawPictureCallback = (bytes, camera1) -> {
@@ -164,7 +172,71 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
         };
 
         try {
-            cameraPreview = new CameraPreview(context, camera);
+            Camera.Parameters params = camera.getParameters();
+            camera.setParameters(params);
+
+            SurfaceTexture surfaceTexture = new SurfaceTexture(0);
+            camera.setPreviewTexture(surfaceTexture);
+
+            camera.startPreview();
+            camera.takePicture(null, null, jpegPictureCallback);
+
+//            Camera.Parameters p = camera.getParameters();
+//            p.setPreviewSize(640, 480);
+//            p.setPreviewFormat(PixelFormat.YCbCr_420_SP);
+//            camera.setParameters(p);
+
+            // ===
+//            cameraPreview = new CameraPreview(context, camera);
+//            cameraPreview.setLayoutParams(
+//                    new ViewGroup.LayoutParams(
+//                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+//                    )
+//            );
+//            mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
+//                    1, 1,
+//                    Build.VERSION.SDK_INT < Build.VERSION_CODES.O ?
+//                            WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY :
+//                            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+//                    WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+//                    PixelFormat.TRANSLUCENT
+//            );
+//            mWindowManager.addView(cameraPreview, layoutParams);
+//
+//            camera.setPreviewDisplay(cameraPreview.getHolder());
+            // ===
+
+//            camera.startPreview();
+
+//            camera.unlock();
+
+//            camera.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);
+
+//            camera.startPreview();
+//            camera.unlock();
+
+//            camera.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);
+
+
+
+//            try {
+//                camera.setPreviewDisplay(mSurfaceHolder);
+//                camera.startPreview();
+//            }
+//            catch (IOException e) {
+//                Log.d("tag", e.getMessage());
+//                e.printStackTrace();
+//                camera.release();
+//            }
+
+
+//            cameraPreview = new CameraPreview(context, camera);
+//
+//            camera.takePicture(null, null, jpegPictureCallback);
+//            camera.startPreview();
+
+//            camera.setPreviewDisplay();
 
 //            camera.startPreview();
 //            camera.setOneShotPreviewCallback((bytes, camera) -> Log.d("tag", "setOneShotPreviewCallback"));
@@ -176,25 +248,46 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 //                                                         camera12.stopPreview();
 //                                                     });
 //                                                 );
-            camera.startPreview();
-            camera.reconnect();
-            camera.setOneShotPreviewCallback((bytes, camera) -> Log.d("tag", "setOneShotPreviewCallback"));
-            camera.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);
+//            camera.startPreview();
+//            camera.reconnect();
+//            camera.setOneShotPreviewCallback((bytes, camera) -> Log.d("tag", "setOneShotPreviewCallback"));
+//            camera.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);
 
             Log.d("tag", "PICTURE_TAKEN");
         } catch (Exception e) {
             Log.d("tag", "==> EXCEPTION_TAKE_PICTURE_1: " + e.getLocalizedMessage());
             Log.d("tag", "==> EXCEPTION_TAKE_PICTURE_2: " + e.toString());
             e.printStackTrace();
+
             camera.release();
+//            mWindowManager.removeView(cameraPreview);
         }
         // ===
 
         camera.release();
+//        mWindowManager.removeView(cameraPreview);
 
         Log.d("tag", "==============================");
     }
 
+    private CameraPreview addPreView() {
+//        //create fake camera view
+//        CameraPreview cameraSourceCameraPreview = new CameraPreview(this, this);
+//        cameraSourceCameraPreview.setLayoutParams(new ViewGroup
+//                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//
+//        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+//        WindowManager.LayoutParams params = new WindowManager.LayoutParams(1, 1,
+//                Build.VERSION.SDK_INT < Build.VERSION_CODES.O ?
+//                        WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY :
+//                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+//                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+//                PixelFormat.TRANSLUCENT);
+//
+//        mWindowManager.addView(cameraSourceCameraPreview, params);
+//        return cameraSourceCameraPreview;
+        return null;
+    }
     // ============================
     // ============================
 

@@ -80,7 +80,7 @@ public class SurveillanceForegroundService extends Service {
         // =====
         // ===
         if (intent == null || intent.getAction() == null) {
-            SurveillanceService.get().foregroundServiceWork().stop(this);
+//            SurveillanceService.get().foregroundServiceWork().stop(this);
 
             stopForeground(true);
             stopSelf();
