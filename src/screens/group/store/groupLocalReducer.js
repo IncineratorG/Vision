@@ -67,6 +67,48 @@ const groupLocalReducer = (state, action) => {
       };
     }
 
+    case GroupLocalActions.types.SET_REQUEST_STATUS_DIALOG_VISIBILITY: {
+      const {visible} = action.payload;
+
+      return {
+        ...state,
+        requestStatusDialog: {
+          ...state.requestStatusDialog,
+          visible,
+          // completed: false,
+          // responseData: null,
+        },
+      };
+    }
+
+    case GroupLocalActions.types.SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA: {
+      const {data, canViewResponse, responseViewerCallback} = action.payload;
+
+      return {
+        ...state,
+        requestStatusDialog: {
+          ...state.requestStatusDialog,
+          completed: true,
+          responseData: data,
+          canViewResponse,
+          responseViewerCallback,
+        },
+      };
+    }
+
+    case GroupLocalActions.types.CLEAR_REQUEST_STATUS_DIALOG_DATA: {
+      return {
+        ...state,
+        requestStatusDialog: {
+          ...state.requestStatusDialog,
+          completed: false,
+          responseData: null,
+          canViewResponse: false,
+          responseViewerCallback: null,
+        },
+      };
+    }
+
     default: {
       return state;
     }

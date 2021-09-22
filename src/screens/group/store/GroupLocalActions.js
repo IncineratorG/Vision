@@ -13,6 +13,12 @@ const GroupLocalActions = () => {
       'GLA_SET_REQUEST_IN_PROGRESS_DIALOG_VISIBILITY',
     SET_REQUEST_IN_PROGRESS_DIALOG_DATA:
       'GLA_SET_REQUEST_IN_PROGRESS_DIALOG_DATA',
+
+    SET_REQUEST_STATUS_DIALOG_VISIBILITY:
+      'GLA_SET_REQUEST_STATUS_DIALOG_VISIBILITY',
+    SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA:
+      'GLA_SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA',
+    CLEAR_REQUEST_STATUS_DIALOG_DATA: 'GLA_CLEAR_REQUEST_STATUS_DIALOG_DATA',
   };
 
   const setDeviceRequestsDialogVisibility = ({visible}) => {
@@ -57,6 +63,30 @@ const GroupLocalActions = () => {
     };
   };
 
+  const setRequestStatusDialogVisibility = ({visible}) => {
+    return {
+      type: types.SET_REQUEST_STATUS_DIALOG_VISIBILITY,
+      payload: {visible},
+    };
+  };
+
+  const setRequestStatusDialogResponseData = ({
+    data,
+    canViewResponse,
+    responseViewerCallback,
+  }) => {
+    return {
+      type: types.SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA,
+      payload: {data, canViewResponse, responseViewerCallback},
+    };
+  };
+
+  const clearRequestStatusDialogData = () => {
+    return {
+      type: types.CLEAR_REQUEST_STATUS_DIALOG_DATA,
+    };
+  };
+
   return {
     types,
     actions: {
@@ -66,6 +96,9 @@ const GroupLocalActions = () => {
       setSelectedDeviceErrorDialogErrorMessage,
       setRequestInProgressDialogVisibility,
       setRequestInProgressDialogData,
+      setRequestStatusDialogVisibility,
+      setRequestStatusDialogResponseData,
+      clearRequestStatusDialogData,
     },
   };
 };

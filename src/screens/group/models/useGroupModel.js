@@ -54,6 +54,7 @@ const useGroupModel = () => {
 
   const {
     inProgress: takeBackCameraImageRequestInProgress,
+    completed: takeBackCameraImageRequestCompleted,
     response: {
       payload: {image: selectedDeviceBackCameraImage},
     },
@@ -65,6 +66,36 @@ const useGroupModel = () => {
     (state) =>
       state.surveillanceTakeBackCameraImageRequest.takeBackCameraImageRequest,
   );
+  // ===
+  // =====
+  useEffect(() => {
+    if (takeBackCameraImageRequestInProgress) {
+      localDispatch(GroupLocalActions.actions.clearRequestStatusDialogData());
+      localDispatch(
+        GroupLocalActions.actions.setRequestStatusDialogVisibility({
+          visible: true,
+        }),
+      );
+    }
+  }, [takeBackCameraImageRequestInProgress, localDispatch]);
+
+  useEffect(() => {
+    if (takeBackCameraImageRequestCompleted) {
+      localDispatch(
+        GroupLocalActions.actions.setRequestStatusDialogResponseData({
+          data: selectedDeviceBackCameraImage,
+          canViewResponse: true,
+          responseViewerCallback: null,
+        }),
+      );
+    }
+  }, [
+    takeBackCameraImageRequestCompleted,
+    selectedDeviceBackCameraImage,
+    localDispatch,
+  ]);
+  // =====
+  // ===
 
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({
@@ -114,22 +145,6 @@ const useGroupModel = () => {
       navigation.navigate(AppRoutes.Service);
     }
   }, [serviceRunning, navigation]);
-
-  useEffect(() => {
-    if (takeBackCameraImageRequestInProgress) {
-      localDispatch(
-        GroupLocalActions.actions.setRequestInProgressDialogVisibility({
-          visible: true,
-        }),
-      );
-    } else {
-      localDispatch(
-        GroupLocalActions.actions.setRequestInProgressDialogVisibility({
-          visible: false,
-        }),
-      );
-    }
-  }, [takeBackCameraImageRequestInProgress, localDispatch]);
 
   return {
     data: {

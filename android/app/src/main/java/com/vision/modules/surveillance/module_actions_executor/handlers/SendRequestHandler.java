@@ -107,8 +107,20 @@ public class SendRequestHandler implements JSActionHandler {
                 onErrorCallback
         );
 
+        // ===
+        if (requestType.equalsIgnoreCase(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE)) {
+            test(context);
+        }
+        // ===
+
         result.resolve(request.id());
     }
+
+    // ===
+    private void test(ReactApplicationContext context) {
+        Log.d("tag", "====> SendRequest->test() <====");
+    }
+    // ===
 
     private void processResponse(ReactApplicationContext context, String requestType, ServiceResponse response) {
         switch (requestType) {

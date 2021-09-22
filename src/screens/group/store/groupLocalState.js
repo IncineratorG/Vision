@@ -11,6 +11,13 @@ const groupLocalState = {
     visible: false,
     requestId: null,
   },
+  requestStatusDialog: {
+    visible: false,
+    completed: false,
+    responseData: null,
+    canViewResponse: false,
+    responseViewerCallback: null,
+  },
 };
 
 export default groupLocalState;

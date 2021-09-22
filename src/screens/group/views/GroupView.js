@@ -5,6 +5,7 @@ import GroupDevicesList from '../../../components/specific/group/group-devices-l
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
 import RequestInProgressDialog from '../../../components/specific/group/request-in-progress-dialog/RequestInProgressDialog';
+import RequestStatusDialog from '../../../components/specific/group/request-status-dialog/RequestStatusDialog';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -28,6 +29,13 @@ const GroupView = ({model, controller}) => {
           visible: requestInProgressDialogVisible,
           requestId: requestInProgressDialogRequestId,
         },
+        requestStatusDialog: {
+          visible: requestStatusDialogVisible,
+          completed: requestStatusDialogCompleted,
+          responseData: requestStatusDialogResponseData,
+          canViewResponse: requestStatusDialogCanViewResponse,
+          responseViewerCallback: requestStatusDialogResponseViewerCallback,
+        },
       },
     },
   } = model;
@@ -44,6 +52,7 @@ const GroupView = ({model, controller}) => {
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
     requestInProgressDialogCancelHandler,
+    requestStatusDialogCancelHandler,
   } = controller;
 
   const updateDataIndicator = loadingDevicesInGroup ? (
@@ -81,10 +90,21 @@ const GroupView = ({model, controller}) => {
     />
   );
 
-  const requestInProgressDialog = (
-    <RequestInProgressDialog
-      visible={requestInProgressDialogVisible}
-      onCancelPress={requestInProgressDialogCancelHandler}
+  // const requestInProgressDialog = (
+  //   <RequestInProgressDialog
+  //     visible={requestInProgressDialogVisible}
+  //     onCancelPress={requestInProgressDialogCancelHandler}
+  //   />
+  // );
+
+  const requestStatusDialog = (
+    <RequestStatusDialog
+      visible={requestStatusDialogVisible}
+      completed={requestStatusDialogCompleted}
+      responseData={requestStatusDialogResponseData}
+      canViewResponse={requestStatusDialogCanViewResponse}
+      responseViewerCallback={requestStatusDialogResponseViewerCallback}
+      onCancelPress={requestStatusDialogCancelHandler}
     />
   );
 
@@ -114,7 +134,7 @@ const GroupView = ({model, controller}) => {
       {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
-      {requestInProgressDialog}
+      {requestStatusDialog}
     </View>
   );
 };

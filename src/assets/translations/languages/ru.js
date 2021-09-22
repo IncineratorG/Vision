@@ -60,6 +60,12 @@ const ru = {
 
   RequestInProgressDialog_defaultMessage: 'Выполнение запроса.',
   RequestInProgressDialog_cancelButton: 'ОТМЕНА',
+
+  RequestStatusDialog_requestInProgressMessage: 'Выполнение запроса.',
+  RequestStatusDialog_requestCompletedMessage: 'Запрос выполнен.',
+  RequestStatusDialog_cancelButton: 'ОТМЕНА',
+  RequestStatusDialog_okButton: 'OK',
+  RequestStatusDialog_viewResponseButton: 'РЕЗУЛЬТАТ',
 };
 
 export default ru;
