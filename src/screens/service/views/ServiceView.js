@@ -7,13 +7,14 @@ const ServiceView = ({model, controller}) => {
     data: {groupName, groupPassword, deviceName},
   } = model;
 
-  const {stopService} = controller;
+  const {stopService, testCameraPressHandler} = controller;
 
   const serviceDeviceInfoComponent = (
     <ServiceDeviceInfo
       groupName={groupName}
       groupPassword={groupPassword}
       deviceName={deviceName}
+      onTestCameraPress={testCameraPressHandler}
       onStopServicePress={stopService}
     />
   );

@@ -18,9 +18,22 @@ const useServiceController = (model) => {
     dispatch(AppActions.surveillanceCommon.actions.stopService());
   }, [dispatch]);
 
+  const testCameraPressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'useServiceController()->testCameraPressHandler()',
+    });
+
+    dispatch(
+      AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequest(
+        {receiverDeviceName: 'c'},
+      ),
+    );
+  }, [dispatch]);
+
   return {
     backButtonPressHandler,
     stopService,
+    testCameraPressHandler,
   };
 };
 

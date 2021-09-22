@@ -1,12 +1,19 @@
 package com.vision.common.services.surveillance.data.request_handlers.take_back_camera_image;
 
+import android.Manifest;
 import android.content.Context;
-import android.graphics.SurfaceTexture;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.os.Environment;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
@@ -17,13 +24,9 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
 import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TakeBackCameraImageResponsePayload;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler {
     @Override
     public void handle(Context context, ServiceRequest request) {
@@ -39,7 +42,7 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         // ===
         // =====
-        test(context);
+//        test(context);
         // =====
         TakeBackCameraImageResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload("image-data");
@@ -62,104 +65,237 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
         }
     }
 
-    Camera mCamera;
-    boolean safeToCapture;
-
-    Camera.PictureCallback mCall = (data, camera) -> {
-        safeToCapture = false;
-        //decode the data obtained by the camera into a Bitmap
-
-        FileOutputStream outStream = null;
-        try{
-
-            // create a File object for the parent directory
-            File myDirectory = new File(Environment.getExternalStorageDirectory()+"/Test");
-            // have the object build the directory structure, if needed.
-            myDirectory.mkdirs();
-
-            //SDF for getting current time for unique image name
-            SimpleDateFormat curTimeFormat = new SimpleDateFormat("ddMMyyyyhhmmss");
-            String curTime = curTimeFormat.format(new java.util.Date());
-
-            // create a File object for the output file
-            outStream = new FileOutputStream(myDirectory+"/user"+curTime+".jpg");
-            outStream.write(data);
-            outStream.close();
-            mCamera.release();
-            mCamera = null;
-
-            String strImagePath = Environment.getExternalStorageDirectory()+"/"+myDirectory.getName()+"/user"+curTime+".jpg";
-            setEmailWithImage(strImagePath);
-            Log.d("CAMERA", "picture clicked - "+strImagePath);
-        } catch (FileNotFoundException e){
-            Log.d("CAMERA", e.getMessage());
-        } catch (IOException e){
-            Log.d("CAMERA", e.getMessage());
+    protected CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(@NonNull CameraDevice camera) {
+            Log.d("tag", "CameraDevice.StateCallback onOpened");
+//            cameraDevice = camera;
+//            actOnReadyCameraDevice();
         }
 
-        safeToCapture = true;    //Set a boolean to true again after saving file.
+        @Override
+        public void onDisconnected(@NonNull CameraDevice camera) {
+            Log.w("tag", "CameraDevice.StateCallback onDisconnected");
+        }
 
+        @Override
+        public void onError(@NonNull CameraDevice camera, int error) {
+            Log.e("tag", "CameraDevice.StateCallback onError " + error);
+        }
     };
 
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    private void test_2(Context context) {
+//        Log.d("tag", "===> TEST_2");
+//
+//        CameraManager cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
+//
+//        String cameraId = null;
+//        try {
+//            for (String camId : cameraManager.getCameraIdList()) {
+//                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(camId);
+//                int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+//                if (cOrientation == CameraCharacteristics.LENS_FACING_BACK) {
+//                    cameraId = camId;
+//                    break;
+//                }
+//            }
+//        } catch (CameraAccessException e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (cameraId == null) {
+//            Log.d("tag", "CAMERA_IS_NULL");
+//            return;
+//        } else {
+//            Log.d("tag", "CAMERA_ID: " + cameraId);
+//        }
+//
+//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            Log.d("tag", "PERMISSION_NOT_GRANTED");
+//            return;
+//        }
+//        try {
+//            cameraManager.openCamera(cameraId, cameraStateCallback, null);
+//        } catch (CameraAccessException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    Camera camera;
+    CameraPreview cameraPreview;
     private void test(Context context) {
-        Log.d("tag", "TakeBackCameraImageServiceHandler->test()");
+        Log.d("tag", "===> TEST <===");
 
-        mCamera = getAvailableFrontCamera();
-        if (mCamera == null) {
-            Log.d("tag", "TakeBackCameraImageServiceHandler->test(): CAMERA_IS_NULL");
-            return;
-        }
-
-        SurfaceView sv = new SurfaceView(context);
-        SurfaceTexture surfaceTexture = new SurfaceTexture(10);
-
-        // ===
-        try {
-            mCamera.setPreviewTexture(surfaceTexture);
-            //mCamera.setPreviewDisplay(sv.getHolder());
-            Camera.Parameters parameters = mCamera.getParameters();
-
-            //set camera parameters
-            mCamera.setParameters(parameters);
-
-
-            //This boolean is used as app crashes while writing images to file if simultaneous calls are made to takePicture
-            if(safeToCapture) {
-                mCamera.startPreview();
-                mCamera.takePicture(null, null, mCall);
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        // ===
-
-        //Get a surface
-        SurfaceHolder sHolder = sv.getHolder();
-        //tells Android that this surface will have its data constantly replaced
-        sHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-    }
-
-    private Camera getAvailableFrontCamera (){
         int cameraCount = 0;
-        Camera cam = null;
+        camera = null;
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         cameraCount = Camera.getNumberOfCameras();
         for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
             Camera.getCameraInfo(camIdx, cameraInfo);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 try {
-                    cam = Camera.open(camIdx);
+                    camera = Camera.open(camIdx);
+                    break;
                 } catch (RuntimeException e) {
                     Log.e("CAMERA", "Camera failed to open: " + e.getLocalizedMessage());
                 }
             }
         }
 
-        return cam;
+        if (camera == null) {
+            Log.d("tag", "==> CAM_IS_NULL");
+            return;
+        } else {
+            Log.d("tag", "==> CAM_NOT_NULL: " + camera.toString());
+        }
+
+        // ===
+        Camera.PictureCallback jpegPictureCallback = (bytes, cam) -> {
+            Log.d("tag", "==> IN_JPEG_PICTURE_CALLBACK");
+        };
+
+        Camera.PictureCallback rawPictureCallback = (bytes, camera1) -> {
+            Log.d("tag", "==> IN_RAW_PICTURE_CALLBACK");
+        };
+
+        Camera.ShutterCallback shutterCallback = () -> {
+            Log.d("tag", "==> IN_SHUTTER_PICTURE_CALLBACK");
+        };
+
+        try {
+            cameraPreview = new CameraPreview(context, camera);
+
+//            camera.startPreview();
+//            camera.setOneShotPreviewCallback((bytes, camera) -> Log.d("tag", "setOneShotPreviewCallback"));
+//            camera.setOneShotPreviewCallback(new Camera.PreviewCallback() {
+//                                                 @Override
+//                                                 public void onPreviewFrame(byte[] data, Camera camera) {
+//                                                     camera.takePicture(null, null, (data1, camera12) -> {
+//                                                         // do something you want with your picture and stop preview
+//                                                         camera12.stopPreview();
+//                                                     });
+//                                                 );
+            camera.startPreview();
+            camera.reconnect();
+            camera.setOneShotPreviewCallback((bytes, camera) -> Log.d("tag", "setOneShotPreviewCallback"));
+            camera.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);
+
+            Log.d("tag", "PICTURE_TAKEN");
+        } catch (Exception e) {
+            Log.d("tag", "==> EXCEPTION_TAKE_PICTURE_1: " + e.getLocalizedMessage());
+            Log.d("tag", "==> EXCEPTION_TAKE_PICTURE_2: " + e.toString());
+            e.printStackTrace();
+            camera.release();
+        }
+        // ===
+
+        camera.release();
+
+        Log.d("tag", "==============================");
     }
 
-    private void setEmailWithImage(String str) {
-        Log.d("tag", "setEmailWithImage(): " + str);
-    }
+    // ============================
+    // ============================
+
+//    Camera mCamera;
+//    boolean safeToCapture;
+//
+//    Camera.PictureCallback mCall = (data, camera) -> {
+//        safeToCapture = false;
+//        //decode the data obtained by the camera into a Bitmap
+//
+//        FileOutputStream outStream = null;
+//        try{
+//
+//            // create a File object for the parent directory
+//            File myDirectory = new File(Environment.getExternalStorageDirectory()+"/Test");
+//            // have the object build the directory structure, if needed.
+//            myDirectory.mkdirs();
+//
+//            //SDF for getting current time for unique image name
+//            SimpleDateFormat curTimeFormat = new SimpleDateFormat("ddMMyyyyhhmmss");
+//            String curTime = curTimeFormat.format(new java.util.Date());
+//
+//            // create a File object for the output file
+//            outStream = new FileOutputStream(myDirectory+"/user"+curTime+".jpg");
+//            outStream.write(data);
+//            outStream.close();
+//            mCamera.release();
+//            mCamera = null;
+//
+//            String strImagePath = Environment.getExternalStorageDirectory()+"/"+myDirectory.getName()+"/user"+curTime+".jpg";
+//            setEmailWithImage(strImagePath);
+//            Log.d("CAMERA", "picture clicked - "+strImagePath);
+//        } catch (FileNotFoundException e){
+//            Log.d("CAMERA", e.getMessage());
+//        } catch (IOException e){
+//            Log.d("CAMERA", e.getMessage());
+//        }
+//
+//        safeToCapture = true;    //Set a boolean to true again after saving file.
+//
+//    };
+//
+//    private void test(Context context) {
+//        Log.d("tag", "TakeBackCameraImageServiceHandler->test()");
+//
+//        mCamera = getAvailableFrontCamera();
+//        if (mCamera == null) {
+//            Log.d("tag", "TakeBackCameraImageServiceHandler->test(): CAMERA_IS_NULL");
+//            return;
+//        }
+//
+//        SurfaceView sv = new SurfaceView(context);
+//        SurfaceTexture surfaceTexture = new SurfaceTexture(10);
+//
+//        // ===
+//        try {
+//            mCamera.setPreviewTexture(surfaceTexture);
+//            //mCamera.setPreviewDisplay(sv.getHolder());
+//            Camera.Parameters parameters = mCamera.getParameters();
+//
+//            //set camera parameters
+//            mCamera.setParameters(parameters);
+//
+//
+//            //This boolean is used as app crashes while writing images to file if simultaneous calls are made to takePicture
+//            if(safeToCapture) {
+//                mCamera.startPreview();
+//                mCamera.takePicture(null, null, mCall);
+//            }
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        // ===
+//
+//        //Get a surface
+//        SurfaceHolder sHolder = sv.getHolder();
+//        //tells Android that this surface will have its data constantly replaced
+//        sHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+//    }
+//
+//    private Camera getAvailableFrontCamera (){
+//        int cameraCount = 0;
+//        Camera cam = null;
+//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+//        cameraCount = Camera.getNumberOfCameras();
+//        for (int camIdx = 0; camIdx < cameraCount; camIdx++) {
+//            Camera.getCameraInfo(camIdx, cameraInfo);
+//            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+//                try {
+//                    cam = Camera.open(camIdx);
+//                } catch (RuntimeException e) {
+//                    Log.e("CAMERA", "Camera failed to open: " + e.getLocalizedMessage());
+//                }
+//            }
+//        }
+//
+//        return cam;
+//    }
+//
+//    private void setEmailWithImage(String str) {
+//        Log.d("tag", "setEmailWithImage(): " + str);
+//    }
 }

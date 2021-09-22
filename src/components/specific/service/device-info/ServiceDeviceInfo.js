@@ -1,12 +1,14 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import SimpleButton from '../../../common/simple-button/SimpleButton';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const ServiceDeviceInfo = ({
   groupName,
   groupPassword,
   deviceName,
+  onTestCameraPress,
   onStopServicePress,
 }) => {
   const groupNameIcon = useMemo(() => {
@@ -52,6 +54,9 @@ const ServiceDeviceInfo = ({
       <View style={styles.buttons}>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Stop service'} onPress={onStopServicePress} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Test Camera'} onPress={onTestCameraPress} />
         </View>
       </View>
     </View>

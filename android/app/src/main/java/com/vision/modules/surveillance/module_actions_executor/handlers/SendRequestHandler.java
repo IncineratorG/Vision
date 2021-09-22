@@ -108,18 +108,18 @@ public class SendRequestHandler implements JSActionHandler {
         );
 
         // ===
-        if (requestType.equalsIgnoreCase(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE)) {
-            test(context);
-        }
+//        if (requestType.equalsIgnoreCase(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE)) {
+//            test(context);
+//        }
         // ===
 
         result.resolve(request.id());
     }
 
     // ===
-    private void test(ReactApplicationContext context) {
-        Log.d("tag", "====> SendRequest->test() <====");
-    }
+//    private void test(ReactApplicationContext context) {
+//        Log.d("tag", "====> SendRequest->test() <====");
+//    }
     // ===
 
     private void processResponse(ReactApplicationContext context, String requestType, ServiceResponse response) {
