@@ -45,6 +45,28 @@ const groupLocalReducer = (state, action) => {
       };
     }
 
+    case GroupLocalActions.types.SET_REQUEST_IN_PROGRESS_DIALOG_VISIBILITY: {
+      return {
+        ...state,
+        requestInProgressDialog: {
+          ...state.requestInProgressDialog,
+          visible: action.payload.visible,
+        },
+      };
+    }
+
+    case GroupLocalActions.types.SET_REQUEST_IN_PROGRESS_DIALOG_DATA: {
+      const {requestId} = action.payload;
+
+      return {
+        ...state,
+        requestInProgressDialog: {
+          ...state.requestInProgressDialog,
+          requestId,
+        },
+      };
+    }
+
     default: {
       return state;
     }

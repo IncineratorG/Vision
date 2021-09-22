@@ -57,6 +57,9 @@ const ru = {
   SelectedDeviceNotAvailable_message: 'Устройство не доступно.',
 
   CheckingSelectedDevice_message: 'Проверка доступности устройства.',
+
+  RequestInProgressDialog_defaultMessage: 'Выполнение запроса.',
+  RequestInProgressDialog_cancelButton: 'ОТМЕНА',
 };
 
 export default ru;

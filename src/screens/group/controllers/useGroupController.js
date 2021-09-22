@@ -215,6 +215,14 @@ const useGroupController = (model) => {
     );
   }, [localDispatch]);
 
+  const requestInProgressDialogCancelHandler = useCallback(() => {
+    localDispatch(
+      GroupLocalActions.actions.setRequestInProgressDialogVisibility({
+        visible: false,
+      }),
+    );
+  }, [localDispatch]);
+
   return {
     testRequest,
     startService,
@@ -227,6 +235,7 @@ const useGroupController = (model) => {
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
+    requestInProgressDialogCancelHandler,
   };
 };
 

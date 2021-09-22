@@ -4,6 +4,7 @@ import SimpleButton from '../../../components/common/simple-button/SimpleButton'
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
+import RequestInProgressDialog from '../../../components/specific/group/request-in-progress-dialog/RequestInProgressDialog';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -12,6 +13,8 @@ const GroupView = ({model, controller}) => {
       loadingDevicesInGroup,
       isDeviceAliveRequestInProgress,
       selectedDeviceAlive,
+      takeBackCameraImageRequestInProgress,
+      selectedDeviceBackCameraImage,
       localState: {
         deviceRequestsDialog: {
           visible: deviceRequestsDialogVisible,
@@ -20,6 +23,10 @@ const GroupView = ({model, controller}) => {
         selectedDeviceErrorDialog: {
           visible: selectedDeviceErrorDialogVisible,
           message: selectedDeviceErrorDialogMessage,
+        },
+        requestInProgressDialog: {
+          visible: requestInProgressDialogVisible,
+          requestId: requestInProgressDialogRequestId,
         },
       },
     },
@@ -36,6 +43,7 @@ const GroupView = ({model, controller}) => {
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
+    requestInProgressDialogCancelHandler,
   } = controller;
 
   const updateDataIndicator = loadingDevicesInGroup ? (
@@ -73,6 +81,13 @@ const GroupView = ({model, controller}) => {
     />
   );
 
+  const requestInProgressDialog = (
+    <RequestInProgressDialog
+      visible={requestInProgressDialogVisible}
+      onCancelPress={requestInProgressDialogCancelHandler}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.contentContainer}>{devicesList}</View>
@@ -99,6 +114,7 @@ const GroupView = ({model, controller}) => {
       {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
+      {requestInProgressDialog}
     </View>
   );
 };

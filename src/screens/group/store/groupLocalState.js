@@ -7,6 +7,10 @@ const groupLocalState = {
     visible: false,
     message: '',
   },
+  requestInProgressDialog: {
+    visible: false,
+    requestId: null,
+  },
 };
 
 export default groupLocalState;

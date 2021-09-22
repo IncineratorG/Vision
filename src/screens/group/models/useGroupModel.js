@@ -6,6 +6,7 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import AppActions from '../../../store/actions/AppActions';
 import groupLocalReducer from '../store/groupLocalReducer';
 import groupLocalState from '../store/groupLocalState';
+import GroupLocalActions from '../store/GroupLocalActions';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -64,15 +65,6 @@ const useGroupModel = () => {
     (state) =>
       state.surveillanceTakeBackCameraImageRequest.takeBackCameraImageRequest,
   );
-  // ===
-  useEffect(() => {
-    SystemEventsHandler.onInfo({
-      info:
-        'useGroupModel()->takeBackCameraImageRequestInProgress: ' +
-        takeBackCameraImageRequestInProgress,
-    });
-  }, [takeBackCameraImageRequestInProgress]);
-  // ===
 
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({
@@ -123,16 +115,21 @@ const useGroupModel = () => {
     }
   }, [serviceRunning, navigation]);
 
-  // useEffect(() => {
-  //   SystemEventsHandler.onInfo({
-  //     info: 'useGroupModel(): ' + devicesInGroupArray.length,
-  //   });
-  //   for (let i = 0; i < devicesInGroupArray.length; ++i) {
-  //     SystemEventsHandler.onInfo({
-  //       info: 'useGroupModel(): ' + JSON.stringify(devicesInGroupArray[i]),
-  //     });
-  //   }
-  // }, [devicesInGroupArray]);
+  useEffect(() => {
+    if (takeBackCameraImageRequestInProgress) {
+      localDispatch(
+        GroupLocalActions.actions.setRequestInProgressDialogVisibility({
+          visible: true,
+        }),
+      );
+    } else {
+      localDispatch(
+        GroupLocalActions.actions.setRequestInProgressDialogVisibility({
+          visible: false,
+        }),
+      );
+    }
+  }, [takeBackCameraImageRequestInProgress, localDispatch]);
 
   return {
     data: {
@@ -145,6 +142,8 @@ const useGroupModel = () => {
       devicesInGroupArray,
       isDeviceAliveRequestInProgress,
       selectedDeviceAlive,
+      takeBackCameraImageRequestInProgress,
+      selectedDeviceBackCameraImage,
     },
     setters: {},
     dispatch,
