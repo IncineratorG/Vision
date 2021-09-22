@@ -2,7 +2,7 @@ import AppActions from '../../actions/AppActions';
 
 const initialState = {
   isDeviceAliveRequest: {
-    requestId: '',
+    requestId: null,
     inProgress: false,
     completed: false,
     cancellable: true,

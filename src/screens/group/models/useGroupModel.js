@@ -51,6 +51,29 @@ const useGroupModel = () => {
     (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
   );
 
+  const {
+    inProgress: takeBackCameraImageRequestInProgress,
+    response: {
+      payload: {image: selectedDeviceBackCameraImage},
+    },
+    error: {
+      hasError: takeBackCameraImageRequestHasError,
+      code: takeBackCameraImageRequestErrorCode,
+    },
+  } = useSelector(
+    (state) =>
+      state.surveillanceTakeBackCameraImageRequest.takeBackCameraImageRequest,
+  );
+  // ===
+  useEffect(() => {
+    SystemEventsHandler.onInfo({
+      info:
+        'useGroupModel()->takeBackCameraImageRequestInProgress: ' +
+        takeBackCameraImageRequestInProgress,
+    });
+  }, [takeBackCameraImageRequestInProgress]);
+  // ===
+
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({
       info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',

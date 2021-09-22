@@ -9,6 +9,7 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.request_handlers.is_device_alive.IsDeviceAliveServiceHandler;
+import com.vision.common.services.surveillance.data.request_handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.common.services.surveillance.data.request_handlers.unknown.UnknownRequestServiceHandler;
@@ -28,6 +29,7 @@ public class FBSRequestsHandler implements ServiceRequestsHandler {
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST, new TestRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageServiceHandler());
     }
 
     @Override

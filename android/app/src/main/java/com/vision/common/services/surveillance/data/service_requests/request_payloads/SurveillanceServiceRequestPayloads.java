@@ -2,6 +2,7 @@ package com.vision.common.services.surveillance.data.service_requests.request_pa
 
 
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.IsDeviceAliveRequestPayload;
+import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TestRequestWithPayloadRequestPayload;
 
 public class SurveillanceServiceRequestPayloads {
@@ -12,5 +13,9 @@ public class SurveillanceServiceRequestPayloads {
 
     public static IsDeviceAliveRequestPayload isDeviceAliveRequestPayload() {
         return new IsDeviceAliveRequestPayload();
+    }
+
+    public static TakeBackCameraImageRequestPayload takeBackCameraImageRequestPayload() {
+        return new TakeBackCameraImageRequestPayload();
     }
 }

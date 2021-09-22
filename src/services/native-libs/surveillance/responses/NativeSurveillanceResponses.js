@@ -15,9 +15,18 @@ const NativeSurveillanceResponses = () => {
     };
   };
 
+  const takeBackCameraImage = (data) => {
+    const {image} = data;
+
+    return {
+      image,
+    };
+  };
+
   return {
     testRequestWithPayloadResponse,
     isDeviceAlive,
+    takeBackCameraImage,
   };
 };
 

@@ -4,6 +4,7 @@ import {SystemEventsHandler} from '../../../utils/common/system-events-handler/S
 import AppActions from '../../../store/actions/AppActions';
 import GroupLocalActions from '../store/GroupLocalActions';
 import useTranslation from '../../../utils/common/localization';
+import Services from '../../../services/Services';
 
 const useGroupController = (model) => {
   const {t} = useTranslation();
@@ -53,10 +54,12 @@ const useGroupController = (model) => {
   }, [dispatch]);
 
   const backButtonPressHandler = useCallback(() => {
-    BackHandler.exitApp();
+    // Services.services().authService.logoutFromGroup();
+    dispatch(AppActions.auth.actions.logoutDevice());
 
+    BackHandler.exitApp();
     return true;
-  }, []);
+  }, [dispatch]);
 
   const updateDevicesInGroupData = useCallback(() => {
     SystemEventsHandler.onInfo({
@@ -187,13 +190,21 @@ const useGroupController = (model) => {
           JSON.stringify(selectedDevice),
       });
 
+      const {deviceName: selectedDeviceName} = selectedDevice;
+
       localDispatch(
         GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
           visible: false,
         }),
       );
+
+      dispatch(
+        AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequest(
+          {receiverDeviceName: selectedDeviceName},
+        ),
+      );
     },
-    [localDispatch],
+    [localDispatch, dispatch],
   );
 
   const selectedDeviceErrorDialogCancelHandler = useCallback(() => {

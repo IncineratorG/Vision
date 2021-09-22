@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.SurveillanceServiceRequestPayloads;
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.IsDeviceAliveRequestPayload;
+import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TestRequestWithPayloadRequestPayload;
 import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.interfaces.js_payload.JSPayload;
@@ -89,6 +90,13 @@ public class SendRequestPayload implements JSPayload {
             case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
                 IsDeviceAliveRequestPayload requestPayload =
                         SurveillanceServiceRequestPayloads.isDeviceAliveRequestPayload();
+
+                return requestPayload.jsonObject();
+            }
+
+            case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
+                TakeBackCameraImageRequestPayload requestPayload =
+                        SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
 
                 return requestPayload.jsonObject();
             }

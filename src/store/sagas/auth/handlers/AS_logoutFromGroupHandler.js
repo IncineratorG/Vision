@@ -7,17 +7,9 @@ const AS_logoutFromGroupHandler = ({channel}) => {
   const handler = function* (action) {
     yield put(AppActions.auth.actions.logoutDeviceBegin());
 
-    const {groupName, groupPassword, deviceName} = yield select(
-      (state) => state.auth.authInfo,
-    );
-
     try {
       const authService = Services.services().authService;
-      yield call(authService.logoutFromGroup, {
-        groupName,
-        groupPassword,
-        deviceName,
-      });
+      yield call(authService.logoutFromGroup);
 
       yield put(AppActions.auth.actions.logoutDeviceFinished());
     } catch (e) {
@@ -29,36 +21,6 @@ const AS_logoutFromGroupHandler = ({channel}) => {
 
       yield put(AppActions.auth.actions.logoutDeviceError({code, message}));
     }
-
-    // yield put(AppActions.auth.actions.loginDeviceBegin());
-    //
-    // const {groupName, groupPassword, deviceName} = action.payload;
-    //
-    // try {
-    //   const authService = Services.services().authService;
-    //
-    //   yield call(authService.loginInGroup, {
-    //     groupName,
-    //     groupPassword,
-    //     deviceName,
-    //   });
-    //
-    //   yield put(
-    //     AppActions.auth.actions.loginDeviceFinished({
-    //       groupName,
-    //       groupPassword,
-    //       deviceName,
-    //     }),
-    //   );
-    // } catch (e) {
-    //   SystemEventsHandler.onError({
-    //     err: 'as_loginInGroupSagaHandler()->ERROR: ' + e.toString(),
-    //   });
-    //
-    //   const {code, message} = e;
-    //
-    //   yield put(AppActions.auth.actions.loginDeviceError({code, message}));
-    // }
   };
 
   return {

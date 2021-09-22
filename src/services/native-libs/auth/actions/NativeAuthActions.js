@@ -62,14 +62,9 @@ const NativeFirebaseActions = () => {
     };
   };
 
-  const logoutDeviceFromGroupAction = ({
-    groupName,
-    groupPassword,
-    deviceName,
-  }) => {
+  const logoutDeviceFromGroupAction = () => {
     return {
       type: LOGOUT_DEVICE_FROM_GROUP,
-      payload: {groupName, groupPassword, deviceName},
     };
   };
 

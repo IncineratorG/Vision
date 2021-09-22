@@ -2,7 +2,11 @@ import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstant
 
 const NativeSurveillanceRequests = () => {
   const {
-    requestTypes: {TEST_REQUEST_WITH_PAYLOAD, IS_DEVICE_ALIVE},
+    requestTypes: {
+      TEST_REQUEST_WITH_PAYLOAD,
+      IS_DEVICE_ALIVE,
+      TAKE_BACK_CAMERA_IMAGE,
+    },
   } = NativeSurveillanceConstants;
 
   const testRequestWithPayload = ({receiverDeviceName, valueOne, valueTwo}) => {
@@ -23,9 +27,17 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
+  const takeBackCameraImage = ({receiverDeviceName}) => {
+    return {
+      requestType: TAKE_BACK_CAMERA_IMAGE,
+      receiverDeviceName,
+    };
+  };
+
   return {
     testRequestWithPayload,
     isDeviceAlive,
+    takeBackCameraImage,
   };
 };
 

@@ -62,16 +62,8 @@ const NativeAuth = () => {
     return await nativeAuthService.execute(action);
   };
 
-  const logoutDeviceFromGroup = async ({
-    groupName,
-    groupPassword,
-    deviceName,
-  }) => {
-    const action = NativeAuthActions.logoutDeviceFromGroupAction({
-      groupName,
-      groupPassword,
-      deviceName,
-    });
+  const logoutDeviceFromGroup = async () => {
+    const action = NativeAuthActions.logoutDeviceFromGroupAction();
     return await nativeAuthService.execute(action);
   };
 

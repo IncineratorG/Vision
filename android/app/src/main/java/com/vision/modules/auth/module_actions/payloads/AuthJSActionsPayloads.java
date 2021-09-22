@@ -4,7 +4,6 @@ package com.vision.modules.auth.module_actions.payloads;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.auth.module_actions.payloads.payloads.CreateGroupWithDevicePayload;
 import com.vision.modules.auth.module_actions.payloads.payloads.LoginDeviceInGroupPayload;
-import com.vision.modules.auth.module_actions.payloads.payloads.LogoutDeviceFromGroupPayload;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 
 public class AuthJSActionsPayloads {
@@ -18,9 +17,5 @@ public class AuthJSActionsPayloads {
 
     public static LoginDeviceInGroupPayload loginDeviceInGroupPayload(ReadableMap payloadMap) {
         return new LoginDeviceInGroupPayload(payloadMap);
-    }
-
-    public static LogoutDeviceFromGroupPayload logoutDeviceFromGroupPayload(ReadableMap payloadMap) {
-        return new LogoutDeviceFromGroupPayload(payloadMap);
     }
 }

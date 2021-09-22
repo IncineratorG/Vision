@@ -15,6 +15,7 @@ const NativeSurveillanceConstants = () => {
       TEST_REQUEST_WITH_PAYLOAD,
       GET_DEVICE_AVAILABLE_ACTIONS,
       IS_DEVICE_ALIVE,
+      TAKE_BACK_CAMERA_IMAGE,
     },
     eventTypes: {REQUEST_ERROR, RESPONSE_RECEIVED},
   } = NativeSurveillanceLib.getConstants();
@@ -33,6 +34,7 @@ const NativeSurveillanceConstants = () => {
       TEST_REQUEST_WITH_PAYLOAD,
       GET_DEVICE_AVAILABLE_ACTIONS,
       IS_DEVICE_ALIVE,
+      TAKE_BACK_CAMERA_IMAGE,
     },
     eventTypes: {REQUEST_ERROR, RESPONSE_RECEIVED},
   };
