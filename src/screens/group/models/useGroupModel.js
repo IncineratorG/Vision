@@ -98,11 +98,17 @@ const useGroupModel = () => {
           responseViewerCallback: () => {
             SystemEventsHandler.onInfo({info: 'responseViewerCallback'});
 
-            // localDispatch(
-            //   GroupLocalActions.actions.openImageViewer({
-            //     image: selectedDeviceBackCameraImage,
-            //   }),
-            // );
+            localDispatch(
+              GroupLocalActions.actions.setRequestStatusDialogVisibility({
+                visible: false,
+              }),
+            );
+
+            localDispatch(
+              GroupLocalActions.actions.openImageViewer({
+                image: selectedDeviceBackCameraImage,
+              }),
+            );
           },
         }),
       );

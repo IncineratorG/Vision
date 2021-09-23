@@ -6,7 +6,7 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 
 const ImageViewerModal = ({visible, image, onClose}) => {
   const [imagesData, setImagesData] = useState([]);
-  const [viewerInitialIndex, setViewerInitialIndex] = useState(0);
+  const [viewerInitialIndex, setViewerInitialIndex] = useState(-1);
 
   const onShowHandler = useCallback(() => {}, []);
 
@@ -27,13 +27,21 @@ const ImageViewerModal = ({visible, image, onClose}) => {
   }, []);
 
   useEffect(() => {
+    SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()'});
+
     if (!image) {
       return;
     }
 
+    const imageObject = {
+      url: 'data:image/jpg;base64,' + image,
+    };
+
     const imagesArray = [];
-    imagesArray.push(image);
+    imagesArray.push(imageObject);
     setImagesData(imagesArray);
+
+    setViewerInitialIndex(0);
   }, [image]);
 
   return (
@@ -53,6 +61,10 @@ const ImageViewerModal = ({visible, image, onClose}) => {
           const shareImageHandler = () => {};
 
           const removeImageHandler = () => {};
+
+          // return (
+          //   <View style={{width: 100, height: 50, backgroundColor: 'red'}} />
+          // );
 
           return (
             <View style={styles.mainContainer}>
@@ -89,7 +101,8 @@ const styles = StyleSheet.create({
   arrowBackContainer: {
     height: 50,
     width: 50,
-    backgroundColor: '#00000066',
+    // backgroundColor: '#00000066',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },

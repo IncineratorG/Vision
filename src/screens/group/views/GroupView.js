@@ -115,7 +115,7 @@ const GroupView = ({model, controller}) => {
     <ImageViewerModal
       visible={imageViewerVisible}
       image={imageViewerImage}
-      onCloss={imageViewerCloseHandler}
+      onClose={imageViewerCloseHandler}
     />
   );
 
