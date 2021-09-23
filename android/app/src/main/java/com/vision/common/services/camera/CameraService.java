@@ -4,32 +4,38 @@ package com.vision.common.services.camera;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.util.Base64;
 import android.util.Log;
 
+import com.vision.common.services.camera.callbacks.OnImageTakeError;
+import com.vision.common.services.camera.callbacks.OnImageTaken;
+
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class CameraService {
     private static CameraService sInstance;
 
     private Camera mCamera;
     private SurfaceTexture mSurfaceTexture;
+    private OnImageTaken mCurrentImageTakenCallback;
+    private OnImageTakeError mCurrentImageTakeErrorCallback;
 
     Camera.PictureCallback jpegPictureCallback = (bytes, cam) -> {
         Log.d("tag", "==> IN_JPEG_PICTURE_CALLBACK: " + bytes.length);
 
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                Log.d("tag", "---> WILL_STOP_PREVIEW <---");
-//
-////                mCamera.stopPreview();
-//            }
-//        }, 2000);
+        String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-//        mCamera.stopPreview();
+        // ===
+        if (mCurrentImageTakenCallback != null) {
+            mCurrentImageTakenCallback.onImageTaken(bytes, base64);
+        } else {
+            Log.d("tag", "CameraService->BAD_CURRENT_IMAGE_TAKEN_CALLBACK");
+        }
+        // ===
+
+//        String encodedImage = Base64.encodeToString(bytes, Base64.DEFAULT);
+//        Log.d("tag", "ENCODED_IMAGE: " + encodedImage);
+        dispose();
     };
     Camera.PictureCallback rawPictureCallback = (bytes, cam) -> {
         Log.d("tag", "==> IN_RAW_PICTURE_CALLBACK");
@@ -79,7 +85,7 @@ public class CameraService {
         }
     }
 
-    public void dispose(Context context) {
+    public void dispose() {
         Log.d("tag", "CameraService->dispose()");
 
         try {
@@ -96,20 +102,25 @@ public class CameraService {
         }
     }
 
-    public void takeBackCameraImage(Context context) {
+    public void takeBackCameraImage(Context context,
+                                    OnImageTaken imageTakenCallback,
+                                    OnImageTakeError errorCallback) {
         Log.d("tag", "CameraService->takeBackCameraImage()");
+
+        mCurrentImageTakenCallback = imageTakenCallback;
+        mCurrentImageTakeErrorCallback = errorCallback;
 
         init(context);
         mCamera.takePicture(null, null, jpegPictureCallback);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d("tag", "---> WILL_DISPOSE_PICTURE <---");
-
-                dispose(context);
-            }
-        }, 1000);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Log.d("tag", "---> WILL_DISPOSE_PICTURE <---");
+//
+//                dispose(context);
+//            }
+//        }, 1000);
 
 //        mCamera.startPreview();
 //        mCamera.takePicture(null, null, jpegPictureCallback);
