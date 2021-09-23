@@ -10,6 +10,7 @@ import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
+import com.vision.common.services.camera.CameraService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
@@ -99,6 +100,10 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
 
         mCommunicationManager.startIsAliveSignaling(context);
         startListenToResponses(context);
+
+        // ===
+//        CameraService.get().init(context);
+        // ===
     }
 
     public boolean isInitialized() {
@@ -128,6 +133,10 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         stopListenToResponses(context);
         stopForegroundService(context);
         mCommunicationManager.stopIsAliveSignaling(context);
+
+        // ===
+//        CameraService.get().dispose(context);
+        // ===
     }
 
     public String currentGroupName() {

@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
+import com.vision.common.services.camera.CameraService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -47,7 +48,10 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         // ===
         // =====
-        test(context);
+//        test(context);
+
+        CameraService.get().takeBackCameraImage(context);
+
         // =====
         TakeBackCameraImageResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload("image-data");
