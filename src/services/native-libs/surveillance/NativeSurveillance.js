@@ -18,7 +18,7 @@ const NativeSurveillance = () => {
     NativeSurveillanceEvents.types.RESPONSE_RECEIVED,
     (data) => {
       SystemEventsHandler.onInfo({
-        info: 'NativeSurveillance->onResponseReceived: ' + JSON.stringify(data),
+        info: 'NativeSurveillance->onResponseReceived()',
       });
       const {requestId, payload} =
         NativeSurveillanceEvents.payloads.responseReceivedEventPayload(data);

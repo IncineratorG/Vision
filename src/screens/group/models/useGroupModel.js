@@ -18,6 +18,8 @@ const useGroupModel = () => {
     groupLocalState,
   );
 
+  const [screenFocused, setScreenFocused] = useState(false);
+
   const {
     groupName: currentGroupName,
     groupPassword: currentGroupPassword,
@@ -69,6 +71,10 @@ const useGroupModel = () => {
   // ===
   // =====
   useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
     if (takeBackCameraImageRequestInProgress) {
       localDispatch(GroupLocalActions.actions.clearRequestStatusDialogData());
       localDispatch(
@@ -77,19 +83,32 @@ const useGroupModel = () => {
         }),
       );
     }
-  }, [takeBackCameraImageRequestInProgress, localDispatch]);
+  }, [screenFocused, takeBackCameraImageRequestInProgress, localDispatch]);
 
   useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
     if (takeBackCameraImageRequestCompleted) {
       localDispatch(
         GroupLocalActions.actions.setRequestStatusDialogResponseData({
           data: selectedDeviceBackCameraImage,
           canViewResponse: true,
-          responseViewerCallback: null,
+          responseViewerCallback: () => {
+            SystemEventsHandler.onInfo({info: 'responseViewerCallback'});
+
+            // localDispatch(
+            //   GroupLocalActions.actions.openImageViewer({
+            //     image: selectedDeviceBackCameraImage,
+            //   }),
+            // );
+          },
         }),
       );
     }
   }, [
+    screenFocused,
     takeBackCameraImageRequestCompleted,
     selectedDeviceBackCameraImage,
     localDispatch,
@@ -101,6 +120,10 @@ const useGroupModel = () => {
     SystemEventsHandler.onInfo({
       info: 'useGroupModel()->WILL_UPDATE_GROUP_DATA',
     });
+
+    // ===
+    setScreenFocused(true);
+    // ===
 
     dispatch(
       AppActions.surveillanceCommon.actions.getDevicesInGroup({
@@ -128,6 +151,8 @@ const useGroupModel = () => {
       SystemEventsHandler.onInfo({
         info: 'useGroupModel()->WILL_STOP_UPDATE_GROUP_DATA',
       });
+
+      setScreenFocused(false);
 
       clearInterval(intervalId);
     };

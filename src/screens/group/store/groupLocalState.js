@@ -18,6 +18,10 @@ const groupLocalState = {
     canViewResponse: false,
     responseViewerCallback: null,
   },
+  imageViewer: {
+    visible: false,
+    image: null,
+  },
 };
 
 export default groupLocalState;

@@ -19,6 +19,9 @@ const GroupLocalActions = () => {
     SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA:
       'GLA_SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA',
     CLEAR_REQUEST_STATUS_DIALOG_DATA: 'GLA_CLEAR_REQUEST_STATUS_DIALOG_DATA',
+
+    OPEN_IMAGE_VIEWER: 'GLA_OPEN_IMAGE_VIEWER',
+    CLOSE_IMAGE_VIEWER: 'GLA_CLOSE_IMAGE_VIEWER',
   };
 
   const setDeviceRequestsDialogVisibility = ({visible}) => {
@@ -87,6 +90,19 @@ const GroupLocalActions = () => {
     };
   };
 
+  const openImageViewer = ({image}) => {
+    return {
+      type: types.OPEN_IMAGE_VIEWER,
+      payload: {image},
+    };
+  };
+
+  const closeImageViewer = () => {
+    return {
+      type: types.CLOSE_IMAGE_VIEWER,
+    };
+  };
+
   return {
     types,
     actions: {
@@ -99,6 +115,8 @@ const GroupLocalActions = () => {
       setRequestStatusDialogVisibility,
       setRequestStatusDialogResponseData,
       clearRequestStatusDialogData,
+      openImageViewer,
+      closeImageViewer,
     },
   };
 };

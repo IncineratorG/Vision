@@ -19,12 +19,15 @@ const RequestStatusDialog = ({
     : t('RequestStatusDialog_requestInProgressMessage');
 
   const viewResultHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info:
-        'RequestStatusDialog->viewResultHandler(): ' +
-        JSON.stringify(responseData),
-    });
-  }, [responseData]);
+    if (responseViewerCallback) {
+      responseViewerCallback();
+    }
+    // SystemEventsHandler.onInfo({
+    //   info:
+    //     'RequestStatusDialog->viewResultHandler(): ' +
+    //     JSON.stringify(responseData),
+    // });
+  }, [responseViewerCallback]);
 
   const resultButton = canViewResponse ? (
     <Button onPress={viewResultHandler}>

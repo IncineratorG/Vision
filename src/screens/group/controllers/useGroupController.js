@@ -231,6 +231,10 @@ const useGroupController = (model) => {
     );
   }, [localDispatch]);
 
+  const imageViewerCloseHandler = useCallback(() => {
+    localDispatch(GroupLocalActions.actions.closeImageViewer());
+  }, [localDispatch]);
+
   return {
     testRequest,
     startService,
@@ -245,6 +249,7 @@ const useGroupController = (model) => {
     selectedDeviceErrorDialogCancelHandler,
     requestInProgressDialogCancelHandler,
     requestStatusDialogCancelHandler,
+    imageViewerCloseHandler,
   };
 };
 

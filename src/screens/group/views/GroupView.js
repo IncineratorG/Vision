@@ -6,6 +6,7 @@ import DeviceRequestsDialog from '../../../components/specific/group/device-requ
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
 import RequestInProgressDialog from '../../../components/specific/group/request-in-progress-dialog/RequestInProgressDialog';
 import RequestStatusDialog from '../../../components/specific/group/request-status-dialog/RequestStatusDialog';
+import ImageViewerModal from '../../../components/specific/group/image-viewer-modal/ImageViewerModal';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -36,6 +37,7 @@ const GroupView = ({model, controller}) => {
           canViewResponse: requestStatusDialogCanViewResponse,
           responseViewerCallback: requestStatusDialogResponseViewerCallback,
         },
+        imageViewer: {visible: imageViewerVisible, image: imageViewerImage},
       },
     },
   } = model;
@@ -53,6 +55,7 @@ const GroupView = ({model, controller}) => {
     selectedDeviceErrorDialogCancelHandler,
     requestInProgressDialogCancelHandler,
     requestStatusDialogCancelHandler,
+    imageViewerCloseHandler,
   } = controller;
 
   const updateDataIndicator = loadingDevicesInGroup ? (
@@ -108,6 +111,14 @@ const GroupView = ({model, controller}) => {
     />
   );
 
+  const imageViewer = (
+    <ImageViewerModal
+      visible={imageViewerVisible}
+      image={imageViewerImage}
+      onCloss={imageViewerCloseHandler}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.contentContainer}>{devicesList}</View>
@@ -135,6 +146,7 @@ const GroupView = ({model, controller}) => {
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
       {requestStatusDialog}
+      {imageViewer}
     </View>
   );
 };

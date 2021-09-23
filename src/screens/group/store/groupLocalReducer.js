@@ -109,6 +109,30 @@ const groupLocalReducer = (state, action) => {
       };
     }
 
+    case GroupLocalActions.types.OPEN_IMAGE_VIEWER: {
+      const {image} = action.payload;
+
+      return {
+        ...state,
+        imageViewer: {
+          ...state.imageViewer,
+          visible: true,
+          image,
+        },
+      };
+    }
+
+    case GroupLocalActions.types.CLOSE_IMAGE_VIEWER: {
+      return {
+        ...state,
+        imageViewer: {
+          ...state.imageViewer,
+          visible: false,
+          image: null,
+        },
+      };
+    }
+
     default: {
       return state;
     }
