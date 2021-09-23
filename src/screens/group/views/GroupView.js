@@ -118,6 +118,13 @@ const GroupView = ({model, controller}) => {
       onClose={imageViewerCloseHandler}
     />
   );
+  // const imageViewer = imageViewerVisible ? (
+  //   <ImageViewerModal
+  //     visible={imageViewerVisible}
+  //     image={imageViewerImage}
+  //     onClose={imageViewerCloseHandler}
+  //   />
+  // ) : null;
 
   return (
     <View style={styles.mainContainer}>

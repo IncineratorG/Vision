@@ -154,6 +154,7 @@ public class SurveillanceForegroundService extends Service {
         }
 
         return builder.setContentIntent(action)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentTitle(info)
                 .setTicker(info)
                 .setContentText(info)

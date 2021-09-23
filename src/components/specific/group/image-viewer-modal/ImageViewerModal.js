@@ -6,7 +6,7 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 
 const ImageViewerModal = ({visible, image, onClose}) => {
   const [imagesData, setImagesData] = useState([]);
-  const [viewerInitialIndex, setViewerInitialIndex] = useState(-1);
+  const [viewerInitialIndex, setViewerInitialIndex] = useState(-2);
 
   const onShowHandler = useCallback(() => {}, []);
 
@@ -26,6 +26,16 @@ const ImageViewerModal = ({visible, image, onClose}) => {
     SystemEventsHandler.onInfo({info: 'CHANGE_IMAGE'});
   }, []);
 
+  // useEffect(() => {
+  //   SystemEventsHandler.onInfo({info: 'WILL_SETTTTT'});
+  //
+  //   if (visible) {
+  //     setViewerInitialIndex(0);
+  //   } else {
+  //     setViewerInitialIndex(-1);
+  //   }
+  // }, [visible]);
+
   useEffect(() => {
     SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()'});
 
@@ -37,11 +47,13 @@ const ImageViewerModal = ({visible, image, onClose}) => {
       url: 'data:image/jpg;base64,' + image,
     };
 
+    setViewerInitialIndex(0);
+
     const imagesArray = [];
     imagesArray.push(imageObject);
     setImagesData(imagesArray);
 
-    setViewerInitialIndex(0);
+    // setViewerInitialIndex(0);
   }, [image]);
 
   return (
@@ -55,7 +67,7 @@ const ImageViewerModal = ({visible, image, onClose}) => {
         onCancel={onClose}
         useNativeDriver={false}
         index={viewerInitialIndex}
-        enablePreload={false}
+        enablePreload={true}
         onChange={changeImageHandler}
         renderHeader={(currentIndex) => {
           const shareImageHandler = () => {};
@@ -125,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(ImageViewerModal);
+export default ImageViewerModal;
