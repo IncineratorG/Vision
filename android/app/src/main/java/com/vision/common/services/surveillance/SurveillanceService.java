@@ -3,6 +3,7 @@ package com.vision.common.services.surveillance;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
@@ -31,6 +32,8 @@ import com.vision.common.services.surveillance.data.responses.executor.firebase.
 import java.util.List;
 
 public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender, ServiceRequestInterrupter {
+    private final String SERVICE_WAKE_LOCK_TAG = "Vision:ServiceWakeLockTag";
+
     private static SurveillanceService sInstance;
 
     private String mCurrentGroupName;
@@ -46,6 +49,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     private ServiceResponseSender mResponseSender;
 
     private ServiceCommunicationManager mCommunicationManager;
+
+    private PowerManager.WakeLock mServiceWakeLock;
 
     private SurveillanceService() {
 
@@ -185,6 +190,16 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
             return;
         }
 
+        if (mServiceWakeLock != null && mServiceWakeLock.isHeld()) {
+            mServiceWakeLock.release();
+            mServiceWakeLock = null;
+        }
+
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+
+        mServiceWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, SERVICE_WAKE_LOCK_TAG);
+        mServiceWakeLock.acquire();
+
         mCurrentServiceMode = AppConstants.DEVICE_MODE_SERVICE;
 
         Intent serviceIntent = new Intent(context, SurveillanceForegroundService.class);
@@ -203,6 +218,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         if (!isForegroundServiceRunning(context)) {
             Log.d("tag", "SurveillanceService->stopForegroundService(): SERVICE_ALREADY_NOT_RUNNING");
             return;
+        }
+
+        if ((mServiceWakeLock != null) && (mServiceWakeLock.isHeld())) {
+            mServiceWakeLock.release();
+            mServiceWakeLock = null;
         }
 
         mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;

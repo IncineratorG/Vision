@@ -1,14 +1,10 @@
 package com.vision.modules.surveillance.module_actions_executor;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.modules_common.data.error.ModuleError;
-import com.vision.modules.modules_common.interfaces.activity_request_permissions_result_callback.ActivityRequestPermissionsResultCallback;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
 import com.vision.modules.surveillance.module_actions.types.SurveillanceJSActionTypes;
