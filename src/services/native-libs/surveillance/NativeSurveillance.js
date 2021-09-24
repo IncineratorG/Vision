@@ -66,6 +66,11 @@ const NativeSurveillance = () => {
     },
   );
 
+  const getAppPermissions = async () => {
+    const action = NativeSurveillanceActions.getAppPermissionsAction();
+    return await nativeService.execute(action);
+  };
+
   const isServiceRunning = async () => {
     const action = NativeSurveillanceActions.isRunningAction();
     return await nativeService.execute(action);
@@ -122,6 +127,7 @@ const NativeSurveillance = () => {
   return {
     requests,
     responses,
+    getAppPermissions,
     isServiceRunning,
     startService,
     stopService,

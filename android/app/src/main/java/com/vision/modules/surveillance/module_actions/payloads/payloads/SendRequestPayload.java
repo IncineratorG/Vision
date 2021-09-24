@@ -4,11 +4,11 @@ package com.vision.modules.surveillance.module_actions.payloads.payloads;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.services.surveillance.data.service_requests.request_payloads.SurveillanceServiceRequestPayloads;
-import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.IsDeviceAliveRequestPayload;
-import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TakeBackCameraImageRequestPayload;
-import com.vision.common.services.surveillance.data.service_requests.request_payloads.payloads.TestRequestWithPayloadRequestPayload;
-import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
+import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.IsDeviceAliveRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.TestRequestWithPayloadRequestPayload;
+import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.interfaces.js_payload.JSPayload;
 
 import org.json.JSONObject;

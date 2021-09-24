@@ -13,11 +13,11 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnDelivered
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.SurveillanceServiceResponsePayloads;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.IsDeviceAliveResponsePayload;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TakeBackCameraImageResponsePayload;
-import com.vision.common.services.surveillance.data.service_requests.response_payloads.payloads.TestRequestWithPayloadResponsePayload;
-import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
+import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
+import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;

@@ -2,23 +2,9 @@ package com.vision.common.services.surveillance.data.foreground_service_work.fir
 
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
-import com.vision.common.services.firebase.FBSService;
-import com.vision.common.services.firebase.data.FBSListenerId;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FBSForegroundServiceWork implements ForegroundServiceWork {
     private ServiceCommunicationManager mCommunicationManager;

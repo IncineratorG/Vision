@@ -43,6 +43,7 @@ const GroupView = ({model, controller}) => {
   } = model;
 
   const {
+    getAppPermissions,
     testRequest,
     startService,
     stopService,
@@ -132,6 +133,12 @@ const GroupView = ({model, controller}) => {
       <View style={styles.buttons}>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Test request'} onPress={testRequest} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton
+            title={'Get app permissions'}
+            onPress={getAppPermissions}
+          />
         </View>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Start service'} onPress={startService} />

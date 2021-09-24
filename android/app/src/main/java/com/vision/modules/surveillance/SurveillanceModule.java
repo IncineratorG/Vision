@@ -1,5 +1,7 @@
 package com.vision.modules.surveillance;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -10,8 +12,8 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.common.services.surveillance.data.service_requests.types.SurveillanceServiceRequestTypes;
-import com.vision.modules.modules_common.interfaces.js_actions_executor.JSActionsExecutor;
+import com.facebook.react.modules.core.PermissionListener;
+import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.surveillance.module_actions.types.SurveillanceJSActionTypes;
 import com.vision.modules.surveillance.module_actions_executor.SurveillanceJSActionsExecutor;
 import com.vision.modules.surveillance.module_events.types.SurveillanceEventTypes;
@@ -19,9 +21,9 @@ import com.vision.modules.surveillance.module_events.types.SurveillanceEventType
 import java.util.HashMap;
 import java.util.Map;
 
-public class SurveillanceModule extends ReactContextBaseJavaModule {
+public class SurveillanceModule extends ReactContextBaseJavaModule implements PermissionListener {
     private ReactApplicationContext mContext;
-    private JSActionsExecutor mActionsExecutor;
+    private SurveillanceJSActionsExecutor mActionsExecutor;
 
     public SurveillanceModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
@@ -45,6 +47,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule {
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
         // ===
+        actionTypesConstants.putString(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, SurveillanceJSActionTypes.GET_APP_PERMISSIONS);
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);
         actionTypesConstants.putString(SurveillanceJSActionTypes.START_SERVICE, SurveillanceJSActionTypes.START_SERVICE);
         actionTypesConstants.putString(SurveillanceJSActionTypes.STOP_SERVICE, SurveillanceJSActionTypes.STOP_SERVICE);
@@ -71,5 +74,11 @@ public class SurveillanceModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void execute(ReadableMap action, Promise result) {
         mActionsExecutor.execute(mContext, action, result);
+    }
+
+    @Override
+    public boolean onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d("tag", "SurveillanceModule->onRequestPermissionsResult()");
+        return true;
     }
 }

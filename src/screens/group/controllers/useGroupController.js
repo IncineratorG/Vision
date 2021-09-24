@@ -27,6 +27,21 @@ const useGroupController = (model) => {
     localDispatch,
   } = model;
 
+  const getAppPermissions = useCallback(async () => {
+    SystemEventsHandler.onInfo({
+      info: 'useGroupController()->getAppPermissions()',
+    });
+
+    const result =
+      await Services.services().surveillanceService.getAppPermissions();
+
+    SystemEventsHandler.onInfo({
+      info:
+        'useGroupController()->getAppPermissions()->RESULT: ' +
+        JSON.stringify(result),
+    });
+  }, []);
+
   const testRequest = useCallback(async () => {
     SystemEventsHandler.onInfo({
       info: 'useGroupController()->testRequest()',
@@ -236,6 +251,7 @@ const useGroupController = (model) => {
   }, [localDispatch]);
 
   return {
+    getAppPermissions,
     testRequest,
     startService,
     stopService,

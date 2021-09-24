@@ -3,6 +3,7 @@ import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstant
 const NativeSurveillanceActions = () => {
   const {
     actionTypes: {
+      GET_APP_PERMISSIONS,
       IS_RUNNING,
       START_SERVICE,
       STOP_SERVICE,
@@ -12,6 +13,12 @@ const NativeSurveillanceActions = () => {
       CANCEL_REQUEST,
     },
   } = NativeSurveillanceConstants;
+
+  const getAppPermissionsAction = () => {
+    return {
+      type: GET_APP_PERMISSIONS,
+    };
+  };
 
   const isRunningAction = () => {
     return {
@@ -59,6 +66,7 @@ const NativeSurveillanceActions = () => {
   };
 
   return {
+    getAppPermissionsAction,
     isRunningAction,
     startServiceAction,
     stopServiceAction,

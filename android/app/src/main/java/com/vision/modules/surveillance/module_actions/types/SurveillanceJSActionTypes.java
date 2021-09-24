@@ -4,6 +4,7 @@ public class SurveillanceJSActionTypes {
     // ===
     public static final String TEST_REQUEST = "TEST_REQUEST";
     // ===
+    public static final String GET_APP_PERMISSIONS = "GET_APP_PERMISSIONS";
     public static final String IS_RUNNING = "IS_RUNNING";
     public static final String START_SERVICE = "START_SERVICE";
     public static final String STOP_SERVICE = "STOP_SERVICE";

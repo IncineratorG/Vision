@@ -19,9 +19,9 @@ import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
+import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
-import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
+import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
 import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class FBSCommunicationManager implements ServiceCommunicationManager {
     private FBSListenerId mRequestListenerId;
@@ -39,24 +41,27 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private List<String> mRequestsPath;
     private List<String> mResponsesPath;
     private List<String> mUpdateInfoPath;
-    private ServiceRequestsHandler mRequestsHandler;
-    private ServiceResponsesHandler mResponsesHandler;
+    private ServiceRequestsExecutor mRequestsExecutor;
+    private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
     private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
     private Map<String, Timer> mRequestTimeoutsMap;
 
     private Timer mIsAliveSignalingTimer;
+    private Thread mIsAliveSignalingThread;
 
-    public FBSCommunicationManager(ServiceRequestsHandler requestsHandler,
-                                   ServiceResponsesHandler responsesHandler,
+    private ScheduledThreadPoolExecutor mIsAliveSignalingExecutor;
+
+    public FBSCommunicationManager(ServiceRequestsExecutor requestsExecutor,
+                                   ServiceResponsesExecutor responsesExecutor,
                                    ServiceRequestSender requestSender,
                                    ServiceResponseSender responseSender,
                                    List<String> requestsPath,
                                    List<String> responsesPath,
                                    List<String> updateInfoPath) {
-        mRequestsHandler = requestsHandler;
-        mResponsesHandler = responsesHandler;
+        mRequestsExecutor = requestsExecutor;
+        mResponsesExecutor = responsesExecutor;
         mRequestSender = requestSender;
         mResponseSender = responseSender;
         mRequestsPath = requestsPath;
@@ -65,21 +70,77 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
         mRequestCallbacksMap = new ConcurrentHashMap<>();
         mRequestTimeoutsMap = new ConcurrentHashMap<>();
+
+        mIsAliveSignalingExecutor = new ScheduledThreadPoolExecutor(1);
     }
 
     @Override
     public void startIsAliveSignaling(Context context) {
+//        mIsAliveSignalingExecutor.scheduleAtFixedRate(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d("tag", "IS_ALIVE_TASK_RUNNING");
+//            }
+//        }, 0, 2000, TimeUnit.MILLISECONDS);
+
+        // ======================================
+        // ======================================
+
+//        mIsAliveSignalingThread = new Thread(() -> {
+//            while (!Thread.currentThread().isInterrupted()) {
+//                Log.d("tag", "IS_ALIVE_THREAD_RUNNING");
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                    break;
+//                }
+//            }
+//            Log.d("tag", "THREAD_INTERRUPTED");
+//
+////            Log.d("tag", "IS_ALIVE_THREAD_RUNNING");
+////            try {
+////                Thread.sleep(1000);
+////            } catch (InterruptedException e) {
+////                e.printStackTrace();
+////            }
+//        });
+//        mIsAliveSignalingThread.setPriority(Thread.MAX_PRIORITY);
+//        mIsAliveSignalingThread.start();
+
+        // ======================================
+        // ======================================
+
         mIsAliveSignalingTimer = new Timer();
         mIsAliveSignalingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                setServiceAliveStatus();
+                Log.d("tag", "IS_ALIVE_TIMER_RUNNING");
+//                setServiceAliveStatus();
             }
-        }, 1000, AppConstants.IS_ALIVE_SIGNALING_PERIOD);
+        }, 1000, /*AppConstants.IS_ALIVE_SIGNALING_PERIOD*/ 2000);
     }
 
     @Override
     public void stopIsAliveSignaling(Context context) {
+//        mIsAliveSignalingExecutor.shutdown();
+
+        // ======================================
+        // ======================================
+
+//        if (mIsAliveSignalingThread != null) {
+//            mIsAliveSignalingThread.interrupt();
+//            try {
+//                mIsAliveSignalingThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            mIsAliveSignalingThread = null;
+//        }
+
+        // ======================================
+        // ======================================
+
         if (mIsAliveSignalingTimer != null) {
             mIsAliveSignalingTimer.cancel();
             mIsAliveSignalingTimer = null;
@@ -109,7 +170,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 Map<String, Object> requestParams = new HashMap<>();
                 requestParams.put("requestKey", key);
 
-                mRequestsHandler.handle(context, value, requestParams);
+                mRequestsExecutor.execute(context, value, requestParams);
             }
 
             @Override
@@ -171,7 +232,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 Map<String, Object> responseParams = new HashMap<>();
                 responseParams.put("responseKey", key);
 
-                mResponsesHandler.handle(
+                mResponsesExecutor.execute(
                         context,
                         value,
                         mRequestCallbacksMap,

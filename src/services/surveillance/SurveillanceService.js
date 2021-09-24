@@ -4,6 +4,10 @@ import {SystemEventsHandler} from '../../utils/common/system-events-handler/Syst
 const SurveillanceService = () => {
   const nativeService = NativeSurveillance();
 
+  const getAppPermissions = async () => {
+    return nativeService.getAppPermissions();
+  };
+
   const isServiceRunning = async () => {
     return nativeService.isServiceRunning();
   };
@@ -48,6 +52,7 @@ const SurveillanceService = () => {
   return {
     requests: nativeService.requests,
     responses: nativeService.responses,
+    getAppPermissions,
     isServiceRunning,
     startService,
     stopService,

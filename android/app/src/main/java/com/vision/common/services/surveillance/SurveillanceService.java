@@ -9,8 +9,7 @@ import com.vision.android_services.foreground.surveillance.SurveillanceForegroun
 import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
-import com.vision.common.interfaces.service_responses_handler.ServiceResponsesHandler;
-import com.vision.common.services.camera.CameraService;
+import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
@@ -21,13 +20,13 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnDelivered
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
-import com.vision.common.services.surveillance.data.request_sender.firebase.FBSRequestSender;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsHandler;
+import com.vision.common.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
+import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
-import com.vision.common.services.surveillance.data.requests_handler.firebase.FBSRequestsHandler;
-import com.vision.common.services.surveillance.data.response_sender.firebase.FBSResponseSender;
-import com.vision.common.services.surveillance.data.responses_handler.firebase.FBSResponsesHandler;
+import com.vision.common.services.surveillance.data.requests.executor.firebase.FBSRequestsExecutor;
+import com.vision.common.services.surveillance.data.responses.sender.firebase.FBSResponseSender;
+import com.vision.common.services.surveillance.data.responses.executor.firebase.FBSResponsesExecutor;
 
 import java.util.List;
 
@@ -40,10 +39,10 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
     private String mCurrentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
 
     private ForegroundServiceWork mForegroundServiceWork;
-    private ServiceRequestsHandler mRequestsHandler;
+    private ServiceRequestsExecutor mRequestsExecutor;
     private ServiceRequestSender mRequestsSender;
 
-    private ServiceResponsesHandler mResponsesHandler;
+    private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceResponseSender mResponseSender;
 
     private ServiceCommunicationManager mCommunicationManager;
@@ -82,15 +81,15 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                 mCurrentDeviceName
         );
 
-        mRequestsHandler = new FBSRequestsHandler();
+        mRequestsExecutor = new FBSRequestsExecutor();
         mRequestsSender = new FBSRequestSender();
 
-        mResponsesHandler = new FBSResponsesHandler();
+        mResponsesExecutor = new FBSResponsesExecutor();
         mResponseSender = new FBSResponseSender();
 
         mCommunicationManager = new FBSCommunicationManager(
-                mRequestsHandler,
-                mResponsesHandler,
+                mRequestsExecutor,
+                mResponsesExecutor,
                 mRequestsSender,
                 mResponseSender,
                 currentRequestsPath,
