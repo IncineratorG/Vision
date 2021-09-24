@@ -11,6 +11,7 @@ import com.vision.common.services.camera.callbacks.OnImageTakeError;
 import com.vision.common.services.camera.callbacks.OnImageTaken;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CameraService {
     private static CameraService sInstance;
@@ -74,6 +75,11 @@ public class CameraService {
                 }
             }
         }
+
+        // ===
+        Camera.Parameters parameters = mCamera.getParameters();
+        List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPictureSizes();
+        // ===
 
         mSurfaceTexture = new SurfaceTexture(1);
         try {

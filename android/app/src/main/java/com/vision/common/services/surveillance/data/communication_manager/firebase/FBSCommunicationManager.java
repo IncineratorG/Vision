@@ -115,10 +115,10 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mIsAliveSignalingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.d("tag", "IS_ALIVE_TIMER_RUNNING");
-//                setServiceAliveStatus();
+//                Log.d("tag", "IS_ALIVE_TIMER_RUNNING");
+                setServiceAliveStatus();
             }
-        }, 1000, /*AppConstants.IS_ALIVE_SIGNALING_PERIOD*/ 2000);
+        }, 1000, AppConstants.IS_ALIVE_SIGNALING_PERIOD /*2000*/);
     }
 
     @Override
