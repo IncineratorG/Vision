@@ -4,13 +4,18 @@ package com.vision.common.services.camera;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Surface;
 
 import com.vision.common.services.camera.callbacks.OnImageTakeError;
 import com.vision.common.services.camera.callbacks.OnImageTaken;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CameraService {
@@ -77,12 +82,60 @@ public class CameraService {
         }
 
         // ===
+        // =====
         Camera.Parameters parameters = mCamera.getParameters();
-        List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPictureSizes();
+
+        // ===
+        List<Camera.Size> previewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+        Collections.sort(previewSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
+
+        for (int i = 0; i < previewSizes.size(); ++i) {
+            Camera.Size size = previewSizes.get(i);
+
+            Log.d("tag", "PREVIEW_SIZE: " + size.height + " - " + size.width);
+        }
+        Camera.Size cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
+        // ===
+
+        // ===
+        List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPreviewSizes();
+        Collections.sort(pictureSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
+
+        for (int i = 0; i < pictureSizes.size(); ++i) {
+            Camera.Size size = pictureSizes.get(i);
+
+            Log.d("tag", "PICTURE_SIZE: " + size.height + " - " + size.width);
+        }
+        Camera.Size cameraPictureSizes = pictureSizes.get(pictureSizes.size() - 1);
+        // ===
+
+        // ===
+        List<String> cameraFocusModes = mCamera.getParameters().getSupportedFocusModes();
+        for (int i = 0; i < cameraFocusModes.size(); ++i) {
+            String focusMode = cameraFocusModes.get(i);
+
+            Log.d("tag", "FOCUS_MODE: " + focusMode);
+        }
+        // ===
+
+        parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
+        parameters.setPictureSize(cameraPictureSizes.width, cameraPictureSizes.height);
+//        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+
+
+        try {
+            mCamera.setParameters(parameters);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // =====
         // ===
 
         mSurfaceTexture = new SurfaceTexture(1);
         try {
+//            mCamera.setDisplayOrientation(90);
+
+            mCamera.setPreviewTexture(mSurfaceTexture);
             mCamera.setPreviewTexture(mSurfaceTexture);
             mCamera.startPreview();
             Log.d("tag", "===> CameraService->1");
