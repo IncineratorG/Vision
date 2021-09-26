@@ -32,7 +32,11 @@ public class TestRequestWithPayloadServiceHandler implements ServiceRequestHandl
         TestRequestWithPayloadResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload("My Result");
 
-        ServiceResponse response = new ServiceResponse(request.id(), responsePayload.jsonObject());
+        ServiceResponse response = new ServiceResponse(
+                ServiceResponse.TYPE_RESULT,
+                request.id(),
+                responsePayload.jsonObject()
+        );
 
         surveillanceService.sendResponse(
                 currentGroupName,

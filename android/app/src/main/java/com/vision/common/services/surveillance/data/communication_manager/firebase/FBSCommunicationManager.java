@@ -24,7 +24,6 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase.data.FBSListenerId;
-import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class FBSCommunicationManager implements ServiceCommunicationManager {
     private FBSListenerId mRequestListenerId;
@@ -49,7 +47,6 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private Map<String, Timer> mRequestTimeoutsMap;
 
     private Timer mIsAliveSignalingTimer;
-    private Thread mIsAliveSignalingThread;
 
     private ScheduledThreadPoolExecutor mIsAliveSignalingExecutor;
 
@@ -76,71 +73,17 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
     @Override
     public void startIsAliveSignaling(Context context) {
-//        mIsAliveSignalingExecutor.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("tag", "IS_ALIVE_TASK_RUNNING");
-//            }
-//        }, 0, 2000, TimeUnit.MILLISECONDS);
-
-        // ======================================
-        // ======================================
-
-//        mIsAliveSignalingThread = new Thread(() -> {
-//            while (!Thread.currentThread().isInterrupted()) {
-//                Log.d("tag", "IS_ALIVE_THREAD_RUNNING");
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                    break;
-//                }
-//            }
-//            Log.d("tag", "THREAD_INTERRUPTED");
-//
-////            Log.d("tag", "IS_ALIVE_THREAD_RUNNING");
-////            try {
-////                Thread.sleep(1000);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-//        });
-//        mIsAliveSignalingThread.setPriority(Thread.MAX_PRIORITY);
-//        mIsAliveSignalingThread.start();
-
-        // ======================================
-        // ======================================
-
         mIsAliveSignalingTimer = new Timer();
         mIsAliveSignalingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-//                Log.d("tag", "IS_ALIVE_TIMER_RUNNING");
                 setServiceAliveStatus();
             }
-        }, 1000, AppConstants.IS_ALIVE_SIGNALING_PERIOD /*2000*/);
+        }, 1000, AppConstants.IS_ALIVE_SIGNALING_PERIOD);
     }
 
     @Override
     public void stopIsAliveSignaling(Context context) {
-//        mIsAliveSignalingExecutor.shutdown();
-
-        // ======================================
-        // ======================================
-
-//        if (mIsAliveSignalingThread != null) {
-//            mIsAliveSignalingThread.interrupt();
-//            try {
-//                mIsAliveSignalingThread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            mIsAliveSignalingThread = null;
-//        }
-
-        // ======================================
-        // ======================================
-
         if (mIsAliveSignalingTimer != null) {
             mIsAliveSignalingTimer.cancel();
             mIsAliveSignalingTimer = null;
@@ -294,26 +237,26 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                 )
         );
 
-        Timer requestTimeout = new Timer();
-        requestTimeout.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ServiceRequestCallbacks callbacks = mRequestCallbacksMap.get(request.id());
-                if (callbacks != null) {
-                    callbacks.errorCallback().handle(
-                            SurveillanceServiceErrors.requestTimeout()
-                    );
-                }
-
-                mRequestCallbacksMap.remove(request.id());
-                mRequestTimeoutsMap.remove(request.id());
-            }
-        }, AppConstants.REQUEST_TIMEOUT_PERIOD);
-
-        mRequestTimeoutsMap.put(
-                request.id(),
-                requestTimeout
-        );
+//        Timer requestTimeout = new Timer();
+//        requestTimeout.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                ServiceRequestCallbacks callbacks = mRequestCallbacksMap.get(request.id());
+//                if (callbacks != null) {
+//                    callbacks.errorCallback().handle(
+//                            SurveillanceServiceErrors.requestTimeout()
+//                    );
+//                }
+//
+//                mRequestCallbacksMap.remove(request.id());
+//                mRequestTimeoutsMap.remove(request.id());
+//            }
+//        }, AppConstants.REQUEST_TIMEOUT_PERIOD);
+//
+//        mRequestTimeoutsMap.put(
+//                request.id(),
+//                requestTimeout
+//        );
 
         mRequestSender.sendRequest(
                 groupName,

@@ -27,7 +27,9 @@ const NativeSurveillance = () => {
         const {onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
 
-        onComplete(payload);
+        if (onComplete) {
+          onComplete(payload);
+        }
 
         requestCallbacksMap.delete(requestId);
       } else {
@@ -53,7 +55,9 @@ const NativeSurveillance = () => {
         const {onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
 
-        onError({code, message});
+        if (onError) {
+          onError({code, message});
+        }
 
         requestCallbacksMap.delete(requestId);
       } else {
@@ -118,7 +122,10 @@ const NativeSurveillance = () => {
       if (requestCallbacksMap.has(requestId)) {
         const {onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
-        onCancel();
+
+        if (onCancel) {
+          onCancel();
+        }
       }
     }
     return successful;

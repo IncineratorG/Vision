@@ -31,7 +31,11 @@ public class IsDeviceAliveServiceHandler implements ServiceRequestHandler {
         IsDeviceAliveResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.isDeviceAliveResponsePayload(true);
 
-        ServiceResponse response = new ServiceResponse(request.id(), responsePayload.jsonObject());
+        ServiceResponse response = new ServiceResponse(
+                ServiceResponse.TYPE_RESULT,
+                request.id(),
+                responsePayload.jsonObject()
+        );
 
         surveillanceService.sendResponse(
                 currentGroupName,

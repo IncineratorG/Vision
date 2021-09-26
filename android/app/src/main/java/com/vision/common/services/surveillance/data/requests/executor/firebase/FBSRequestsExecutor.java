@@ -5,7 +5,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.vision.common.data.service_request.ServiceRequest;
+import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.handlers.is_device_alive.IsDeviceAliveServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.test.TestRequestServiceHandler;
@@ -32,53 +34,91 @@ public class FBSRequestsExecutor implements ServiceRequestsExecutor {
 
     @Override
     public void execute(Context context, String stringifiedRequest, Map<String, Object> params) {
-        Log.d("tag", "FirebaseRequestsExecutor->execute(): " + stringifiedRequest + " - " + (context == null));
+        Log.d("tag", "FBSRequestsExecutor->execute(): " + stringifiedRequest + " - " + (context == null));
 
-        if (context == null) {
-            Log.d("tag", "FirebaseRequestsExecutor->execute(): CONTEXT_IS_NULL");
+        if (!isSafeToProcessRequest(context, stringifiedRequest, params)) {
+            Log.d("tag", "FBSRequestsExecutor->execute(): WILL_NOT_PROCESS_REQUEST");
             return;
+        }
+
+        ServiceRequest request = getRequestFromString(stringifiedRequest, params);
+        sendRequestDeliveredResponse(request);
+        handleRequest(context, request);
+    }
+
+    private boolean isSafeToProcessRequest(Context context, String stringifiedRequest, Map<String, Object> params) {
+        if (context == null) {
+            Log.d("tag", "FBSRequestsExecutor->isSafeToProcessRequest(): CONTEXT_IS_NULL");
+            return false;
         }
 
         if (stringifiedRequest == null) {
-            Log.d("tag", "FirebaseRequestsExecutor->execute(): STRINGIFIED_REQUEST_IS_NULL");
-            return;
+            Log.d("tag", "FBSRequestsExecutor->isSafeToProcessRequest(): STRINGIFIED_REQUEST_IS_NULL");
+            return false;
         }
 
         if (params == null) {
-            Log.d("tag", "FirebaseRequestsExecutor->execute(): PARAMS_IS_NULL");
-            return;
+            Log.d("tag", "FBSRequestsExecutor->isSafeToProcessRequest(): PARAMS_IS_NULL");
+            return false;
         }
 
         if (!params.containsKey("requestKey")) {
-            Log.d("tag", "FirebaseRequestsExecutor->execute(): PARAMS_HAS_NO_KEY");
+            Log.d("tag", "FBSRequestsExecutor->isSafeToProcessRequest(): PARAMS_HAS_NO_KEY");
         }
 
+        return true;
+    }
+
+    private ServiceRequest getRequestFromString(String stringifiedRequest, Map<String, Object> params) {
         ServiceRequest request = new ServiceRequest(stringifiedRequest);
 
         String requestKey = (String) params.get("requestKey");
         if (requestKey != null) {
             request.setKey(requestKey);
         } else {
-            Log.d("tag", "FirebaseRequestsExecutor->execute(): BAD_REQUEST_KEY");
+            Log.d("tag", "FBRequestsExecutor->getRequestFromString(): BAD_REQUEST_KEY");
         }
 
-        // ===
-//        SurveillanceService surveillanceService = SurveillanceService.get();
-//        if (surveillanceService.currentServiceMode().equalsIgnoreCase(AppConstants.DEVICE_MODE_USER)) {
-//
-//        } else if (surveillanceService.currentServiceMode().equalsIgnoreCase(AppConstants.DEVICE_MODE_SERVICE)) {
-//            if (mHandlers.containsKey(request.type())) {
-//                mHandlers.get(request.type()).handle(context, request);
-//            } else {
-//                mHandlers.get(UNKNOWN_REQUEST_HANDLER_KEY).handle(context, request);
-//            }
-//        }
-        // ===
+        return request;
+    }
 
+    private void sendRequestDeliveredResponse(ServiceRequest request) {
+        SurveillanceService surveillanceService = SurveillanceService.get();
+
+        String currentGroupName = surveillanceService.currentGroupName();
+        String currentGroupPassword = surveillanceService.currentGroupPassword();
+
+        String requestSenderDeviceName = request.senderDeviceName();
+
+        ServiceResponse response = new ServiceResponse(
+                ServiceResponse.TYPE_RECEIVED,
+                request.id(),
+                null
+        );
+
+        surveillanceService.sendResponse(
+                currentGroupName,
+                currentGroupPassword,
+                requestSenderDeviceName,
+                response
+        );
+    }
+
+    private void handleRequest(Context context, ServiceRequest request) {
         if (mHandlers.containsKey(request.type())) {
-            mHandlers.get(request.type()).handle(context, request);
+            ServiceRequestHandler requestHandler = mHandlers.get(request.type());
+            if (requestHandler != null) {
+                requestHandler.handle(context, request);
+            } else {
+                Log.d("tag", "FBRequestsExecutor->handleRequest(): REQUEST_HANDLER_IS_NULL");
+            }
         } else {
-            mHandlers.get(UNKNOWN_REQUEST_HANDLER_KEY).handle(context, request);
+            ServiceRequestHandler requestHandler = mHandlers.get(UNKNOWN_REQUEST_HANDLER_KEY);
+            if (requestHandler != null) {
+                requestHandler.handle(context, request);
+            } else {
+                Log.d("tag", "FBRequestsExecutor->handleRequest(): UNKNOWN_REQUEST_HANDLER_IS_NULL");
+            }
         }
     }
 }

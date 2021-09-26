@@ -34,7 +34,8 @@ public class FBSRequestSender implements ServiceRequestSender {
         List<String> receiverRequestsPath = FBSPathsService.get().requestsPath(groupName, groupPassword, receiverDeviceName);
 
         OnCompleteListener<Void> onCompleteListener = task -> {
-            onDeliveredCallback.handle();
+            Log.d("tag", "FBRequestSender->send()");
+//            onDeliveredCallback.handle();
         };
 
         OnFailureListener onFailureListener = e -> {

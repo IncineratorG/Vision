@@ -27,7 +27,11 @@ public class TestRequestServiceHandler implements ServiceRequestHandler {
         // ===
         String requestSenderDeviceName = request.senderDeviceName();
 
-        ServiceResponse response = new ServiceResponse(request.id(), null);
+        ServiceResponse response = new ServiceResponse(
+                ServiceResponse.TYPE_RESULT,
+                request.id(),
+                null
+        );
 
         surveillanceService.sendResponse(
                 currentGroupName,

@@ -47,6 +47,8 @@ const SurveillanceService = () => {
     SystemEventsHandler.onInfo({
       info: 'SurveillanceService->cancelRequest(): ' + requestId,
     });
+
+    return await nativeService.cancelRequest({requestId});
   };
 
   return {

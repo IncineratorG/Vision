@@ -39,7 +39,11 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
                     TakeBackCameraImageResponsePayload responsePayload =
                             SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload(base64String);
 
-                    ServiceResponse response = new ServiceResponse(request.id(), responsePayload.jsonObject());
+                    ServiceResponse response = new ServiceResponse(
+                            ServiceResponse.TYPE_RESULT,
+                            request.id(),
+                            responsePayload.jsonObject()
+                    );
 
                     surveillanceService.sendResponse(
                             currentGroupName,

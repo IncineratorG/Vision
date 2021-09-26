@@ -35,7 +35,7 @@ public class ServiceRequest implements Stringifiable {
             mRequest.put(TIMESTAMP_FIELD, timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("tag", "Request->ERROR_CREATING_REQUEST");
+            Log.d("tag", "ServiceRequest->ERROR_CREATING_REQUEST");
         }
     }
 
@@ -54,7 +54,7 @@ public class ServiceRequest implements Stringifiable {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("tag", "Request->ERROR_CREATING_REQUEST");
+            Log.d("tag", "ServiceRequest->ERROR_CREATING_REQUEST");
         }
     }
 
@@ -63,7 +63,7 @@ public class ServiceRequest implements Stringifiable {
             mRequest = new JSONObject(stringifiedRequest);
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("tag", "Request->ERROR_CREATING_REQUEST_FROM_STRING");
+            Log.d("tag", "ServiceRequest->ERROR_CREATING_REQUEST_FROM_STRING");
         }
     }
 
@@ -86,7 +86,7 @@ public class ServiceRequest implements Stringifiable {
 
     public String key() {
         if (mRequest == null) {
-            Log.d("tag", "Request->key(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->key(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -103,7 +103,7 @@ public class ServiceRequest implements Stringifiable {
 
     public String timestamp() {
         if (mRequest == null) {
-            Log.d("tag", "Request->timestamp(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->timestamp(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -118,7 +118,7 @@ public class ServiceRequest implements Stringifiable {
 
     public String id() {
         if (mRequest == null) {
-            Log.d("tag", "Request->id(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->id(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -133,7 +133,7 @@ public class ServiceRequest implements Stringifiable {
 
     public String type() {
         if (mRequest == null) {
-            Log.d("tag", "Request->type(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->type(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -148,7 +148,7 @@ public class ServiceRequest implements Stringifiable {
 
     public String senderDeviceName() {
         if (mRequest == null) {
-            Log.d("tag", "Request->senderDeviceName(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->senderDeviceName(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -163,7 +163,7 @@ public class ServiceRequest implements Stringifiable {
 
     public JSONObject payload() {
         if (mRequest == null) {
-            Log.d("tag", "Request->payload(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->payload(): REQUEST_IS_NULL");
             return null;
         }
 
@@ -180,7 +180,7 @@ public class ServiceRequest implements Stringifiable {
 
     public void setKey(String key) {
         if (mRequest == null) {
-            Log.d("tag", "Request->setKey(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->setKey(): REQUEST_IS_NULL");
             return;
         }
 
@@ -194,7 +194,7 @@ public class ServiceRequest implements Stringifiable {
     @Override
     public String stringify() {
         if (mRequest == null) {
-            Log.d("tag", "Request->stringify(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->stringify(): REQUEST_IS_NULL");
             return null;
         }
 
