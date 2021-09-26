@@ -4,13 +4,16 @@ import {useFocusEffect} from '@react-navigation/core';
 import {BackHandler} from 'react-native';
 import GroupView from './views/GroupView';
 import useGroupModel from './models/useGroupModel';
-import useGroupController from './controllers/useGroupController';
+import useGroupController from './controllers/group/useGroupController';
+import useGroupRootController from './controllers/useGroupRootController';
 
 const Group = () => {
   const model = useGroupModel();
-  const controller = useGroupController(model);
+  const controller = useGroupRootController(model);
 
-  const {backButtonPressHandler} = controller;
+  const {
+    groupController: {backButtonPressHandler},
+  } = controller;
 
   const setBackButtonPressHandler = useCallback(() => {
     const backHandler = BackHandler.addEventListener(

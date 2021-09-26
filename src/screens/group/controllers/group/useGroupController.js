@@ -1,10 +1,10 @@
 import {useCallback} from 'react';
 import {BackHandler} from 'react-native';
-import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
-import AppActions from '../../../store/actions/AppActions';
-import GroupLocalActions from '../store/GroupLocalActions';
-import useTranslation from '../../../utils/common/localization';
-import Services from '../../../services/Services';
+import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppActions from '../../../../store/actions/AppActions';
+import GroupLocalActions from '../../store/GroupLocalActions';
+import useTranslation from '../../../../utils/common/localization';
+import Services from '../../../../services/Services';
 
 const useGroupController = (model) => {
   const {t} = useTranslation();
@@ -171,71 +171,9 @@ const useGroupController = (model) => {
     [localDispatch, dispatch, t],
   );
 
-  const deviceRequestsDialogCancelHandler = useCallback(() => {
-    dispatch(
-      AppActions.surveillanceIsDeviceAliveRequest.actions.cancelSendIsAliveRequest(),
-    );
-    localDispatch(
-      GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-        visible: false,
-      }),
-    );
-  }, [localDispatch, dispatch]);
-
-  const deviceRequestsDialogGetFrontCameraImageRequestPressHandler =
-    useCallback(
-      ({selectedDevice}) => {
-        SystemEventsHandler.onInfo({
-          info:
-            'useGroupController->deviceRequestsDialogGetFrontCameraImageRequestPressHandler(): ' +
-            JSON.stringify(selectedDevice),
-        });
-
-        localDispatch(
-          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-            visible: false,
-          }),
-        );
-      },
-      [localDispatch],
-    );
-
-  const deviceRequestsDialogGetBackCameraImageRequestPressHandler = useCallback(
-    ({selectedDevice}) => {
-      SystemEventsHandler.onInfo({
-        info:
-          'useGroupController->deviceRequestsDialogGetBackCameraImageRequestPressHandler(): ' +
-          JSON.stringify(selectedDevice),
-      });
-
-      const {deviceName: selectedDeviceName} = selectedDevice;
-
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-          visible: false,
-        }),
-      );
-
-      dispatch(
-        AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequest(
-          {receiverDeviceName: selectedDeviceName},
-        ),
-      );
-    },
-    [localDispatch, dispatch],
-  );
-
   const selectedDeviceErrorDialogCancelHandler = useCallback(() => {
     localDispatch(
       GroupLocalActions.actions.setSelectedDeviceErrorDialogVisibility({
-        visible: false,
-      }),
-    );
-  }, [localDispatch]);
-
-  const requestStatusDialogCancelHandler = useCallback(() => {
-    localDispatch(
-      GroupLocalActions.actions.setRequestStatusDialogVisibility({
         visible: false,
       }),
     );
@@ -254,11 +192,7 @@ const useGroupController = (model) => {
     updateDevicesInGroupData,
     logout,
     devicePressHandler,
-    deviceRequestsDialogCancelHandler,
-    deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
-    deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
-    requestStatusDialogCancelHandler,
     imageViewerCloseHandler,
   };
 };

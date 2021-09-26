@@ -43,19 +43,23 @@ const GroupView = ({model, controller}) => {
   } = model;
 
   const {
-    getAppPermissions,
-    testRequest,
-    startService,
-    stopService,
-    updateDevicesInGroupData,
-    logout,
-    devicePressHandler,
-    deviceRequestsDialogCancelHandler,
-    deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
-    deviceRequestsDialogGetBackCameraImageRequestPressHandler,
-    selectedDeviceErrorDialogCancelHandler,
-    requestStatusDialogCancelHandler,
-    imageViewerCloseHandler,
+    groupController: {
+      getAppPermissions,
+      testRequest,
+      startService,
+      stopService,
+      updateDevicesInGroupData,
+      logout,
+      devicePressHandler,
+      selectedDeviceErrorDialogCancelHandler,
+      imageViewerCloseHandler,
+    },
+    deviceRequestsDialogController: {
+      deviceRequestsDialogCancelHandler,
+      deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
+      deviceRequestsDialogGetBackCameraImageRequestPressHandler,
+    },
+    requestStatusDialogController: {requestStatusDialogCancelHandler},
   } = controller;
 
   const updateDataIndicator = loadingDevicesInGroup ? (
