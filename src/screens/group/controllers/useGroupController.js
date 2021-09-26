@@ -172,12 +172,15 @@ const useGroupController = (model) => {
   );
 
   const deviceRequestsDialogCancelHandler = useCallback(() => {
+    dispatch(
+      AppActions.surveillanceIsDeviceAliveRequest.actions.cancelSendIsAliveRequest(),
+    );
     localDispatch(
       GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
         visible: false,
       }),
     );
-  }, [localDispatch]);
+  }, [localDispatch, dispatch]);
 
   const deviceRequestsDialogGetFrontCameraImageRequestPressHandler =
     useCallback(
@@ -230,14 +233,6 @@ const useGroupController = (model) => {
     );
   }, [localDispatch]);
 
-  const requestInProgressDialogCancelHandler = useCallback(() => {
-    localDispatch(
-      GroupLocalActions.actions.setRequestInProgressDialogVisibility({
-        visible: false,
-      }),
-    );
-  }, [localDispatch]);
-
   const requestStatusDialogCancelHandler = useCallback(() => {
     localDispatch(
       GroupLocalActions.actions.setRequestStatusDialogVisibility({
@@ -263,7 +258,6 @@ const useGroupController = (model) => {
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
-    requestInProgressDialogCancelHandler,
     requestStatusDialogCancelHandler,
     imageViewerCloseHandler,
   };

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Services from '../../../services/Services';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
-import useGainFocus from '../../../utils/common/hooks/useGainFocus';
+import useGainFocus from '../../../utils/common/hooks/common/useGainFocus';
 
 const useLoaderModel = () => {
   // ===

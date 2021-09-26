@@ -54,7 +54,6 @@ const GroupView = ({model, controller}) => {
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     selectedDeviceErrorDialogCancelHandler,
-    requestInProgressDialogCancelHandler,
     requestStatusDialogCancelHandler,
     imageViewerCloseHandler,
   } = controller;

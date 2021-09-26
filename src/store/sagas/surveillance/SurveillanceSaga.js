@@ -10,6 +10,8 @@ import SS_stopServiceHandler from './handlers/SS_stopServiceHandler';
 import SS_checkServiceStatusHandler from './handlers/SS_checkServiceStatusHandler';
 import SS_sendIsDeviceAliveRequestHandler from './handlers/SS_sendIsDeviceAliveRequestHandler';
 import SS_sendTakeBackCameraImageRequestHandler from './handlers/SS_sendTakeBackCameraImageRequestHandler';
+import SS_cancelIsDeviceAliveRequestHandler from './handlers/SS_cancelIsDeviceAliveRequestHandler';
+import SS_cancelTakeBackCameraImageRequestHandler from './handlers/SS_cancelTakeBackCameraImageRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -32,8 +34,12 @@ const SurveillanceSaga = () => {
     SS_cancelTestRequestWithPayloadHandler({channel: sagaChannel});
   const {handler: sendIsDeviceAliveRequestHandler} =
     SS_sendIsDeviceAliveRequestHandler({channel: sagaChannel});
+  const {handler: cancelIsDeviceAliveRequestHandler} =
+    SS_cancelIsDeviceAliveRequestHandler({channel: sagaChannel});
   const {handler: sendTakeBackCameraImageRequestHandler} =
     SS_sendTakeBackCameraImageRequestHandler({channel: sagaChannel});
+  const {handler: cancelTakeBackCameraImageRequestHandler} =
+    SS_cancelTakeBackCameraImageRequestHandler({channel: sagaChannel});
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
@@ -67,9 +73,19 @@ const SurveillanceSaga = () => {
       sendIsDeviceAliveRequestHandler,
     );
     yield takeLatest(
+      AppActions.surveillanceIsDeviceAliveRequest.types
+        .CANCEL_SEND_IS_ALIVE_REQUEST,
+      cancelIsDeviceAliveRequestHandler,
+    );
+    yield takeLatest(
       AppActions.surveillanceTakeBackCameraImageRequest.types
         .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST,
       sendTakeBackCameraImageRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceTakeBackCameraImageRequest.types
+        .CANCEL_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST,
+      cancelTakeBackCameraImageRequestHandler,
     );
   };
 
