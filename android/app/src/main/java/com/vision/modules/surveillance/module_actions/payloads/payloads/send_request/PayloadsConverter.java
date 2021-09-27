@@ -1,6 +1,8 @@
 package com.vision.modules.surveillance.module_actions.payloads.payloads.send_request;
 
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.data.service_request_payload.ServiceRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
@@ -21,6 +23,9 @@ public class PayloadsConverter {
             }
 
             case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
+                String imageQuality = requestPayloadMap.getString("imageQuality");
+                Log.d("tag", "PayloadsConverter->TAKE_BACK_CAMERA_IMAGE: " + imageQuality);
+
                 return SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
             }
 

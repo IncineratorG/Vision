@@ -27,10 +27,13 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
-  const takeBackCameraImage = ({receiverDeviceName}) => {
+  const takeBackCameraImage = ({receiverDeviceName, imageQuality}) => {
     return {
       requestType: TAKE_BACK_CAMERA_IMAGE,
       receiverDeviceName,
+      requestPayload: {
+        imageQuality,
+      },
     };
   };
 

@@ -1,4 +1,5 @@
 import AppActions from '../../actions/AppActions';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const initialState = {
   takeBackCameraImageRequest: {
@@ -149,7 +150,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
         takeBackCameraImageRequest: {
           ...state.takeBackCameraImageRequest,
           // requestId: null,
-          inProgress: true,
+          // inProgress: true,
           completed: false,
           // cancellable: true,
           cancelInProgress: true,

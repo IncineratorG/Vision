@@ -1,13 +1,18 @@
-import {call, put} from '@redux-saga/core/effects';
+import {call, put, select} from '@redux-saga/core/effects';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../actions/AppActions';
 import Services from '../../../../services/Services';
+import {useSelector} from 'react-redux';
 
 const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
   const actionsChannel = channel;
 
   const handler = function* (action) {
     const {receiverDeviceName} = action.payload;
+
+    const backCameraImageQuality = yield select(
+      (state) => state.appSettings.surveillance.backCameraImage.quality,
+    );
 
     SystemEventsHandler.onInfo({
       info: 'SS_sendTakeBackCameraImageRequestHandler: ' + receiverDeviceName,
@@ -22,6 +27,7 @@ const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
 
       const request = surveillanceService.requests.takeBackCameraImage({
         receiverDeviceName,
+        imageQuality: backCameraImageQuality,
       });
 
       const onComplete = (data) => {

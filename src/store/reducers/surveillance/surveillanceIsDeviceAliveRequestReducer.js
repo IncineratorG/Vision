@@ -127,7 +127,7 @@ const surveillanceIsDeviceAliveRequestReducer = (
         ...state,
         isDeviceAliveRequest: {
           ...state.isDeviceAliveRequest,
-          inProgress: true,
+          // inProgress: true,
           completed: false,
           cancelInProgress: true,
           cancelled: false,
