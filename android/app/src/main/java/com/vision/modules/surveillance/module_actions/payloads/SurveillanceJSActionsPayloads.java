@@ -3,7 +3,7 @@ package com.vision.modules.surveillance.module_actions.payloads;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.surveillance.module_actions.payloads.payloads.CancelRequestPayload;
 import com.vision.modules.surveillance.module_actions.payloads.payloads.GetDevicesInGroupPayload;
-import com.vision.modules.surveillance.module_actions.payloads.payloads.SendRequestPayload;
+import com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.SendRequestPayload;
 
 public class SurveillanceJSActionsPayloads {
     public static GetDevicesInGroupPayload getDevicesInGroupPayload(ReadableMap payloadMap) {

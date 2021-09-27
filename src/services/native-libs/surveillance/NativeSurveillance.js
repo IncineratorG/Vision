@@ -15,6 +15,26 @@ const NativeSurveillance = () => {
   const requestCallbacksMap = new Map();
 
   nativeServiceEventEmitter.addListener(
+    NativeSurveillanceEvents.types.REQUEST_DELIVERED,
+    (data) => {
+      SystemEventsHandler.onInfo({
+        info: 'NativeSurveillance->onRequestDelivered()',
+      });
+      const {requestId} =
+        NativeSurveillanceEvents.payloads.requestDeliveredEventPayload(data);
+
+      if (requestCallbacksMap.has(requestId)) {
+        const {onDelivered, onComplete, onCancel, onError} =
+          requestCallbacksMap.get(requestId);
+
+        if (onDelivered) {
+          onDelivered();
+        }
+      }
+    },
+  );
+
+  nativeServiceEventEmitter.addListener(
     NativeSurveillanceEvents.types.RESPONSE_RECEIVED,
     (data) => {
       SystemEventsHandler.onInfo({
@@ -24,7 +44,7 @@ const NativeSurveillance = () => {
         NativeSurveillanceEvents.payloads.responseReceivedEventPayload(data);
 
       if (requestCallbacksMap.has(requestId)) {
-        const {onComplete, onCancel, onError} =
+        const {onDelivered, onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
 
         if (onComplete) {
@@ -52,7 +72,7 @@ const NativeSurveillance = () => {
         NativeSurveillanceEvents.payloads.requestErrorEventPayload(data);
 
       if (requestCallbacksMap.has(requestId)) {
-        const {onComplete, onCancel, onError} =
+        const {onDelivered, onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
 
         if (onError) {
@@ -104,10 +124,21 @@ const NativeSurveillance = () => {
     return await nativeService.execute(action);
   };
 
-  const sendRequest = async ({request, onComplete, onCancel, onError}) => {
+  const sendRequest = async ({
+    request,
+    onDelivered,
+    onComplete,
+    onCancel,
+    onError,
+  }) => {
     const action = NativeSurveillanceActions.sendRequest(request);
     const requestId = await nativeService.execute(action);
-    requestCallbacksMap.set(requestId, {onComplete, onCancel, onError});
+    requestCallbacksMap.set(requestId, {
+      onDelivered,
+      onComplete,
+      onCancel,
+      onError,
+    });
     return requestId;
   };
 
@@ -120,7 +151,7 @@ const NativeSurveillance = () => {
     const {successful} = await nativeService.execute(action);
     if (successful) {
       if (requestCallbacksMap.has(requestId)) {
-        const {onComplete, onCancel, onError} =
+        const {onDelivered, onComplete, onCancel, onError} =
           requestCallbacksMap.get(requestId);
 
         if (onCancel) {

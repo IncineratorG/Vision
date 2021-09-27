@@ -1,9 +1,10 @@
-package com.vision.modules.surveillance.module_actions.payloads.payloads;
+package com.vision.modules.surveillance.module_actions.payloads.payloads.send_request;
 
 
 import android.util.Log;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.vision.common.data.service_request_payload.ServiceRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.IsDeviceAliveRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
@@ -67,43 +68,49 @@ public class SendRequestPayload implements JSPayload {
     private JSONObject getPayloadFromMap(ReadableMap payloadMap) {
         ReadableMap requestPayloadMap = payloadMap.getMap(REQUEST_PAYLOAD_FIELD);
 
-        switch (mRequestType) {
-            case (SurveillanceServiceRequestTypes.TEST_REQUEST): {
-                return null;
-            }
+        ServiceRequestPayload serviceRequestPayload = PayloadsConverter.toServiceRequestPayload(mRequestType, requestPayloadMap);
+        if (serviceRequestPayload != null) {
+            return serviceRequestPayload.jsonObject();
+        } else {
+            Log.d("tag", "SendRequestPayload->getPayloadFromMap(): BAD_SERVICE_REQUEST_PAYLOAD");
 
-            case (SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD): {
-                if (requestPayloadMap == null) {
-                    mRequestPayloadIsValid = false;
-                    return null;
-                }
-
-                String valueOne = requestPayloadMap.getString("valueOne");
-                String valueTwo = requestPayloadMap.getString("valueTwo");
-
-                TestRequestWithPayloadRequestPayload requestPayload =
-                        SurveillanceServiceRequestPayloads.testRequestWithPayloadRequestPayload(valueOne, valueTwo);
-
-                return requestPayload.jsonObject();
-            }
-
-            case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
-                IsDeviceAliveRequestPayload requestPayload =
-                        SurveillanceServiceRequestPayloads.isDeviceAliveRequestPayload();
-
-                return requestPayload.jsonObject();
-            }
-
-            case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
-                TakeBackCameraImageRequestPayload requestPayload =
-                        SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
-
-                return requestPayload.jsonObject();
-            }
-
-            default: {
-                return null;
-            }
+            mRequestPayloadIsValid = false;
+            return null;
         }
+
+//        switch (mRequestType) {
+//            case (SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD): {
+//                if (requestPayloadMap == null) {
+//                    mRequestPayloadIsValid = false;
+//                    return null;
+//                }
+//
+//                String valueOne = requestPayloadMap.getString("valueOne");
+//                String valueTwo = requestPayloadMap.getString("valueTwo");
+//
+//                TestRequestWithPayloadRequestPayload requestPayload =
+//                        SurveillanceServiceRequestPayloads.testRequestWithPayloadRequestPayload(valueOne, valueTwo);
+//
+//                return requestPayload.jsonObject();
+//            }
+//
+//            case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
+//                IsDeviceAliveRequestPayload requestPayload =
+//                        SurveillanceServiceRequestPayloads.isDeviceAliveRequestPayload();
+//
+//                return requestPayload.jsonObject();
+//            }
+//
+//            case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
+//                TakeBackCameraImageRequestPayload requestPayload =
+//                        SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
+//
+//                return requestPayload.jsonObject();
+//            }
+//
+//            default: {
+//                return null;
+//            }
+//        }
     }
 }

@@ -32,11 +32,18 @@ const SurveillanceService = () => {
     });
   };
 
-  const sendRequest = async ({request, onComplete, onCancel, onError}) => {
+  const sendRequest = async ({
+    request,
+    onDelivered,
+    onComplete,
+    onCancel,
+    onError,
+  }) => {
     SystemEventsHandler.onInfo({info: 'SurveillanceService->sendRequest()'});
 
     return await nativeService.sendRequest({
       request,
+      onDelivered,
       onComplete,
       onCancel,
       onError,

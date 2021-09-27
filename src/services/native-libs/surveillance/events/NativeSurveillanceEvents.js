@@ -5,6 +5,13 @@ import NativeSurveillanceConstants from '../constants/NativeSurveillanceConstant
 const NativeSurveillanceEvents = () => {
   const eventEmitter = new NativeEventEmitter(NativeSurveillanceLib);
 
+  const requestDeliveredEventPayload = (data) => {
+    const {requestId} = data;
+    return {
+      requestId,
+    };
+  };
+
   const requestErrorEventPayload = (data) => {
     const {requestId, code, message} = data;
     return {
@@ -23,6 +30,7 @@ const NativeSurveillanceEvents = () => {
     types: NativeSurveillanceConstants.eventTypes,
     eventEmitter,
     payloads: {
+      requestDeliveredEventPayload,
       requestErrorEventPayload,
       responseReceivedEventPayload,
     },

@@ -52,7 +52,6 @@ const GroupView = ({model, controller}) => {
       logout,
       devicePressHandler,
       selectedDeviceErrorDialogCancelHandler,
-      imageViewerCloseHandler,
     },
     deviceRequestsDialogController: {
       deviceRequestsDialogCancelHandler,
@@ -60,6 +59,7 @@ const GroupView = ({model, controller}) => {
       deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     },
     requestStatusDialogController: {requestStatusDialogCancelHandler},
+    imageViewerController: {imageViewerCloseHandler},
   } = controller;
 
   const updateDataIndicator = loadingDevicesInGroup ? (
@@ -97,13 +97,6 @@ const GroupView = ({model, controller}) => {
     />
   );
 
-  // const requestInProgressDialog = (
-  //   <RequestInProgressDialog
-  //     visible={requestInProgressDialogVisible}
-  //     onCancelPress={requestInProgressDialogCancelHandler}
-  //   />
-  // );
-
   const requestStatusDialog = (
     <RequestStatusDialog
       visible={requestStatusDialogVisible}
@@ -122,13 +115,6 @@ const GroupView = ({model, controller}) => {
       onClose={imageViewerCloseHandler}
     />
   );
-  // const imageViewer = imageViewerVisible ? (
-  //   <ImageViewerModal
-  //     visible={imageViewerVisible}
-  //     image={imageViewerImage}
-  //     onClose={imageViewerCloseHandler}
-  //   />
-  // ) : null;
 
   return (
     <View style={styles.mainContainer}>

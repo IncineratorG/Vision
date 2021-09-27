@@ -61,6 +61,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
 
         WritableMap eventTypes = new WritableNativeMap();
+        eventTypes.putString(SurveillanceEventTypes.REQUEST_DELIVERED, SurveillanceEventTypes.REQUEST_DELIVERED);
         eventTypes.putString(SurveillanceEventTypes.REQUEST_ERROR, SurveillanceEventTypes.REQUEST_ERROR);
         eventTypes.putString(SurveillanceEventTypes.RESPONSE_RECEIVED, SurveillanceEventTypes.RESPONSE_RECEIVED);
 

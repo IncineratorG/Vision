@@ -11,6 +11,7 @@ public class TakeBackCameraImageRequestPayload implements ServiceRequestPayload 
 
     }
 
+    @Override
     public JSONObject jsonObject() {
         return mJsonObject;
     }

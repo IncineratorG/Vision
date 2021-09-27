@@ -12,7 +12,7 @@ import com.vision.modules.surveillance.module_actions_executor.handlers.CancelRe
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetAppPermissionsHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetDevicesInGroupHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
-import com.vision.modules.surveillance.module_actions_executor.handlers.SendRequestHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.SendRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StartServiceHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StopServiceHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.TestRequestHandler;

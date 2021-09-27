@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance.module_actions_executor.handlers;
+package com.vision.modules.surveillance.module_actions_executor.handlers.send_request;
 
 
 import android.util.Log;
@@ -13,21 +13,33 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnDelivered
 import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
-import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
-import com.vision.common.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
-import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
-import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
+import com.vision.modules.modules_common.interfaces.response_handler.ResponseHandler;
 import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;
-import com.vision.modules.surveillance.module_actions.payloads.payloads.SendRequestPayload;
+import com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.SendRequestPayload;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.IsDeviceAliveResponseHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TakeBackCameraImageResponseHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TestRequestWithPayloadResponseHandler;
 import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
 import com.vision.modules.surveillance.module_events.payloads.SurveillanceEventsJSPayloads;
 import com.vision.modules.surveillance.module_events.types.SurveillanceEventTypes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SendRequestHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
+
+    private Map<String, ResponseHandler> mRequestResponseHandlers;
+
+    public SendRequestHandler() {
+        mRequestResponseHandlers = new HashMap<>();
+        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadResponseHandler());
+        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveResponseHandler());
+        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageResponseHandler());
+    }
 
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
@@ -72,12 +84,19 @@ public class SendRequestHandler implements JSActionHandler {
 
         OnDeliveredCallback onDeliveredCallback = () -> {
             Log.d("tag", "SendRequestHandler->onDeliveredCallback()");
+
+            context
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(
+                            SurveillanceEventTypes.REQUEST_DELIVERED,
+                            SurveillanceEventsJSPayloads.requestDelivered(request.id())
+                    );
         };
         OnResponseCallback onResponseCallback = response -> {
             Log.d("tag", "SendRequestHandler->onResponseCallback()");
 
             if (response != null) {
-                processResponse(context, requestType, response);
+                handleResponse(context, requestType, response);
             } else {
                 Log.d("tag", "SendRequestHandler->onResponseCallback(): RESPONSE_IS_NULL");
             }
@@ -110,59 +129,12 @@ public class SendRequestHandler implements JSActionHandler {
         result.resolve(request.id());
     }
 
-    private void processResponse(ReactApplicationContext context, String requestType, ServiceResponse response) {
-        switch (requestType) {
-            case (SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD): {
-                TestRequestWithPayloadResponsePayload responsePayload =
-                        SurveillanceServiceResponsePayloads.testRequestWithPayloadResponsePayload(response.payload());
-
-                context
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(
-                                SurveillanceEventTypes.RESPONSE_RECEIVED,
-                                SurveillanceEventsJSPayloads.testRequestResponseEventPayload(
-                                        response.requestId(),
-                                        responsePayload.resultOne()
-                                )
-                        );
-                break;
-            }
-
-            case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
-                IsDeviceAliveResponsePayload responsePayload =
-                        SurveillanceServiceResponsePayloads.isDeviceAliveResponsePayload(response.payload());
-
-                context
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(
-                                SurveillanceEventTypes.RESPONSE_RECEIVED,
-                                SurveillanceEventsJSPayloads.isDeviceAliveResponseEventPayload(
-                                        response.requestId(),
-                                        responsePayload.isAlive()
-                                )
-                        );
-                break;
-            }
-
-            case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
-                TakeBackCameraImageResponsePayload responsePayload =
-                        SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload(response.payload());
-
-                context
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit(
-                                SurveillanceEventTypes.RESPONSE_RECEIVED,
-                                SurveillanceEventsJSPayloads.takeBackCameraImageResponseEventPayload(
-                                        response.requestId(),
-                                        responsePayload.image()
-                                )
-                        );
-                break;
-            }
-
-            default: {
-                Log.d("tag", "SendRequestHandler->processResponse()->UNKNOWN_REQUEST_TYPE: " + requestType);
-            }
+    private void handleResponse(ReactApplicationContext context, String requestType, ServiceResponse response) {
+        ResponseHandler responseHandler = mRequestResponseHandlers.get(requestType);
+        if (responseHandler != null) {
+            responseHandler.handle(context, response);
+        } else {
+            Log.d("tag", "SendRequestHandler->processResponse()->UNKNOWN_REQUEST_TYPE: " + requestType);
         }
     }
 }

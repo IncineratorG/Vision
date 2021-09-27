@@ -11,6 +11,7 @@ public class IsDeviceAliveRequestPayload implements ServiceRequestPayload {
 
     }
 
+    @Override
     public JSONObject jsonObject() {
         return mJsonObject;
     }

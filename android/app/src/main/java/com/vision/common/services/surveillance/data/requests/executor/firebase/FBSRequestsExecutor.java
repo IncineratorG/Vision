@@ -26,7 +26,6 @@ public class FBSRequestsExecutor implements ServiceRequestsExecutor {
     public FBSRequestsExecutor() {
         mHandlers = new HashMap<>();
         mHandlers.put(UNKNOWN_REQUEST_HANDLER_KEY, new UnknownRequestServiceHandler());
-        mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST, new TestRequestServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageServiceHandler());

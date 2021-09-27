@@ -74,58 +74,6 @@ const ImageViewerModal = ({visible, image, onClose}) => {
     }
   }, [image, visible]);
 
-  // useEffect(() => {
-  //   SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()'});
-  //
-  //   if (!image) {
-  //     // setViewerInitialIndex(-1);
-  //     // setImagesData([]);
-  //     return;
-  //   }
-  //
-  //   const imageObject = {
-  //     url: 'data:image/jpg;base64,' + image,
-  //   };
-  //
-  //   setViewerInitialIndex(0);
-  //
-  //   const imagesArray = [];
-  //   imagesArray.push(imageObject);
-  //   setImagesData(imagesArray);
-  //
-  //   SystemEventsHandler.onInfo({
-  //     info: 'ImageViewerModal->useEffect(): IMAGES_SET',
-  //   });
-  //
-  //   // setViewerInitialIndex(0);
-  // }, [image]);
-
-  // useEffect(() => {
-  //   SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()'});
-  //
-  //   if (!image) {
-  //     // setViewerInitialIndex(-1);
-  //     // setImagesData([]);
-  //     return;
-  //   }
-  //
-  //   const imageObject = {
-  //     url: 'data:image/jpg;base64,' + image,
-  //   };
-  //
-  //   setViewerInitialIndex(0);
-  //
-  //   const imagesArray = [];
-  //   imagesArray.push(imageObject);
-  //   setImagesData(imagesArray);
-  //
-  //   SystemEventsHandler.onInfo({
-  //     info: 'ImageViewerModal->useEffect(): IMAGES_SET',
-  //   });
-  //
-  //   // setViewerInitialIndex(0);
-  // }, [image]);
-
   return (
     <Modal
       visible={internalVisible}

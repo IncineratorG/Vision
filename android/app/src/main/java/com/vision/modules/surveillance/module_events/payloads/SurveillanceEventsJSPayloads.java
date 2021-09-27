@@ -1,14 +1,16 @@
 package com.vision.modules.surveillance.module_events.payloads;
 
 
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 
-import java.util.List;
-
 public class SurveillanceEventsJSPayloads {
+    public static WritableMap requestDelivered(String requestId) {
+        WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("requestId", requestId);
+        return jsPayload;
+    }
+
     public static WritableMap requestError(String requestId, String errorCode, String errorMessage) {
         WritableMap jsPayload = new WritableNativeMap();
         jsPayload.putString("requestId", requestId);

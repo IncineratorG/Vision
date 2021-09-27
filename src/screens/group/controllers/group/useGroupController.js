@@ -179,10 +179,6 @@ const useGroupController = (model) => {
     );
   }, [localDispatch]);
 
-  const imageViewerCloseHandler = useCallback(() => {
-    localDispatch(GroupLocalActions.actions.closeImageViewer());
-  }, [localDispatch]);
-
   return {
     getAppPermissions,
     testRequest,
@@ -193,7 +189,6 @@ const useGroupController = (model) => {
     logout,
     devicePressHandler,
     selectedDeviceErrorDialogCancelHandler,
-    imageViewerCloseHandler,
   };
 };
 

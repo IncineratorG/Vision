@@ -7,7 +7,7 @@ import com.vision.common.services.surveillance.data.requests.payloads.payloads.T
 
 public class SurveillanceServiceRequestPayloads {
     public static TestRequestWithPayloadRequestPayload testRequestWithPayloadRequestPayload(String valueOne,
-                                                                                                                                                                                    String valueTwo) {
+                                                                                            String valueTwo) {
         return new TestRequestWithPayloadRequestPayload(valueOne, valueTwo);
     }
 

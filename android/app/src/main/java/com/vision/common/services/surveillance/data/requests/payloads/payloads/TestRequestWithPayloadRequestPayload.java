@@ -23,6 +23,7 @@ public class TestRequestWithPayloadRequestPayload implements ServiceRequestPaylo
         }
     }
 
+    @Override
     public JSONObject jsonObject() {
         return mJsonObject;
     }
