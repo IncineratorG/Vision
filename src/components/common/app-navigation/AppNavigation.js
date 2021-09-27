@@ -9,6 +9,7 @@ import Group from '../../../screens/group/Group';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Loader from '../../../screens/loader/Loader';
 import Service from '../../../screens/service/Service';
+import Settings from '../../../screens/settings/Settings';
 
 const MainStack = createNativeStackNavigator();
 
@@ -66,6 +67,18 @@ const AppNavigation = () => {
           //   headerShown: true,
           //   headerLeft: () => null,
           // }}
+        />
+        <MainStack.Screen
+          name={AppRoutes.Settings}
+          component={Settings}
+          options={({navigation, route}) => ({
+            headerShown: true,
+            // headerLeft: (props) => {
+            //   return <View />;
+            // },
+            title: 'Settings',
+            headerStatusBarHeight: 0,
+          })}
         />
         <MainStack.Screen
           name={AppRoutes.Main}

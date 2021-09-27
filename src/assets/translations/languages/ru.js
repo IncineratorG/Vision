@@ -66,6 +66,19 @@ const ru = {
   RequestStatusDialog_cancelButton: 'ОТМЕНА',
   RequestStatusDialog_okButton: 'OK',
   RequestStatusDialog_viewResponseButton: 'РЕЗУЛЬТАТ',
+
+  SettingsView_imageQualitySubheader: 'Качество изрбражений',
+  SettingsView_backCameraImageQuality: 'Задняя камера',
+  SettingsView_backCameraImageQualityHigh: 'Высокое',
+  SettingsView_backCameraImageQualityMedium: 'Среднее',
+  SettingsView_backCameraImageQualityLow: 'Низкое',
+  SettingsView_backCameraImageQualityUnknown: 'Неизвестно',
+
+  BackCameraImageQualityDialog_title: 'Качество изображения задней камеры',
+  BackCameraImageQualityDialog_cancelButton: 'ОТМЕНА',
+  BackCameraImageQualityDialog_qualityHigh: 'Высокое',
+  BackCameraImageQualityDialog_qualityMedium: 'Среднее',
+  BackCameraImageQualityDialog_qualityLow: 'Низкое',
 };
 
 export default ru;

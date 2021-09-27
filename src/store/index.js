@@ -8,6 +8,7 @@ const sagaMiddleware = createSagaMiddleware();
 const reducers = combineReducers({
   temp: AppReducers.temp,
   auth: AppReducers.auth,
+  appSettings: AppReducers.appSettings,
   surveillanceCommon: AppReducers.surveillanceCommon,
   surveillanceIsDeviceAliveRequest:
     AppReducers.surveillanceIsDeviceAliveRequest,

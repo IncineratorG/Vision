@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
+    "@react-navigation/stack": "^6.0.9",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-image-zoom-viewer": "^3.0.1",

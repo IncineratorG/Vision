@@ -3,6 +3,7 @@ const AppRoutes = {
   Service: 'Service',
   Authorisation: 'Authorisation',
   Group: 'Group',
+  Settings: 'Settings',
   Main: 'Main',
 };
 
