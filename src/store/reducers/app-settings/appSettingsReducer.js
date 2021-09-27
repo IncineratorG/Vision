@@ -1,10 +1,12 @@
 import CameraImageQuality from '../../../data/common/camera-image-quality/CameraImageQuality';
 import AppActions from '../../actions/AppActions';
-import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const initialState = {
   surveillance: {
     backCameraImage: {
+      quality: CameraImageQuality.LOW,
+    },
+    frontCameraImage: {
       quality: CameraImageQuality.LOW,
     },
   },
@@ -23,6 +25,23 @@ const appSettingsReducer = (state = initialState, action) => {
           ...state.surveillance,
           backCameraImage: {
             ...state.surveillance.backCameraImage,
+            quality: imageQuality,
+          },
+        },
+      };
+    }
+
+    case AppActions.appSettings.types
+      .SET_FRONT_CAMERA_IMAGE_REQUEST_IMAGE_QUALITY: {
+      const {quality} = action.payload;
+      const imageQuality = quality ? quality : CameraImageQuality.LOW;
+
+      return {
+        ...state,
+        surveillance: {
+          ...state.surveillance,
+          frontCameraImage: {
+            ...state.surveillance.frontCameraImage,
             quality: imageQuality,
           },
         },

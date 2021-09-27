@@ -73,12 +73,23 @@ const ru = {
   SettingsView_backCameraImageQualityMedium: 'Среднее',
   SettingsView_backCameraImageQualityLow: 'Низкое',
   SettingsView_backCameraImageQualityUnknown: 'Неизвестно',
+  SettingsView_frontCameraImageQuality: 'Передняя камера',
+  SettingsView_frontCameraImageQualityHigh: 'Высокое',
+  SettingsView_frontCameraImageQualityMedium: 'Среднее',
+  SettingsView_frontCameraImageQualityLow: 'Низкое',
+  SettingsView_frontCameraImageQualityUnknown: 'Неизвестно',
 
   BackCameraImageQualityDialog_title: 'Качество изображения задней камеры',
   BackCameraImageQualityDialog_cancelButton: 'ОТМЕНА',
   BackCameraImageQualityDialog_qualityHigh: 'Высокое',
   BackCameraImageQualityDialog_qualityMedium: 'Среднее',
   BackCameraImageQualityDialog_qualityLow: 'Низкое',
+
+  FrontCameraImageQualityDialog_title: 'Качество изображения передней камеры',
+  FrontCameraImageQualityDialog_cancelButton: 'ОТМЕНА',
+  FrontCameraImageQualityDialog_qualityHigh: 'Высокое',
+  FrontCameraImageQualityDialog_qualityMedium: 'Среднее',
+  FrontCameraImageQualityDialog_qualityLow: 'Низкое',
 };
 
 export default ru;

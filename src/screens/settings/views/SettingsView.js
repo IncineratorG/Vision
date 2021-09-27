@@ -4,18 +4,27 @@ import {List} from 'react-native-paper';
 import useTranslation from '../../../utils/common/localization';
 import CameraImageQuality from '../../../data/common/camera-image-quality/CameraImageQuality';
 import BackCameraImageQualityDialog from '../../../components/specific/settings/back-camera-image-quality-dialog/BackCameraImageQualityDialog';
+import FrontCameraImageQualityDialog from '../../../components/specific/settings/front-camera-image-quality-dialog/FrontCameraImageQualityDialog';
 
 const SettingsView = ({model, controller}) => {
   const {t} = useTranslation();
 
   const {
-    data: {backCameraImageQuality, backCameraImageQualityDialogVisible},
+    data: {
+      backCameraImageQuality,
+      backCameraImageQualityDialogVisible,
+      frontCameraImageQuality,
+      frontCameraImageQualityDialogVisible,
+    },
   } = model;
 
   const {
     backCameraImageQualityPressHandler,
     backCameraImageQualityDialogCancelPressHandler,
     backCameraImageQualityDialogImageQualitySelectHandler,
+    frontCameraImageQualityPressHandler,
+    frontCameraImageQualityDialogCancelPressHandler,
+    frontCameraImageQualityDialogImageQualitySelectHandler,
   } = controller;
 
   const backCameraImageQualityDialog = (
@@ -26,6 +35,17 @@ const SettingsView = ({model, controller}) => {
         backCameraImageQualityDialogImageQualitySelectHandler
       }
       onCancel={backCameraImageQualityDialogCancelPressHandler}
+    />
+  );
+
+  const frontCameraImageQualityDialog = (
+    <FrontCameraImageQualityDialog
+      visible={frontCameraImageQualityDialogVisible}
+      currentImageQualityType={frontCameraImageQuality}
+      onImageQualityTypeSelect={
+        frontCameraImageQualityDialogImageQualitySelectHandler
+      }
+      onCancel={frontCameraImageQualityDialogCancelPressHandler}
     />
   );
 
@@ -49,8 +69,23 @@ const SettingsView = ({model, controller}) => {
           }
           onPress={backCameraImageQualityPressHandler}
         />
+        <List.Item
+          style={{borderBottomColor: 'lightgrey', borderBottomWidth: 1}}
+          title={t('SettingsView_frontCameraImageQuality')}
+          description={
+            frontCameraImageQuality === CameraImageQuality.HIGH
+              ? t('SettingsView_frontCameraImageQualityHigh')
+              : frontCameraImageQuality === CameraImageQuality.MEDIUM
+              ? t('SettingsView_frontCameraImageQualityMedium')
+              : frontCameraImageQuality === CameraImageQuality.LOW
+              ? t('SettingsView_frontCameraImageQualityLow')
+              : t('SettingsView_frontCameraImageQualityUnknown')
+          }
+          onPress={frontCameraImageQualityPressHandler}
+        />
       </List.Section>
       {backCameraImageQualityDialog}
+      {frontCameraImageQualityDialog}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import DeviceRequestsDialogRequestsListItem from './item/DeviceRequestsDialogRequestsListItem';
 import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
@@ -6,12 +6,13 @@ import {SystemEventsHandler} from '../../../../../utils/common/system-events-han
 const DeviceRequestsDialogRequestsList = ({requestsList, onRequestPress}) => {
   const renderItem = useCallback(
     ({item}) => {
-      const {type, name} = item;
+      const {type, name, icon} = item;
 
       return (
         <DeviceRequestsDialogRequestsListItem
           type={type}
           name={name}
+          icon={icon}
           onPress={onRequestPress}
         />
       );

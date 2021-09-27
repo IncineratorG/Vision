@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const DeviceRequestsDialogRequestsListItem = ({type, name, onPress}) => {
+const DeviceRequestsDialogRequestsListItem = ({type, name, icon, onPress}) => {
   const itemPressHandler = useCallback(() => {
     if (onPress) {
       onPress({type});
@@ -11,8 +11,8 @@ const DeviceRequestsDialogRequestsListItem = ({type, name, onPress}) => {
   return (
     <TouchableOpacity onPress={itemPressHandler}>
       <View style={styles.mainContainer}>
-        <View style={styles.iconColorContainer}>
-          <View style={[styles.iconColor, {backgroundColor: '#03A9F4'}]} />
+        <View style={styles.iconContainer}>
+          <View style={[styles.icon]}>{icon}</View>
         </View>
         <View style={styles.requestNameContainer}>
           <Text style={styles.requestName}>{name}</Text>
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 8,
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    borderRadius: 4,
+    // borderWidth: 1,
+    // borderColor: 'lightgrey',
+    // borderRadius: 4,
 
     // minHeight: 30,
     // // width: 300,
@@ -51,16 +51,18 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // borderRadius: 4,
   },
-  iconColorContainer: {
+  iconContainer: {
     width: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconColor: {
+  icon: {
     height: 30,
     width: 30,
     borderRadius: 15,
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   requestNameContainer: {
     flex: 1,

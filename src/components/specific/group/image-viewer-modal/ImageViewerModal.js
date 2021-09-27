@@ -33,7 +33,7 @@ const ImageViewerModal = ({visible, image, onClose}) => {
   }, [onClose]);
 
   const changeImageHandler = useCallback(async (index) => {
-    SystemEventsHandler.onInfo({info: 'CHANGE_IMAGE'});
+    // SystemEventsHandler.onInfo({info: 'CHANGE_IMAGE'});
   }, []);
 
   const getCurrentImageRotationStyleParam = useCallback(() => {
@@ -43,8 +43,6 @@ const ImageViewerModal = ({visible, image, onClose}) => {
   }, [imageRotationDegrees]);
 
   useEffect(() => {
-    SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()|2|'});
-
     if (!visible) {
       setInternalVisible(false);
       setImageRotationDegrees(0);
@@ -62,17 +60,9 @@ const ImageViewerModal = ({visible, image, onClose}) => {
       setImagesData(imagesArray);
       setViewerInitialIndex(0);
 
-      SystemEventsHandler.onInfo({
-        info: 'ImageViewerModal->useEffect(): IMAGES_PRE_SET: 0',
-      });
-
       setTimeout(() => {
         setImagesData([]);
         setViewerInitialIndex(0);
-
-        SystemEventsHandler.onInfo({
-          info: 'ImageViewerModal->useEffect(): IMAGES_PRE_SET: 1',
-        });
 
         setTimeout(() => {
           const otherImagesArray = [];
@@ -82,13 +72,7 @@ const ImageViewerModal = ({visible, image, onClose}) => {
           setViewerInitialIndex(0);
           setInternalVisible(true);
 
-          // ===
           setImageDataSize(image.length);
-          // ===
-
-          SystemEventsHandler.onInfo({
-            info: 'ImageViewerModal->useEffect(): IMAGES_PRE_SET: 2',
-          });
         }, 100);
       }, 200);
     }
@@ -109,10 +93,6 @@ const ImageViewerModal = ({visible, image, onClose}) => {
         onChange={changeImageHandler}
         renderHeader={(currentIndex) => {
           const rotateImageHandler = () => {
-            SystemEventsHandler.onInfo({
-              info: 'ImageViewerModal->rotateImageHandler()',
-            });
-
             setImageRotationDegrees((prev) => prev + 90);
           };
 

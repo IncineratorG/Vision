@@ -6,6 +6,7 @@ import DeviceRequestsDialogRequestsList from './requests-list/DeviceRequestsDial
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 import CheckingSelectedDevice from './checking-selected-device/CheckingSelectedDevice';
 import SelectedDeviceNotAvailable from './selected-device-not-available/SelectedDeviceNotAvailable';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const DeviceRequestsDialog = ({
   visible,
@@ -95,12 +96,16 @@ const DeviceRequestsDialog = ({
         requests.push({
           type: requestTypes.GET_FRONT_CAMERA_IMAGE,
           name: t('DeviceRequestsDialog_getFrontCameraImage'),
+          icon: (
+            <MaterialIcon name="photo-camera-front" size={28} color="grey" />
+          ),
         });
       }
       if (hasBackCamera) {
         requests.push({
           type: requestTypes.GET_BACK_CAMERA_IMAGE,
           name: t('DeviceRequestsDialog_getBackCameraImage'),
+          icon: <MaterialIcon name="photo-camera" size={28} color="grey" />,
         });
       }
 

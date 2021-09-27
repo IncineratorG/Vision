@@ -6,14 +6,13 @@ const useSettingsController = (model) => {
   const {
     navigation,
     dispatch,
-    setters: {setBackCameraImageQualityVisible},
+    setters: {
+      setBackCameraImageQualityVisible,
+      setFrontCameraImageQualityVisible,
+    },
   } = model;
 
   const backCameraImageQualityPressHandler = useCallback(() => {
-    SystemEventsHandler.onInfo({
-      info: 'useSettingsController()->backCameraImageQualityPressHandler()',
-    });
-
     setBackCameraImageQualityVisible(true);
   }, [setBackCameraImageQualityVisible]);
 
@@ -33,10 +32,33 @@ const useSettingsController = (model) => {
     [dispatch, setBackCameraImageQualityVisible],
   );
 
+  const frontCameraImageQualityPressHandler = useCallback(() => {
+    setFrontCameraImageQualityVisible(true);
+  }, [setFrontCameraImageQualityVisible]);
+
+  const frontCameraImageQualityDialogCancelPressHandler = useCallback(() => {
+    setFrontCameraImageQualityVisible(false);
+  }, [setFrontCameraImageQualityVisible]);
+
+  const frontCameraImageQualityDialogImageQualitySelectHandler = useCallback(
+    ({quality}) => {
+      dispatch(
+        AppActions.appSettings.actions.setFrontCameraImageRequestImageQuality({
+          quality,
+        }),
+      );
+      setFrontCameraImageQualityVisible(false);
+    },
+    [setFrontCameraImageQualityVisible, dispatch],
+  );
+
   return {
     backCameraImageQualityPressHandler,
     backCameraImageQualityDialogCancelPressHandler,
     backCameraImageQualityDialogImageQualitySelectHandler,
+    frontCameraImageQualityPressHandler,
+    frontCameraImageQualityDialogCancelPressHandler,
+    frontCameraImageQualityDialogImageQualitySelectHandler,
   };
 };
 
