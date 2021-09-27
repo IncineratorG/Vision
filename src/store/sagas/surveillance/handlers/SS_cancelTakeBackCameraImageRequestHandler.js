@@ -17,7 +17,7 @@ const SS_cancelTakeBackCameraImageRequestHandler = ({channel}) => {
       }
 
       yield put(
-        AppActions.surveillanceTakeBackCameraImageRequest.actions.cancelSendTakeBackCameraImageRequest(),
+        AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestCancelled(),
       );
     } catch (e) {
       SystemEventsHandler.onError({

@@ -97,10 +97,6 @@ const ImageViewerModal = ({visible, image, onClose}) => {
 
           const removeImageHandler = () => {};
 
-          // return (
-          //   <View style={{width: 100, height: 50, backgroundColor: 'red'}} />
-          // );
-
           return (
             <View style={styles.mainContainer}>
               <TouchableOpacity onPress={arrowBackHandler}>

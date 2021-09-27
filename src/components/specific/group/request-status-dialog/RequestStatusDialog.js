@@ -22,11 +22,6 @@ const RequestStatusDialog = ({
     if (responseViewerCallback) {
       responseViewerCallback();
     }
-    // SystemEventsHandler.onInfo({
-    //   info:
-    //     'RequestStatusDialog->viewResultHandler(): ' +
-    //     JSON.stringify(responseData),
-    // });
   }, [responseViewerCallback]);
 
   const resultButton = canViewResponse ? (

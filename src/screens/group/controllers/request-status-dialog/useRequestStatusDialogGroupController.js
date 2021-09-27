@@ -1,9 +1,13 @@
 import {useCallback} from 'react';
 import GroupLocalActions from '../../store/GroupLocalActions';
+import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppActions from '../../../../store/actions/AppActions';
 
 const useRequestStatusDialogGroupController = (model) => {
   const {
     data: {
+      deviceRequestTypes,
+      currentRequestType,
       currentGroupName,
       currentGroupPassword,
       currentDeviceName,
@@ -21,12 +25,35 @@ const useRequestStatusDialogGroupController = (model) => {
   } = model;
 
   const requestStatusDialogCancelHandler = useCallback(() => {
+    if (currentRequestType != null) {
+      switch (currentRequestType) {
+        case deviceRequestTypes.TAKE_BACK_CAMERA_IMAGE: {
+          dispatch(
+            AppActions.surveillanceTakeBackCameraImageRequest.actions.cancelSendTakeBackCameraImageRequest(),
+          );
+          break;
+        }
+
+        default: {
+          SystemEventsHandler.onInfo({
+            info:
+              'useRequestStatusDialogGroupController()->requestStatusDialogCancelHandler()->UNKNOWN_CURRENT_REQUEST_TYPE: ' +
+              currentRequestType,
+          });
+        }
+      }
+    } else {
+      SystemEventsHandler.onInfo({
+        info: 'useRequestStatusDialogGroupController()->requestStatusDialogCancelHandler()->CURRENT_REQUEST_TYPE_IS_NULL',
+      });
+    }
+
     localDispatch(
       GroupLocalActions.actions.setRequestStatusDialogVisibility({
         visible: false,
       }),
     );
-  }, [localDispatch]);
+  }, [currentRequestType, deviceRequestTypes, dispatch, localDispatch]);
 
   return {
     requestStatusDialogCancelHandler,

@@ -10,6 +10,7 @@ const groupLocalState = {
   requestInProgressDialog: {
     visible: false,
     requestId: null,
+    cancelRequestCallback: null,
   },
   requestStatusDialog: {
     visible: false,

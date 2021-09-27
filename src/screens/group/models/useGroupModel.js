@@ -18,7 +18,12 @@ const useGroupModel = () => {
     groupLocalState,
   );
 
+  const [currentRequestType, setCurrentRequestType] = useState(null);
   const [screenFocused, setScreenFocused] = useState(false);
+
+  const deviceRequestTypes = {
+    TAKE_BACK_CAMERA_IMAGE: 'TAKE_BACK_CAMERA_IMAGE',
+  };
 
   const {
     groupName: currentGroupName,
@@ -179,6 +184,8 @@ const useGroupModel = () => {
 
   return {
     data: {
+      deviceRequestTypes,
+      currentRequestType,
       localState,
       currentGroupName,
       currentGroupPassword,
@@ -191,7 +198,9 @@ const useGroupModel = () => {
       takeBackCameraImageRequestInProgress,
       selectedDeviceBackCameraImage,
     },
-    setters: {},
+    setters: {
+      setCurrentRequestType,
+    },
     dispatch,
     localDispatch,
     navigation,

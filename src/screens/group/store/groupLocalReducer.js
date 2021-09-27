@@ -56,13 +56,14 @@ const groupLocalReducer = (state, action) => {
     }
 
     case GroupLocalActions.types.SET_REQUEST_IN_PROGRESS_DIALOG_DATA: {
-      const {requestId} = action.payload;
+      const {requestId, cancelRequestCallback} = action.payload;
 
       return {
         ...state,
         requestInProgressDialog: {
           ...state.requestInProgressDialog,
           requestId,
+          cancelRequestCallback,
         },
       };
     }

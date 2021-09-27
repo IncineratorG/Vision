@@ -6,6 +6,7 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 const useDeviceRequestsDialogGroupController = (model) => {
   const {
     data: {
+      deviceRequestTypes,
       currentGroupName,
       currentGroupPassword,
       currentDeviceName,
@@ -17,21 +18,22 @@ const useDeviceRequestsDialogGroupController = (model) => {
         },
       },
     },
+    setters: {setCurrentRequestType},
     navigation,
     dispatch,
     localDispatch,
   } = model;
 
   const deviceRequestsDialogCancelHandler = useCallback(() => {
-    // dispatch(
-    //   AppActions.surveillanceIsDeviceAliveRequest.actions.cancelSendIsAliveRequest(),
-    // );
+    dispatch(
+      AppActions.surveillanceIsDeviceAliveRequest.actions.cancelSendIsAliveRequest(),
+    );
     localDispatch(
       GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
         visible: false,
       }),
     );
-  }, [localDispatch]);
+  }, [localDispatch, dispatch]);
 
   const deviceRequestsDialogGetFrontCameraImageRequestPressHandler =
     useCallback(
@@ -72,8 +74,9 @@ const useDeviceRequestsDialogGroupController = (model) => {
           {receiverDeviceName: selectedDeviceName},
         ),
       );
+      setCurrentRequestType(deviceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
     },
-    [localDispatch, dispatch],
+    [deviceRequestTypes, setCurrentRequestType, localDispatch, dispatch],
   );
 
   return {

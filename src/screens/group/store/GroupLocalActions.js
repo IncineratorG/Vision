@@ -59,10 +59,13 @@ const GroupLocalActions = () => {
     };
   };
 
-  const setRequestInProgressDialogData = ({requestId}) => {
+  const setRequestInProgressDialogData = ({
+    requestId,
+    cancelRequestCallback,
+  }) => {
     return {
       type: types.SET_REQUEST_IN_PROGRESS_DIALOG_DATA,
-      payload: {requestId},
+      payload: {requestId, cancelRequestCallback},
     };
   };
 
