@@ -1,5 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import {ImageViewer} from 'react-native-image-zoom-viewer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
@@ -9,6 +16,7 @@ const ImageViewerModal = ({visible, image, onClose}) => {
   const [imageDataSize, setImageDataSize] = useState(0);
   const [imagesData, setImagesData] = useState([]);
   const [viewerInitialIndex, setViewerInitialIndex] = useState(-2);
+  const [imageRotationDegrees, setImageRotationDegrees] = useState(0);
 
   const onShowHandler = useCallback(() => {}, []);
 
@@ -28,11 +36,18 @@ const ImageViewerModal = ({visible, image, onClose}) => {
     SystemEventsHandler.onInfo({info: 'CHANGE_IMAGE'});
   }, []);
 
+  const getCurrentImageRotationStyleParam = useCallback(() => {
+    let imageRotationStyleParam = imageRotationDegrees.toString();
+    imageRotationStyleParam = imageRotationStyleParam + 'deg';
+    return imageRotationStyleParam;
+  }, [imageRotationDegrees]);
+
   useEffect(() => {
     SystemEventsHandler.onInfo({info: 'ImageViewerModal->useEffect()|2|'});
 
     if (!visible) {
       setInternalVisible(false);
+      setImageRotationDegrees(0);
       return;
     }
 
@@ -93,7 +108,13 @@ const ImageViewerModal = ({visible, image, onClose}) => {
         enablePreload={true}
         onChange={changeImageHandler}
         renderHeader={(currentIndex) => {
-          const shareImageHandler = () => {};
+          const rotateImageHandler = () => {
+            SystemEventsHandler.onInfo({
+              info: 'ImageViewerModal->rotateImageHandler()',
+            });
+
+            setImageRotationDegrees((prev) => prev + 90);
+          };
 
           const removeImageHandler = () => {};
 
@@ -115,9 +136,9 @@ const ImageViewerModal = ({visible, image, onClose}) => {
                 }}>
                 <Text>{imageDataSize}</Text>
               </View>
-              <TouchableOpacity onPress={shareImageHandler}>
+              <TouchableOpacity onPress={rotateImageHandler}>
                 <View style={styles.shareImageContainer}>
-                  <Icon name="share" size={26} color={'#ffffff'} />
+                  <Icon name="rotate-right" size={26} color={'#ffffff'} />
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={removeImageHandler}>
@@ -126,6 +147,18 @@ const ImageViewerModal = ({visible, image, onClose}) => {
                 </View>
               </TouchableOpacity>
             </View>
+          );
+        }}
+        renderImage={(props) => {
+          return (
+            <Image
+              style={{
+                flex: 1,
+                alignSelf: 'stretch',
+                transform: [{rotate: getCurrentImageRotationStyleParam()}],
+              }}
+              source={{uri: 'data:image/jpg;base64,' + image}}
+            />
           );
         }}
       />
