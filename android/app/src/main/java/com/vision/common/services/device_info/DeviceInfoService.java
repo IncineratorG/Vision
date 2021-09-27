@@ -4,6 +4,7 @@ import android.content.Context;
 import android.hardware.Camera;
 
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.services.camera.CameraService_V2;
 
 public class DeviceInfoService {
     private static DeviceInfoService sInstance;
@@ -59,28 +60,32 @@ public class DeviceInfoService {
     }
 
     public boolean hasFrontCamera() {
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        int numberOfCameras = Camera.getNumberOfCameras();
-        for (int i = 0; i < numberOfCameras; i++) {
-            Camera.getCameraInfo(i, cameraInfo);
-            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                return true;
-            }
-        }
-        return false;
+        return CameraService_V2.get().hasFrontCamera();
+
+//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+//        int numberOfCameras = Camera.getNumberOfCameras();
+//        for (int i = 0; i < numberOfCameras; i++) {
+//            Camera.getCameraInfo(i, cameraInfo);
+//            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     public boolean hasBackCamera() {
-        int backCameraId = -1;
-        for(int i=0;i<Camera.getNumberOfCameras();i++){
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-            Camera.getCameraInfo(i,cameraInfo);
-            if(cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_BACK) {
-                backCameraId = i;
-                break;
-            }
-        }
+        return CameraService_V2.get().hasBackCamera();
 
-        return backCameraId >= 0;
+//        int backCameraId = -1;
+//        for(int i=0;i<Camera.getNumberOfCameras();i++){
+//            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+//            Camera.getCameraInfo(i,cameraInfo);
+//            if(cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_BACK) {
+//                backCameraId = i;
+//                break;
+//            }
+//        }
+//
+//        return backCameraId >= 0;
     }
 }

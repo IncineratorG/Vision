@@ -10,6 +10,7 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.camera.CameraService;
+import com.vision.common.services.camera.CameraService_V2;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -37,8 +38,14 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         String requestSenderDeviceName = request.senderDeviceName();
 
-        CameraService.get().takeBackCameraImage(
-                context,
+        // ===
+        CameraService_V2 cameraService = CameraService_V2.get();
+
+        int backCameraId = cameraService.getBackCameraId();
+
+        cameraService.takeCameraImage(
+                backCameraId,
+                requestPayload.imageQuality(),
                 (bytes, base64String) -> {
                     Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken(): " + bytes.length + " - " + base64String.length());
 
@@ -62,6 +69,32 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
                     Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
                 }
         );
+        // ===
+//        CameraService.get().takeBackCameraImage(
+//                context,
+//                (bytes, base64String) -> {
+//                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken(): " + bytes.length + " - " + base64String.length());
+//
+//                    TakeBackCameraImageResponsePayload responsePayload =
+//                            SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload(base64String);
+//
+//                    ServiceResponse response = new ServiceResponse(
+//                            ServiceResponse.TYPE_RESULT,
+//                            request.id(),
+//                            responsePayload.jsonObject()
+//                    );
+//
+//                    surveillanceService.sendResponse(
+//                            currentGroupName,
+//                            currentGroupPassword,
+//                            requestSenderDeviceName,
+//                            response
+//                    );
+//                },
+//                (code, message) -> {
+//                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
+//                }
+//        );
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
         if (request.key() != null) {
