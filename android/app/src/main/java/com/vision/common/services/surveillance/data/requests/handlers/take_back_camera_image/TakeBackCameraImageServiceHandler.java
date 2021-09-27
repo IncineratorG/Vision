@@ -13,6 +13,8 @@ import com.vision.common.services.camera.CameraService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
 
@@ -22,6 +24,10 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
     @Override
     public void handle(Context context, ServiceRequest request) {
         Log.d("tag", "TakeBackCameraImageServiceHandler->handle(): " + request.stringify());
+
+        TakeBackCameraImageRequestPayload requestPayload =
+                SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload(request.payload());
+        Log.d("tag", "TakeBackCameraImageServiceHandler->handle()->REQUESTED_IMAGE_QUALITY: " + requestPayload.imageQuality());
 
         SurveillanceService surveillanceService = SurveillanceService.get();
 

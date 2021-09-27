@@ -24,9 +24,11 @@ public class PayloadsConverter {
 
             case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
                 String imageQuality = requestPayloadMap.getString("imageQuality");
-                Log.d("tag", "PayloadsConverter->TAKE_BACK_CAMERA_IMAGE: " + imageQuality);
+                if (imageQuality == null) {
+                    return null;
+                }
 
-                return SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
+                return SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload(imageQuality);
             }
 
             default: {

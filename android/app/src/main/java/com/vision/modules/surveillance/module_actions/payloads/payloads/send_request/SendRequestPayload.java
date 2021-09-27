@@ -77,40 +77,5 @@ public class SendRequestPayload implements JSPayload {
             mRequestPayloadIsValid = false;
             return null;
         }
-
-//        switch (mRequestType) {
-//            case (SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD): {
-//                if (requestPayloadMap == null) {
-//                    mRequestPayloadIsValid = false;
-//                    return null;
-//                }
-//
-//                String valueOne = requestPayloadMap.getString("valueOne");
-//                String valueTwo = requestPayloadMap.getString("valueTwo");
-//
-//                TestRequestWithPayloadRequestPayload requestPayload =
-//                        SurveillanceServiceRequestPayloads.testRequestWithPayloadRequestPayload(valueOne, valueTwo);
-//
-//                return requestPayload.jsonObject();
-//            }
-//
-//            case (SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE): {
-//                IsDeviceAliveRequestPayload requestPayload =
-//                        SurveillanceServiceRequestPayloads.isDeviceAliveRequestPayload();
-//
-//                return requestPayload.jsonObject();
-//            }
-//
-//            case (SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE): {
-//                TakeBackCameraImageRequestPayload requestPayload =
-//                        SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload();
-//
-//                return requestPayload.jsonObject();
-//            }
-//
-//            default: {
-//                return null;
-//            }
-//        }
     }
 }
