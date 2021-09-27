@@ -1,11 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, StyleSheet, Modal, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {ImageViewer} from 'react-native-image-zoom-viewer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const ImageViewerModal = ({visible, image, onClose}) => {
   const [internalVisible, setInternalVisible] = useState(false);
+  const [imageDataSize, setImageDataSize] = useState(0);
   const [imagesData, setImagesData] = useState([]);
   const [viewerInitialIndex, setViewerInitialIndex] = useState(-2);
 
@@ -66,6 +67,10 @@ const ImageViewerModal = ({visible, image, onClose}) => {
           setViewerInitialIndex(0);
           setInternalVisible(true);
 
+          // ===
+          setImageDataSize(image.length);
+          // ===
+
           SystemEventsHandler.onInfo({
             info: 'ImageViewerModal->useEffect(): IMAGES_PRE_SET: 2',
           });
@@ -104,6 +109,16 @@ const ImageViewerModal = ({visible, image, onClose}) => {
                 </View>
               </TouchableOpacity>
               <View style={styles.freeSpace} />
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                }}>
+                <Text>{imageDataSize}</Text>
+              </View>
               <TouchableOpacity onPress={shareImageHandler}>
                 <View style={styles.shareImageContainer}>
                   <Icon name="share" size={26} color={'#ffffff'} />
