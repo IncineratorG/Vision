@@ -70,12 +70,17 @@ public class GetAppPermissionsHandler implements JSActionHandler {
                     try {
                         json.put("to", "/topics/" + topic);
 
-                        JSONObject notificationObj = new JSONObject();
-                        notificationObj.put("title", "new Order");
-                        notificationObj.put("message", "My Message");
-                        notificationObj.put("body", "This is body");
+//                        JSONObject notificationObj = new JSONObject();
+//                        notificationObj.put("title", "new Order");
+//                        notificationObj.put("message", "My Message");
+//                        notificationObj.put("body", "This is body");
+//                        json.put("notification", notificationObj);
 
-                        json.put("notification", notificationObj);
+                        JSONObject data = new JSONObject();
+                        data.put("title", "Data Title");
+                        data.put("message", "Data Message");
+                        data.put("Custom Id", "My Custom Id");
+                        json.put("data", data);
 
                         String URL = "https://fcm.googleapis.com/fcm/send";
 

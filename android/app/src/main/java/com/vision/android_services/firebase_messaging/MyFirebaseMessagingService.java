@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("tag", "MyFirebaseMessagingService->onMessageReceived(): " + remoteMessage.toString());
+        Log.d("tag", "MyFirebaseMessagingService->onMessageReceived(): " + remoteMessage.getData().toString());
 
         final Intent intent = new Intent(this, MainActivity.class);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
