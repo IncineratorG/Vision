@@ -51,8 +51,15 @@ const useDeviceRequestsDialogGroupController = (model) => {
             visible: false,
           }),
         );
+
+        dispatch(
+          AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequest(
+            {receiverDeviceName: selectedDeviceName},
+          ),
+        );
+        setCurrentRequestType(deviceRequestTypes.TAKE_FRONT_CAMERA_IMAGE);
       },
-      [localDispatch],
+      [deviceRequestTypes, setCurrentRequestType, localDispatch, dispatch],
     );
 
   const deviceRequestsDialogGetBackCameraImageRequestPressHandler = useCallback(

@@ -34,6 +34,13 @@ const useRequestStatusDialogGroupController = (model) => {
           break;
         }
 
+        case deviceRequestTypes.TAKE_FRONT_CAMERA_IMAGE: {
+          dispatch(
+            AppActions.surveillanceTakeFrontCameraImageRequest.actions.cancelSendTakeFrontCameraImageRequest(),
+          );
+          break;
+        }
+
         default: {
           SystemEventsHandler.onInfo({
             info:

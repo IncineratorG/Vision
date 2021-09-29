@@ -25,6 +25,7 @@ const useGroupModel = () => {
 
   const deviceRequestTypes = {
     TAKE_BACK_CAMERA_IMAGE: 'TAKE_BACK_CAMERA_IMAGE',
+    TAKE_FRONT_CAMERA_IMAGE: 'TAKE_FRONT_CAMERA_IMAGE',
   };
 
   const {
