@@ -8,9 +8,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.data.service_request.ServiceRequest;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 
@@ -26,9 +26,9 @@ public class FBSRequestSender implements ServiceRequestSender {
                             String groupPassword,
                             String receiverDeviceName,
                             ServiceRequest request,
-                            OnDeliveredCallback onDeliveredCallback,
-                            OnResponseCallback onResponseCallback,
-                            OnErrorCallback onErrorCallback) {
+                            OnRequestDeliveredCallback onDeliveredCallback,
+                            OnRequestResponseCallback onResponseCallback,
+                            OnRequestErrorCallback onErrorCallback) {
         Log.d("tag", "FBSRequestSender->sendRequest(): " + receiverDeviceName + " - " + request.stringify());
 
         List<String> receiverRequestsPath = FBSPathsService.get().requestsPath(groupName, groupPassword, receiverDeviceName);

@@ -11,14 +11,16 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.vision.common.constants.AppConstants;
+import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
+import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
@@ -31,7 +33,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class FBSCommunicationManager implements ServiceCommunicationManager {
     private FBSListenerId mRequestListenerId;
@@ -39,21 +40,23 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private List<String> mRequestsPath;
     private List<String> mResponsesPath;
     private List<String> mUpdateInfoPath;
+    private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
+    private Map<String, Timer> mRequestTimeoutsMap;
     private ServiceRequestsExecutor mRequestsExecutor;
     private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
-    private Map<String, ServiceRequestCallbacks> mRequestCallbacksMap;
-    private Map<String, Timer> mRequestTimeoutsMap;
+    private ServiceNotificationSender mNotificationSender;
 
     private Timer mIsAliveSignalingTimer;
 
-    private ScheduledThreadPoolExecutor mIsAliveSignalingExecutor;
+//    private ScheduledThreadPoolExecutor mIsAliveSignalingExecutor;
 
     public FBSCommunicationManager(ServiceRequestsExecutor requestsExecutor,
                                    ServiceResponsesExecutor responsesExecutor,
                                    ServiceRequestSender requestSender,
                                    ServiceResponseSender responseSender,
+                                   ServiceNotificationSender notificationSender,
                                    List<String> requestsPath,
                                    List<String> responsesPath,
                                    List<String> updateInfoPath) {
@@ -61,6 +64,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mResponsesExecutor = responsesExecutor;
         mRequestSender = requestSender;
         mResponseSender = responseSender;
+        mNotificationSender = notificationSender;
         mRequestsPath = requestsPath;
         mResponsesPath = responsesPath;
         mUpdateInfoPath = updateInfoPath;
@@ -68,7 +72,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mRequestCallbacksMap = new ConcurrentHashMap<>();
         mRequestTimeoutsMap = new ConcurrentHashMap<>();
 
-        mIsAliveSignalingExecutor = new ScheduledThreadPoolExecutor(1);
+//        mIsAliveSignalingExecutor = new ScheduledThreadPoolExecutor(1);
     }
 
     @Override
@@ -225,9 +229,9 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                             String groupPassword,
                             String receiverDeviceName,
                             ServiceRequest request,
-                            OnDeliveredCallback onDeliveredCallback,
-                            OnResponseCallback onResponseCallback,
-                            OnErrorCallback onErrorCallback) {
+                            OnRequestDeliveredCallback onDeliveredCallback,
+                            OnRequestResponseCallback onResponseCallback,
+                            OnRequestErrorCallback onErrorCallback) {
         mRequestCallbacksMap.put(
                 request.id(),
                 new ServiceRequestCallbacks(
@@ -288,6 +292,11 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                              String receiverDeviceName,
                              ServiceResponse response) {
         mResponseSender.sendResponse(groupName, groupPassword, receiverDeviceName, response);
+    }
+
+    @Override
+    public void sendNotificationToAll(ServiceNotification notification) {
+
     }
 
     private void setServiceAliveStatus() {

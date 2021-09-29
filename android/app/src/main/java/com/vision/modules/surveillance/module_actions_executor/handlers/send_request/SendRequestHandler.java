@@ -9,9 +9,9 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.modules.modules_common.data.error.ModuleError;
@@ -84,7 +84,7 @@ public class SendRequestHandler implements JSActionHandler {
 
         Log.d("tag", "SendRequestHandler->handle(): " + payload.receiverDeviceName() + " - " + payload.requestType() + " - " + payload.requestPayload());
 
-        OnDeliveredCallback onDeliveredCallback = () -> {
+        OnRequestDeliveredCallback onDeliveredCallback = () -> {
             Log.d("tag", "SendRequestHandler->onDeliveredCallback()");
 
             context
@@ -94,7 +94,7 @@ public class SendRequestHandler implements JSActionHandler {
                             SurveillanceEventsJSPayloads.requestDelivered(request.id())
                     );
         };
-        OnResponseCallback onResponseCallback = response -> {
+        OnRequestResponseCallback onResponseCallback = response -> {
             Log.d("tag", "SendRequestHandler->onResponseCallback()");
 
             if (response != null) {
@@ -103,7 +103,7 @@ public class SendRequestHandler implements JSActionHandler {
                 Log.d("tag", "SendRequestHandler->onResponseCallback(): RESPONSE_IS_NULL");
             }
         };
-        OnErrorCallback onErrorCallback = error -> {
+        OnRequestErrorCallback onErrorCallback = error -> {
             Log.d("tag", "SendRequestHandler->onErrorCallback()");
 
             context

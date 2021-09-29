@@ -1,32 +1,32 @@
 package com.vision.common.data.service_request_callbacks;
 
 
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 
 public class ServiceRequestCallbacks {
-    private OnDeliveredCallback mOnDeliveredCallback;
-    private OnResponseCallback mOnResponseCallback;
-    private OnErrorCallback mOnErrorCallback;
+    private OnRequestDeliveredCallback mOnDeliveredCallback;
+    private OnRequestResponseCallback mOnResponseCallback;
+    private OnRequestErrorCallback mOnErrorCallback;
 
-    public ServiceRequestCallbacks(OnDeliveredCallback onDeliveredCallback,
-                                   OnResponseCallback onResponseCallback,
-                                   OnErrorCallback onErrorCallback) {
+    public ServiceRequestCallbacks(OnRequestDeliveredCallback onDeliveredCallback,
+                                   OnRequestResponseCallback onResponseCallback,
+                                   OnRequestErrorCallback onErrorCallback) {
         mOnDeliveredCallback = onDeliveredCallback;
         mOnResponseCallback = onResponseCallback;
         mOnErrorCallback = onErrorCallback;
     }
 
-    public OnDeliveredCallback deliveredCallback() {
+    public OnRequestDeliveredCallback deliveredCallback() {
         return mOnDeliveredCallback;
     }
 
-    public OnResponseCallback responseCallback() {
+    public OnRequestResponseCallback responseCallback() {
         return mOnResponseCallback;
     }
 
-    public OnErrorCallback errorCallback() {
+    public OnRequestErrorCallback errorCallback() {
         return mOnErrorCallback;
     }
 }

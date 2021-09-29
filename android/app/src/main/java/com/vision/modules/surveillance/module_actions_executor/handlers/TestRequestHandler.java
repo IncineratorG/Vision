@@ -12,9 +12,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -37,13 +37,13 @@ public class TestRequestHandler implements JSActionHandler {
 
         // ===
         // =====
-        OnDeliveredCallback onDeliveredCallback = () -> {
+        OnRequestDeliveredCallback onDeliveredCallback = () -> {
             Log.d("tag", "TestRequestHandler->onDeliveredCallback()");
         };
-        OnResponseCallback onResponseCallback = response -> {
+        OnRequestResponseCallback onResponseCallback = response -> {
             Log.d("tag", "TestRequestHandler->onResponseCallback()");
         };
-        OnErrorCallback onErrorCallback = error -> {
+        OnRequestErrorCallback onErrorCallback = error -> {
             Log.d("tag", "TestRequestHandler->onErrorCallback()");
         };
 

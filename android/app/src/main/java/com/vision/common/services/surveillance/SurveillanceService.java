@@ -8,7 +8,9 @@ import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.constants.AppConstants;
+import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
+import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.firebase.FBSService;
@@ -17,10 +19,11 @@ import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork
 import com.vision.common.services.surveillance.data.communication_manager.firebase.FBSCommunicationManager;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
 import com.vision.common.data.service_request.ServiceRequest;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnErrorCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
+import com.vision.common.services.surveillance.data.notifications.sender.firebase.FBSNotificationSender;
 import com.vision.common.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
 import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
 import com.vision.common.data.service_response.ServiceResponse;
@@ -31,7 +34,11 @@ import com.vision.common.services.surveillance.data.responses.executor.firebase.
 
 import java.util.List;
 
-public class SurveillanceService implements ServiceResponseSender, ServiceRequestSender, ServiceRequestInterrupter {
+public class SurveillanceService implements
+        ServiceResponseSender,
+        ServiceRequestSender,
+        ServiceRequestInterrupter,
+        ServiceNotificationSender {
     private final String SERVICE_WAKE_LOCK_TAG = "Vision:ServiceWakeLockTag";
 
     private static SurveillanceService sInstance;
@@ -47,6 +54,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
 
     private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceResponseSender mResponseSender;
+
+    private ServiceNotificationSender mNotificationSender;
 
     private ServiceCommunicationManager mCommunicationManager;
 
@@ -92,11 +101,14 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         mResponsesExecutor = new FBSResponsesExecutor();
         mResponseSender = new FBSResponseSender();
 
+        mNotificationSender = new FBSNotificationSender(context);
+
         mCommunicationManager = new FBSCommunicationManager(
                 mRequestsExecutor,
                 mResponsesExecutor,
                 mRequestsSender,
                 mResponseSender,
+                mNotificationSender,
                 currentRequestsPath,
                 currentResponsesPath,
                 currentUpdateFieldPath
@@ -104,10 +116,6 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
 
         mCommunicationManager.startIsAliveSignaling(context);
         startListenToResponses(context);
-
-        // ===
-//        CameraService.get().init(context);
-        // ===
     }
 
     public boolean isInitialized() {
@@ -247,9 +255,9 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
                             String groupPassword,
                             String receiverDeviceName,
                             ServiceRequest request,
-                            OnDeliveredCallback onDeliveredCallback,
-                            OnResponseCallback onResponseCallback,
-                            OnErrorCallback onErrorCallback) {
+                            OnRequestDeliveredCallback onDeliveredCallback,
+                            OnRequestResponseCallback onResponseCallback,
+                            OnRequestErrorCallback onErrorCallback) {
         Log.d("tag", "SurveillanceService->sendRequest()");
 
         mCommunicationManager.sendRequest(
@@ -265,6 +273,8 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
 
     @Override
     public boolean cancelRequest(String requestId) {
+        Log.d("tag", "SurveillanceService->cancelRequest()");
+
         return mCommunicationManager.cancelRequest(requestId);
     }
 
@@ -276,6 +286,11 @@ public class SurveillanceService implements ServiceResponseSender, ServiceReques
         Log.d("tag", "SurveillanceService->sendResponse()");
 
         mCommunicationManager.sendResponse(groupName, groupPassword, receiverDeviceName, response);
+    }
+
+    @Override
+    public void sendNotificationToAll(ServiceNotification notification) {
+        Log.d("tag", "SurveillanceService->sendNotificationToAll");
     }
 
     public ForegroundServiceWork foregroundServiceWork() {

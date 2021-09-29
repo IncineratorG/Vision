@@ -3,6 +3,7 @@ package com.vision.common.interfaces.service_communication_manager;
 
 import android.content.Context;
 
+import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
@@ -10,7 +11,8 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 public interface ServiceCommunicationManager extends
         ServiceRequestSender,
         ServiceResponseSender,
-        ServiceRequestInterrupter {
+        ServiceRequestInterrupter,
+        ServiceNotificationSender {
     void startIsAliveSignaling(Context context);
     void stopIsAliveSignaling(Context context);
     void startRequestsListener(Context context);

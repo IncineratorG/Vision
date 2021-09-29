@@ -6,8 +6,8 @@ import android.util.Log;
 
 import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnDeliveredCallback;
-import com.vision.common.interfaces.service_request_sender.callbacks.OnResponseCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
@@ -112,7 +112,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
         switch (responseType) {
             case (ServiceResponse.TYPE_RECEIVED): {
                 if (requestCallbacks != null) {
-                    OnDeliveredCallback deliveredCallback = requestCallbacks.deliveredCallback();
+                    OnRequestDeliveredCallback deliveredCallback = requestCallbacks.deliveredCallback();
                     if (deliveredCallback != null) {
                         deliveredCallback.handle();
                     } else {
@@ -126,7 +126,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
 
             case (ServiceResponse.TYPE_RESULT): {
                 if (requestCallbacks != null) {
-                    OnResponseCallback responseCallback = requestCallbacks.responseCallback();
+                    OnRequestResponseCallback responseCallback = requestCallbacks.responseCallback();
                     if (responseCallback != null) {
                         responseCallback.handle(response);
                     } else {

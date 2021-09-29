@@ -150,24 +150,24 @@ public class GetAppPermissionsHandler implements JSActionHandler {
         result.resolve(true);
     }
 
-    private void sendNotification(Context context, JSONObject notification) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
-                (Response.Listener) response -> Log.i("tag", "onResponse: " + response.toString()),
-                (Response.ErrorListener) error -> {
-                    Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show();
-                    Log.i("tag", "onErrorResponse: Didn't work: " + error.toString());
-                    error.printStackTrace();
-                }){
-            @Override
-            public Map getHeaders() {
-                Map params = new HashMap<>();
-                params.put("Authorization", serverKey);
-                params.put("Content-Type", contentType);
-                return params;
-            }
-        };
-        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-    }
+//    private void sendNotification(Context context, JSONObject notification) {
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+//                (Response.Listener) response -> Log.i("tag", "onResponse: " + response.toString()),
+//                (Response.ErrorListener) error -> {
+//                    Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show();
+//                    Log.i("tag", "onErrorResponse: Didn't work: " + error.toString());
+//                    error.printStackTrace();
+//                }){
+//            @Override
+//            public Map getHeaders() {
+//                Map params = new HashMap<>();
+//                params.put("Authorization", serverKey);
+//                params.put("Content-Type", contentType);
+//                return params;
+//            }
+//        };
+//        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+//    }
 }
 
 //package com.vision.modules.surveillance.module_actions_executor.handlers;
