@@ -44,6 +44,8 @@ const useDeviceRequestsDialogGroupController = (model) => {
             JSON.stringify(selectedDevice),
         });
 
+        const {deviceName: selectedDeviceName} = selectedDevice;
+
         localDispatch(
           GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
             visible: false,

@@ -31,6 +31,15 @@ public class PayloadsConverter {
                 return SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload(imageQuality);
             }
 
+            case (SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE): {
+                String imageQuality = requestPayloadMap.getString("imageQuality");
+                if (imageQuality == null) {
+                    return null;
+                }
+
+                return SurveillanceServiceRequestPayloads.takeFrontCameraImageRequestPayload(imageQuality);
+            }
+
             default: {
                 return null;
             }

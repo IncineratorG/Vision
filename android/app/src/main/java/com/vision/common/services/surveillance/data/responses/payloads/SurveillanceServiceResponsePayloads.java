@@ -3,6 +3,7 @@ package com.vision.common.services.surveillance.data.responses.payloads;
 
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeFrontCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
 
 import org.json.JSONObject;
@@ -30,5 +31,13 @@ public class SurveillanceServiceResponsePayloads {
 
     public static TakeBackCameraImageResponsePayload takeBackCameraImageResponsePayload(JSONObject jsonObject) {
         return new TakeBackCameraImageResponsePayload(jsonObject);
+    }
+
+    public static TakeFrontCameraImageResponsePayload takeFrontCameraImageResponsePayload(String base64Image) {
+        return new TakeFrontCameraImageResponsePayload(base64Image);
+    }
+
+    public static TakeFrontCameraImageResponsePayload takeFrontCameraImageResponsePayload(JSONObject jsonObject) {
+        return new TakeFrontCameraImageResponsePayload(jsonObject);
     }
 }

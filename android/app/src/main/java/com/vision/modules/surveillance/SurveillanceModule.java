@@ -59,6 +59,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         requestTypes.putString(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD);
         requestTypes.putString(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE);
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
+        requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE);
 
         WritableMap eventTypes = new WritableNativeMap();
         eventTypes.putString(SurveillanceEventTypes.REQUEST_DELIVERED, SurveillanceEventTypes.REQUEST_DELIVERED);

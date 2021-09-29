@@ -14,6 +14,8 @@ const reducers = combineReducers({
     AppReducers.surveillanceIsDeviceAliveRequest,
   surveillanceTakeBackCameraImageRequest:
     AppReducers.surveillanceTakeBackCameraImageRequest,
+  surveillanceTakeFrontCameraImageRequest:
+    AppReducers.surveillanceTakeFrontCameraImageRequest,
 });
 
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));

@@ -6,6 +6,7 @@ const NativeSurveillanceRequests = () => {
       TEST_REQUEST_WITH_PAYLOAD,
       IS_DEVICE_ALIVE,
       TAKE_BACK_CAMERA_IMAGE,
+      TAKE_FRONT_CAMERA_IMAGE,
     },
   } = NativeSurveillanceConstants;
 
@@ -37,10 +38,21 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
+  const takeFrontCameraImage = ({receiverDeviceName, imageQuality}) => {
+    return {
+      requestType: TAKE_FRONT_CAMERA_IMAGE,
+      receiverDeviceName,
+      requestPayload: {
+        imageQuality,
+      },
+    };
+  };
+
   return {
     testRequestWithPayload,
     isDeviceAlive,
     takeBackCameraImage,
+    takeFrontCameraImage,
   };
 };
 

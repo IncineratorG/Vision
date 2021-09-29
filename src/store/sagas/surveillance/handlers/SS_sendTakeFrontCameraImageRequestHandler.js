@@ -3,37 +3,38 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 import AppActions from '../../../actions/AppActions';
 import Services from '../../../../services/Services';
 
-const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
+const SS_sendTakeFrontCameraImageRequestHandler = ({channel}) => {
   const actionsChannel = channel;
 
   const handler = function* (action) {
     const {receiverDeviceName} = action.payload;
 
-    const backCameraImageQuality = yield select(
-      (state) => state.appSettings.surveillance.backCameraImage.quality,
+    const frontCameraImageQuality = yield select(
+      (state) => state.appSettings.surveillance.frontCameraImage.quality,
     );
 
     SystemEventsHandler.onInfo({
-      info: 'SS_sendTakeBackCameraImageRequestHandler: ' + receiverDeviceName,
+      info: 'SS_sendTakeFrontCameraImageRequestHandler: ' + receiverDeviceName,
     });
 
     yield put(
-      AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestBegin(),
+      AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestBegin(),
     );
 
     try {
       const surveillanceService = Services.services().surveillanceService;
 
-      const request = surveillanceService.requests.takeBackCameraImage({
+      const request = surveillanceService.requests.takeFrontCameraImage({
         receiverDeviceName,
-        imageQuality: backCameraImageQuality,
+        imageQuality: frontCameraImageQuality,
       });
 
       const onComplete = (data) => {
-        const {image} = surveillanceService.responses.takeBackCameraImage(data);
+        const {image} =
+          surveillanceService.responses.takeFrontCameraImage(data);
 
         actionsChannel.put(
-          AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestCompleted(
+          AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestCompleted(
             {image},
           ),
         );
@@ -41,13 +42,13 @@ const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
 
       const onCancel = () => {
         actionsChannel.put(
-          AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestCancelled(),
+          AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestCancelled(),
         );
       };
 
       const onError = ({code, message}) => {
         actionsChannel.put(
-          AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestError(
+          AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestError(
             {code, message},
           ),
         );
@@ -61,20 +62,20 @@ const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
       });
 
       yield put(
-        AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestSended(
+        AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestSended(
           {requestId},
         ),
       );
     } catch (e) {
       SystemEventsHandler.onError({
         err:
-          'SS_sendTakeBackCameraImageRequestHandler()->ERROR: ' + e.toString(),
+          'SS_sendTakeFrontCameraImageRequestHandler()->ERROR: ' + e.toString(),
       });
 
       const {code, message} = e;
 
       yield put(
-        AppActions.surveillanceTakeBackCameraImageRequest.actions.sendTakeBackCameraImageRequestError(
+        AppActions.surveillanceTakeFrontCameraImageRequest.actions.sendTakeFrontCameraImageRequestError(
           {
             code,
             message,
@@ -89,4 +90,4 @@ const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
   };
 };
 
-export default SS_sendTakeBackCameraImageRequestHandler;
+export default SS_sendTakeFrontCameraImageRequestHandler;

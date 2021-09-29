@@ -3,6 +3,7 @@ import SurveillanceCommonActions from './surveillance/SurveillanceCommonActions'
 import SurveillanceIsDeviceAliveRequestActions from './surveillance/SurveillanceIsDeviceAliveRequestActions';
 import SurveillanceTakeBackCameraImageRequestActions from './surveillance/SurveillanceTakeBackCameraImageRequestActions';
 import AppSettingsActions from './app-settings/AppSettingsActions';
+import SurveillanceTakeFrontCameraImageRequestActions from './surveillance/SurveillanceTakeFrontCameraImageRequestActions';
 
 const AppActions = () => {
   const auth = AuthActions();
@@ -12,6 +13,8 @@ const AppActions = () => {
     SurveillanceIsDeviceAliveRequestActions();
   const surveillanceTakeBackCameraImageRequest =
     SurveillanceTakeBackCameraImageRequestActions();
+  const surveillanceTakeFrontCameraImageRequest =
+    SurveillanceTakeFrontCameraImageRequestActions();
 
   return {
     auth,
@@ -19,6 +22,7 @@ const AppActions = () => {
     surveillanceCommon,
     surveillanceIsDeviceAliveRequest,
     surveillanceTakeBackCameraImageRequest,
+    surveillanceTakeFrontCameraImageRequest,
   };
 };
 

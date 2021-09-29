@@ -54,4 +54,16 @@ public class SurveillanceEventsJSPayloads {
 
         return jsPayload;
     }
+
+    public static WritableMap takeFrontCameraImageResponseEventPayload(String requestId, String image) {
+        WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("requestId", requestId);
+
+        WritableMap payload = new WritableNativeMap();
+        payload.putString("image", image);
+
+        jsPayload.putMap("payload", payload);
+
+        return jsPayload;
+    }
 }

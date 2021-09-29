@@ -4,6 +4,7 @@ import surveillanceCommonReducer from './surveillance/surveillanceCommonReducer'
 import surveillanceIsDeviceAliveRequestReducer from './surveillance/surveillanceIsDeviceAliveRequestReducer';
 import surveillanceTakeBackCameraImageRequestReducer from './surveillance/surveillanceTakeBackCameraImageRequestReducer';
 import appSettingsReducer from './app-settings/appSettingsReducer';
+import surveillanceTakeFrontCameraImageRequestReducer from './surveillance/surveillanceTakeFrontCameraImageRequestReducer';
 
 const AppReducers = () => {
   const temp = tempReducer;
@@ -14,6 +15,8 @@ const AppReducers = () => {
     surveillanceIsDeviceAliveRequestReducer;
   const surveillanceTakeBackCameraImageRequest =
     surveillanceTakeBackCameraImageRequestReducer;
+  const surveillanceTakeFrontCameraImageRequest =
+    surveillanceTakeFrontCameraImageRequestReducer;
 
   return {
     temp,
@@ -22,6 +25,7 @@ const AppReducers = () => {
     surveillanceCommon,
     surveillanceIsDeviceAliveRequest,
     surveillanceTakeBackCameraImageRequest,
+    surveillanceTakeFrontCameraImageRequest,
   };
 };
 

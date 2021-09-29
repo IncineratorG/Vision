@@ -128,15 +128,15 @@ const surveillanceIsDeviceAliveRequestReducer = (
         isDeviceAliveRequest: {
           ...state.isDeviceAliveRequest,
           // inProgress: true,
-          completed: false,
+          // completed: false,
           cancelInProgress: true,
           cancelled: false,
-          error: {
-            ...state.isDeviceAliveRequest.error,
-            hasError: false,
-            code: '',
-            message: '',
-          },
+          // error: {
+          //   ...state.isDeviceAliveRequest.error,
+          //   hasError: false,
+          //   code: '',
+          //   message: '',
+          // },
         },
       };
     }
@@ -151,12 +151,12 @@ const surveillanceIsDeviceAliveRequestReducer = (
           completed: false,
           cancelInProgress: false,
           cancelled: true,
-          error: {
-            ...state.isDeviceAliveRequest.error,
-            hasError: false,
-            code: '',
-            message: '',
-          },
+          // error: {
+          //   ...state.isDeviceAliveRequest.error,
+          //   hasError: false,
+          //   code: '',
+          //   message: '',
+          // },
         },
       };
     }

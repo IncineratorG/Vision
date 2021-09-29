@@ -1,7 +1,7 @@
 import AppActions from '../../actions/AppActions';
 
 const initialState = {
-  takeBackCameraImageRequest: {
+  takeFrontCameraImageRequest: {
     requestId: '',
     inProgress: false,
     completed: false,
@@ -21,17 +21,17 @@ const initialState = {
   },
 };
 
-const surveillanceTakeBackCameraImageRequestReducer = (
+const surveillanceTakeFrontCameraImageRequestReducer = (
   state = initialState,
   action,
 ) => {
   switch (action.type) {
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_BEGIN: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_BEGIN: {
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           requestId: null,
           inProgress: true,
           completed: false,
@@ -44,7 +44,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           //   },
           // },
           error: {
-            ...state.takeBackCameraImageRequest.error,
+            ...state.takeFrontCameraImageRequest.error,
             hasError: false,
             code: '',
             message: '',
@@ -53,14 +53,14 @@ const surveillanceTakeBackCameraImageRequestReducer = (
       };
     }
 
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_SENDED: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_SENDED: {
       const {requestId} = action.payload;
 
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           requestId,
           inProgress: true,
           completed: false,
@@ -73,7 +73,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           //   },
           // },
           error: {
-            ...state.takeBackCameraImageRequest.error,
+            ...state.takeFrontCameraImageRequest.error,
             hasError: false,
             code: '',
             message: '',
@@ -82,14 +82,14 @@ const surveillanceTakeBackCameraImageRequestReducer = (
       };
     }
 
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_COMPLETED: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_COMPLETED: {
       const {image} = action.payload;
 
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           // requestId: null,
           inProgress: false,
           completed: true,
@@ -97,14 +97,14 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           cancelInProgress: false,
           cancelled: false,
           response: {
-            ...state.takeBackCameraImageRequest.response,
+            ...state.takeFrontCameraImageRequest.response,
             payload: {
-              ...state.takeBackCameraImageRequest.response.payload,
+              ...state.takeFrontCameraImageRequest.response.payload,
               image,
             },
           },
           error: {
-            ...state.takeBackCameraImageRequest.error,
+            ...state.takeFrontCameraImageRequest.error,
             hasError: false,
             code: '',
             message: '',
@@ -113,14 +113,14 @@ const surveillanceTakeBackCameraImageRequestReducer = (
       };
     }
 
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_ERROR: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_ERROR: {
       const {code, message} = action.payload;
 
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           // requestId: null,
           inProgress: false,
           completed: false,
@@ -133,7 +133,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           //   },
           // },
           error: {
-            ...state.takeBackCameraImageRequest.error,
+            ...state.takeFrontCameraImageRequest.error,
             hasError: true,
             code,
             message,
@@ -142,12 +142,12 @@ const surveillanceTakeBackCameraImageRequestReducer = (
       };
     }
 
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .CANCEL_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .CANCEL_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST: {
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           // requestId: null,
           // inProgress: true,
           // completed: false,
@@ -160,7 +160,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           //   },
           // },
           // error: {
-          //   ...state.takeBackCameraImageRequest.error,
+          //   ...state.takeFrontCameraImageRequest.error,
           //   hasError: false,
           //   code: '',
           //   message: '',
@@ -169,12 +169,12 @@ const surveillanceTakeBackCameraImageRequestReducer = (
       };
     }
 
-    case AppActions.surveillanceTakeBackCameraImageRequest.types
-      .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_CANCELLED: {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types
+      .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_CANCELLED: {
       return {
         ...state,
-        takeBackCameraImageRequest: {
-          ...state.takeBackCameraImageRequest,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
           // requestId: null,
           inProgress: false,
           completed: false,
@@ -187,7 +187,7 @@ const surveillanceTakeBackCameraImageRequestReducer = (
           //   },
           // },
           // error: {
-          //   ...state.takeBackCameraImageRequest.error,
+          //   ...state.takeFrontCameraImageRequest.error,
           //   hasError: false,
           //   code: '',
           //   message: '',
@@ -202,4 +202,4 @@ const surveillanceTakeBackCameraImageRequestReducer = (
   }
 };
 
-export default surveillanceTakeBackCameraImageRequestReducer;
+export default surveillanceTakeFrontCameraImageRequestReducer;

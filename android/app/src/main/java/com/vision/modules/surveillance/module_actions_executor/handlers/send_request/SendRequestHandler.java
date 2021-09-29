@@ -21,6 +21,7 @@ import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSAct
 import com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.SendRequestPayload;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.IsDeviceAliveResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TakeBackCameraImageResponseHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TakeFrontCameraImageResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TestRequestWithPayloadResponseHandler;
 import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
 import com.vision.modules.surveillance.module_events.payloads.SurveillanceEventsJSPayloads;
@@ -39,6 +40,7 @@ public class SendRequestHandler implements JSActionHandler {
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD, new TestRequestWithPayloadResponseHandler());
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveResponseHandler());
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageResponseHandler());
+        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, new TakeFrontCameraImageResponseHandler());
     }
 
     @Override

@@ -14,8 +14,8 @@ const GroupView = ({model, controller}) => {
       loadingDevicesInGroup,
       isDeviceAliveRequestInProgress,
       selectedDeviceAlive,
-      takeBackCameraImageRequestInProgress,
-      selectedDeviceBackCameraImage,
+      // takeBackCameraImageRequestInProgress,
+      // selectedDeviceBackCameraImage,
       localState: {
         deviceRequestsDialog: {
           visible: deviceRequestsDialogVisible,

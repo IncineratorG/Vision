@@ -12,6 +12,8 @@ import SS_sendIsDeviceAliveRequestHandler from './handlers/SS_sendIsDeviceAliveR
 import SS_sendTakeBackCameraImageRequestHandler from './handlers/SS_sendTakeBackCameraImageRequestHandler';
 import SS_cancelIsDeviceAliveRequestHandler from './handlers/SS_cancelIsDeviceAliveRequestHandler';
 import SS_cancelTakeBackCameraImageRequestHandler from './handlers/SS_cancelTakeBackCameraImageRequestHandler';
+import SS_sendTakeFrontCameraImageRequestHandler from './handlers/SS_sendTakeFrontCameraImageRequestHandler';
+import SS_cancelTakeFrontCameraImageRequestHandler from './handlers/SS_cancelTakeFrontCameraImageRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -40,6 +42,10 @@ const SurveillanceSaga = () => {
     SS_sendTakeBackCameraImageRequestHandler({channel: sagaChannel});
   const {handler: cancelTakeBackCameraImageRequestHandler} =
     SS_cancelTakeBackCameraImageRequestHandler({channel: sagaChannel});
+  const {handler: sendTakeFrontCameraImageRequestHandler} =
+    SS_sendTakeFrontCameraImageRequestHandler({channel: sagaChannel});
+  const {handler: cancelTakeFrontCameraImageRequestHandler} =
+    SS_cancelTakeFrontCameraImageRequestHandler({channel: sagaChannel});
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
@@ -86,6 +92,16 @@ const SurveillanceSaga = () => {
       AppActions.surveillanceTakeBackCameraImageRequest.types
         .CANCEL_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST,
       cancelTakeBackCameraImageRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceTakeFrontCameraImageRequest.types
+        .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST,
+      sendTakeFrontCameraImageRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceTakeFrontCameraImageRequest.types
+        .CANCEL_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST,
+      cancelTakeFrontCameraImageRequestHandler,
     );
   };
 
