@@ -84,21 +84,19 @@ public class ServiceRequest implements Stringifiable {
         return id == null || type == null || type.equalsIgnoreCase(ServiceRequest.EMPTY);
     }
 
-    public String key() {
+    public String id() {
         if (mRequest == null) {
-            Log.d("tag", "ServiceRequest->key(): REQUEST_IS_NULL");
+            Log.d("tag", "ServiceRequest->id(): REQUEST_IS_NULL");
             return null;
         }
 
-        String key = null;
+        String id = null;
         try {
-            if (mRequest.has(KEY_FIELD)) {
-                key = mRequest.getString(KEY_FIELD);
-            }
+            id = mRequest.getString(ID_FIELD);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return key;
+        return id;
     }
 
     public String timestamp() {
@@ -114,21 +112,6 @@ public class ServiceRequest implements Stringifiable {
             e.printStackTrace();
         }
         return timestamp;
-    }
-
-    public String id() {
-        if (mRequest == null) {
-            Log.d("tag", "ServiceRequest->id(): REQUEST_IS_NULL");
-            return null;
-        }
-
-        String id = null;
-        try {
-            id = mRequest.getString(ID_FIELD);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return id;
     }
 
     public String type() {
@@ -176,6 +159,23 @@ public class ServiceRequest implements Stringifiable {
             e.printStackTrace();
         }
         return payload;
+    }
+
+    public String key() {
+        if (mRequest == null) {
+            Log.d("tag", "ServiceRequest->key(): REQUEST_IS_NULL");
+            return null;
+        }
+
+        String key = null;
+        try {
+            if (mRequest.has(KEY_FIELD)) {
+                key = mRequest.getString(KEY_FIELD);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return key;
     }
 
     public void setKey(String key) {
