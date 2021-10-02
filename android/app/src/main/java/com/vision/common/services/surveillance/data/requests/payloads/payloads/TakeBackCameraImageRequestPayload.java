@@ -1,6 +1,6 @@
 package com.vision.common.services.surveillance.data.requests.payloads.payloads;
 
-import com.vision.common.data.service_request_payload.ServiceRequestPayload;
+import com.vision.common.interfaces.service_request_payload.ServiceRequestPayload;
 
 import org.json.JSONException;
 import org.json.JSONObject;

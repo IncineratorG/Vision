@@ -11,6 +11,9 @@ const NativeSurveillanceConstants = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
       CANCEL_REQUEST,
+      // ===
+      SEND_TEST_NOTIFICATION,
+      // ===
     },
     requestTypes: {
       TEST_REQUEST_WITH_PAYLOAD,
@@ -32,6 +35,9 @@ const NativeSurveillanceConstants = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
       CANCEL_REQUEST,
+      // ===
+      SEND_TEST_NOTIFICATION,
+      // ===
     },
     requestTypes: {
       TEST_REQUEST_WITH_PAYLOAD,

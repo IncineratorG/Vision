@@ -1,10 +1,8 @@
 package com.vision.modules.surveillance.module_actions.payloads.payloads.send_request;
 
 
-import android.util.Log;
-
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.data.service_request_payload.ServiceRequestPayload;
+import com.vision.common.interfaces.service_request_payload.ServiceRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 

@@ -58,6 +58,12 @@ const SurveillanceService = () => {
     return await nativeService.cancelRequest({requestId});
   };
 
+  // ===
+  const sendTestNotification = async () => {
+    return await nativeService.sendTestNotification();
+  };
+  // ===
+
   return {
     requests: nativeService.requests,
     responses: nativeService.responses,
@@ -69,6 +75,9 @@ const SurveillanceService = () => {
     getDevicesInGroup,
     sendRequest,
     cancelRequest,
+    // ===
+    sendTestNotification,
+    // ===
   };
 };
 

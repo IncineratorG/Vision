@@ -1,7 +1,7 @@
 package com.vision.common.services.surveillance.data.responses.payloads.payloads;
 
 
-import com.vision.common.data.service_response_payload.ServiceResponsePayload;
+import com.vision.common.interfaces.service_response_payload.ServiceResponsePayload;
 
 import org.json.JSONException;
 import org.json.JSONObject;

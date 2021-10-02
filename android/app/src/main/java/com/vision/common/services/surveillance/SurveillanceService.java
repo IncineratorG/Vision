@@ -291,6 +291,8 @@ public class SurveillanceService implements
     @Override
     public void sendNotificationToAll(ServiceNotification notification) {
         Log.d("tag", "SurveillanceService->sendNotificationToAll");
+
+        mNotificationSender.sendNotificationToAll(notification);
     }
 
     public ForegroundServiceWork foregroundServiceWork() {

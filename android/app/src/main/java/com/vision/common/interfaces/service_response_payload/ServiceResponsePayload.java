@@ -1,4 +1,4 @@
-package com.vision.common.data.service_response_payload;
+package com.vision.common.interfaces.service_response_payload;
 
 
 import org.json.JSONObject;

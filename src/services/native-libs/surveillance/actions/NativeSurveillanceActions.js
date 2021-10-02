@@ -11,6 +11,7 @@ const NativeSurveillanceActions = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
       CANCEL_REQUEST,
+      SEND_TEST_NOTIFICATION,
     },
   } = NativeSurveillanceConstants;
 
@@ -65,6 +66,14 @@ const NativeSurveillanceActions = () => {
     };
   };
 
+  // ===
+  const sendTestNotification = () => {
+    return {
+      type: SEND_TEST_NOTIFICATION,
+    };
+  };
+  // ===
+
   return {
     getAppPermissionsAction,
     isRunningAction,
@@ -74,6 +83,9 @@ const NativeSurveillanceActions = () => {
     getDevicesInGroupAction,
     sendRequest,
     cancelRequestAction,
+    // ===
+    sendTestNotification,
+    // ===
   };
 };
 

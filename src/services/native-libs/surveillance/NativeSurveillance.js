@@ -162,6 +162,13 @@ const NativeSurveillance = () => {
     return successful;
   };
 
+  // ===
+  const sendTestNotification = async () => {
+    const action = NativeSurveillanceActions.sendTestNotification();
+    return await nativeService.execute(action);
+  };
+  // ===
+
   return {
     requests,
     responses,
@@ -173,6 +180,9 @@ const NativeSurveillance = () => {
     getDevicesInGroup,
     sendRequest,
     cancelRequest,
+    // ===
+    sendTestNotification,
+    // ===
   };
 };
 

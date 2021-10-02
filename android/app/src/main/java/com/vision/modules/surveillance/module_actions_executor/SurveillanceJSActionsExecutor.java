@@ -12,6 +12,7 @@ import com.vision.modules.surveillance.module_actions_executor.handlers.CancelRe
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetAppPermissionsHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetDevicesInGroupHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.SentTestNotificationHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.SendRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StartServiceHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StopServiceHandler;
@@ -29,6 +30,7 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers = new HashMap<>();
         // ===
         mHandlers.put(SurveillanceJSActionTypes.TEST_REQUEST, new TestRequestHandler());
+        mHandlers.put(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, new SentTestNotificationHandler());
         // ===
         mHandlers.put(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, new GetAppPermissionsHandler());
         mHandlers.put(SurveillanceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());
