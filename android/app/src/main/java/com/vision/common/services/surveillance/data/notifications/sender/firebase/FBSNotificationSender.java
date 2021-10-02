@@ -38,7 +38,15 @@ public class FBSNotificationSender implements ServiceNotificationSender {
     public void sendNotificationToAll(ServiceNotification notification) {
         Log.d("tag","FBSNotificationSender->sendToAll()");
 
+        SurveillanceService service = SurveillanceService.get();
+
+        String currentGroupName = service.currentGroupName();
+        String currentDeviceName = service.currentDeviceName();
+
         String topic = getToAllNotificationTopic();
+        String title = currentGroupName + "." + currentDeviceName;
+
+        send(notification, topic, title);
     }
 
     private String getToAllNotificationTopic() {
