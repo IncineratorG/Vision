@@ -5,9 +5,14 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
+import com.vision.common.services.surveillance.SurveillanceService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,5 +37,54 @@ public class FBSNotificationSender implements ServiceNotificationSender {
     @Override
     public void sendNotificationToAll(ServiceNotification notification) {
         Log.d("tag","FBSNotificationSender->sendToAll()");
+
+        String topic = getToAllNotificationTopic();
+    }
+
+    private String getToAllNotificationTopic() {
+        final String delimiter = "[]";
+
+        SurveillanceService service = SurveillanceService.get();
+
+        String currentGroupName = service.currentGroupName();
+        String currentGroupPassword = service.currentGroupPassword();
+        String currentDeviceName = service.currentDeviceName();
+
+        return currentGroupName + delimiter +
+                        currentGroupPassword + delimiter +
+                        currentDeviceName;
+    }
+
+    private void send(ServiceNotification notification, String topic, String title) {
+        JSONObject notificationJson = new JSONObject();
+        try {
+            notificationJson.put("to", "/topics/" + topic);
+
+            JSONObject data = new JSONObject();
+            data.put("title", title);
+            data.put("notification", notification.stringify());
+            notificationJson.put("data", data);
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    METHOD,
+                    URL,
+                    notificationJson,
+                    response -> {
+                        Log.d("tag", "FBSNotificationSender->send()->onResponse");
+                    },
+                    error -> {
+                        Log.d("tag", "FBSNotificationSender->send()->onError: " + error.networkResponse);
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    return mRequestHeaders;
+                }
+            };
+
+            mRequestQueue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
