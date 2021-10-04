@@ -1,4 +1,4 @@
-package com.vision.common.services.firebase.data;
+package com.vision.common.services.firebase_communication.data;
 
 
 import com.google.firebase.database.ChildEventListener;

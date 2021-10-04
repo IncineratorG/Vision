@@ -24,8 +24,8 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestRe
 import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
-import com.vision.common.services.firebase.FBSService;
-import com.vision.common.services.firebase.data.FBSListenerId;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
+import com.vision.common.services.firebase_communication.data.FBSListenerId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +96,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
 
     @Override
     public void startRequestsListener(Context context) {
-        FBSService.get().setStringValue(mRequestsPath, null);
+        FBSCommunicationService.get().setStringValue(mRequestsPath, null);
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
@@ -142,23 +142,23 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         };
 
         if (mRequestListenerId != null) {
-            FBSService.get().removeListener(mRequestListenerId);
+            FBSCommunicationService.get().removeListener(mRequestListenerId);
         }
 
-        mRequestListenerId = FBSService.get().addListener(mRequestsPath, listener);
+        mRequestListenerId = FBSCommunicationService.get().addListener(mRequestsPath, listener);
     }
 
     @Override
     public void stopRequestsListener(Context context) {
         if (mRequestListenerId != null) {
-            FBSService.get().removeListener(mRequestListenerId);
+            FBSCommunicationService.get().removeListener(mRequestListenerId);
             mRequestListenerId = null;
         }
     }
 
     @Override
     public void startResponsesListener(Context context) {
-        FBSService.get().setStringValue(mResponsesPath, null);
+        FBSCommunicationService.get().setStringValue(mResponsesPath, null);
 
         ChildEventListener listener = new ChildEventListener() {
             @Override
@@ -210,16 +210,16 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         };
 
         if (mResponseListenerId != null) {
-            FBSService.get().removeListener(mResponseListenerId);
+            FBSCommunicationService.get().removeListener(mResponseListenerId);
         }
 
-        mResponseListenerId = FBSService.get().addListener(mResponsesPath, listener);
+        mResponseListenerId = FBSCommunicationService.get().addListener(mResponsesPath, listener);
     }
 
     @Override
     public void stopResponsesListener(Context context) {
         if (mResponseListenerId != null) {
-            FBSService.get().removeListener(mResponseListenerId);
+            FBSCommunicationService.get().removeListener(mResponseListenerId);
             mResponseListenerId = null;
         }
     }
@@ -300,7 +300,7 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     }
 
     private void setServiceAliveStatus() {
-        FBSService.get().setStringValue(
+        FBSCommunicationService.get().setStringValue(
                 mUpdateInfoPath,
                 String.valueOf(System.currentTimeMillis())
         );

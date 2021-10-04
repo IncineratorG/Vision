@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
@@ -42,7 +42,7 @@ public class FBSRequestSender implements ServiceRequestSender {
             onErrorCallback.handle(SurveillanceServiceErrors.requestFailure());
         };
 
-        FBSService fbsService = FBSService.get();
+        FBSCommunicationService fbsService = FBSCommunicationService.get();
         fbsService.addValueToList(receiverRequestsPath, request.stringify(), onCompleteListener, onFailureListener);
     }
 }

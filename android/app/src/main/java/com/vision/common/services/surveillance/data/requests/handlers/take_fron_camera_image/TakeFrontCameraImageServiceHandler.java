@@ -8,7 +8,7 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.camera.CameraService_V2;
-import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
@@ -70,7 +70,7 @@ public class TakeFrontCameraImageServiceHandler implements ServiceRequestHandler
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
         if (request.key() != null) {
-            FBSService.get().removeValueFromList(requestsPath, request.key());
+            FBSCommunicationService.get().removeValueFromList(requestsPath, request.key());
         } else {
             Log.d("tag", "TakeFrontCameraImageServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
         }

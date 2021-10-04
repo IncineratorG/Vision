@@ -1,4 +1,4 @@
-package com.vision.common.services.firebase;
+package com.vision.common.services.firebase_communication;
 
 
 import android.util.Log;
@@ -9,25 +9,25 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.vision.common.services.firebase.data.FBSListenerId;
+import com.vision.common.services.firebase_communication.data.FBSListenerId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FBSService {
-    private static FBSService sInstance;
+public class FBSCommunicationService {
+    private static FBSCommunicationService sInstance;
 
     private List<FBSListenerId> mListenerIds;
 
-    private FBSService() {
+    private FBSCommunicationService() {
         mListenerIds = new ArrayList<>();
     }
 
-    public static synchronized FBSService get() {
+    public static synchronized FBSCommunicationService get() {
         if (sInstance == null) {
-            sInstance = new FBSService();
+            sInstance = new FBSCommunicationService();
         }
 
         return sInstance;

@@ -2,7 +2,6 @@ package com.vision.common.services.device_group;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +14,7 @@ import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.services.device_group.data.service_errors.DeviceGroupServiceErrors;
-import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 
 import java.util.List;
@@ -73,6 +72,6 @@ public class DeviceGroupService {
             }
         };
 
-        FBSService.get().getValue(groupRootPath, listener);
+        FBSCommunicationService.get().getValue(groupRootPath, listener);
     }
 }

@@ -10,7 +10,7 @@ import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
-import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
@@ -54,7 +54,7 @@ public class TestRequestHandler implements JSActionHandler {
 //        );
         // =====
 
-        FBSService fbsService = FBSService.get();
+        FBSCommunicationService fbsService = FBSCommunicationService.get();
         // ===
 
         result.resolve(true);

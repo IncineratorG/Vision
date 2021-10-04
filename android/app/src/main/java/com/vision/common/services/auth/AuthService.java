@@ -17,7 +17,7 @@ import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.services.auth.data.service_errors.AuthServiceErrors;
 import com.vision.common.services.device_info.DeviceInfoService;
-import com.vision.common.services.firebase.FBSService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 
 import java.util.List;
@@ -100,7 +100,7 @@ public class AuthService {
             }
         };
 
-        FBSService.get().getValue(groupNamePath, listener);
+        FBSCommunicationService.get().getValue(groupNamePath, listener);
     }
 
     public void registerDeviceInGroup(Context context,
@@ -161,7 +161,7 @@ public class AuthService {
             }
         };
 
-        FBSService.get().getValue(groupNamePath, listener);
+        FBSCommunicationService.get().getValue(groupNamePath, listener);
     }
 
     public void loginDeviceInGroup(Context context,
@@ -254,7 +254,7 @@ public class AuthService {
             }
         };
 
-        FBSService.get().getValue(groupNamePath, listener);
+        FBSCommunicationService.get().getValue(groupNamePath, listener);
     }
 
     public void logoutDeviceFromGroup(OnTaskSuccess<Void> onSuccess,
@@ -283,7 +283,7 @@ public class AuthService {
 
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(groupName, groupPassword, deviceName);
 
-        FBSService.get().setMapValue(
+        FBSCommunicationService.get().setMapValue(
                 deviceInfoPath,
                 updatedDeviceInfoData.toServiceObject(),
                 onCompleteListener,
