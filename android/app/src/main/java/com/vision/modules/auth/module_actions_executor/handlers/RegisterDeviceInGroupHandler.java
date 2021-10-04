@@ -23,6 +23,7 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
+import com.vision.modules.auth.module_errors.AuthModuleErrorsMapper;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
@@ -71,147 +72,22 @@ public class RegisterDeviceInGroupHandler implements JSActionHandler {
             return;
         }
 
-        String groupName = payload.groupName();
-        String groupPassword = payload.groupPassword();
-        String deviceName = payload.deviceName();
-
-        Log.d("tag", "RegisterDeviceInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
-
-        checkIfGroupExist(context, payload, result);
-    }
-
-    private void checkIfGroupExist(Context context,
-                                   RegisterDeviceInGroupPayload handlerPayload,
-                                   Promise handlerResult) {
-        List<String> groupNamePath = FBSPathsService.get().groupNamePath(handlerPayload.groupName());
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_EXIST");
-
-                    checkIfPasswordCorrect(context, handlerPayload, handlerResult);
-                } else {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfGroupExist(): GROUP_NOT_EXIST");
-
-                    ModuleError error = AuthModuleErrors.groupNotExist();
-                    handlerResult.reject(error.code(), error.message());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
-                handlerResult.reject(moduleError.code(), moduleError.message());
-            }
-        };
-
-        FBSService.get().getValue(groupNamePath, listener);
-    }
-
-    private void checkIfPasswordCorrect(Context context,
-                                        RegisterDeviceInGroupPayload handlerPayload,
-                                        Promise handlerResult) {
-        String groupName = handlerPayload.groupName();
-        String groupPassword = handlerPayload.groupPassword();
-
-        List<String> groupPasswordPath = FBSPathsService.get().groupPasswordPath(groupName, groupPassword);
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): PASSWORD_CORRECT");
-
-                    checkDeviceName(context, handlerPayload, handlerResult);
-                } else {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkIfPasswordCorrect(): BAD_PASSWORD");
-
-                    ModuleError error = AuthModuleErrors.incorrectGroupPassword();
-                    handlerResult.reject(error.code(), error.message());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
-                handlerResult.reject(moduleError.code(), moduleError.message());
-            }
-        };
-
-        FBSService.get().getValue(groupPasswordPath, listener);
-    }
-
-    private void checkDeviceName(Context context,
-                                 RegisterDeviceInGroupPayload handlerPayload,
-                                 Promise handlerResult) {
-        String groupName = handlerPayload.groupName();
-        String groupPassword = handlerPayload.groupPassword();
-        String deviceName = handlerPayload.deviceName();
-
-        List<String> devicePath = FBSPathsService.get().devicePath(groupName, groupPassword, deviceName);
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_ALREADY_EXIST");
-
-                    ModuleError error = AuthModuleErrors.deviceNameAlreadyExist();
-                    handlerResult.reject(error.code(), error.message());
-                } else {
-                    Log.d("tag", "RegisterDeviceInGroupHandler->checkDeviceName(): DEVICE_NAME_NOT_EXIST");
-
-                    registerDeviceInGroup(context, handlerPayload, handlerResult);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                ModuleError moduleError = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
-                handlerResult.reject(moduleError.code(), moduleError.message());
-            }
-        };
-
-        FBSService.get().getValue(devicePath, listener);
-    }
-
-    private void registerDeviceInGroup(Context context,
-                                       RegisterDeviceInGroupPayload handlerPayload,
-                                       Promise handlerResult) {
-        String groupName = handlerPayload.groupName();
-        String groupPassword = handlerPayload.groupPassword();
-        String deviceName = handlerPayload.deviceName();
-
-        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(groupName, groupPassword, deviceName);
-
-        OnCompleteListener<Void> onCompleteListener = task -> {
-            Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onComplete");
-
-            SurveillanceService.get().init(context, groupName, groupPassword, deviceName);
-
-            handlerResult.resolve(true);
-        };
-
-        OnFailureListener onFailureListener = e -> {
-            Log.d("tag", "RegisterDeviceInGroupHandler->registerDeviceInGroup()->onFailure: " + e.toString());
-
-            ModuleError error = AuthModuleErrors.registerDeviceInGroupFirebaseFailure();
-            handlerResult.reject(error.code(), error.message());
-        };
-
-        DeviceInfo deviceInfo = DeviceInfoService.get().currentDeviceInfo(
+        SurveillanceService surveillanceService = SurveillanceService.get();
+        surveillanceService.registerDeviceInGroup(
                 context,
-                deviceName,
-                AppConstants.DEVICE_MODE_USER
-        );
-
-        FBSService.get().setMapValue(
-                deviceInfoPath,
-                deviceInfo.toServiceObject(),
-                onCompleteListener,
-                onFailureListener
+                payload.groupName(),
+                payload.groupPassword(),
+                payload.deviceName(),
+                (data) -> {
+                    result.resolve(true);
+                },
+                (error) -> {
+                    ModuleError moduleError = AuthModuleErrorsMapper.mapToModuleError(
+                            AuthModuleErrorsMapper.SURVEILLANCE_SERVICE_TYPE,
+                            error
+                    );
+                    result.reject(moduleError.code(), moduleError.message());
+                }
         );
     }
 }

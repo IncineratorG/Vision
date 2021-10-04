@@ -55,6 +55,7 @@ public class DeviceInfo implements ServiceObject, HybridObject {
             return;
         }
 
+        @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) object;
         if (map != null) {
             if (map.containsKey(LAST_LOGIN_TIMESTAMP_KEY)) {

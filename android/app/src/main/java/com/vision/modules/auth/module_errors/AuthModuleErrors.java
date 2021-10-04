@@ -3,6 +3,10 @@ package com.vision.modules.auth.module_errors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 
 public class AuthModuleErrors {
+    public static ModuleError commonModuleServiceError() {
+        return new ModuleError("0", "COMMON_MODULE_SERVICE_ERROR");
+    }
+
     public static ModuleError badAction() {
         return new ModuleError("1", "BAD_ACTION");
     }
@@ -61,5 +65,13 @@ public class AuthModuleErrors {
 
     public static ModuleError deviceAlreadyLoggedIn() {
         return new ModuleError("15", "DEVICE_ALREADY_LOGGED_IN");
+    }
+
+    public static ModuleError deviceNameNotExist() {
+        return new ModuleError("16", "DEVICE_NAME_NOT_EXIST");
+    }
+
+    public static ModuleError firebaseFailure() {
+        return new ModuleError("17", "FIREBASE_FAILURE");
     }
 }

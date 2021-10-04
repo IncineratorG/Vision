@@ -7,6 +7,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.modules.auth.module_errors.AuthModuleErrorsMapper;
+import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 public class LogoutDeviceFromGroupHandler implements JSActionHandler {
@@ -15,8 +17,18 @@ public class LogoutDeviceFromGroupHandler implements JSActionHandler {
         Log.d("tag", "LogoutDeviceFromGroupHandler");
 
         SurveillanceService surveillanceService = SurveillanceService.get();
-        surveillanceService.dispose(context);
-
-        result.resolve(true);
+        surveillanceService.logoutDeviceFromGroup(
+                context,
+                (data) -> {
+                    result.resolve(true);
+                },
+                (error) -> {
+                    ModuleError moduleError = AuthModuleErrorsMapper.mapToModuleError(
+                            AuthModuleErrorsMapper.SURVEILLANCE_SERVICE_TYPE,
+                            error
+                    );
+                    result.reject(moduleError.code(), moduleError.message());
+                }
+        );
     }
 }
