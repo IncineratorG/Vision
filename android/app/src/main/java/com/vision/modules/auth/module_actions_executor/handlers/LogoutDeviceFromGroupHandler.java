@@ -7,7 +7,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.services.surveillance.SurveillanceService;
-import com.vision.modules.auth.module_errors.AuthModuleErrorsMapper;
+import com.vision.modules.auth.module_errors.mapper.AuthModuleErrorsMapper;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 

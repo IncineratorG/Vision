@@ -9,7 +9,7 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.CreateGroupWithDevicePayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
-import com.vision.modules.auth.module_errors.AuthModuleErrorsMapper;
+import com.vision.modules.auth.module_errors.mapper.AuthModuleErrorsMapper;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 

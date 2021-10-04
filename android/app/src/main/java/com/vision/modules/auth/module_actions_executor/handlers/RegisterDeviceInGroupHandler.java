@@ -1,33 +1,18 @@
 package com.vision.modules.auth.module_actions_executor.handlers;
 
 
-import android.content.Context;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.vision.common.constants.AppConstants;
-import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.services.device_info.DeviceInfoService;
-import com.vision.common.services.firebase.FBSService;
-import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.modules.auth.module_actions.payloads.payloads.RegisterDeviceInGroupPayload;
 import com.vision.modules.auth.module_errors.AuthModuleErrors;
-import com.vision.modules.auth.module_errors.AuthModuleErrorsMapper;
+import com.vision.modules.auth.module_errors.mapper.AuthModuleErrorsMapper;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
-
-import java.util.List;
 
 public class RegisterDeviceInGroupHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";

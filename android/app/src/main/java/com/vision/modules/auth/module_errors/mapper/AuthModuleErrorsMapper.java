@@ -1,9 +1,10 @@
-package com.vision.modules.auth.module_errors;
+package com.vision.modules.auth.module_errors.mapper;
 
 
 import android.util.Log;
 
 import com.vision.common.data.service_error.ServiceError;
+import com.vision.modules.auth.module_errors.AuthModuleErrors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 
 public class AuthModuleErrorsMapper {
