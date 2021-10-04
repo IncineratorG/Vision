@@ -140,35 +140,35 @@ public class TestRequestHandler implements JSActionHandler {
 //        fbsService.test(testPath, map);
     }
 
-    private void receive() {
-        Log.d("tag", "TestRequestHandler->receive()");
-
-        FBSPathsService fbsPathsService = FBSPathsService.get();
-        List<String> testPath = fbsPathsService.test();
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-//                    Object value = snapshot.getValue();
-                    Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
-                    if (value != null) {
-                        Log.d("tag", "TestRequestHandler->receive(): " + value.toString());
-                    } else {
-                        Log.d("tag", "TestRequestHandler->receive()->OBJECT_IS_NULL");
-                    }
-                } else {
-                    Log.d("tag", "TestRequestHandler->receive()->SNAPSHOT_NOT_EXIST");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        FBSService fbsService = FBSService.get();
-        fbsService.test2(testPath, listener);
-    }
+//    private void receive() {
+//        Log.d("tag", "TestRequestHandler->receive()");
+//
+//        FBSPathsService fbsPathsService = FBSPathsService.get();
+//        List<String> testPath = fbsPathsService.test();
+//
+//        ValueEventListener listener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+////                    Object value = snapshot.getValue();
+//                    Map<String, Object> value = (Map<String, Object>) snapshot.getValue();
+//                    if (value != null) {
+//                        Log.d("tag", "TestRequestHandler->receive(): " + value.toString());
+//                    } else {
+//                        Log.d("tag", "TestRequestHandler->receive()->OBJECT_IS_NULL");
+//                    }
+//                } else {
+//                    Log.d("tag", "TestRequestHandler->receive()->SNAPSHOT_NOT_EXIST");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        };
+//
+//        FBSService fbsService = FBSService.get();
+//        fbsService.test2(testPath, listener);
+//    }
 }

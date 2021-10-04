@@ -209,26 +209,26 @@ public class FBSService {
     }
 
     // ===
-    public void test(List<String> fields, Map<String, Object> map) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference ref = database.getReference();
-        for (int i = 0; i < fields.size(); ++i) {
-            ref = ref.child(fields.get(i));
-        }
-
-        ref.updateChildren(map);
-    }
-
-    public void test2(List<String> fields, ValueEventListener listener) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference ref = database.getReference();
-        for (int i = 0; i < fields.size(); ++i) {
-            ref = ref.child(fields.get(i));
-        }
-        ref.addValueEventListener(listener);
-    }
+//    public void test(List<String> fields, Map<String, Object> map) {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//        DatabaseReference ref = database.getReference();
+//        for (int i = 0; i < fields.size(); ++i) {
+//            ref = ref.child(fields.get(i));
+//        }
+//
+//        ref.updateChildren(map);
+//    }
+//
+//    public void test2(List<String> fields, ValueEventListener listener) {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//        DatabaseReference ref = database.getReference();
+//        for (int i = 0; i < fields.size(); ++i) {
+//            ref = ref.child(fields.get(i));
+//        }
+//        ref.addValueEventListener(listener);
+//    }
     // ===
 }
 

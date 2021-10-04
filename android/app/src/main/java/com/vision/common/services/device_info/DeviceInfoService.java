@@ -61,31 +61,9 @@ public class DeviceInfoService {
 
     public boolean hasFrontCamera() {
         return CameraService_V2.get().hasFrontCamera();
-
-//        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//        int numberOfCameras = Camera.getNumberOfCameras();
-//        for (int i = 0; i < numberOfCameras; i++) {
-//            Camera.getCameraInfo(i, cameraInfo);
-//            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-//                return true;
-//            }
-//        }
-//        return false;
     }
 
     public boolean hasBackCamera() {
         return CameraService_V2.get().hasBackCamera();
-
-//        int backCameraId = -1;
-//        for(int i=0;i<Camera.getNumberOfCameras();i++){
-//            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-//            Camera.getCameraInfo(i,cameraInfo);
-//            if(cameraInfo.facing== Camera.CameraInfo.CAMERA_FACING_BACK) {
-//                backCameraId = i;
-//                break;
-//            }
-//        }
-//
-//        return backCameraId >= 0;
     }
 }
