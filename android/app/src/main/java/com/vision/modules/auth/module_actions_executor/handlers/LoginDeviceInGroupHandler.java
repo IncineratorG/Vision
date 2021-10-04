@@ -162,6 +162,7 @@ public class LoginDeviceInGroupHandler implements JSActionHandler {
                         DeviceInfo deviceInfo = new DeviceInfo(value);
                         DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
 
+
                         long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();
                         if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 5000) {
                             Log.d("tag", "LoginDeviceInGroupHandler->checkDeviceNameAndIsAliveStatus(): DEVICE_IS_ALREADY_LOGGED_IN");

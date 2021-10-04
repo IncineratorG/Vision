@@ -9,6 +9,7 @@ const ServiceDeviceInfo = ({
   groupPassword,
   deviceName,
   onTestCameraPress,
+  onTestNotificationPress,
   onStopServicePress,
 }) => {
   const groupNameIcon = useMemo(() => {
@@ -56,7 +57,10 @@ const ServiceDeviceInfo = ({
           <SimpleButton title={'Stop service'} onPress={onStopServicePress} />
         </View>
         <View style={styles.buttonContainer}>
-          <SimpleButton title={'Test Camera'} onPress={onTestCameraPress} />
+          <SimpleButton
+            title={'Test Notification'}
+            onPress={onTestNotificationPress}
+          />
         </View>
       </View>
     </View>
