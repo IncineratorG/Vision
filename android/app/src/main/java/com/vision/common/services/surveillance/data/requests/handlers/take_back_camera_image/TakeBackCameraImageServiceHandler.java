@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
-import com.vision.common.services.camera.CameraService;
 import com.vision.common.services.camera.CameraService_V2;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;

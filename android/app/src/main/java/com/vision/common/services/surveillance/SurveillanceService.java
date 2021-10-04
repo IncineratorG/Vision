@@ -6,8 +6,15 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.constants.AppConstants;
+import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
+import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
@@ -17,6 +24,8 @@ import com.vision.common.interfaces.service_notification_sender.ServiceNotificat
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
 import com.vision.common.services.auth.AuthService;
+import com.vision.common.services.device_group.DeviceGroupService;
+import com.vision.common.services.device_info.DeviceInfoService;
 import com.vision.common.services.firebase.FBSService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
@@ -35,6 +44,7 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 import com.vision.common.services.surveillance.data.requests.executor.firebase.FBSRequestsExecutor;
 import com.vision.common.services.surveillance.data.responses.sender.firebase.FBSResponseSender;
 import com.vision.common.services.surveillance.data.responses.executor.firebase.FBSResponsesExecutor;
+import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 import com.vision.common.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 
 import java.util.List;
@@ -166,6 +176,25 @@ public class SurveillanceService implements
         AuthService.get().logoutDeviceFromGroup(successCallback, errorCallback);
     }
 
+    public void getDevicesInGroup(Context context,
+                                  String groupName,
+                                  String groupPassword,
+                                  OnTaskSuccess<DeviceInfoList> onSuccess,
+                                  OnTaskError<ServiceError> onError) {
+        OnTaskError<ServiceError> errorCallback = (error) -> {
+            onError.onError(
+                    mErrorsMapper.mapToSurveillanceServiceError(
+                            ExternalServiceErrorsMapper.DEVICE_GROUP_SERVICE_TYPE,
+                            error
+                    )
+            );
+        };
+
+        DeviceGroupService.get().getDevicesInGroup(
+                context, groupName, groupPassword, onSuccess, errorCallback
+        );
+    }
+
     public boolean isInitialized() {
         return AuthService.get().isLoggedIn();
     }
@@ -204,7 +233,9 @@ public class SurveillanceService implements
         mCommunicationManager.stopResponsesListener(context);
     }
 
-    public void startForegroundService(Context context) {
+    public void startForegroundService(Context context,
+                                       OnTaskSuccess<Void> onSuccess,
+                                       OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startForegroundService()");
 
         if (context == null) {
@@ -232,9 +263,57 @@ public class SurveillanceService implements
         Intent serviceIntent = new Intent(context, SurveillanceForegroundService.class);
         serviceIntent.setAction("start");
         context.startService(serviceIntent);
+
+        // ===
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_USER
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+                            AppConstants.DEVICE_MODE_SERVICE,
+                            currentDeviceInfo
+                    );
+                    FBSService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+
+        FBSService.get().getValue(deviceInfoPath, listener);
+        // ===
     }
 
-    public void stopForegroundService(Context context) {
+    public void stopForegroundService(Context context,
+                                      OnTaskSuccess<Void> onSuccess,
+                                      OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopForegroundService()");
 
         if (context == null) {
@@ -257,6 +336,52 @@ public class SurveillanceService implements
         Intent serviceIntent = new Intent(context, SurveillanceForegroundService.class);
         serviceIntent.setAction("stop");
         context.startService(serviceIntent);
+
+        // ===
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_USER
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+                            AppConstants.DEVICE_MODE_USER,
+                            currentDeviceInfo
+                    );
+                    FBSService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+
+        FBSService.get().getValue(deviceInfoPath, listener);
+        // ===
     }
 
     public boolean isForegroundServiceRunning(Context context) {
@@ -367,7 +492,7 @@ public class SurveillanceService implements
         );
 
         stopListenToResponses(context);
-        stopForegroundService(context);
+        stopForegroundService(context, (data) -> {}, (error) -> {});
         mCommunicationManager.stopIsAliveSignaling(context);
     }
     // =====

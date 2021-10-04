@@ -8,6 +8,7 @@ import com.vision.common.services.surveillance.data.service_errors.SurveillanceS
 
 public class ExternalServiceErrorsMapper {
     public static final String AUTH_SERVICE_TYPE = "authService";
+    public static final String DEVICE_GROUP_SERVICE_TYPE = "deviceGroupService";
 
     public ExternalServiceErrorsMapper() {
 
@@ -18,6 +19,10 @@ public class ExternalServiceErrorsMapper {
         switch (serviceType) {
             case (AUTH_SERVICE_TYPE): {
                 return mapFromAuthService(externalServiceError);
+            }
+
+            case (DEVICE_GROUP_SERVICE_TYPE): {
+                return mapFromDeviceGroupService(externalServiceError);
             }
 
             default: {
@@ -59,6 +64,19 @@ public class ExternalServiceErrorsMapper {
 
             default: {
                 Log.d("tag", "ExternalServiceErrorsMapping->mapFromAuthService()->UNKNOWN_ERROR_CODE: " + error.code() + " - " + error.message());
+                return SurveillanceServiceErrors.commonServiceError();
+            }
+        }
+    }
+
+    private ServiceError mapFromDeviceGroupService(ServiceError error) {
+        switch (error.code()) {
+            case ("0"): {
+                return SurveillanceServiceErrors.firebaseFailure();
+            }
+
+            default: {
+                Log.d("tag", "ExternalServiceErrorsMapping->mapFromDeviceGroupService()->UNKNOWN_ERROR_CODE: " + error.code() + " - " + error.message());
                 return SurveillanceServiceErrors.commonServiceError();
             }
         }

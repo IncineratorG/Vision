@@ -3,6 +3,10 @@ package com.vision.modules.surveillance.module_errors;
 import com.vision.modules.modules_common.data.error.ModuleError;
 
 public class SurveillanceModuleErrors {
+    public static ModuleError commonModuleServiceError() {
+        return new ModuleError("0", "COMMON_MODULE_SERVICE_ERROR");
+    }
+
     public static ModuleError badAction() {
         return new ModuleError("1", "BAD_ACTION");
     }
@@ -57,5 +61,9 @@ public class SurveillanceModuleErrors {
 
     public static ModuleError stopServiceFirebaseFailure() {
         return new ModuleError("14", "STOP_SERVICE_FIREBASE_FAILURE");
+    }
+
+    public static ModuleError firebaseFailure() {
+        return new ModuleError("15", "FIREBASE_FAILURE");
     }
 }

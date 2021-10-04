@@ -2,26 +2,18 @@ package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.services.firebase.FBSService;
-import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.modules_common.data.error.ModuleError;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;
 import com.vision.modules.surveillance.module_actions.payloads.payloads.GetDevicesInGroupPayload;
 import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
-
-import java.util.List;
-import java.util.Map;
+import com.vision.modules.surveillance.module_errors.mapper.SurveillanceModuleErrorsMapper;
 
 public class GetDevicesInGroupHandler implements JSActionHandler {
     private final String ACTION_PAYLOAD = "payload";
@@ -66,61 +58,28 @@ public class GetDevicesInGroupHandler implements JSActionHandler {
             return;
         }
 
-        String groupName = payload.groupName();
-        String groupPassword = payload.groupPassword();
-        String deviceName = payload.deviceName();
-
-        Log.d("tag", "GetDevicesInGroupHandler->handle(): " + groupName + " - " + groupPassword + " - " + deviceName);
-
-        List<String> groupRootPath = FBSPathsService.get().groupRootPath(groupName, groupPassword);
-
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                DeviceInfoList deviceInfoList = new DeviceInfoList();
-
-                if (snapshot.exists()) {
-                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                        String key = childSnapshot.getKey();
-                        Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_IN_GROUP: " + key);
-
-                        Object deviceDataObject = childSnapshot.getValue();
-                        if (deviceDataObject != null) {
-                            Map<String, Object> deviceDataMap = (Map<String, Object>) deviceDataObject;
-                            if (deviceDataMap != null) {
-                                Object deviceInfoObject = deviceDataMap.get(FBSPathsService.get().DEVICE_INFO_PATH);
-                                if (deviceInfoObject != null) {
-                                    DeviceInfo deviceInfo = new DeviceInfo(deviceInfoObject);
-
-                                    Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_INFO_OBJECT: " + deviceInfo.deviceName() + " - " + deviceInfo.lastLoginTimestamp());
-
-                                    if (!deviceInfo.deviceName().equalsIgnoreCase(deviceName)) {
-                                        deviceInfoList.add(deviceInfo);
-                                    }
-                                } else {
-                                    Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_INFO_OBJECT_IS_NULL");
-                                }
-                            } else {
-                                Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_DATA_MAP_IS_NULL");
-                            }
-                        } else {
-                            Log.d("tag", "GetDevicesInGroupHandler->handle()->DEVICE_DATA_OBJECT_IS_NULL");
+        SurveillanceService surveillanceService = SurveillanceService.get();
+        surveillanceService.getDevicesInGroup(
+                context,
+                payload.groupName(),
+                payload.groupPassword(),
+                (devicesInGroupList) -> {
+                    DeviceInfoList resultList = new DeviceInfoList();
+                    for (int i = 0; i < devicesInGroupList.size(); ++i) {
+                        DeviceInfo deviceInfo = devicesInGroupList.get(i);
+                        if (!deviceInfo.deviceName().equals(payload.deviceName())) {
+                            resultList.add(deviceInfo);
                         }
                     }
-                } else {
-                    Log.d("tag", "GetDevicesInGroupHandler->handle()->ROOT_SNAPSHOT_NOT_EXIST");
+                    result.resolve(resultList.toWritableArray());
+                },
+                (error) -> {
+                    ModuleError moduleError = SurveillanceModuleErrorsMapper.mapToModuleError(
+                            SurveillanceModuleErrorsMapper.SURVEILLANCE_SERVICE_TYPE,
+                            error
+                    );
+                    result.reject(moduleError.code(), moduleError.message());
                 }
-
-                result.resolve(deviceInfoList.toWritableArray());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                ModuleError moduleError = SurveillanceModuleErrors.getDevicesInGroupFirebaseFailure();
-                result.reject(moduleError.code(), moduleError.message());
-            }
-        };
-
-        FBSService.get().getValue(groupRootPath, listener);
+        );
     }
 }
