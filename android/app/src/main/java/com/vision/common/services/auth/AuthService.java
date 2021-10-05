@@ -201,6 +201,7 @@ public class AuthService {
                     if (deviceInfoObject != null) {
                         DeviceInfo deviceInfo = new DeviceInfo(deviceInfoObject);
                         DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
+                        updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(AppConstants.DEVICE_MODE_USER, updatedDeviceInfo);
 
                         long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();
                         if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 5000) {

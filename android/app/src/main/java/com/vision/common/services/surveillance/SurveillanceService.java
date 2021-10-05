@@ -23,6 +23,8 @@ import com.vision.common.interfaces.service_communication_manager.ServiceCommuni
 import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
+import com.vision.common.services.app_storages.AppStorages;
+import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.common.services.auth.AuthService;
 import com.vision.common.services.device_group.DeviceGroupService;
 import com.vision.common.services.device_info.DeviceInfoService;
@@ -89,9 +91,10 @@ public class SurveillanceService implements
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
         OnTaskSuccess<Void> successCallback = (data) -> {
-            init(context, groupName, groupPassword, deviceName);
-            subscribeToGlobalNotifications((result) -> {}, (err) -> {});
-            onSuccess.onSuccess(null);
+            OnTaskSuccess<Void> initSuccessCallback = (initData) -> onSuccess.onSuccess(null);
+            OnTaskError<ServiceError> initErrorCallback = (errorData) -> onError.onError(errorData);
+
+            init(context, groupName, groupPassword, deviceName, initSuccessCallback, initErrorCallback);
         };
 
         OnTaskError<ServiceError> errorCallback = (error) -> {
@@ -115,9 +118,10 @@ public class SurveillanceService implements
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
         OnTaskSuccess<Void> successCallback = (data) -> {
-            init(context, groupName, groupPassword, deviceName);
-            subscribeToGlobalNotifications((result) -> {}, (err) -> {});
-            onSuccess.onSuccess(null);
+            OnTaskSuccess<Void> initSuccessCallback = (initData) -> onSuccess.onSuccess(null);
+            OnTaskError<ServiceError> initErrorCallback = (errorData) -> onError.onError(errorData);
+
+            init(context, groupName, groupPassword, deviceName, initSuccessCallback, initErrorCallback);
         };
 
         OnTaskError<ServiceError> errorCallback = (error) -> {
@@ -141,9 +145,10 @@ public class SurveillanceService implements
                                    OnTaskSuccess<Void> onSuccess,
                                    OnTaskError<ServiceError> onError) {
         OnTaskSuccess<Void> successCallback = (data) -> {
-            init(context, groupName, groupPassword, deviceName);
-            subscribeToGlobalNotifications((result) -> {}, (err) -> {});
-            onSuccess.onSuccess(null);
+            OnTaskSuccess<Void> initSuccessCallback = (initData) -> onSuccess.onSuccess(null);
+            OnTaskError<ServiceError> initErrorCallback = (errorData) -> onError.onError(errorData);
+
+            init(context, groupName, groupPassword, deviceName, initSuccessCallback, initErrorCallback);
         };
 
         OnTaskError<ServiceError> errorCallback = (error) -> {
@@ -203,9 +208,19 @@ public class SurveillanceService implements
         );
     }
 
-    public void subscribeToGlobalNotifications(OnTaskSuccess<Void> onSuccess,
+    public void subscribeToGlobalNotifications(Context context,
+                                               OnTaskSuccess<Void> onSuccess,
                                                OnTaskError<ServiceError> onError) {
-        OnTaskSuccess<Void> successCallback = (data) -> onSuccess.onSuccess(null);
+        FBSMessagingService messagingService = FBSMessagingService.get();
+        SurveillanceStorage storage = AppStorages.get().surveillanceStorage();
+
+        String savedGlobalTopic = storage.getGlobalNotificationsTopic(context);
+        String currentGlobalTopic = messagingService.globalTopic(currentGroupName(), currentGroupPassword());
+
+        OnTaskSuccess<Void> successCallback = (data) -> {
+            storage.saveGlobalNotificationsTopic(context, currentGlobalTopic);
+            onSuccess.onSuccess(null);
+        };
         OnTaskError<ServiceError> errorCallback = (error) -> {
             onError.onError(
                     mErrorsMapper.mapToSurveillanceServiceError(
@@ -215,15 +230,27 @@ public class SurveillanceService implements
             );
         };
 
-        FBSMessagingService.get().subscribeToGlobalNotificationTopic(
-                currentGroupName(),
-                currentGroupPassword(),
-                successCallback,
-                errorCallback
-        );
+        if (savedGlobalTopic == null) {
+            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
+        } else if (savedGlobalTopic.equals(currentGlobalTopic)) {
+            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
+        } else {
+            messagingService.unsubscribeFromTopic(
+                    savedGlobalTopic,
+                    (resultUnsubscribe) -> {
+                        messagingService.subscribeToTopic(
+                                currentGlobalTopic,
+                                successCallback,
+                                errorCallback
+                        );
+                    },
+                    errorCallback
+            );
+        }
     }
 
-    public void unsubscribeFromGlobalNotifications(OnTaskSuccess<Void> onSuccess,
+    public void unsubscribeFromGlobalNotifications(Context context,
+                                                   OnTaskSuccess<Void> onSuccess,
                                                    OnTaskError<ServiceError> onError) {
         OnTaskSuccess<Void> successCallback = (data) -> onSuccess.onSuccess(null);
         OnTaskError<ServiceError> errorCallback = (error) -> {
@@ -235,12 +262,12 @@ public class SurveillanceService implements
             );
         };
 
-        FBSMessagingService.get().unsubscribeFromGlobalNotificationTopic(
-                currentGroupName(),
-                currentGroupPassword(),
-                successCallback,
-                errorCallback
-        );
+        SurveillanceStorage storage = AppStorages.get().surveillanceStorage();
+        storage.removeGlobalNotificationsTopic(context);
+
+        FBSMessagingService messagingService = FBSMessagingService.get();
+        String globalNotificationsTopic = messagingService.globalTopic(currentGroupName(), currentGroupPassword());
+        messagingService.unsubscribeFromTopic(globalNotificationsTopic, successCallback, errorCallback);
     }
 
     public String currentGroupName() {
@@ -308,11 +335,9 @@ public class SurveillanceService implements
         serviceIntent.setAction("start");
         context.startService(serviceIntent);
 
-        // ===
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 currentGroupName(), currentGroupPassword(), currentDeviceName()
         );
-
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -350,9 +375,7 @@ public class SurveillanceService implements
                 onError.onError(SurveillanceServiceErrors.firebaseFailure());
             }
         };
-
         FBSCommunicationService.get().getValue(deviceInfoPath, listener);
-        // ===
     }
 
     public void stopForegroundService(Context context,
@@ -381,11 +404,9 @@ public class SurveillanceService implements
         serviceIntent.setAction("stop");
         context.startService(serviceIntent);
 
-        // ===
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 currentGroupName(), currentGroupPassword(), currentDeviceName()
         );
-
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -423,9 +444,7 @@ public class SurveillanceService implements
                 onError.onError(SurveillanceServiceErrors.firebaseFailure());
             }
         };
-
         FBSCommunicationService.get().getValue(deviceInfoPath, listener);
-        // ===
     }
 
     public boolean isForegroundServiceRunning(Context context) {
@@ -480,9 +499,12 @@ public class SurveillanceService implements
         return mForegroundServiceWork;
     }
 
-    // ===
-    // =====
-    private void init(Context context, String groupName, String groupPassword, String deviceName) {
+    private void init(Context context,
+                      String groupName,
+                      String groupPassword,
+                      String deviceName,
+                      OnTaskSuccess<Void> onSuccess,
+                      OnTaskError<ServiceError> onError) {
         mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
 
         List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
@@ -522,6 +544,8 @@ public class SurveillanceService implements
 
         mCommunicationManager.startIsAliveSignaling(context);
         startListenToResponses(context);
+
+        subscribeToGlobalNotifications(context, onSuccess, onError);
     }
 
     private void dispose(Context context) {
@@ -539,6 +563,4 @@ public class SurveillanceService implements
         stopForegroundService(context, (data) -> {}, (error) -> {});
         mCommunicationManager.stopIsAliveSignaling(context);
     }
-    // =====
-    // ===
 }
