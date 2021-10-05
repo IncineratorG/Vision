@@ -12,6 +12,9 @@ public class SurveillanceStorage {
     private final String NOTIFICATIONS_TOPIC_MMKV_ID = "notificationsTopicMMKVID";
     private final String NOTIFICATIONS_TOPIC_KEY = "notificationsTopic";
 
+    private final String APP_SETTINGS_MMKV_ID = "appSettingsMMKVID";
+    private final String APP_SETTINGS_PREFIX_KEY = "appSettings_";
+
     public SurveillanceStorage() {
 
     }
@@ -48,14 +51,45 @@ public class SurveillanceStorage {
     }
 
     public boolean saveAppSettingsForGroup(Context context, String groupName, AppSettings settings) {
-        return false;
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, APP_SETTINGS_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->saveAppSettingsForGroup()->MMKV_IS_NULL");
+            return false;
+        }
+
+        String settingsStorageKey = APP_SETTINGS_PREFIX_KEY + groupName;
+
+        return mmkv.encode(settingsStorageKey, settings.stringify());
     }
 
     public AppSettings getAppSettingsFroGroup(Context context, String groupName) {
-        return null;
+        if (groupName == null) {
+            Log.d("tag", "SurveillanceStorage->getAppSettingsFroGroup()->GROUP_NAME_IS_NULL");
+            return null;
+        }
+
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, APP_SETTINGS_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->getAppSettingsFroGroup()->MMKV_IS_NULL");
+            return null;
+        }
+
+        String settingsStorageKey = APP_SETTINGS_PREFIX_KEY + groupName;
+
+        String stringifiedApPSettings = mmkv.decodeString(settingsStorageKey);
+        return new AppSettings(stringifiedApPSettings);
     }
 
     public boolean removeAppSettingsForGroup(Context context, String groupName) {
-        return false;
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, APP_SETTINGS_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->removeAppSettingsForGroup()->MMKV_IS_NULL");
+            return false;
+        }
+
+        String settingsStorageKey = APP_SETTINGS_PREFIX_KEY + groupName;
+
+        mmkv.removeValueForKey(settingsStorageKey);
+        return true;
     }
 }

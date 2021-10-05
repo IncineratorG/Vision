@@ -1,8 +1,6 @@
 package com.vision.common.data.hybrid_objects.app_settings;
 
 
-import android.util.Log;
-
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -13,13 +11,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AppSettings implements HybridObject {
-    private final String SURVEILLANCE_SETTINGS_FIELD = "surveillance";
-    private final String BACK_CAMERA_IMAGE_SETTINGS_FIELD = "backCameraImage";
-    private final String BACK_CAMERA_IMAGE_QUALITY_FIELD = "quality";
-    private final String FRONT_CAMERA_IMAGE_QUALITY_SETTINGS_FIELD = "frontCameraImage";
-    private final String FRONT_CAMERA_IMAGE_QUALITY_FIELD = "quality";
-    private final String NOTIFICATIONS_SETTINGS_FIELD = "notifications";
-    private final String NOTIFICATIONS_SETTINGS_RECEIVE_NOTIFICATIONS_FROM_CURRENT_GROUP_FIELD = "receiveNotificationsFromCurrentGroup";
+    public static final String SURVEILLANCE_SETTINGS_FIELD = "surveillance";
+    public static final String BACK_CAMERA_IMAGE_SETTINGS_FIELD = "backCameraImage";
+    public static final String BACK_CAMERA_IMAGE_QUALITY_FIELD = "quality";
+    public static final String FRONT_CAMERA_IMAGE_QUALITY_SETTINGS_FIELD = "frontCameraImage";
+    public static final String FRONT_CAMERA_IMAGE_QUALITY_FIELD = "quality";
+    public static final String NOTIFICATIONS_SETTINGS_FIELD = "notifications";
+    public static final String NOTIFICATIONS_SETTINGS_RECEIVE_NOTIFICATIONS_FROM_CURRENT_GROUP_FIELD = "receiveNotificationsFromCurrentGroup";
 
     private WritableMap mWritableMap;
     private JSONObject mJSONObject;
@@ -191,6 +189,9 @@ public class AppSettings implements HybridObject {
             } catch (JSONException e) {
                 e.printStackTrace();
                 mJSONObject = null;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                mJSONObject = null;
             }
 
             if (mJSONObject != null) {
@@ -206,5 +207,83 @@ public class AppSettings implements HybridObject {
     @Override
     public boolean isEmpty() {
         return mIsEmpty;
+    }
+
+    public String backCameraImageQuality() {
+        String backCameraImageQuality = "";
+
+        try {
+            if (mInitializedFromReadableMap) {
+                backCameraImageQuality = mWritableMap
+                        .getMap(SURVEILLANCE_SETTINGS_FIELD)
+                        .getMap(BACK_CAMERA_IMAGE_SETTINGS_FIELD)
+                        .getString(BACK_CAMERA_IMAGE_QUALITY_FIELD);
+            } else {
+                try {
+                    backCameraImageQuality = mJSONObject
+                            .getJSONObject(SURVEILLANCE_SETTINGS_FIELD)
+                            .getJSONObject(BACK_CAMERA_IMAGE_SETTINGS_FIELD)
+                            .getString(BACK_CAMERA_IMAGE_QUALITY_FIELD);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return backCameraImageQuality;
+    }
+
+    public String frontCameraImageQuality() {
+        String frontCameraImageQuality = "";
+
+        try {
+            if (mInitializedFromReadableMap) {
+                frontCameraImageQuality = mWritableMap
+                        .getMap(SURVEILLANCE_SETTINGS_FIELD)
+                        .getMap(FRONT_CAMERA_IMAGE_QUALITY_SETTINGS_FIELD)
+                        .getString(FRONT_CAMERA_IMAGE_QUALITY_FIELD);
+            } else {
+                try {
+                    frontCameraImageQuality = mJSONObject
+                            .getJSONObject(SURVEILLANCE_SETTINGS_FIELD)
+                            .getJSONObject(FRONT_CAMERA_IMAGE_QUALITY_SETTINGS_FIELD)
+                            .getString(FRONT_CAMERA_IMAGE_QUALITY_FIELD);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return frontCameraImageQuality;
+    }
+
+    public boolean receiveNotificationsFromCurrentGroup() {
+        boolean receiveNotificationsFromCurrentGroup = false;
+
+        try {
+            if (mInitializedFromReadableMap) {
+                receiveNotificationsFromCurrentGroup = mWritableMap
+                        .getMap(SURVEILLANCE_SETTINGS_FIELD)
+                        .getMap(NOTIFICATIONS_SETTINGS_FIELD)
+                        .getBoolean(NOTIFICATIONS_SETTINGS_RECEIVE_NOTIFICATIONS_FROM_CURRENT_GROUP_FIELD);
+            } else {
+                try {
+                    receiveNotificationsFromCurrentGroup = mJSONObject
+                            .getJSONObject(SURVEILLANCE_SETTINGS_FIELD)
+                            .getJSONObject(NOTIFICATIONS_SETTINGS_FIELD)
+                            .getBoolean(NOTIFICATIONS_SETTINGS_RECEIVE_NOTIFICATIONS_FROM_CURRENT_GROUP_FIELD);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return receiveNotificationsFromCurrentGroup;
     }
 }

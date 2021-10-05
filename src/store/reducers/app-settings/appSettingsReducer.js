@@ -44,12 +44,10 @@ const appSettingsReducer = (state = initialState, action) => {
 
     case AppActions.appSettings.types.GET_APP_SETTINGS_FINISHED: {
       const {appSettings} = action.payload;
-
-      SystemEventsHandler.onInfo({
-        info:
-          'appSettingsReducer->GET_APP_SETTINGS_FINISHED: ' +
-          JSON.stringify(appSettings),
-      });
+      const surveillanceSettings =
+        appSettings && appSettings.surveillance
+          ? appSettings.surveillance
+          : state.surveillance;
 
       return {
         ...state,
@@ -62,6 +60,9 @@ const appSettingsReducer = (state = initialState, action) => {
             code: '',
             message: '',
           },
+        },
+        surveillance: {
+          ...surveillanceSettings,
         },
       };
     }

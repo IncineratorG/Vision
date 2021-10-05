@@ -7,6 +7,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
+import com.vision.common.services.app_settings.AppSettingsService;
+import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.app_settings.module_actions.payloads.AppSettingsJSActionsPayloads;
 import com.vision.modules.app_settings.module_actions.payloads.payloads.UpdateAppSettingsPayload;
 import com.vision.modules.app_settings.module_errors.AppSettingsModuleErrors;
@@ -34,7 +36,13 @@ public class UpdateAppSettingsHandler implements JSActionHandler {
             return;
         }
 
-        AppSettings appSettings = new AppSettings(payload.settingsMap());
+        String currentGroupName = SurveillanceService.get().currentGroupName();
+
+        AppSettingsService.get().updateAppSettingsForGroup(
+                context,
+                currentGroupName,
+                new AppSettings(payload.settingsMap())
+        );
 
         result.resolve(true);
     }

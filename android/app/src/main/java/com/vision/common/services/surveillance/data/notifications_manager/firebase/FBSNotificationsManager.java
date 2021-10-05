@@ -24,9 +24,11 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.vision.MainActivity;
 import com.vision.R;
 import com.vision.common.constants.AppConstants;
+import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_handler.ServiceNotificationHandler;
 import com.vision.common.interfaces.service_notifications_manager.ServiceNotificationsManager;
+import com.vision.common.services.app_settings.AppSettingsService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.notifications.handlers.test_notification.TestNotificationHandler;
@@ -137,6 +139,12 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
 
         if (currentDeviceMode.equals(AppConstants.DEVICE_MODE_SERVICE)) {
             Log.d("tag", "FBSNotificationsManager->needHandleNotification(): CURRENT_DEVICE_IN_SERVICE_MODE->WILL_NOT_PROCESS");
+            return false;
+        }
+
+        AppSettings settings = AppSettingsService.get().getAppSettingsForGroup(context, notificationGroupName);
+        if (!settings.receiveNotificationsFromCurrentGroup()) {
+            Log.d("tag", "FBSNotificationsManager->needHandleNotification(): SETTINGS_PREVENT_RECEIVING_NOTIFICATIONS->WILL_NOT_PROCESS");
             return false;
         }
 
