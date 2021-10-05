@@ -1,34 +1,16 @@
 package com.vision.modules.surveillance.module_actions_executor.handlers;
 
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.modules.core.PermissionAwareActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
-import com.vision.MainActivity;
-import com.vision.R;
-import com.vision.android_services.firebase_messaging.MySingleton;
 import com.vision.common.constants.AppConstants;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
