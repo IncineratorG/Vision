@@ -76,6 +76,10 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
             data.put(JSON_NOTIFICATION_OBJECT_FIELD, notification.stringify());
             notificationJson.put("data", data);
 
+            JSONObject androidPriority = new JSONObject();
+            androidPriority.put("priority", "high");
+            notificationJson.put("android", androidPriority);
+
             JsonObjectRequest request = new JsonObjectRequest(
                     METHOD,
                     URL,
