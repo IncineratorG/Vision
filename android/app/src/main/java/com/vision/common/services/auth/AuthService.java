@@ -2,6 +2,7 @@ package com.vision.common.services.auth;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -69,6 +70,8 @@ public class AuthService {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    Log.d("tag", "AuthService->createGroupWithDevice(): SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.groupAlreadyExist();
                     onError.onError(serviceError);
                 } else {
@@ -95,6 +98,8 @@ public class AuthService {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("tag", "AuthService->createGroupWithDevice(): ON_CANCELLED");
+
                 ServiceError serviceError = AuthServiceErrors.firebaseFailure();
                 onError.onError(serviceError);
             }
@@ -115,6 +120,8 @@ public class AuthService {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
+                    Log.d("tag", "AuthService->registerDeviceInGroup(): SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.groupNotExist();
                     onError.onError(serviceError);
                     return;
@@ -122,6 +129,8 @@ public class AuthService {
 
                 DataSnapshot passwordSnapshot = snapshot.child(groupPassword);
                 if (!passwordSnapshot.exists()) {
+                    Log.d("tag", "AuthService->registerDeviceInGroup(): PASSWORD_SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.incorrectGroupPassword();
                     onError.onError(serviceError);
                     return;
@@ -129,6 +138,8 @@ public class AuthService {
 
                 DataSnapshot deviceNameSnapshot = passwordSnapshot.child(deviceName);
                 if (deviceNameSnapshot.exists()) {
+                    Log.d("tag", "AuthService->registerDeviceInGroup(): DEVICE_NAME_SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.deviceNameAlreadyExist();
                     onError.onError(serviceError);
                     return;
@@ -156,6 +167,8 @@ public class AuthService {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("tag", "AuthService->registerDeviceInGroup(): ON_CANCELLED");
+
                 ServiceError serviceError = AuthServiceErrors.firebaseFailure();
                 onError.onError(serviceError);
             }
@@ -176,6 +189,8 @@ public class AuthService {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
+                    Log.d("tag", "AuthService->loginDeviceInGroup(): SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.groupNotExist();
                     onError.onError(serviceError);
                     return;
@@ -183,6 +198,8 @@ public class AuthService {
 
                 DataSnapshot passwordSnapshot = snapshot.child(groupPassword);
                 if (!passwordSnapshot.exists()) {
+                    Log.d("tag", "AuthService->loginDeviceInGroup(): PASSWORD_SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.incorrectGroupPassword();
                     onError.onError(serviceError);
                     return;
@@ -190,6 +207,8 @@ public class AuthService {
 
                 DataSnapshot deviceNameSnapshot = passwordSnapshot.child(deviceName);
                 if (!deviceNameSnapshot.exists()) {
+                    Log.d("tag", "AuthService->loginDeviceInGroup(): DEVICE_NAME_SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.deviceNameNotExist();
                     onError.onError(serviceError);
                     return;
@@ -205,6 +224,8 @@ public class AuthService {
 
                         long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();
                         if (isAliveDelta < AppConstants.IS_ALIVE_SIGNALING_PERIOD + 5000) {
+                            Log.d("tag", "AuthService->loginDeviceInGroup(): DEVICE_ALREADY_LOGGED_IN");
+
                             ServiceError serviceError = AuthServiceErrors.deviceAlreadyLoggedIn();
                             onError.onError(serviceError);
                             return;
@@ -243,6 +264,8 @@ public class AuthService {
                         );
                     }
                 } else {
+                    Log.d("tag", "AuthService->loginDeviceInGroup(): DEVICE_INFO_SNAPSHOT_NOT_EXIST");
+
                     ServiceError serviceError = AuthServiceErrors.firebaseFailure();
                     onError.onError(serviceError);
                 }
@@ -250,6 +273,8 @@ public class AuthService {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("tag", "AuthService->loginDeviceInGroup(): ON_CANCELLED");
+
                 ServiceError serviceError = AuthServiceErrors.firebaseFailure();
                 onError.onError(serviceError);
             }
@@ -278,6 +303,8 @@ public class AuthService {
         };
 
         OnFailureListener onFailureListener = e -> {
+            Log.d("tag", "AuthService->updateDeviceInfo()->ON_FAILURE: " + e.toString());
+
             ServiceError serviceError = AuthServiceErrors.firebaseFailure();
             onError.onError(serviceError);
         };

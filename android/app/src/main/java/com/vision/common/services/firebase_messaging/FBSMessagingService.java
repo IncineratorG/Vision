@@ -1,6 +1,8 @@
 package com.vision.common.services.firebase_messaging;
 
 
+import android.util.Log;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
@@ -10,7 +12,9 @@ import com.vision.common.services.firebase_messaging.data.FBSMessagingServiceErr
 public class FBSMessagingService {
     private static FBSMessagingService sInstance;
 
-    private final String DELIMITER = "/";
+    private String CORRECT_TOPIC_SYMBOLS = "[a-zA-Z0-9-_.~%]+";
+
+    private final String DELIMITER = "_";
 
     public FBSMessagingService() {
 
@@ -28,16 +32,22 @@ public class FBSMessagingService {
                                  OnTaskSuccess<Void> onSuccess,
                                  OnTaskError<ServiceError> onError) {
         FirebaseMessaging.getInstance().subscribeToTopic(topic)
-                .addOnFailureListener((data) -> onSuccess.onSuccess(null))
-                .addOnFailureListener((error) -> onError.onError(FBSMessagingServiceErrors.firebaseFailure()));
+                .addOnCompleteListener((data) -> onSuccess.onSuccess(null))
+                .addOnFailureListener((error) -> {
+                    Log.d("tag", "FBSMessagingService->subscribeToTopic()->ERROR: " + error.toString());
+                    onError.onError(FBSMessagingServiceErrors.firebaseFailure());
+                });
     }
 
     public void unsubscribeFromTopic(String topic,
                                      OnTaskSuccess<Void> onSuccess,
                                      OnTaskError<ServiceError> onError) {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
-                .addOnFailureListener((data) -> onSuccess.onSuccess(null))
-                .addOnFailureListener((error) -> onError.onError(FBSMessagingServiceErrors.firebaseFailure()));
+                .addOnCompleteListener((data) -> onSuccess.onSuccess(null))
+                .addOnFailureListener((error) -> {
+                    Log.d("tag", "FBSMessagingService->unsubscribeFromTopic()->ERROR: " + error.toString());
+                    onError.onError(FBSMessagingServiceErrors.firebaseFailure());
+                });
     }
 
     public String globalTopic(String groupName, String groupPassword) {

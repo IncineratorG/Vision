@@ -9,6 +9,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
+import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.surveillance.SurveillanceService;
 
 import org.json.JSONException;
@@ -41,26 +42,15 @@ public class FBSNotificationSender implements ServiceNotificationSender {
         SurveillanceService service = SurveillanceService.get();
 
         String currentGroupName = service.currentGroupName();
-        String currentDeviceName = service.currentDeviceName();
-
-        String topic = getToAllNotificationTopic();
-        String title = currentGroupName + "." + currentDeviceName;
-
-        send(notification, topic, title);
-    }
-
-    private String getToAllNotificationTopic() {
-        final String delimiter = "[]";
-
-        SurveillanceService service = SurveillanceService.get();
-
-        String currentGroupName = service.currentGroupName();
         String currentGroupPassword = service.currentGroupPassword();
         String currentDeviceName = service.currentDeviceName();
 
-        return currentGroupName + delimiter +
-                        currentGroupPassword + delimiter +
-                        currentDeviceName;
+        String topic = FBSMessagingService.get().globalTopic(currentGroupName, currentGroupPassword);
+        String title = currentGroupName + "." + currentDeviceName;
+
+        Log.d("tag", "FBSNotificationSender->sendNotificationToAll(): " + topic);
+
+        send(notification, topic, title);
     }
 
     private void send(ServiceNotification notification, String topic, String title) {
@@ -68,6 +58,11 @@ public class FBSNotificationSender implements ServiceNotificationSender {
         try {
             notificationJson.put("to", "/topics/" + topic);
 
+//            JSONObject data = new JSONObject();
+//            data.put("title", "Data Title");
+//            data.put("message", "Data Message");
+//            data.put("Custom Id", "My Custom Id");
+//            notificationJson.put("data", data);
             JSONObject data = new JSONObject();
             data.put("title", title);
             data.put("notification", notification.stringify());

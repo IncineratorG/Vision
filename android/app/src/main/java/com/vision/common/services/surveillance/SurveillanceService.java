@@ -145,7 +145,11 @@ public class SurveillanceService implements
                                    OnTaskSuccess<Void> onSuccess,
                                    OnTaskError<ServiceError> onError) {
         OnTaskSuccess<Void> successCallback = (data) -> {
-            OnTaskSuccess<Void> initSuccessCallback = (initData) -> onSuccess.onSuccess(null);
+            OnTaskSuccess<Void> initSuccessCallback = (initData) -> {
+                Log.d("tag", "SurveillanceService->loginDeviceInGroup(): 1");
+
+                onSuccess.onSuccess(null);
+            };
             OnTaskError<ServiceError> initErrorCallback = (errorData) -> onError.onError(errorData);
 
             init(context, groupName, groupPassword, deviceName, initSuccessCallback, initErrorCallback);
@@ -218,6 +222,8 @@ public class SurveillanceService implements
         String currentGlobalTopic = messagingService.globalTopic(currentGroupName(), currentGroupPassword());
 
         OnTaskSuccess<Void> successCallback = (data) -> {
+            Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications()->successCallback");
+
             storage.saveGlobalNotificationsTopic(context, currentGlobalTopic);
             onSuccess.onSuccess(null);
         };
@@ -231,10 +237,16 @@ public class SurveillanceService implements
         };
 
         if (savedGlobalTopic == null) {
+            Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 1");
+
             messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
         } else if (savedGlobalTopic.equals(currentGlobalTopic)) {
+            Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 2");
+
             messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
         } else {
+            Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 3");
+
             messagingService.unsubscribeFromTopic(
                     savedGlobalTopic,
                     (resultUnsubscribe) -> {
@@ -505,47 +517,52 @@ public class SurveillanceService implements
                       String deviceName,
                       OnTaskSuccess<Void> onSuccess,
                       OnTaskError<ServiceError> onError) {
-        mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
+        OnTaskSuccess<Void> successCallback = (data) -> {
+            Log.d("tag", "SurveillanceService->init(): 1");
 
-        List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
-                currentGroupName(),
-                currentGroupPassword(),
-                currentDeviceName()
-        );
-        List<String> currentResponsesPath = FBSPathsService.get().responsesPath(
-                currentGroupName(),
-                currentGroupPassword(),
-                currentDeviceName()
-        );
-        List<String> currentUpdateFieldPath = FBSPathsService.get().updateFieldPath(
-                currentGroupName(),
-                currentGroupPassword(),
-                currentDeviceName()
-        );
+            mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
 
-        mRequestsExecutor = new FBSRequestsExecutor();
-        mRequestsSender = new FBSRequestSender();
+            List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
+                    currentGroupName(),
+                    currentGroupPassword(),
+                    currentDeviceName()
+            );
+            List<String> currentResponsesPath = FBSPathsService.get().responsesPath(
+                    currentGroupName(),
+                    currentGroupPassword(),
+                    currentDeviceName()
+            );
+            List<String> currentUpdateFieldPath = FBSPathsService.get().updateFieldPath(
+                    currentGroupName(),
+                    currentGroupPassword(),
+                    currentDeviceName()
+            );
 
-        mResponsesExecutor = new FBSResponsesExecutor();
-        mResponseSender = new FBSResponseSender();
+            mRequestsExecutor = new FBSRequestsExecutor();
+            mRequestsSender = new FBSRequestSender();
 
-        mNotificationSender = new FBSNotificationSender(context);
+            mResponsesExecutor = new FBSResponsesExecutor();
+            mResponseSender = new FBSResponseSender();
 
-        mCommunicationManager = new FBSCommunicationManager(
-                mRequestsExecutor,
-                mResponsesExecutor,
-                mRequestsSender,
-                mResponseSender,
-                mNotificationSender,
-                currentRequestsPath,
-                currentResponsesPath,
-                currentUpdateFieldPath
-        );
+            mNotificationSender = new FBSNotificationSender(context);
 
-        mCommunicationManager.startIsAliveSignaling(context);
-        startListenToResponses(context);
+            mCommunicationManager = new FBSCommunicationManager(
+                    mRequestsExecutor,
+                    mResponsesExecutor,
+                    mRequestsSender,
+                    mResponseSender,
+                    mNotificationSender,
+                    currentRequestsPath,
+                    currentResponsesPath,
+                    currentUpdateFieldPath
+            );
 
-        subscribeToGlobalNotifications(context, onSuccess, onError);
+            mCommunicationManager.startIsAliveSignaling(context);
+            startListenToResponses(context);
+
+            onSuccess.onSuccess(null);
+        };
+        subscribeToGlobalNotifications(context, successCallback, onError);
     }
 
     private void dispose(Context context) {
