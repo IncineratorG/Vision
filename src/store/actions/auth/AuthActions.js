@@ -1,5 +1,7 @@
 const AuthActions = () => {
   const types = {
+    CLEAR_ALL_ERRORS: 'AA_CLEAR_ALL_ERRORS',
+
     REGISTER_DEVICE_IN_GROUP: 'AA_REGISTER_DEVICE_IN_GROUP',
     REGISTER_DEVICE_IN_GROUP_BEGIN: 'AA_REGISTER_DEVICE_IN_GROUP_BEGIN',
     REGISTER_DEVICE_IN_GROUP_FINISHED: 'AA_REGISTER_DEVICE_IN_GROUP_FINISHED',
@@ -19,6 +21,12 @@ const AuthActions = () => {
     LOGOUT_DEVICE_BEGIN: 'AA_LOGOUT_DEVICE_BEGIN',
     LOGOUT_DEVICE_FINISHED: 'AA_LOGOUT_DEVICE_FINISHED',
     LOGOUT_DEVICE_ERROR: 'AA_LOGOUT_DEVICE_ERROR',
+  };
+
+  const clearAllErrors = () => {
+    return {
+      type: types.CLEAR_ALL_ERRORS,
+    };
   };
 
   const registerDeviceInGroup = ({groupName, groupPassword, deviceName}) => {
@@ -138,6 +146,7 @@ const AuthActions = () => {
   return {
     types,
     actions: {
+      clearAllErrors,
       registerDeviceInGroup,
       registerDeviceInGroupBegin,
       registerDeviceInGroupFinished,

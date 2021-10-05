@@ -5,6 +5,7 @@ import useTranslation from '../../../utils/common/localization';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppRoutes from '../../../data/common/routes/AppRoutes';
 import useGainFocus from '../../../utils/common/hooks/common/useGainFocus';
+import AppActions from '../../../store/actions/AppActions';
 
 const useAuthorisationModel = () => {
   // ===
@@ -28,6 +29,8 @@ const useAuthorisationModel = () => {
     authorisationModes.login,
   );
   const [authorisationStatus, setAuthorisationStatus] = useState('');
+  const [authorisationStatusIsError, setAuthorisationStatusIsError] =
+    useState(false);
   const [groupName, setGroupName] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
   const [deviceName, setDeviceName] = useState('');
@@ -75,6 +78,7 @@ const useAuthorisationModel = () => {
   } = useSelector((store) => store.auth.loginDeviceInGroup);
 
   useEffect(() => {
+    setAuthorisationStatusIsError(false);
     if (registerDeviceInGroupInProgress) {
       setAuthorisationStatus(
         t('AuthorisationStatus_registerDeviceInGroupInProgress'),
@@ -96,6 +100,49 @@ const useAuthorisationModel = () => {
     loginDeviceInGroupInProgress,
     t,
   ]);
+
+  // ===
+  // =====
+  useEffect(() => {
+    const currentErrorCode = loginDeviceInGroupErrorCode
+      ? loginDeviceInGroupErrorCode
+      : createGroupWithDeviceErrorCode
+      ? createGroupWithDeviceErrorCode
+      : registerDeviceInGroupErrorCode
+      ? registerDeviceInGroupErrorCode
+      : '';
+
+    if (currentErrorCode) {
+      const errorMessage = mapAuthorisationErrorCodesToErrorMessages({
+        errorCode: currentErrorCode,
+      });
+
+      setAuthorisationStatus(errorMessage);
+      setAuthorisationStatusIsError(true);
+    } else {
+      setAuthorisationStatusIsError(false);
+    }
+  }, [
+    currentAuthorisationMode,
+    authorisationModes,
+    loginDeviceInGroupErrorCode,
+    createGroupWithDeviceErrorCode,
+    registerDeviceInGroupErrorCode,
+  ]);
+
+  useEffect(() => {
+    dispatch(AppActions.auth.actions.clearAllErrors());
+    setAuthorisationStatus('');
+    setAuthorisationStatusIsError(false);
+  }, [
+    groupName,
+    groupPassword,
+    deviceName,
+    currentAuthorisationMode,
+    dispatch,
+  ]);
+  // =====
+  // ===
 
   useEffect(() => {
     if (
@@ -124,6 +171,7 @@ const useAuthorisationModel = () => {
       authorisationModes,
       currentAuthorisationMode,
       authorisationStatus,
+      authorisationStatusIsError,
       groupName,
       groupPassword,
       deviceName,
@@ -145,6 +193,54 @@ const useAuthorisationModel = () => {
     navigation,
     dispatch,
   };
+};
+
+const mapAuthorisationErrorCodesToErrorMessages = ({errorCode}) => {
+  switch (errorCode) {
+    case '5': {
+      return 'Укажите название группы';
+    }
+
+    case '6': {
+      return 'Введите пароль от группы';
+    }
+
+    case '7': {
+      return 'Введите название устройства';
+    }
+
+    case '8': {
+      return 'Указанная группа не зарегестрирована';
+    }
+
+    case '9': {
+      return 'Указанная группа уже существует';
+    }
+
+    case '12': {
+      return 'Неправилльный пароль от группы';
+    }
+
+    case '13': {
+      return 'Название устройства уже занято';
+    }
+
+    case '15': {
+      return 'Устройство уже в сети';
+    }
+
+    case '16': {
+      return 'Неверное имя устройства';
+    }
+
+    case '17': {
+      return 'Не удалось связаться с сервисом';
+    }
+
+    default: {
+      return 'Неизвестная ошибка';
+    }
+  }
 };
 
 export default useAuthorisationModel;

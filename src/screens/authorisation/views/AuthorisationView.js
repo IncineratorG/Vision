@@ -12,6 +12,7 @@ const AuthorisationView = ({model, controller}) => {
       authorisationModes,
       currentAuthorisationMode,
       authorisationStatus,
+      authorisationStatusIsError,
       groupName,
       groupPassword,
       deviceName,
@@ -42,6 +43,7 @@ const AuthorisationView = ({model, controller}) => {
     <AuthorisationStatus
       show={!!authorisationStatus}
       text={authorisationStatus}
+      isError={authorisationStatusIsError}
     />
   );
   const inputFieldsComponent = (

@@ -43,6 +43,48 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    case AppActions.auth.types.CLEAR_ALL_ERRORS: {
+      return {
+        ...state,
+        registerDeviceInGroup: {
+          ...state.registerDeviceInGroup,
+          error: {
+            ...state.registerDeviceInGroup.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+        createGroupWithDevice: {
+          ...state.createGroupWithDevice,
+          error: {
+            ...state.createGroupWithDevice.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+        loginDeviceInGroup: {
+          ...state.loginDeviceInGroup,
+          error: {
+            ...state.loginDeviceInGroup.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+        logoutDeviceFromGroup: {
+          ...state.logoutDeviceFromGroup,
+          error: {
+            ...state.logoutDeviceFromGroup.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
     case AppActions.auth.types.REGISTER_DEVICE_IN_GROUP_BEGIN: {
       return {
         ...state,
