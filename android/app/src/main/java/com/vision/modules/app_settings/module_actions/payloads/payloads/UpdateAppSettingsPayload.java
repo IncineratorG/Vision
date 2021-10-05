@@ -1,36 +1,31 @@
 package com.vision.modules.app_settings.module_actions.payloads.payloads;
 
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.modules.modules_common.interfaces.js_payload.JSPayload;
 
 public class UpdateAppSettingsPayload implements JSPayload {
-//    private final String GROUP_NAME_FIELD = "groupName";
-//    private final String GROUP_PASSWORD_FIELD = "groupPassword";
-//    private final String DEVICE_NAME_FIELD = "deviceName";
-//
-//    private String mGroupName;
-//    private String mGroupPassword;
-//    private String mDeviceName;
+    private final String APP_SETTINGS_FIELD = "appSettings";
+
+    private ReadableMap mSettingsMap;
 
     public UpdateAppSettingsPayload(ReadableMap readableMap) {
-//        if (readableMap == null) {
-//            return;
-//        }
+        if (readableMap == null) {
+            Log.d("tag", "UpdateAppSettingsPayload->READABLE_MAP_IS_NULL");
+            return;
+        }
 
-//        mGroupName = readableMap.getString(GROUP_NAME_FIELD);
-//        mGroupPassword = readableMap.getString(GROUP_PASSWORD_FIELD);
-//        mDeviceName = readableMap.getString(DEVICE_NAME_FIELD);
+        mSettingsMap = readableMap.getMap(APP_SETTINGS_FIELD);
     }
 
     @Override
     public boolean isValid() {
-        return true;
+        return mSettingsMap != null;
+    }
 
-//        if (mGroupName == null || mGroupPassword == null || mDeviceName == null) {
-//            return false;
-//        }
-//
-//        return !mGroupName.isEmpty() && !mGroupPassword.isEmpty() && !mDeviceName.isEmpty();
+    public ReadableMap settingsMap() {
+        return mSettingsMap;
     }
 }

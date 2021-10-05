@@ -1,7 +1,10 @@
 package com.vision.common.services.app_settings;
 
 
+import android.content.Context;
+
 import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
+import com.vision.common.services.app_storages.AppStorages;
 
 public class AppSettingsService {
     private static AppSettingsService sInstance;
@@ -18,11 +21,11 @@ public class AppSettingsService {
         return sInstance;
     }
 
-    public AppSettings getCurrentAppSettings() {
+    public AppSettings getAppSettingsForGroup(Context context, String groupName) {
         return null;
     }
 
-    public void updateCurrentAppSettings(AppSettings settings) {
+    public void updateAppSettingsForGroup(Context context, String groupName, AppSettings settings) {
 
     }
 }

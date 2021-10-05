@@ -75,6 +75,7 @@ const useGroupModel = () => {
     });
     setScreenFocused(true);
 
+    dispatch(AppActions.appSettings.actions.getAppSettings());
     dispatch(
       AppActions.surveillanceCommon.actions.getDevicesInGroup({
         groupName: currentGroupName,

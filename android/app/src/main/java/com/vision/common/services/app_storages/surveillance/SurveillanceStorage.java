@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.tencent.mmkv.MMKV;
+import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.services.app_storages.helper.AppStoragesHelper;
 
 public class SurveillanceStorage {
@@ -25,6 +26,16 @@ public class SurveillanceStorage {
         return mmkv.encode(NOTIFICATIONS_TOPIC_KEY, topic);
     }
 
+    public String getGlobalNotificationsTopic(Context context) {
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, NOTIFICATIONS_TOPIC_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->getGlobalNotificationsTopic()->MMKV_IS_NULL");
+            return null;
+        }
+
+        return mmkv.decodeString(NOTIFICATIONS_TOPIC_KEY);
+    }
+
     public boolean removeGlobalNotificationsTopic(Context context) {
         MMKV mmkv = AppStoragesHelper.mmkvWithID(context, NOTIFICATIONS_TOPIC_MMKV_ID);
         if (mmkv == null) {
@@ -36,13 +47,15 @@ public class SurveillanceStorage {
         return true;
     }
 
-    public String getGlobalNotificationsTopic(Context context) {
-        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, NOTIFICATIONS_TOPIC_MMKV_ID);
-        if (mmkv == null) {
-            Log.d("tag", "SurveillanceStorage->getGlobalNotificationsTopic()->MMKV_IS_NULL");
-            return null;
-        }
+    public boolean saveAppSettingsForGroup(Context context, String groupName, AppSettings settings) {
+        return false;
+    }
 
-        return mmkv.decodeString(NOTIFICATIONS_TOPIC_KEY);
+    public AppSettings getAppSettingsFroGroup(Context context, String groupName) {
+        return null;
+    }
+
+    public boolean removeAppSettingsForGroup(Context context, String groupName) {
+        return false;
     }
 }

@@ -9,8 +9,8 @@ const NativeAppSettings = () => {
     return await nativeAppSettingsService.execute(action);
   };
 
-  const updateAppSettings = async () => {
-    const action = NativeAppSettingsActions.updateAppSettings();
+  const updateAppSettings = async ({appSettings}) => {
+    const action = NativeAppSettingsActions.updateAppSettings({appSettings});
     return await nativeAppSettingsService.execute(action);
   };
 

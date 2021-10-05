@@ -1,4 +1,4 @@
-import {call, put, select} from '@redux-saga/core/effects';
+import {call, put} from '@redux-saga/core/effects';
 import AppActions from '../../../actions/AppActions';
 import Services from '../../../../services/Services';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';

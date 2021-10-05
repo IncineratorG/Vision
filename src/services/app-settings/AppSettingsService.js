@@ -7,8 +7,8 @@ const AppSettingsService = () => {
     return await nativeAppSettingsService.getAppSettings();
   };
 
-  const updateAppSettings = async () => {
-    return await nativeAppSettingsService.updateAppSettings();
+  const updateAppSettings = async ({appSettings}) => {
+    return await nativeAppSettingsService.updateAppSettings({appSettings});
   };
 
   return {

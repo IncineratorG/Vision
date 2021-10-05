@@ -11,9 +11,10 @@ const NativeAppSettingsActions = () => {
     };
   };
 
-  const updateAppSettings = () => {
+  const updateAppSettings = ({appSettings}) => {
     return {
       type: UPDATE_APP_SETTINGS,
+      payload: {appSettings},
     };
   };
 
