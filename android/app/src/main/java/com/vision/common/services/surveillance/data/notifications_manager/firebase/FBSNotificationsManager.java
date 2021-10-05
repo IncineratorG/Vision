@@ -131,11 +131,12 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
                 && currentDeviceName != null
                 && currentGroupName.equals(notificationGroupName)
                 && currentDeviceName.equals(notificationDeviceName)) {
-            Log.d("tag", "FBSNotificationsManager->needHandlerNotification(): NOTIFICATION_SENT_FROM_CURRENT_DEVICE->WILL_NOT_PROCESS");
+            Log.d("tag", "FBSNotificationsManager->needHandleNotification(): NOTIFICATION_SENT_FROM_CURRENT_DEVICE->WILL_NOT_PROCESS");
             return false;
         }
 
         if (currentDeviceMode.equals(AppConstants.DEVICE_MODE_SERVICE)) {
+            Log.d("tag", "FBSNotificationsManager->needHandleNotification(): CURRENT_DEVICE_IN_SERVICE_MODE->WILL_NOT_PROCESS");
             return false;
         }
 
