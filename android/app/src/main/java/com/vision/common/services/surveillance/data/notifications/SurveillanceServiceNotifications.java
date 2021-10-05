@@ -6,12 +6,16 @@ import com.vision.common.services.surveillance.data.notifications.payloads.paylo
 import com.vision.common.services.surveillance.data.notifications.types.SurveillanceServiceNotificationTypes;
 
 public class SurveillanceServiceNotifications {
-    public static ServiceNotification testNotification(String testValue) {
+    public static ServiceNotification testNotification(String senderGroupName,
+                                                       String senderDeviceName,
+                                                       String testValue) {
         TestNotificationPayload payload =
                 SurveillanceServiceNotificationPayloads.testNotificationPayload(testValue);
 
         return new ServiceNotification(
                 SurveillanceServiceNotificationTypes.TEST_NOTIFICATION,
+                senderGroupName,
+                senderDeviceName,
                 payload.jsonObject()
         );
     }

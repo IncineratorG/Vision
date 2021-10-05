@@ -36,7 +36,7 @@ public class FBSNotificationSender implements ServiceNotificationSender {
     }
 
     @Override
-    public void sendNotificationToAll(ServiceNotification notification) {
+    public void sendNotificationToAll(Context context, ServiceNotification notification) {
         Log.d("tag","FBSNotificationSender->sendToAll()");
 
         SurveillanceService service = SurveillanceService.get();
@@ -46,14 +46,14 @@ public class FBSNotificationSender implements ServiceNotificationSender {
         String currentDeviceName = service.currentDeviceName();
 
         String topic = FBSMessagingService.get().globalTopic(currentGroupName, currentGroupPassword);
-        String title = currentGroupName + "." + currentDeviceName;
+//        String title = currentGroupName + "." + currentDeviceName;
 
         Log.d("tag", "FBSNotificationSender->sendNotificationToAll(): " + topic);
 
-        send(notification, topic, title);
+        send(notification, topic);
     }
 
-    private void send(ServiceNotification notification, String topic, String title) {
+    private void send(ServiceNotification notification, String topic) {
         JSONObject notificationJson = new JSONObject();
         try {
             notificationJson.put("to", "/topics/" + topic);
@@ -64,7 +64,7 @@ public class FBSNotificationSender implements ServiceNotificationSender {
 //            data.put("Custom Id", "My Custom Id");
 //            notificationJson.put("data", data);
             JSONObject data = new JSONObject();
-            data.put("title", title);
+//            data.put("title", title);
             data.put("notification", notification.stringify());
             notificationJson.put("data", data);
 

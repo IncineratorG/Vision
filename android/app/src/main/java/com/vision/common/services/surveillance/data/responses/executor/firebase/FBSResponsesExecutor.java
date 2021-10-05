@@ -8,7 +8,7 @@ import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
-import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
+import com.vision.common.interfaces.service_responses_executor.ServiceResponsesExecutor;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;

@@ -44,6 +44,6 @@ public class TestNotificationPayload implements ServiceNotificationPayload {
 
     @Override
     public JSONObject jsonObject() {
-        return null;
+        return mJsonObject;
     }
 }

@@ -21,9 +21,9 @@ import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
-import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
+import com.vision.common.interfaces.service_responses_executor.ServiceResponsesExecutor;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_communication.data.FBSListenerId;
 
@@ -46,17 +46,13 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
     private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceRequestSender mRequestSender;
     private ServiceResponseSender mResponseSender;
-    private ServiceNotificationSender mNotificationSender;
 
     private Timer mIsAliveSignalingTimer;
-
-//    private ScheduledThreadPoolExecutor mIsAliveSignalingExecutor;
 
     public FBSCommunicationManager(ServiceRequestsExecutor requestsExecutor,
                                    ServiceResponsesExecutor responsesExecutor,
                                    ServiceRequestSender requestSender,
                                    ServiceResponseSender responseSender,
-                                   ServiceNotificationSender notificationSender,
                                    List<String> requestsPath,
                                    List<String> responsesPath,
                                    List<String> updateInfoPath) {
@@ -64,7 +60,6 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
         mResponsesExecutor = responsesExecutor;
         mRequestSender = requestSender;
         mResponseSender = responseSender;
-        mNotificationSender = notificationSender;
         mRequestsPath = requestsPath;
         mResponsesPath = responsesPath;
         mUpdateInfoPath = updateInfoPath;
@@ -292,11 +287,6 @@ public class FBSCommunicationManager implements ServiceCommunicationManager {
                              String receiverDeviceName,
                              ServiceResponse response) {
         mResponseSender.sendResponse(groupName, groupPassword, receiverDeviceName, response);
-    }
-
-    @Override
-    public void sendNotificationToAll(ServiceNotification notification) {
-
     }
 
     private void setServiceAliveStatus() {

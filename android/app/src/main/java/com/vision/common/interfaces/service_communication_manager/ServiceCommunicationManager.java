@@ -11,8 +11,7 @@ import com.vision.common.interfaces.service_response_sender.ServiceResponseSende
 public interface ServiceCommunicationManager extends
         ServiceRequestSender,
         ServiceResponseSender,
-        ServiceRequestInterrupter,
-        ServiceNotificationSender {
+        ServiceRequestInterrupter {
     void startIsAliveSignaling(Context context);
     void stopIsAliveSignaling(Context context);
     void startRequestsListener(Context context);

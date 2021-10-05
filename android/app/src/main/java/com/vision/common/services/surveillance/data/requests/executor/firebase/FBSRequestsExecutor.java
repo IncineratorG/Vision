@@ -11,10 +11,9 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.handlers.is_device_alive.IsDeviceAliveServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_fron_camera_image.TakeFrontCameraImageServiceHandler;
-import com.vision.common.services.surveillance.data.requests.handlers.test.TestRequestServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.unknown.UnknownRequestServiceHandler;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 
 import java.util.HashMap;

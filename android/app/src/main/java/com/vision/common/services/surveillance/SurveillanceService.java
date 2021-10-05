@@ -21,8 +21,10 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
 import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
+import com.vision.common.interfaces.service_notifications_executor.ServiceNotificationsExecutor;
+import com.vision.common.interfaces.service_notifications_manager.ServiceNotificationsManager;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
-import com.vision.common.interfaces.service_responses_handler.ServiceResponsesExecutor;
+import com.vision.common.interfaces.service_responses_executor.ServiceResponsesExecutor;
 import com.vision.common.services.app_storages.AppStorages;
 import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.common.services.auth.AuthService;
@@ -39,9 +41,9 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDe
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
-import com.vision.common.services.surveillance.data.notifications.sender.firebase.FBSNotificationSender;
+import com.vision.common.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
 import com.vision.common.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
-import com.vision.common.interfaces.service_requests_handler.ServiceRequestsExecutor;
+import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
 import com.vision.common.services.surveillance.data.requests.executor.firebase.FBSRequestsExecutor;
@@ -70,6 +72,7 @@ public class SurveillanceService implements
     private ServiceResponseSender mResponseSender;
     private ServiceNotificationSender mNotificationSender;
     private ServiceCommunicationManager mCommunicationManager;
+    private ServiceNotificationsManager mNotificationsManager;
     private PowerManager.WakeLock mServiceWakeLock;
 
     private SurveillanceService() {
@@ -502,8 +505,19 @@ public class SurveillanceService implements
     }
 
     @Override
-    public void sendNotificationToAll(ServiceNotification notification) {
-        mNotificationSender.sendNotificationToAll(notification);
+    public void sendNotificationToAll(Context context, ServiceNotification notification) {
+        if (mNotificationsManager == null) {
+            mNotificationsManager = new FBSNotificationsManager();
+        }
+        mNotificationsManager.sendNotificationToAll(context, notification);
+    }
+
+    public ServiceNotificationsExecutor notificationsExecutor() {
+        if (mNotificationsManager == null) {
+            mNotificationsManager = new FBSNotificationsManager();
+        }
+
+        return mNotificationsManager;
     }
 
     public ForegroundServiceWork foregroundServiceWork() {
@@ -544,14 +558,11 @@ public class SurveillanceService implements
             mResponsesExecutor = new FBSResponsesExecutor();
             mResponseSender = new FBSResponseSender();
 
-            mNotificationSender = new FBSNotificationSender(context);
-
             mCommunicationManager = new FBSCommunicationManager(
                     mRequestsExecutor,
                     mResponsesExecutor,
                     mRequestsSender,
                     mResponseSender,
-                    mNotificationSender,
                     currentRequestsPath,
                     currentResponsesPath,
                     currentUpdateFieldPath

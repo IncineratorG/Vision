@@ -15,6 +15,8 @@ public class ServiceNotification implements Stringifiable {
     private final String ID_FIELD = "id";
     private final String TIMESTAMP_FIELD = "timestamp";
     private final String TYPE_FIELD = "type";
+    private final String SENDER_GROUP_NAME = "senderGroupName";
+    private final String SENDER_DEVICE_NAME = "senderDeviceName";
     private final String PAYLOAD_FIELD = "payload";
 
     private JSONObject mNotification;
@@ -29,13 +31,18 @@ public class ServiceNotification implements Stringifiable {
             mNotification.put(ID_FIELD, id);
             mNotification.put(TIMESTAMP_FIELD, timestamp);
             mNotification.put(TYPE_FIELD, type);
+            mNotification.put(SENDER_GROUP_NAME, "");
+            mNotification.put(SENDER_DEVICE_NAME, "");
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d("tag", "ServiceNotification->ERROR_CREATING_NOTIFICATION");
         }
     }
 
-    public ServiceNotification(String type, JSONObject payload) {
+    public ServiceNotification(String type,
+                               String senderGroupName,
+                               String senderDeviceName,
+                               JSONObject payload) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String id = UUID.randomUUID().toString() + timestamp;
 
@@ -44,6 +51,8 @@ public class ServiceNotification implements Stringifiable {
             mNotification.put(ID_FIELD, id);
             mNotification.put(TIMESTAMP_FIELD, timestamp);
             mNotification.put(TYPE_FIELD, type);
+            mNotification.put(SENDER_GROUP_NAME, senderGroupName);
+            mNotification.put(SENDER_DEVICE_NAME, senderDeviceName);
             if (payload != null) {
                 mNotification.put(PAYLOAD_FIELD, payload);
             }
@@ -122,6 +131,36 @@ public class ServiceNotification implements Stringifiable {
             e.printStackTrace();
         }
         return type;
+    }
+
+    public String senderGroupName() {
+        if (mNotification == null) {
+            Log.d("tag", "ServiceNotification->senderGroupName(): NOTIFICATION_IS_NULL");
+            return null;
+        }
+
+        String senderGroupName = null;
+        try {
+            senderGroupName = mNotification.getString(SENDER_GROUP_NAME);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return senderGroupName;
+    }
+
+    public String senderDeviceName() {
+        if (mNotification == null) {
+            Log.d("tag", "ServiceNotification->senderDeviceName(): NOTIFICATION_IS_NULL");
+            return null;
+        }
+
+        String senderDeviceName = null;
+        try {
+            senderDeviceName = mNotification.getString(SENDER_DEVICE_NAME);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return senderDeviceName;
     }
 
     public JSONObject payload() {

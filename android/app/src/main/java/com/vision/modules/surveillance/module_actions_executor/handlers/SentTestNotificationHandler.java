@@ -15,10 +15,13 @@ public class SentTestNotificationHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "SentTestNotificationHandler->handle()");
 
-        ServiceNotification testNotification =
-                SurveillanceServiceNotifications.testNotification("My Test Value");
+        String groupName = SurveillanceService.get().currentGroupName();
+        String deviceName = SurveillanceService.get().currentDeviceName();
 
-        SurveillanceService.get().sendNotificationToAll(testNotification);
+        ServiceNotification testNotification =
+                SurveillanceServiceNotifications.testNotification(groupName, deviceName, "My Test Value");
+
+        SurveillanceService.get().sendNotificationToAll(context, testNotification);
 
         result.resolve(true);
     }
