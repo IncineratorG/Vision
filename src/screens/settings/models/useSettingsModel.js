@@ -22,6 +22,11 @@ const useSettingsModel = () => {
   const frontCameraImageQuality = useSelector(
     (state) => state.appSettings.surveillance.frontCameraImage.quality,
   );
+  const receiveNotificationsFromCurrentGroup = useSelector(
+    (state) =>
+      state.appSettings.surveillance.notifications
+        .receiveNotificationsFromCurrentGroup,
+  );
 
   return {
     data: {
@@ -29,6 +34,7 @@ const useSettingsModel = () => {
       backCameraImageQualityDialogVisible,
       frontCameraImageQuality,
       frontCameraImageQualityDialogVisible,
+      receiveNotificationsFromCurrentGroup,
     },
     setters: {
       setBackCameraImageQualityVisible,

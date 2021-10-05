@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {List} from 'react-native-paper';
+import {List, Checkbox} from 'react-native-paper';
 import useTranslation from '../../../utils/common/localization';
 import CameraImageQuality from '../../../data/common/camera-image-quality/CameraImageQuality';
 import BackCameraImageQualityDialog from '../../../components/specific/settings/back-camera-image-quality-dialog/BackCameraImageQualityDialog';
@@ -15,6 +15,7 @@ const SettingsView = ({model, controller}) => {
       backCameraImageQualityDialogVisible,
       frontCameraImageQuality,
       frontCameraImageQualityDialogVisible,
+      receiveNotificationsFromCurrentGroup,
     },
   } = model;
 
@@ -25,6 +26,7 @@ const SettingsView = ({model, controller}) => {
     frontCameraImageQualityPressHandler,
     frontCameraImageQualityDialogCancelPressHandler,
     frontCameraImageQualityDialogImageQualitySelectHandler,
+    receiveNotificationsFromCurrentGroupPressHandler,
   } = controller;
 
   const backCameraImageQualityDialog = (
@@ -82,6 +84,19 @@ const SettingsView = ({model, controller}) => {
               : t('SettingsView_frontCameraImageQualityUnknown')
           }
           onPress={frontCameraImageQualityPressHandler}
+        />
+      </List.Section>
+      <List.Section>
+        <List.Subheader>
+          {t('SettingsView_notificationsSubheader')}
+        </List.Subheader>
+        <Checkbox.Item
+          style={{borderBottomColor: 'lightgrey', borderBottomWidth: 1}}
+          label={t('SettingsView_receiveNotificationsFromCurrentGroup')}
+          status={
+            receiveNotificationsFromCurrentGroup ? 'checked' : 'unchecked'
+          }
+          onPress={receiveNotificationsFromCurrentGroupPressHandler}
         />
       </List.Section>
       {backCameraImageQualityDialog}

@@ -1,4 +1,4 @@
-package com.vision.android_services.firebase_messaging;
+package com.vision.android_services.background.firebase_messaging;
 
 
 import android.util.Log;
@@ -10,7 +10,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.services.surveillance.SurveillanceService;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FirebaseMessagingBackgroundService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         Log.d("tag", "MyFirebaseMessagingService->onNewToken(): " + token);

@@ -9,6 +9,9 @@ const initialState = {
     frontCameraImage: {
       quality: CameraImageQuality.LOW,
     },
+    notifications: {
+      receiveNotificationsFromCurrentGroup: true,
+    },
   },
 };
 
@@ -43,6 +46,22 @@ const appSettingsReducer = (state = initialState, action) => {
           frontCameraImage: {
             ...state.surveillance.frontCameraImage,
             quality: imageQuality,
+          },
+        },
+      };
+    }
+
+    case AppActions.appSettings.types
+      .SET_RECEIVE_NOTIFICATIONS_FROM_CURRENT_GROUP: {
+      const {receive} = action.payload;
+
+      return {
+        ...state,
+        surveillance: {
+          ...state.surveillance,
+          notifications: {
+            ...state.surveillance.notifications,
+            receiveNotificationsFromCurrentGroup: receive,
           },
         },
       };

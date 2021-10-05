@@ -6,6 +6,7 @@ const useSettingsController = (model) => {
   const {
     navigation,
     dispatch,
+    data: {receiveNotificationsFromCurrentGroup},
     setters: {
       setBackCameraImageQualityVisible,
       setFrontCameraImageQualityVisible,
@@ -52,6 +53,14 @@ const useSettingsController = (model) => {
     [setFrontCameraImageQualityVisible, dispatch],
   );
 
+  const receiveNotificationsFromCurrentGroupPressHandler = useCallback(() => {
+    dispatch(
+      AppActions.appSettings.actions.setReceiveNotificationsFromCurrentGroup({
+        receive: !receiveNotificationsFromCurrentGroup,
+      }),
+    );
+  }, [receiveNotificationsFromCurrentGroup, dispatch]);
+
   return {
     backCameraImageQualityPressHandler,
     backCameraImageQualityDialogCancelPressHandler,
@@ -59,6 +68,7 @@ const useSettingsController = (model) => {
     frontCameraImageQualityPressHandler,
     frontCameraImageQualityDialogCancelPressHandler,
     frontCameraImageQualityDialogImageQualitySelectHandler,
+    receiveNotificationsFromCurrentGroupPressHandler,
   };
 };
 

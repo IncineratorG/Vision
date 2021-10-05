@@ -245,7 +245,8 @@ public class SurveillanceService implements
         } else if (savedGlobalTopic.equals(currentGlobalTopic)) {
             Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 2");
 
-            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
+            successCallback.onSuccess(null);
+//            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
         } else {
             Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 3");
 

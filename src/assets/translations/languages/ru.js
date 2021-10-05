@@ -78,6 +78,9 @@ const ru = {
   SettingsView_frontCameraImageQualityMedium: 'Среднее',
   SettingsView_frontCameraImageQualityLow: 'Низкое',
   SettingsView_frontCameraImageQualityUnknown: 'Неизвестно',
+  SettingsView_notificationsSubheader: 'Уведомления',
+  SettingsView_receiveNotificationsFromCurrentGroup:
+    'Получать уведомления из текущей группы',
 
   BackCameraImageQualityDialog_title: 'Качество изображения задней камеры',
   BackCameraImageQualityDialog_cancelButton: 'ОТМЕНА',

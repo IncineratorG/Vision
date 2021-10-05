@@ -30,7 +30,7 @@
       android:theme="@style/AppTheme">
       <service android:name=".android_services.foreground.surveillance.SurveillanceForegroundService" />
       <service
-          android:name=".android_services.firebase_messaging.MyFirebaseMessagingService"
+          android:name=".android_services.background.firebase_messaging.FirebaseMessagingBackgroundService"
           android:exported="false">
           <intent-filter>
               <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
