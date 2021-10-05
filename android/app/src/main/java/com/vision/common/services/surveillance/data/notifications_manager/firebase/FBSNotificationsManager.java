@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vision.MainActivity;
 import com.vision.R;
+import com.vision.common.constants.AppConstants;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_handler.ServiceNotificationHandler;
 import com.vision.common.interfaces.service_notifications_manager.ServiceNotificationsManager;
@@ -119,6 +120,7 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
     }
 
     private boolean needHandleNotification(Context context, ServiceNotification notification) {
+        String currentDeviceMode = SurveillanceService.get().currentServiceMode();
         String currentGroupName = SurveillanceService.get().currentGroupName();
         String currentDeviceName = SurveillanceService.get().currentDeviceName();
 
@@ -130,6 +132,10 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
                 && currentGroupName.equals(notificationGroupName)
                 && currentDeviceName.equals(notificationDeviceName)) {
             Log.d("tag", "FBSNotificationsManager->needHandlerNotification(): NOTIFICATION_SENT_FROM_CURRENT_DEVICE->WILL_NOT_PROCESS");
+            return false;
+        }
+
+        if (currentDeviceMode.equals(AppConstants.DEVICE_MODE_SERVICE)) {
             return false;
         }
 

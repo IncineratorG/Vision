@@ -70,7 +70,6 @@ public class SurveillanceService implements
     private ServiceRequestSender mRequestsSender;
     private ServiceResponsesExecutor mResponsesExecutor;
     private ServiceResponseSender mResponseSender;
-    private ServiceNotificationSender mNotificationSender;
     private ServiceCommunicationManager mCommunicationManager;
     private ServiceNotificationsManager mNotificationsManager;
     private PowerManager.WakeLock mServiceWakeLock;
