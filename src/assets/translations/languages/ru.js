@@ -111,6 +111,17 @@ const ru = {
 
   GroupDeviceItem_deviceOnline: 'В сети',
   GroupDeviceItem_deviceOffline: 'Не сети',
+
+  CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressStatusText:
+    'Получение изображения',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressRightButtonText:
+    'ОТМЕНА',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedStatusText:
+    'Изображение получено',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedLeftButtonText:
+    'ПОСМОТРЕТЬ',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedRightButtonText:
+    'ЗАКРЫТЬ',
 };
 
 export default ru;

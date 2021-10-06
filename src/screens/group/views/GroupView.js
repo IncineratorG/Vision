@@ -6,6 +6,7 @@ import DeviceRequestsDialog from '../../../components/specific/group/device-requ
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
 import RequestStatusDialog from '../../../components/specific/group/request-status-dialog/RequestStatusDialog';
 import ImageViewerModal from '../../../components/specific/group/image-viewer-modal/ImageViewerModal';
+import CurrentRequestStatusDialog from '../../../components/specific/group/current-request-status-dialog/CurrentRequestStatusDialog';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -14,8 +15,6 @@ const GroupView = ({model, controller}) => {
       loadingDevicesInGroup,
       isDeviceAliveRequestInProgress,
       selectedDeviceAlive,
-      // takeBackCameraImageRequestInProgress,
-      // selectedDeviceBackCameraImage,
       localState: {
         deviceRequestsDialog: {
           visible: deviceRequestsDialogVisible,
@@ -35,6 +34,19 @@ const GroupView = ({model, controller}) => {
           responseData: requestStatusDialogResponseData,
           canViewResponse: requestStatusDialogCanViewResponse,
           responseViewerCallback: requestStatusDialogResponseViewerCallback,
+        },
+        currentRequestStatusDialog: {
+          visible: currentRequestStatusDialogVisible,
+          statusText: currentRequestStatusDialogStatusText,
+          leftButtonVisible: currentRequestStatusDialogLeftButtonVisible,
+          leftButtonText: currentRequestStatusDialogLeftButtonText,
+          leftButtonPressHandler:
+            currentRequestStatusDialogLeftButtonPressHandler,
+          rightButtonVisible: currentRequestStatusDialogRightButtonVisible,
+          rightButtonText: currentRequestStatusDialogRightButtonText,
+          rightButtonPressHandler:
+            currentRequestStatusDialogRightButtonPressHandler,
+          onCancel: currentRequestStatusDialogOnCancel,
         },
         imageViewer: {visible: imageViewerVisible, image: imageViewerImage},
       },
@@ -111,6 +123,22 @@ const GroupView = ({model, controller}) => {
     />
   );
 
+  const currentRequestStatusDialog = (
+    <CurrentRequestStatusDialog
+      visible={currentRequestStatusDialogVisible}
+      statusText={currentRequestStatusDialogStatusText}
+      leftButtonVisible={currentRequestStatusDialogLeftButtonVisible}
+      leftButtonText={currentRequestStatusDialogLeftButtonText}
+      leftButtonPressHandler={currentRequestStatusDialogLeftButtonPressHandler}
+      rightButtonVisible={currentRequestStatusDialogRightButtonVisible}
+      rightButtonText={currentRequestStatusDialogRightButtonText}
+      rightButtonPressHandler={
+        currentRequestStatusDialogRightButtonPressHandler
+      }
+      onCancel={currentRequestStatusDialogOnCancel}
+    />
+  );
+
   const imageViewer = (
     <ImageViewerModal
       visible={imageViewerVisible}
@@ -151,7 +179,7 @@ const GroupView = ({model, controller}) => {
       {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
-      {requestStatusDialog}
+      {currentRequestStatusDialog}
       {imageViewer}
     </View>
   );

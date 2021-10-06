@@ -1,5 +1,7 @@
 const SurveillanceTakeBackCameraImageRequestActions = () => {
   const types = {
+    CLEAR: 'STBCIRA_CLEAR',
+
     SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST:
       'STBCIRA_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST',
     SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_BEGIN:
@@ -14,6 +16,12 @@ const SurveillanceTakeBackCameraImageRequestActions = () => {
       'STBCIRA_CANCEL_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST',
     SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_CANCELLED:
       'STBCIRA_SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_CANCELLED',
+  };
+
+  const clear = () => {
+    return {
+      type: types.CLEAR,
+    };
   };
 
   const sendTakeBackCameraImageRequest = ({receiverDeviceName}) => {
@@ -65,6 +73,7 @@ const SurveillanceTakeBackCameraImageRequestActions = () => {
   return {
     types,
     actions: {
+      clear,
       sendTakeBackCameraImageRequest,
       sendTakeBackCameraImageRequestBegin,
       sendTakeBackCameraImageRequestSended,

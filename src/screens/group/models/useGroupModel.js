@@ -53,7 +53,7 @@ const useGroupModel = () => {
     (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
   );
 
-  useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch});
+  useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch});
   useToggleDetectDeviceMovementRequestGroupScreenBehavior({localDispatch});
 

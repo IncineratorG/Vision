@@ -26,6 +26,32 @@ const surveillanceTakeBackCameraImageRequestReducer = (
   action,
 ) => {
   switch (action.type) {
+    case AppActions.surveillanceTakeBackCameraImageRequest.types.CLEAR: {
+      return {
+        ...state,
+        takeBackCameraImageRequest: {
+          ...state.takeBackCameraImageRequest,
+          requestId: null,
+          inProgress: false,
+          completed: false,
+          cancellable: true,
+          cancelInProgress: false,
+          cancelled: false,
+          // response: {
+          //   payload: {
+          //     image: null,
+          //   },
+          // },
+          error: {
+            ...state.takeBackCameraImageRequest.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
     case AppActions.surveillanceTakeBackCameraImageRequest.types
       .SEND_TAKE_BACK_CAMERA_IMAGE_REQUEST_BEGIN: {
       return {
