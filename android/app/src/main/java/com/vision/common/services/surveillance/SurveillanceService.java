@@ -472,6 +472,18 @@ public class SurveillanceService implements
         return false;
     }
 
+    // ===
+    // =====
+    public void startDetectDeviceMovement() {
+        Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
+    }
+
+    public void stopDetectDeviceMovement() {
+        Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
+    }
+    // =====
+    // ===
+
     @Override
     public void sendRequest(String groupName,
                             String groupPassword,
