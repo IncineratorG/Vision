@@ -38,6 +38,10 @@ public class DeviceMovementService {
         return mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null;
     }
 
+    public boolean isRunning() {
+        return false;
+    }
+
     public void start() {
         Log.d("tag", "DeviceMovementService->start()");
     }

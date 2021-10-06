@@ -89,6 +89,7 @@ const DeviceRequestsDialog = ({
         lastUpdateTimestamp,
         hasFrontCamera,
         hasBackCamera,
+        canDetectDeviceMovement,
       } = device;
 
       const requests = [];

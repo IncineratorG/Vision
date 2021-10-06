@@ -1,7 +1,6 @@
 package com.vision.common.services.device_info;
 
 import android.content.Context;
-import android.hardware.Camera;
 
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.services.camera.CameraService_V2;
@@ -32,9 +31,12 @@ public class DeviceInfoService {
         deviceInfo.setLastUpdateTimestamp(timestamp);
         deviceInfo.setDeviceName(deviceName);
         deviceInfo.setDeviceMode(deviceMode);
+
         deviceInfo.setHasFrontCamera(hasFrontCamera());
         deviceInfo.setHasBackCamera(hasBackCamera());
         deviceInfo.setCanDetectDeviceMovement(canDetectDeviceMovement(context));
+
+        deviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
 
         return deviceInfo;
     }
@@ -45,9 +47,12 @@ public class DeviceInfoService {
         DeviceInfo updatedDeviceInfo = new DeviceInfo(deviceInfo);
         updatedDeviceInfo.setLastLoginTimestamp(timestamp);
         updatedDeviceInfo.setLastUpdateTimestamp(timestamp);
+
         updatedDeviceInfo.setHasFrontCamera(hasFrontCamera());
         updatedDeviceInfo.setHasBackCamera(hasBackCamera());
         updatedDeviceInfo.setCanDetectDeviceMovement(canDetectDeviceMovement(context));
+
+        updatedDeviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
 
         return updatedDeviceInfo;
     }
@@ -58,6 +63,8 @@ public class DeviceInfoService {
         DeviceInfo updatedDeviceInfo = new DeviceInfo(currentDeviceInfo);
         updatedDeviceInfo.setLastUpdateTimestamp(timestamp);
         updatedDeviceInfo.setDeviceMode(mode);
+
+        updatedDeviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
 
         return updatedDeviceInfo;
     }
@@ -72,5 +79,9 @@ public class DeviceInfoService {
 
     private boolean canDetectDeviceMovement(Context context) {
         return DeviceMovementService.get().canDetectDeviceMovement(context);
+    }
+
+    private boolean deviceMovementServiceRunning() {
+        return DeviceMovementService.get().isRunning();
     }
 }
