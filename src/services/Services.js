@@ -1,10 +1,16 @@
 import FirebaseService from './firebase/FirebaseService';
+import AuthService from './auth/AuthService';
+import SurveillanceService from './surveillance/SurveillanceService';
+import AppSettingsService from './app-settings/AppSettingsService';
 
 const Services = () => {
   const firebaseService = FirebaseService();
+  const authService = AuthService();
+  const surveillanceService = SurveillanceService();
+  const appSettingsService = AppSettingsService();
 
   const init = async () => {
-    firebaseService.init();
+    // firebaseService.init();
   };
 
   const dispose = () => {};
@@ -12,6 +18,9 @@ const Services = () => {
   const services = () => {
     return {
       firebaseService,
+      authService,
+      surveillanceService,
+      appSettingsService,
     };
   };
 
