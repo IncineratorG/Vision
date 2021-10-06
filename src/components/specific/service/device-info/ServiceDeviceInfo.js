@@ -10,6 +10,7 @@ const ServiceDeviceInfo = ({
   deviceName,
   onTestCameraPress,
   onTestNotificationPress,
+  onTestMotionSensorPress,
   onStopServicePress,
 }) => {
   const groupNameIcon = useMemo(() => {
@@ -58,8 +59,8 @@ const ServiceDeviceInfo = ({
         </View>
         <View style={styles.buttonContainer}>
           <SimpleButton
-            title={'Test Notification'}
-            onPress={onTestNotificationPress}
+            title={'Test Motion Sensor'}
+            onPress={onTestMotionSensorPress}
           />
         </View>
       </View>

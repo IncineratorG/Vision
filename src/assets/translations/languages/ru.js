@@ -41,6 +41,20 @@ const ru = {
   AuthorisationStatus_registerDeviceInGroupInProgress: 'Регистрация в группе',
   AuthorisationStatus_createGroupWithDeviceInProgress: 'Создание группы',
   AuthorisationStatus_loginDeviceInGroupInProgress: 'Вход в группу',
+  AuthorisationStatus_errorEmptyGroupName: 'Укажите название группы',
+  AuthorisationStatus_errorEmptyGroupPassword: 'Введите пароль от группы',
+  AuthorisationStatus_errorEmptyDeviceName: 'Введите название устройства',
+  AuthorisationStatus_errorGroupNotExist:
+    'Указанная группа не зарегестрирована',
+  AuthorisationStatus_errorGroupAlreadyExist: 'Указанная группа уже существует',
+  AuthorisationStatus_errorIncorrectGroupPassword:
+    'Неправилльный пароль от группы',
+  AuthorisationStatus_errorDeviceNameAlreadyExist:
+    'Название устройства уже занято',
+  AuthorisationStatus_errorDeviceAlreadyLoggedIn: 'Устройство уже в сети',
+  AuthorisationStatus_errorDeviceNameNotExist: 'Неверное имя устройства',
+  AuthorisationStatus_errorFirebaseFailure: 'Не удалось связаться с сервисом',
+  AuthorisationStatus_errorUnknown: 'Неизвестная ошибка',
 
   DeviceRequestDialog_cancelButton: 'ОТМЕНА',
 

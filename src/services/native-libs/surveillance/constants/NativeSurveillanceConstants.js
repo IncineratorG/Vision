@@ -13,6 +13,7 @@ const NativeSurveillanceConstants = () => {
       CANCEL_REQUEST,
       // ===
       SEND_TEST_NOTIFICATION,
+      TEST_MOTION_SENSOR,
       // ===
     },
     requestTypes: {
@@ -37,6 +38,7 @@ const NativeSurveillanceConstants = () => {
       CANCEL_REQUEST,
       // ===
       SEND_TEST_NOTIFICATION,
+      TEST_MOTION_SENSOR,
       // ===
     },
     requestTypes: {

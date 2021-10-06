@@ -4,6 +4,7 @@ public class SurveillanceJSActionTypes {
     // ===
     public static final String TEST_REQUEST = "TEST_REQUEST";
     public static final String SEND_TEST_NOTIFICATION = "SEND_TEST_NOTIFICATION";
+    public static final String TEST_MOTION_SENSOR = "TEST_MOTION_SENSOR";
     // ===
     public static final String GET_APP_PERMISSIONS = "GET_APP_PERMISSIONS";
     public static final String IS_RUNNING = "IS_RUNNING";

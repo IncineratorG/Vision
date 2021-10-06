@@ -15,7 +15,7 @@ import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
-public class TestRequestHandler implements JSActionHandler {
+public class Test_TestRequestHandler implements JSActionHandler {
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "TestRequestHandler->handle()");

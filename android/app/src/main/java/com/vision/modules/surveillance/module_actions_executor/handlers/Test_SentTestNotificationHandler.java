@@ -10,7 +10,7 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.notifications.SurveillanceServiceNotifications;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
-public class SentTestNotificationHandler implements JSActionHandler {
+public class Test_SentTestNotificationHandler implements JSActionHandler {
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "SentTestNotificationHandler->handle()");

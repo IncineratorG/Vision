@@ -20,14 +20,6 @@ const DeviceRequestsDialogRequestsListItem = ({type, name, icon, onPress}) => {
       </View>
     </TouchableOpacity>
   );
-
-  // return (
-  //   <TouchableOpacity onPress={itemPressHandler}>
-  //     <View style={styles.mainContainer}>
-  //       <Text style={styles.requestName}>{name}</Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
 };
 
 const styles = StyleSheet.create({
