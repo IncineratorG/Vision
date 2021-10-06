@@ -10,6 +10,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     lastUpdateTimestamp,
     hasFrontCamera,
     hasBackCamera,
+    canDetectDeviceMovement,
   } = device;
 
   const activeOptionColor = '#2ecc71';
@@ -35,6 +36,9 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const hasFrontCameraIndicatorColor = hasFrontCamera
     ? activeOptionColor
     : notActiveOptionColor;
+  const canDetectDeviceMovementIndicatorColor = canDetectDeviceMovement
+    ? activeOptionColor
+    : notActiveOptionColor;
 
   const hasBackCameraIndicator = (
     <View
@@ -54,6 +58,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       <Text style={styles.statusBarIndicatorText}>{'FC'}</Text>
     </View>
   );
+  const canDetectDeviceMovementIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: canDetectDeviceMovementIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
+    </View>
+  );
 
   const devicePressHandler = useCallback(() => {
     onDevicePress({device});
@@ -65,6 +78,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
         <View style={styles.statusBar}>
           {hasBackCameraIndicator}
           {hasFrontCameraIndicator}
+          {canDetectDeviceMovementIndicator}
         </View>
         <View style={styles.freeSpace} />
         <Text style={styles.itemName}>{deviceName}</Text>
