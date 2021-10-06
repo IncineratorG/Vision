@@ -41,6 +41,13 @@ const useRequestStatusDialogGroupController = (model) => {
           break;
         }
 
+        case deviceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT: {
+          dispatch(
+            AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.cancelSendToggleDetectDeviceMovementRequest(),
+          );
+          break;
+        }
+
         default: {
           SystemEventsHandler.onInfo({
             info:

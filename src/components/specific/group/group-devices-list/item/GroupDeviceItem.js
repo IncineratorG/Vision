@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
+import useTranslation from '../../../../../utils/common/localization';
 
 const GroupDeviceItem = ({device, onDevicePress}) => {
+  const {t} = useTranslation();
+
   const {
     deviceName,
     deviceMode,
@@ -18,10 +21,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const notActiveOptionColor = 'lightgrey';
 
   const lastLoginDateText = new Date(lastLoginTimestamp).toLocaleString();
-  const lastUpdateDateText =
-    lastUpdateTimestamp > 0
-      ? new Date(lastUpdateTimestamp).toLocaleString()
-      : '-';
+  const deviceOnlineStatus =
+    Math.abs(Date.now() - lastUpdateTimestamp) < 30000
+      ? t('GroupDeviceItem_deviceOnline')
+      : t('GroupDeviceItem_deviceOffline');
+
+  // const lastUpdateDateText =
+  //   lastUpdateTimestamp > 0
+  //     ? new Date(lastUpdateTimestamp).toLocaleString()
+  //     : '-';
 
   const backgroundColor =
     deviceMode === 'user'
@@ -100,7 +108,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
         </View>
         <View style={styles.freeSpace} />
         <Text style={styles.itemCode}>{lastLoginDateText}</Text>
-        <Text style={styles.itemCode}>{lastUpdateDateText}</Text>
+        <Text style={styles.itemCode}>{deviceOnlineStatus}</Text>
       </View>
     </TouchableOpacity>
   );

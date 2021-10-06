@@ -9,6 +9,7 @@ import groupLocalState from '../store/groupLocalState';
 import GroupLocalActions from '../store/GroupLocalActions';
 import useTakeBackCameraImageRequestGroupScreenBehavior from '../hooks/take-back-camera-image-request/useTakeBackCameraImageRequestGroupScreenBehavior';
 import useTakeFrontCameraImageRequestGroupScreenBehavior from '../hooks/take-front-camera-image-request/useTakeFrontCameraImageRequestGroupScreenBehavior';
+import useToggleDetectDeviceMovementRequestGroupScreenBehavior from '../hooks/toggle-detect-device-movement-request/useToggleDetectDeviceMovementRequestGroupScreenBehavior';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ const useGroupModel = () => {
   const deviceRequestTypes = {
     TAKE_BACK_CAMERA_IMAGE: 'TAKE_BACK_CAMERA_IMAGE',
     TAKE_FRONT_CAMERA_IMAGE: 'TAKE_FRONT_CAMERA_IMAGE',
+    TOGGLE_DETECT_DEVICE_MOVEMENT: 'TOGGLE_DETECT_DEVICE_MOVEMENT',
   };
 
   const {
@@ -51,23 +53,9 @@ const useGroupModel = () => {
     (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
   );
 
-  const {
-    inProgress: takeBackCameraImageRequestInProgress,
-    response: {
-      payload: {image: selectedDeviceBackCameraImage},
-    },
-  } = useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch});
-  const {
-    inProgress: takeFrontCameraImageRequestInProgress,
-    completed: takeFrontCameraImageRequestCompleted,
-    response: {
-      payload: {image: selectedDeviceFrontCameraImage},
-    },
-    error: {
-      hasError: takeFrontCameraImageRequestHasError,
-      code: takeFrontCameraImageRequestErrorCode,
-    },
-  } = useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch});
+  useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch});
+  useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch});
+  useToggleDetectDeviceMovementRequestGroupScreenBehavior({localDispatch});
 
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({

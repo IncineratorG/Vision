@@ -2,18 +2,20 @@ import {channel} from 'redux-saga';
 import {takeLatest, take, put} from '@redux-saga/core/effects';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../actions/AppActions';
-import SS_sendTestRequestWithPayloadHandler from './handlers/SS_sendTestRequestWithPayloadHandler';
+import SS_sendTestRequestWithPayloadHandler from './handlers/test-request-with-payload/SS_sendTestRequestWithPayloadHandler';
 import SS_getDevicesInGroupSaga from './handlers/SS_getDevicesInGroupHandler';
-import SS_cancelTestRequestWithPayloadHandler from './handlers/SS_cancelTestRequestWithPayloadHandler';
+import SS_cancelTestRequestWithPayloadHandler from './handlers/test-request-with-payload/SS_cancelTestRequestWithPayloadHandler';
 import SS_startServiceHandler from './handlers/SS_startServiceHandler';
 import SS_stopServiceHandler from './handlers/SS_stopServiceHandler';
 import SS_checkServiceStatusHandler from './handlers/SS_checkServiceStatusHandler';
-import SS_sendIsDeviceAliveRequestHandler from './handlers/SS_sendIsDeviceAliveRequestHandler';
-import SS_sendTakeBackCameraImageRequestHandler from './handlers/SS_sendTakeBackCameraImageRequestHandler';
-import SS_cancelIsDeviceAliveRequestHandler from './handlers/SS_cancelIsDeviceAliveRequestHandler';
-import SS_cancelTakeBackCameraImageRequestHandler from './handlers/SS_cancelTakeBackCameraImageRequestHandler';
-import SS_sendTakeFrontCameraImageRequestHandler from './handlers/SS_sendTakeFrontCameraImageRequestHandler';
-import SS_cancelTakeFrontCameraImageRequestHandler from './handlers/SS_cancelTakeFrontCameraImageRequestHandler';
+import SS_sendIsDeviceAliveRequestHandler from './handlers/is-device-alive-request/SS_sendIsDeviceAliveRequestHandler';
+import SS_sendTakeBackCameraImageRequestHandler from './handlers/take-back-camera-image-request/SS_sendTakeBackCameraImageRequestHandler';
+import SS_cancelIsDeviceAliveRequestHandler from './handlers/is-device-alive-request/SS_cancelIsDeviceAliveRequestHandler';
+import SS_cancelTakeBackCameraImageRequestHandler from './handlers/take-back-camera-image-request/SS_cancelTakeBackCameraImageRequestHandler';
+import SS_sendTakeFrontCameraImageRequestHandler from './handlers/take-front-camera-image-request/SS_sendTakeFrontCameraImageRequestHandler';
+import SS_cancelTakeFrontCameraImageRequestHandler from './handlers/take-front-camera-image-request/SS_cancelTakeFrontCameraImageRequestHandler';
+import SS_sendToggleDetectDeviceMovementRequestHandler from './handlers/toggle-detect-device-movement-request/SS_sendToggleDetectDeviceMovementRequestHandler';
+import SS_cancelToggleDetectDeviceMovementRequestHandler from './handlers/toggle-detect-device-movement-request/SS_cancelToggleDetectDeviceMovementRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -46,6 +48,10 @@ const SurveillanceSaga = () => {
     SS_sendTakeFrontCameraImageRequestHandler({channel: sagaChannel});
   const {handler: cancelTakeFrontCameraImageRequestHandler} =
     SS_cancelTakeFrontCameraImageRequestHandler({channel: sagaChannel});
+  const {handler: sendToggleDetectDeviceMovementRequestHandler} =
+    SS_sendToggleDetectDeviceMovementRequestHandler({channel: sagaChannel});
+  const {handler: cancelToggleDetectDeviceMovementRequestHandler} =
+    SS_cancelToggleDetectDeviceMovementRequestHandler({channel: sagaChannel});
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
@@ -102,6 +108,16 @@ const SurveillanceSaga = () => {
       AppActions.surveillanceTakeFrontCameraImageRequest.types
         .CANCEL_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST,
       cancelTakeFrontCameraImageRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceToggleDetectDeviceMovementRequest.types
+        .SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST,
+      sendToggleDetectDeviceMovementRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceToggleDetectDeviceMovementRequest.types
+        .CANCEL_SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST,
+      cancelToggleDetectDeviceMovementRequestHandler,
     );
   };
 

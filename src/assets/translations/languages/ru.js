@@ -108,6 +108,9 @@ const ru = {
   FrontCameraImageQualityDialog_qualityHigh: 'Высокое',
   FrontCameraImageQualityDialog_qualityMedium: 'Среднее',
   FrontCameraImageQualityDialog_qualityLow: 'Низкое',
+
+  GroupDeviceItem_deviceOnline: 'В сети',
+  GroupDeviceItem_deviceOffline: 'Не сети',
 };
 
 export default ru;

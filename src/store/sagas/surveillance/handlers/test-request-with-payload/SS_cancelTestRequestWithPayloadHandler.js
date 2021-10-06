@@ -1,7 +1,7 @@
 import {call, put} from '@redux-saga/core/effects';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
-import AppActions from '../../../actions/AppActions';
-import Services from '../../../../services/Services';
+import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
+import AppActions from '../../../../actions/AppActions';
+import Services from '../../../../../services/Services';
 
 const SS_cancelTestRequestWithPayloadHandler = ({channel}) => {
   const handler = function* (action) {
