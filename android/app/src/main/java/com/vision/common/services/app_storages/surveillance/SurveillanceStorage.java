@@ -9,6 +9,8 @@ import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.services.app_storages.helper.AppStoragesHelper;
 
 public class SurveillanceStorage {
+    public static final String NAME = "SurveillanceStorage";
+
     private final String NOTIFICATIONS_TOPIC_MMKV_ID = "notificationsTopicMMKVID";
     private final String NOTIFICATIONS_TOPIC_KEY = "notificationsTopic";
 

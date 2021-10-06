@@ -1,21 +1,32 @@
 import React, {useCallback} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
-import DeviceRequestsDialogRequestsListItem from './item/DeviceRequestsDialogRequestsListItem';
-import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
+import DeviceRequestsDialogRequestsListTextItem from './item/DeviceRequestsDialogRequestsListTextItem';
+import DeviceRequestsDialogRequestsListCheckboxItem from './item/DeviceRequestsDialogRequestsListCheckboxItem';
 
 const DeviceRequestsDialogRequestsList = ({requestsList, onRequestPress}) => {
   const renderItem = useCallback(
     ({item}) => {
-      const {type, name, icon} = item;
+      const {type, recomendedComponentType, name, icon, checked} = item;
 
-      return (
-        <DeviceRequestsDialogRequestsListItem
-          type={type}
-          name={name}
-          icon={icon}
-          onPress={onRequestPress}
-        />
-      );
+      if (recomendedComponentType === 'text') {
+        return (
+          <DeviceRequestsDialogRequestsListTextItem
+            type={type}
+            name={name}
+            icon={icon}
+            onPress={onRequestPress}
+          />
+        );
+      } else {
+        return (
+          <DeviceRequestsDialogRequestsListCheckboxItem
+            type={type}
+            name={name}
+            checked={checked}
+            onPress={onRequestPress}
+          />
+        );
+      }
     },
     [onRequestPress],
   );

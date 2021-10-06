@@ -15,6 +15,7 @@ const DeviceRequestsDialog = ({
   device,
   onGetFrontCameraRequestPress,
   onGetBackCameraRequestPress,
+  onToggleDetectDeviceMovementRequestPress,
   onCancelPress,
 }) => {
   const {t} = useTranslation();
@@ -23,6 +24,14 @@ const DeviceRequestsDialog = ({
     return {
       GET_FRONT_CAMERA_IMAGE: 'getFrontCameraImage',
       GET_BACK_CAMERA_IMAGE: 'getBackCameraImage',
+      TOGGLE_DETECT_DEVICE_MOVEMENT: 'toggleDetectDeviceMovement',
+    };
+  }, []);
+
+  const requestComponentTypes = useMemo(() => {
+    return {
+      TEXT: 'text',
+      CHECKBOX: 'checkbox',
     };
   }, []);
 
@@ -50,6 +59,13 @@ const DeviceRequestsDialog = ({
           break;
         }
 
+        case requestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT: {
+          if (onToggleDetectDeviceMovementRequestPress) {
+            onToggleDetectDeviceMovementRequestPress({selectedDevice: device});
+          }
+          break;
+        }
+
         default: {
           SystemEventsHandler.onInfo({
             info:
@@ -64,6 +80,7 @@ const DeviceRequestsDialog = ({
       requestTypes,
       onGetFrontCameraRequestPress,
       onGetBackCameraRequestPress,
+      onToggleDetectDeviceMovementRequestPress,
     ],
   );
 
@@ -90,12 +107,14 @@ const DeviceRequestsDialog = ({
         hasFrontCamera,
         hasBackCamera,
         canDetectDeviceMovement,
+        deviceMovementServiceRunning,
       } = device;
 
       const requests = [];
       if (hasFrontCamera) {
         requests.push({
           type: requestTypes.GET_FRONT_CAMERA_IMAGE,
+          recomendedComponentType: requestComponentTypes.TEXT,
           name: t('DeviceRequestsDialog_getFrontCameraImage'),
           icon: (
             <MaterialIcon name="photo-camera-front" size={28} color="grey" />
@@ -105,8 +124,17 @@ const DeviceRequestsDialog = ({
       if (hasBackCamera) {
         requests.push({
           type: requestTypes.GET_BACK_CAMERA_IMAGE,
+          recomendedComponentType: requestComponentTypes.TEXT,
           name: t('DeviceRequestsDialog_getBackCameraImage'),
           icon: <MaterialIcon name="photo-camera" size={28} color="grey" />,
+        });
+      }
+      if (canDetectDeviceMovement) {
+        requests.push({
+          type: requestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT,
+          recomendedComponentType: requestComponentTypes.CHECKBOX,
+          name: t('DeviceRequestsDialog_detectDeviceMovement'),
+          checked: deviceMovementServiceRunning,
         });
       }
 
@@ -114,7 +142,7 @@ const DeviceRequestsDialog = ({
     } else {
       setAvailableRequests([]);
     }
-  }, [device, requestTypes, t]);
+  }, [device, requestTypes, requestComponentTypes, t]);
 
   useEffect(() => {
     if (checkingSelectedDeviceAvailability) {
@@ -149,7 +177,7 @@ const DeviceRequestsDialog = ({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    minHeight: 150,
+    minHeight: 200,
     justifyContent: 'center',
   },
 });

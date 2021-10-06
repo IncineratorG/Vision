@@ -67,6 +67,7 @@ const ru = {
   DeviceRequestsDialog_title: 'Доступные запросы',
   DeviceRequestsDialog_getFrontCameraImage: 'Изображение передней камеры',
   DeviceRequestsDialog_getBackCameraImage: 'Изображение задней камеры',
+  DeviceRequestsDialog_detectDeviceMovement: 'Следить за движением устройства',
 
   SelectedDeviceNotAvailable_message: 'Устройство не доступно.',
 

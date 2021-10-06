@@ -16,6 +16,8 @@ const reducers = combineReducers({
     AppReducers.surveillanceTakeBackCameraImageRequest,
   surveillanceTakeFrontCameraImageRequest:
     AppReducers.surveillanceTakeFrontCameraImageRequest,
+  surveillanceToggleDetectDeviceMovementRequest:
+    AppReducers.surveillanceToggleDetectDeviceMovementRequest,
 });
 
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));

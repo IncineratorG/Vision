@@ -30,6 +30,7 @@ import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.common.services.auth.AuthService;
 import com.vision.common.services.device_group.DeviceGroupService;
 import com.vision.common.services.device_info.DeviceInfoService;
+import com.vision.common.services.device_movement.DeviceMovementService;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
@@ -59,6 +60,8 @@ public class SurveillanceService implements
         ServiceRequestSender,
         ServiceRequestInterrupter,
         ServiceNotificationSender {
+    public static final String NAME = "SurveillanceService";
+
     private final String SERVICE_WAKE_LOCK_TAG = "Vision:ServiceWakeLockTag";
 
     private static SurveillanceService sInstance;
@@ -474,12 +477,26 @@ public class SurveillanceService implements
 
     // ===
     // =====
-    public void startDetectDeviceMovement() {
+    public void startDetectDeviceMovement(Context context,
+                                          OnTaskSuccess<Void> onSuccess,
+                                          OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
+
+        DeviceMovementService.get().start(context);
+        onSuccess.onSuccess(null);
     }
 
-    public void stopDetectDeviceMovement() {
+    public void stopDetectDeviceMovement(Context context,
+                                         OnTaskSuccess<Void> onSuccess,
+                                         OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
+
+        DeviceMovementService.get().stop(context);
+        onSuccess.onSuccess(null);
+    }
+
+    public boolean isDetectDeviceMovementServiceRunning() {
+        return DeviceMovementService.get().isRunning();
     }
     // =====
     // ===

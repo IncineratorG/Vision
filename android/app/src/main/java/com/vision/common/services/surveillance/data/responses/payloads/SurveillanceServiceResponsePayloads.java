@@ -1,14 +1,25 @@
 package com.vision.common.services.surveillance.data.responses.payloads;
 
 
+import com.vision.common.data.service_error.ServiceError;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ErrorResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeFrontCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ToggleDetectDeviceMovementResponsePayload;
 
 import org.json.JSONObject;
 
 public class SurveillanceServiceResponsePayloads {
+    public static ErrorResponsePayload errorResponsePayload(String serviceName, ServiceError serviceError) {
+        return new ErrorResponsePayload(serviceName, serviceError);
+    }
+
+    public static ErrorResponsePayload errorResponsePayload(JSONObject jsonObject) {
+        return new ErrorResponsePayload(jsonObject);
+    }
+
     public static TestRequestWithPayloadResponsePayload testRequestWithPayloadResponsePayload(String resultOne) {
         return new TestRequestWithPayloadResponsePayload(resultOne);
     }
@@ -39,5 +50,15 @@ public class SurveillanceServiceResponsePayloads {
 
     public static TakeFrontCameraImageResponsePayload takeFrontCameraImageResponsePayload(JSONObject jsonObject) {
         return new TakeFrontCameraImageResponsePayload(jsonObject);
+    }
+
+    public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
+            boolean detectDeviceMovementServiceRunning) {
+        return new ToggleDetectDeviceMovementResponsePayload(detectDeviceMovementServiceRunning);
+    }
+
+    public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
+            JSONObject jsonObject) {
+        return new ToggleDetectDeviceMovementResponsePayload(jsonObject);
     }
 }

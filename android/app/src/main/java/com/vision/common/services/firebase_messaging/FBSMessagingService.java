@@ -10,6 +10,8 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.services.firebase_messaging.data.FBSMessagingServiceErrors;
 
 public class FBSMessagingService {
+    public static final String NAME = "FBSMessagingService";
+
     private static FBSMessagingService sInstance;
 
     private String CORRECT_TOPIC_SYMBOLS = "[a-zA-Z0-9-_.~%]+";

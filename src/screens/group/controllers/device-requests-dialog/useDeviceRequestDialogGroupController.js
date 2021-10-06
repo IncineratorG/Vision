@@ -88,10 +88,20 @@ const useDeviceRequestsDialogGroupController = (model) => {
     [deviceRequestTypes, setCurrentRequestType, localDispatch, dispatch],
   );
 
+  const deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler =
+    useCallback(({selectedDevice}) => {
+      SystemEventsHandler.onInfo({
+        info:
+          'useDeviceRequestsDialogGroupController->deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler(): ' +
+          JSON.stringify(selectedDevice),
+      });
+    }, []);
+
   return {
     deviceRequestsDialogCancelHandler,
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
+    deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler,
   };
 };
 

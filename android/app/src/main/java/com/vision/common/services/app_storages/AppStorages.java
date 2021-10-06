@@ -4,6 +4,8 @@ import com.vision.common.services.app_storages.common_storage.CommonStorage;
 import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 
 public class AppStorages {
+    public static final String NAME = "AppStorages";
+
     private static AppStorages sInstance;
 
     private CommonStorage mCommonStorage;

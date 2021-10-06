@@ -56,6 +56,7 @@ const GroupView = ({model, controller}) => {
       deviceRequestsDialogCancelHandler,
       deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
       deviceRequestsDialogGetBackCameraImageRequestPressHandler,
+      deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler,
     },
     requestStatusDialogController: {requestStatusDialogCancelHandler},
     imageViewerController: {imageViewerCloseHandler},
@@ -83,6 +84,9 @@ const GroupView = ({model, controller}) => {
       }
       onGetBackCameraRequestPress={
         deviceRequestsDialogGetBackCameraImageRequestPressHandler
+      }
+      onToggleDetectDeviceMovementRequestPress={
+        deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler
       }
       onCancelPress={deviceRequestsDialogCancelHandler}
     />

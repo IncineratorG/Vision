@@ -66,4 +66,17 @@ public class SurveillanceEventsJSPayloads {
 
         return jsPayload;
     }
+
+    public static WritableMap toggleDetectDeviceMovementResponseEventPayload(String requestId,
+                                                                             boolean detectDeviceMovementServiceRunning) {
+        WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("requestId", requestId);
+
+        WritableMap payload = new WritableNativeMap();
+        payload.putBoolean("detectDeviceMovementServiceRunning", detectDeviceMovementServiceRunning);
+
+        jsPayload.putMap("payload", payload);
+
+        return jsPayload;
+    }
 }

@@ -7,6 +7,7 @@ const NativeSurveillanceRequests = () => {
       IS_DEVICE_ALIVE,
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
+      TOGGLE_DETECT_DEVICE_MOVEMENT,
     },
   } = NativeSurveillanceConstants;
 
@@ -48,11 +49,19 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
+  const toggleDetectDeviceMovement = ({receiverDeviceName}) => {
+    return {
+      requestType: TOGGLE_DETECT_DEVICE_MOVEMENT,
+      receiverDeviceName,
+    };
+  };
+
   return {
     testRequestWithPayload,
     isDeviceAlive,
     takeBackCameraImage,
     takeFrontCameraImage,
+    toggleDetectDeviceMovement,
   };
 };
 

@@ -8,14 +8,17 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 public class DeviceMovementService {
+    public static final String NAME = "DeviceMovementService";
+
     private static DeviceMovementService sInstance;
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private SensorEventListener mSensorEventListener;
+    private boolean mIsRunning;
 
     private DeviceMovementService() {
-
+        mIsRunning = false;
     }
 
     public static DeviceMovementService get() {
@@ -39,14 +42,16 @@ public class DeviceMovementService {
     }
 
     public boolean isRunning() {
-        return false;
+        return mIsRunning;
     }
 
-    public void start() {
+    public void start(Context context) {
         Log.d("tag", "DeviceMovementService->start()");
+        mIsRunning = true;
     }
 
-    public void stop() {
+    public void stop(Context context) {
         Log.d("tag", "DeviceMovementService->stop()");
+        mIsRunning = false;
     }
 }

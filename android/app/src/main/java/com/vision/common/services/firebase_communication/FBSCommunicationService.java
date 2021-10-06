@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FBSCommunicationService {
+    public static final String NAME = "FBSCommunicationService";
+
     private static FBSCommunicationService sInstance;
 
     private List<FBSListenerId> mListenerIds;

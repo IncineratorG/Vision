@@ -7,6 +7,8 @@ import com.vision.common.services.camera.CameraService_V2;
 import com.vision.common.services.device_movement.DeviceMovementService;
 
 public class DeviceInfoService {
+    public static final String NAME = "DeviceInfoService";
+
     private static DeviceInfoService sInstance;
 
     private DeviceInfoService() {

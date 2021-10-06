@@ -24,6 +24,8 @@ import com.vision.common.services.firebase_paths.FBSPathsService;
 import java.util.List;
 
 public class AuthService {
+    public static final String NAME = "AuthService";
+
     private static AuthService sInstance;
 
     private String mCurrentGroupName;
