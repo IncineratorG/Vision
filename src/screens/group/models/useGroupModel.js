@@ -54,7 +54,7 @@ const useGroupModel = () => {
   );
 
   useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
-  useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch});
+  useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useToggleDetectDeviceMovementRequestGroupScreenBehavior({localDispatch});
 
   const focusChangedCallback = useCallback(() => {

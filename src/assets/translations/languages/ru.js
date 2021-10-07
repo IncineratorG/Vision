@@ -122,6 +122,17 @@ const ru = {
     'ПОСМОТРЕТЬ',
   CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedRightButtonText:
     'ЗАКРЫТЬ',
+
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressStatusText:
+    'Получение изображения',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressRightButtonText:
+    'ОТМЕНА',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedStatusText:
+    'Изображение получено',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedLeftButtonText:
+    'ПОСМОТРЕТЬ',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedRightButtonText:
+    'ЗАКРЫТЬ',
 };
 
 export default ru;

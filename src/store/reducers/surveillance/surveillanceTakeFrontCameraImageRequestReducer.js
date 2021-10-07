@@ -26,6 +26,32 @@ const surveillanceTakeFrontCameraImageRequestReducer = (
   action,
 ) => {
   switch (action.type) {
+    case AppActions.surveillanceTakeFrontCameraImageRequest.types.CLEAR: {
+      return {
+        ...state,
+        takeFrontCameraImageRequest: {
+          ...state.takeFrontCameraImageRequest,
+          requestId: null,
+          inProgress: false,
+          completed: false,
+          cancellable: true,
+          cancelInProgress: false,
+          cancelled: false,
+          // response: {
+          //   payload: {
+          //     image: null,
+          //   },
+          // },
+          error: {
+            ...state.takeFrontCameraImageRequest.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
     case AppActions.surveillanceTakeFrontCameraImageRequest.types
       .SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_BEGIN: {
       return {
