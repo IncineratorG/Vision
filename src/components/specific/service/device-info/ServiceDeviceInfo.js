@@ -59,8 +59,8 @@ const ServiceDeviceInfo = ({
         </View>
         <View style={styles.buttonContainer}>
           <SimpleButton
-            title={'Test Motion Sensor'}
-            onPress={onTestMotionSensorPress}
+            title={'Test Notification'}
+            onPress={onTestNotificationPress}
           />
         </View>
       </View>
