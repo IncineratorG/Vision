@@ -483,7 +483,45 @@ public class SurveillanceService implements
         Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
 
         DeviceMovementService.get().start(context);
-        onSuccess.onSuccess(null);
+
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_SERVICE
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
+                    FBSCommunicationService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
     }
 
     public void stopDetectDeviceMovement(Context context,
@@ -492,7 +530,45 @@ public class SurveillanceService implements
         Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
 
         DeviceMovementService.get().stop(context);
-        onSuccess.onSuccess(null);
+
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_SERVICE
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
+                    FBSCommunicationService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
     }
 
     public boolean isDetectDeviceMovementServiceRunning() {

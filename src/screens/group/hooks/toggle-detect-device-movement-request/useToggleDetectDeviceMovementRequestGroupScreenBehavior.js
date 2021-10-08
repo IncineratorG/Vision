@@ -4,10 +4,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import GroupLocalActions from '../../store/GroupLocalActions';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 import useTranslation from '../../../../utils/common/localization';
+import AppActions from '../../../../store/actions/AppActions';
 
 const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
   localDispatch,
   dispatch,
+  currentGroupName,
+  currentGroupPassword,
+  currentDeviceName,
 }) => {
   const {t} = useTranslation();
 
@@ -43,13 +47,37 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
     }
 
     if (toggleDetectDeviceMovementRequestInProgress) {
-      SystemEventsHandler.onInfo({
-        info: 'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->IN_PROGRESS',
-      });
-
-      // localDispatch(
-      //     GroupLocalActions
-      // );
+      localDispatch(
+        GroupLocalActions.actions.setCurrentRequestStatusDialogData({
+          visible: true,
+          statusText: t(
+            'CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressStatusText',
+          ),
+          leftButtonVisible: false,
+          leftButtonText: '',
+          leftButtonPressHandler: null,
+          rightButtonVisible: true,
+          rightButtonText: t(
+            'CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressRightButtonText',
+          ),
+          rightButtonPressHandler: () => {
+            dispatch(
+              AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.cancelSendToggleDetectDeviceMovementRequest(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+          onCancel: () => {
+            dispatch(
+              AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.cancelSendToggleDetectDeviceMovementRequest(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+        }),
+      );
     }
   }, [
     screenFocused,
@@ -70,11 +98,28 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
           'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->COMPLETED: ' +
           detectDeviceMovementServiceRunning,
       });
+
+      dispatch(
+        AppActions.surveillanceCommon.actions.getDevicesInGroup({
+          groupName: currentGroupName,
+          groupPassword: currentGroupPassword,
+          deviceName: currentDeviceName,
+        }),
+      );
+      localDispatch(
+        GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+      );
     }
   }, [
     screenFocused,
     toggleDetectDeviceMovementRequestCompleted,
     detectDeviceMovementServiceRunning,
+    currentGroupName,
+    currentGroupPassword,
+    currentDeviceName,
+    localDispatch,
+    dispatch,
+    t,
   ]);
 
   return {

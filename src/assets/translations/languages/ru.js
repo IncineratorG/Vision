@@ -133,6 +133,11 @@ const ru = {
     'ПОСМОТРЕТЬ',
   CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedRightButtonText:
     'ЗАКРЫТЬ',
+
+  CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressStatusText:
+    'Выполнение',
+  CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressRightButtonText:
+    'ОТМЕНА',
 };
 
 export default ru;

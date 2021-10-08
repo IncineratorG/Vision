@@ -58,6 +58,9 @@ const useGroupModel = () => {
   useToggleDetectDeviceMovementRequestGroupScreenBehavior({
     localDispatch,
     dispatch,
+    currentGroupName,
+    currentGroupPassword,
+    currentDeviceName,
   });
 
   const focusChangedCallback = useCallback(() => {
