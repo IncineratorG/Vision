@@ -55,7 +55,10 @@ const useGroupModel = () => {
 
   useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
-  useToggleDetectDeviceMovementRequestGroupScreenBehavior({localDispatch});
+  useToggleDetectDeviceMovementRequestGroupScreenBehavior({
+    localDispatch,
+    dispatch,
+  });
 
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({

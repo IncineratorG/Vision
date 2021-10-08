@@ -70,7 +70,6 @@ const GroupView = ({model, controller}) => {
       deviceRequestsDialogGetBackCameraImageRequestPressHandler,
       deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler,
     },
-    requestStatusDialogController: {requestStatusDialogCancelHandler},
     imageViewerController: {imageViewerCloseHandler},
   } = controller;
 
@@ -112,16 +111,16 @@ const GroupView = ({model, controller}) => {
     />
   );
 
-  const requestStatusDialog = (
-    <RequestStatusDialog
-      visible={requestStatusDialogVisible}
-      completed={requestStatusDialogCompleted}
-      responseData={requestStatusDialogResponseData}
-      canViewResponse={requestStatusDialogCanViewResponse}
-      responseViewerCallback={requestStatusDialogResponseViewerCallback}
-      onCancelPress={requestStatusDialogCancelHandler}
-    />
-  );
+  // const requestStatusDialog = (
+  //   <RequestStatusDialog
+  //     visible={requestStatusDialogVisible}
+  //     completed={requestStatusDialogCompleted}
+  //     responseData={requestStatusDialogResponseData}
+  //     canViewResponse={requestStatusDialogCanViewResponse}
+  //     responseViewerCallback={requestStatusDialogResponseViewerCallback}
+  //     onCancelPress={requestStatusDialogCancelHandler}
+  //   />
+  // );
 
   const currentRequestStatusDialog = (
     <CurrentRequestStatusDialog

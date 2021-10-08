@@ -3,10 +3,14 @@ import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import GroupLocalActions from '../../store/GroupLocalActions';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
+import useTranslation from '../../../../utils/common/localization';
 
 const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
   localDispatch,
+  dispatch,
 }) => {
+  const {t} = useTranslation();
+
   const [screenFocused, setScreenFocused] = useState(false);
 
   const {
@@ -39,17 +43,20 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
     }
 
     if (toggleDetectDeviceMovementRequestInProgress) {
-      localDispatch(GroupLocalActions.actions.clearRequestStatusDialogData());
-      localDispatch(
-        GroupLocalActions.actions.setRequestStatusDialogVisibility({
-          visible: true,
-        }),
-      );
+      SystemEventsHandler.onInfo({
+        info: 'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->IN_PROGRESS',
+      });
+
+      // localDispatch(
+      //     GroupLocalActions
+      // );
     }
   }, [
     screenFocused,
     toggleDetectDeviceMovementRequestInProgress,
     localDispatch,
+    dispatch,
+    t,
   ]);
 
   useEffect(() => {

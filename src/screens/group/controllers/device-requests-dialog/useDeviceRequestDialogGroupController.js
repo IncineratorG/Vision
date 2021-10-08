@@ -89,13 +89,30 @@ const useDeviceRequestsDialogGroupController = (model) => {
   );
 
   const deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler =
-    useCallback(({selectedDevice}) => {
-      SystemEventsHandler.onInfo({
-        info:
-          'useDeviceRequestsDialogGroupController->deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler(): ' +
-          JSON.stringify(selectedDevice),
-      });
-    }, []);
+    useCallback(
+      ({selectedDevice}) => {
+        SystemEventsHandler.onInfo({
+          info:
+            'useDeviceRequestsDialogGroupController->deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler(): ' +
+            JSON.stringify(selectedDevice),
+        });
+
+        const {deviceName: selectedDeviceName} = selectedDevice;
+
+        localDispatch(
+          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+            visible: false,
+          }),
+        );
+
+        dispatch(
+          AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.sendToggleDetectDeviceMovementRequest(
+            {receiverDeviceName: selectedDeviceName},
+          ),
+        );
+      },
+      [localDispatch, dispatch],
+    );
 
   return {
     deviceRequestsDialogCancelHandler,

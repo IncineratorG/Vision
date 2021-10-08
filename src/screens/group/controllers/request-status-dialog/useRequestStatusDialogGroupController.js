@@ -70,7 +70,7 @@ const useRequestStatusDialogGroupController = (model) => {
   }, [currentRequestType, deviceRequestTypes, dispatch, localDispatch]);
 
   return {
-    requestStatusDialogCancelHandler,
+    // requestStatusDialogCancelHandler,
   };
 };
 

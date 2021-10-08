@@ -496,6 +496,8 @@ public class SurveillanceService implements
     }
 
     public boolean isDetectDeviceMovementServiceRunning() {
+        Log.d("tag", "SurveillanceService->isDetectDeviceMovementServiceRunning()");
+
         return DeviceMovementService.get().isRunning();
     }
     // =====
