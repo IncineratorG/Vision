@@ -66,10 +66,16 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
 
     if (toggleDetectDeviceMovementRequestCompleted) {
       SystemEventsHandler.onInfo({
-        info: 'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->COMPLETED',
+        info:
+          'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->COMPLETED: ' +
+          detectDeviceMovementServiceRunning,
       });
     }
-  }, [screenFocused, toggleDetectDeviceMovementRequestCompleted]);
+  }, [
+    screenFocused,
+    toggleDetectDeviceMovementRequestCompleted,
+    detectDeviceMovementServiceRunning,
+  ]);
 
   return {
     inProgress: toggleDetectDeviceMovementRequestInProgress,
