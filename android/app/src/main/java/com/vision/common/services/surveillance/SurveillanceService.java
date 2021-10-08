@@ -422,6 +422,12 @@ public class SurveillanceService implements
         serviceIntent.setAction("stop");
         context.startService(serviceIntent);
 
+        // ===
+        // =====
+        DeviceMovementService.get().stop(context);
+        // =====
+        // ===
+
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 currentGroupName(), currentGroupPassword(), currentDeviceName()
         );
