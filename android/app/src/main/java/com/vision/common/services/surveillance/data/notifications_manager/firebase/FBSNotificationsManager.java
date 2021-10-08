@@ -1,28 +1,13 @@
 package com.vision.common.services.surveillance.data.notifications_manager.firebase;
 
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.RemoteMessage;
-import com.vision.MainActivity;
-import com.vision.R;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.data.service_notification.ServiceNotification;
@@ -32,7 +17,7 @@ import com.vision.common.services.app_settings.AppSettingsService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.notifications.handlers.device_movement_start.DeviceMovementStartNotificationHandler;
-import com.vision.common.services.surveillance.data.notifications.handlers.device_movement_stop.DeviceMovementStopNotificationHandler;
+import com.vision.common.services.surveillance.data.notifications.handlers.device_movement_stop.DeviceMovementEndNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.handlers.test_notification.TestNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.handlers.unknown_notification.UnknownNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.types.SurveillanceServiceNotificationTypes;
@@ -42,10 +27,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class FBSNotificationsManager implements ServiceNotificationsManager {
-    public static final String CHANNEL_ID = "MyFirebaseMessagingServiceChannel";
     private final String UNKNOWN_NOTIFICATION_HANDLER_KEY = "unknown";
     private final String JSON_NOTIFICATION_OBJECT_FIELD = "notification";
     private final String URL = "https://fcm.googleapis.com/fcm/send";
@@ -60,7 +43,7 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
         mHandlers.put(UNKNOWN_NOTIFICATION_HANDLER_KEY, new UnknownNotificationHandler());
         mHandlers.put(SurveillanceServiceNotificationTypes.TEST_NOTIFICATION, new TestNotificationHandler());
         mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_START, new DeviceMovementStartNotificationHandler());
-        mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_STOP, new DeviceMovementStopNotificationHandler());
+        mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_END, new DeviceMovementEndNotificationHandler());
     }
 
     @Override
@@ -125,7 +108,7 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
 
         if (needHandleNotification(context, notification)) {
             handleNotification(context, notification);
-            showSystemNotification(context, notification);
+//            showSystemNotification(context, notification);
         }
     }
 
@@ -177,74 +160,74 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
         }
     }
 
-    private void showSystemNotification(Context context, ServiceNotification notification) {
-        final Intent intent = new Intent(context, MainActivity.class);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationID = new Random().nextInt(3000);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            setupChannels(notificationManager);
-        }
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.common_google_signin_btn_icon_dark_normal);
-        Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark_normal)
-                .setLargeIcon(largeIcon)
-                .setContentTitle(notificationTitle(notification))
-                .setContentText(notificationMessage(notification))
-                .setAutoCancel(true)
-                .setSound(notificationSoundUri)
-                .setContentIntent(pendingIntent);
-
-        // Set notification color to match your app color template
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setColor(context.getResources().getColor(R.color.catalyst_redbox_background));
-        }
-        notificationManager.notify(notificationID, notificationBuilder.build());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setupChannels(NotificationManager notificationManager) {
-        CharSequence adminChannelName = "New notification";
-        String adminChannelDescription = "Device to device notification ";
-
-        NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(
-                CHANNEL_ID,
-                adminChannelName,
-                NotificationManager.IMPORTANCE_HIGH
-        );
-
-        adminChannel.setDescription(adminChannelDescription);
-        adminChannel.enableLights(true);
-        adminChannel.setLightColor(Color.RED);
-        adminChannel.enableVibration(true);
-
-        if (notificationManager != null) {
-            notificationManager.createNotificationChannel(adminChannel);
-        }
-    }
-
-    private String notificationTitle(ServiceNotification notification) {
-        String notificationGroupName = notification.senderGroupName();
-        String notificationDeviceName = notification.senderDeviceName();
-
-        return notificationGroupName + "." + notificationDeviceName;
-    }
-
-    private String notificationMessage(ServiceNotification notification) {
-        switch (notification.type()) {
-            case (SurveillanceServiceNotificationTypes.TEST_NOTIFICATION): {
-                return "Тестовое уведомление";
-            }
-
-            default: {
-                return "Неизвестное уведомление: " + notification.type();
-            }
-        }
-    }
+//    private void showSystemNotification(Context context, ServiceNotification notification) {
+//        final Intent intent = new Intent(context, MainActivity.class);
+//        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//        int notificationID = new Random().nextInt(3000);
+//
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            setupChannels(notificationManager);
+//        }
+//
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+//        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.common_google_signin_btn_icon_dark_normal);
+//        Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+//                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark_normal)
+//                .setLargeIcon(largeIcon)
+//                .setContentTitle(notificationTitle(notification))
+//                .setContentText(notificationMessage(notification))
+//                .setAutoCancel(true)
+//                .setSound(notificationSoundUri)
+//                .setContentIntent(pendingIntent);
+//
+//        // Set notification color to match your app color template
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            notificationBuilder.setColor(context.getResources().getColor(R.color.catalyst_redbox_background));
+//        }
+//        notificationManager.notify(notificationID, notificationBuilder.build());
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    private void setupChannels(NotificationManager notificationManager) {
+//        CharSequence adminChannelName = "New notification";
+//        String adminChannelDescription = "Device to device notification ";
+//
+//        NotificationChannel adminChannel;
+//        adminChannel = new NotificationChannel(
+//                CHANNEL_ID,
+//                adminChannelName,
+//                NotificationManager.IMPORTANCE_HIGH
+//        );
+//
+//        adminChannel.setDescription(adminChannelDescription);
+//        adminChannel.enableLights(true);
+//        adminChannel.setLightColor(Color.RED);
+//        adminChannel.enableVibration(true);
+//
+//        if (notificationManager != null) {
+//            notificationManager.createNotificationChannel(adminChannel);
+//        }
+//    }
+//
+//    private String notificationTitle(ServiceNotification notification) {
+//        String notificationGroupName = notification.senderGroupName();
+//        String notificationDeviceName = notification.senderDeviceName();
+//
+//        return notificationGroupName + "." + notificationDeviceName;
+//    }
+//
+//    private String notificationMessage(ServiceNotification notification) {
+//        switch (notification.type()) {
+//            case (SurveillanceServiceNotificationTypes.TEST_NOTIFICATION): {
+//                return "Тестовое уведомление";
+//            }
+//
+//            default: {
+//                return "Неизвестное уведомление: " + notification.type();
+//            }
+//        }
+//    }
 }

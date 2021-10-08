@@ -42,6 +42,7 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDe
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
+import com.vision.common.services.surveillance.data.notifications.SurveillanceServiceNotifications;
 import com.vision.common.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
 import com.vision.common.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
 import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
@@ -490,9 +491,25 @@ public class SurveillanceService implements
 
         OnTaskSuccess<Void> movementStartCallback = (data) -> {
             Log.d("tag", "movementStartCallback()");
+
+            sendNotificationToAll(
+                    context,
+                    SurveillanceServiceNotifications.deviceMovementStartNotification(
+                            currentGroupName(),
+                            currentDeviceName()
+                    )
+            );
         };
         OnTaskSuccess<Void> movementEndCallback = (data) -> {
             Log.d("tag", "movementEndCallback()");
+
+            sendNotificationToAll(
+                    context,
+                    SurveillanceServiceNotifications.deviceMovementEndNotification(
+                            currentGroupName(),
+                            currentDeviceName()
+                    )
+            );
         };
 
         DeviceMovementService.get().start(context, movementStartCallback, movementEndCallback);

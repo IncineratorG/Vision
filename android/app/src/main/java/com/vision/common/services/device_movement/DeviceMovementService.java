@@ -118,6 +118,7 @@ public class DeviceMovementService {
         }
 
         mSensorManager.unregisterListener(mSensorEventListener);
+        mSensorEventListener = null;
 
         mPrevX = -1;
         mPrevY = -1;

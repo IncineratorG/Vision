@@ -33,7 +33,7 @@ public class SurveillanceServiceNotifications {
     public static ServiceNotification deviceMovementEndNotification(String senderGroupName,
                                                                     String senderDeviceName) {
         return new ServiceNotification(
-                SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_STOP,
+                SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_END,
                 senderGroupName,
                 senderDeviceName,
                 null

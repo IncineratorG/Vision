@@ -1,4 +1,4 @@
-package com.vision.common.services.surveillance.data.notifications.handlers.test_notification;
+package com.vision.common.services.surveillance.data.notifications.handlers.device_movement_stop;
 
 
 import android.app.Notification;
@@ -7,17 +7,11 @@ import android.util.Log;
 
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_handler.ServiceNotificationHandler;
-import com.vision.common.services.surveillance.data.notifications.payloads.SurveillanceServiceNotificationPayloads;
-import com.vision.common.services.surveillance.data.notifications.payloads.payloads.TestNotificationPayload;
 
-public class TestNotificationHandler extends ServiceNotificationHandler {
+public class DeviceMovementEndNotificationHandler extends ServiceNotificationHandler {
     @Override
     protected void handleServiceNotification(Context context, ServiceNotification notification) {
-        Log.d("tag", "TestNotificationHandler->handleServiceNotification()");
-
-        TestNotificationPayload payload = SurveillanceServiceNotificationPayloads.testNotificationPayload(notification.payload());
-
-        Log.d("tag", "TestNotificationHandler->handleServiceNotification(): " + payload.testValue());
+        Log.d("tag", "DeviceMovementStopNotificationHandler->handleServiceNotification()");
     }
 
     @Override
@@ -35,6 +29,6 @@ public class TestNotificationHandler extends ServiceNotificationHandler {
 
     @Override
     protected String systemNotificationMessage(Context context, ServiceNotification notification) {
-        return "Тестовое уведомление";
+        return "Движение устройства закончено";
     }
 }
