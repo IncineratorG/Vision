@@ -12,6 +12,7 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
   currentGroupName,
   currentGroupPassword,
   currentDeviceName,
+  selectedDevice,
 }) => {
   const {t} = useTranslation();
 
@@ -93,12 +94,9 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
     }
 
     if (toggleDetectDeviceMovementRequestCompleted) {
-      SystemEventsHandler.onInfo({
-        info:
-          'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->COMPLETED: ' +
-          detectDeviceMovementServiceRunning,
-      });
-
+      dispatch(
+        AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.clear(),
+      );
       dispatch(
         AppActions.surveillanceCommon.actions.getDevicesInGroup({
           groupName: currentGroupName,
@@ -106,8 +104,24 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
           deviceName: currentDeviceName,
         }),
       );
+
+      const updatedSelectedDevice = {
+        ...selectedDevice,
+        deviceMovementServiceRunning: detectDeviceMovementServiceRunning,
+      };
+
       localDispatch(
         GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+      );
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogData({
+          device: updatedSelectedDevice,
+        }),
+      );
+      localDispatch(
+        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+          visible: true,
+        }),
       );
     }
   }, [
@@ -117,6 +131,7 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
     currentGroupName,
     currentGroupPassword,
     currentDeviceName,
+    selectedDevice,
     localDispatch,
     dispatch,
     t,

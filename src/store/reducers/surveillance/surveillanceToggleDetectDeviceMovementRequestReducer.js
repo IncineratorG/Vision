@@ -26,6 +26,27 @@ const surveillanceToggleDetectDeviceMovementRequestReducer = (
   action,
 ) => {
   switch (action.type) {
+    case AppActions.surveillanceToggleDetectDeviceMovementRequest.types.CLEAR: {
+      return {
+        ...state,
+        toggleDetectDeviceMovementRequest: {
+          ...state.toggleDetectDeviceMovementRequest,
+          requestId: null,
+          inProgress: false,
+          completed: false,
+          cancellable: true,
+          cancelInProgress: false,
+          cancelled: false,
+          error: {
+            ...state.toggleDetectDeviceMovementRequest.error,
+            hasError: false,
+            code: '',
+            message: '',
+          },
+        },
+      };
+    }
+
     case AppActions.surveillanceToggleDetectDeviceMovementRequest.types
       .SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST_BEGIN: {
       return {

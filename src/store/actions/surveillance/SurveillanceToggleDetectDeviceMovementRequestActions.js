@@ -1,5 +1,7 @@
 const SurveillanceToggleDetectDeviceMovementRequestActions = () => {
   const types = {
+    CLEAR: 'STDDMRA_CLEAR',
+
     SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST:
       'STDDMRA_SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST',
     SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST_BEGIN:
@@ -14,6 +16,12 @@ const SurveillanceToggleDetectDeviceMovementRequestActions = () => {
       'STDDMRA_CANCEL_SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST',
     SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST_CANCELLED:
       'STDDMRA_SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST_CANCELLED',
+  };
+
+  const clear = () => {
+    return {
+      type: types.CLEAR,
+    };
   };
 
   const sendToggleDetectDeviceMovementRequest = ({receiverDeviceName}) => {
@@ -67,6 +75,7 @@ const SurveillanceToggleDetectDeviceMovementRequestActions = () => {
   return {
     types,
     actions: {
+      clear,
       sendToggleDetectDeviceMovementRequest,
       sendToggleDetectDeviceMovementRequestBegin,
       sendToggleDetectDeviceMovementRequestSended,

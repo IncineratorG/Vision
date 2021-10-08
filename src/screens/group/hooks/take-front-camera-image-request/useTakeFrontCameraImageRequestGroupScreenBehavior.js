@@ -133,6 +133,14 @@ const useTakeFrontCameraImageRequestGroupScreenBehavior = ({
               AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
           },
+          onCancel: () => {
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+            dispatch(
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
+            );
+          },
         }),
       );
     }
