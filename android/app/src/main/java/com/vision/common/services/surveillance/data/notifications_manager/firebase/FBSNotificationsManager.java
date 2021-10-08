@@ -31,6 +31,8 @@ import com.vision.common.interfaces.service_notifications_manager.ServiceNotific
 import com.vision.common.services.app_settings.AppSettingsService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.notifications.handlers.device_movement_start.DeviceMovementStartNotificationHandler;
+import com.vision.common.services.surveillance.data.notifications.handlers.device_movement_stop.DeviceMovementStopNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.handlers.test_notification.TestNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.handlers.unknown_notification.UnknownNotificationHandler;
 import com.vision.common.services.surveillance.data.notifications.types.SurveillanceServiceNotificationTypes;
@@ -57,6 +59,8 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
         mHandlers = new HashMap<>();
         mHandlers.put(UNKNOWN_NOTIFICATION_HANDLER_KEY, new UnknownNotificationHandler());
         mHandlers.put(SurveillanceServiceNotificationTypes.TEST_NOTIFICATION, new TestNotificationHandler());
+        mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_START, new DeviceMovementStartNotificationHandler());
+        mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_STOP, new DeviceMovementStopNotificationHandler());
     }
 
     @Override
