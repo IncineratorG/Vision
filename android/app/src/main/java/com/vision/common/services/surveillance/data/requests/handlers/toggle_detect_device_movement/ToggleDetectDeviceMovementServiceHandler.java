@@ -30,7 +30,7 @@ public class ToggleDetectDeviceMovementServiceHandler implements ServiceRequestH
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        if (surveillanceService.isDetectDeviceMovementServiceRunning()) {
+        if (!surveillanceService.isDetectDeviceMovementServiceRunning()) {
             surveillanceService.startDetectDeviceMovement(
                     context,
                     (result) -> {

@@ -18,6 +18,7 @@ public class DeviceMovementService {
     private boolean mIsRunning;
 
     private DeviceMovementService() {
+        Log.d("tag", "DeviceMovementService()->IN_CONSTRUCTOR");
         mIsRunning = false;
     }
 
@@ -42,6 +43,7 @@ public class DeviceMovementService {
     }
 
     public boolean isRunning() {
+        Log.d("tag", "DeviceMovementService->isRunning(): " + mIsRunning);
         return mIsRunning;
     }
 
