@@ -482,7 +482,14 @@ public class SurveillanceService implements
                                           OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
 
-        DeviceMovementService.get().start(context);
+        OnTaskSuccess<Void> movementStartCallback = (data) -> {
+            Log.d("tag", "movementStartCallback()");
+        };
+        OnTaskSuccess<Void> movementEndCallback = (data) -> {
+            Log.d("tag", "movementEndCallback()");
+        };
+
+        DeviceMovementService.get().start(context, movementStartCallback, movementEndCallback);
 
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 currentGroupName(), currentGroupPassword(), currentDeviceName()
