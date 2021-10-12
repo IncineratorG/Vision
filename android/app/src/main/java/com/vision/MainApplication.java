@@ -13,6 +13,8 @@ import com.vision.modules.auth.AuthPackage;
 import com.vision.modules.firebase.FirebasePackage;
 import com.vision.modules.surveillance.SurveillancePackage;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    OpenCVLoader.initDebug();
 //    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
