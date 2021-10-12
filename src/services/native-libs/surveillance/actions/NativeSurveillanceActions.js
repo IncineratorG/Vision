@@ -14,6 +14,7 @@ const NativeSurveillanceActions = () => {
       // ===
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
+      TEST_CAMERA_MOTION_DETECTION,
       // ===
     },
   } = NativeSurveillanceConstants;
@@ -81,6 +82,12 @@ const NativeSurveillanceActions = () => {
       type: TEST_MOTION_SENSOR,
     };
   };
+
+  const testCameraMotionDetection = () => {
+    return {
+      type: TEST_CAMERA_MOTION_DETECTION,
+    };
+  };
   // ===
 
   return {
@@ -95,6 +102,7 @@ const NativeSurveillanceActions = () => {
     // ===
     sendTestNotification,
     testMotionSensor,
+    testCameraMotionDetection,
     // ===
   };
 };

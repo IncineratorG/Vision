@@ -48,6 +48,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
         actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION);
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, SurveillanceJSActionTypes.TEST_MOTION_SENSOR);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION);
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, SurveillanceJSActionTypes.GET_APP_PERMISSIONS);
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);

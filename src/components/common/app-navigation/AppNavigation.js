@@ -10,6 +10,7 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Loader from '../../../screens/loader/Loader';
 import Service from '../../../screens/service/Service';
 import Settings from '../../../screens/settings/Settings';
+import CameraTest from '../../../screens/camera-test/CameraTest';
 
 const MainStack = createNativeStackNavigator();
 
@@ -17,6 +18,18 @@ const AppNavigation = () => {
   const mainStack = useMemo(() => {
     return (
       <MainStack.Navigator mode="card">
+        <MainStack.Screen
+          name={'CameraTest'}
+          component={CameraTest}
+          options={({navigation, route}) => ({
+            headerShown: false,
+            headerLeft: (props) => {
+              return null;
+            },
+            title: 'Camera Test',
+            headerStatusBarHeight: 0,
+          })}
+        />
         <MainStack.Screen
           name={AppRoutes.Loader}
           component={Loader}

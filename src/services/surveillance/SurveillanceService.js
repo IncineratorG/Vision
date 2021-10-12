@@ -66,6 +66,10 @@ const SurveillanceService = () => {
   const testMotionSensor = async () => {
     return await nativeService.testMotionSensor();
   };
+
+  const testCameraMotionDetection = async () => {
+    return await nativeService.testCameraMotionDetection();
+  };
   // ===
 
   return {
@@ -82,6 +86,8 @@ const SurveillanceService = () => {
     // ===
     sendTestNotification,
     testMotionSensor,
+    testCameraMotionDetection,
+    nativeService,
     // ===
   };
 };

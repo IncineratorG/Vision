@@ -134,12 +134,18 @@ public class CameraService_V2 {
     }
 
     private void setCurrentCameraParameters(String imageQuality) {
+//        Camera.CameraInfo info = new Camera.CameraInfo();
+//        Camera.getCameraInfo(id, info);
+//        if (info.canDisableShutterSound) {
+//            mCamera.enableShutterSound(false);
+//        }
+
         Camera.Parameters parameters = mCurrentCamera.getParameters();
 
         List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
         Collections.sort(previewSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
         for (int i = 0; i < previewSizes.size(); ++i) {
-            Camera.Size size = previewSizes.get(i);;
+            Camera.Size size = previewSizes.get(i);
             Log.d("tag", "CameraService_V2->setCameraParameters()->SUPPORTED_PREVIEW_SIZE: " + size.width + " - " + size.height);
         }
 

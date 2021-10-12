@@ -12,6 +12,15 @@ const NativeSurveillance = () => {
   const requests = NativeSurveillanceRequests;
   const responses = NativeSurveillanceResponses;
 
+  // ===
+  let imageTakenListener = null;
+  nativeServiceEventEmitter.addListener('IMAGE_TAKEN_EVENT', (data) => {
+    if (imageTakenListener) {
+      imageTakenListener(data);
+    }
+  });
+  // ===
+
   const requestCallbacksMap = new Map();
 
   nativeServiceEventEmitter.addListener(
@@ -172,6 +181,14 @@ const NativeSurveillance = () => {
     const action = NativeSurveillanceActions.testMotionSensor();
     return await nativeService.execute(action);
   };
+
+  const testCameraMotionDetection = async () => {
+    const action = NativeSurveillanceActions.testCameraMotionDetection();
+    return await nativeService.execute(action);
+  };
+  const addImageTakenListener = (listener) => {
+    imageTakenListener = listener;
+  };
   // ===
 
   return {
@@ -188,6 +205,8 @@ const NativeSurveillance = () => {
     // ===
     sendTestNotification,
     testMotionSensor,
+    testCameraMotionDetection,
+    addImageTakenListener,
     // ===
   };
 };
