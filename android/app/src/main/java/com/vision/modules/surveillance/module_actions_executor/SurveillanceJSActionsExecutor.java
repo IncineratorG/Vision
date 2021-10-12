@@ -14,6 +14,7 @@ import com.vision.modules.surveillance.module_actions_executor.handlers.GetDevic
 import com.vision.modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_SentTestNotificationHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler_V2;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestMotionSensorHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.SendRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StartServiceHandler;
@@ -34,7 +35,7 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(SurveillanceJSActionTypes.TEST_REQUEST, new Test_TestRequestHandler());
         mHandlers.put(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, new Test_SentTestNotificationHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, new Test_TestMotionSensorHandler());
-        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler_V2());
         // ===
         mHandlers.put(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, new GetAppPermissionsHandler());
         mHandlers.put(SurveillanceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());

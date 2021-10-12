@@ -15,18 +15,38 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.vision.common.services.camera_motion_detection.CameraMotionDetectionService;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.dnn.Dnn;
+import org.opencv.dnn.Net;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Test_TestCameraMotionDetectionHandler implements JSActionHandler {
     private Thread mThread;
     private boolean mStopThread;
+
+    private Net mNet;
+    private String[] mClassNames;
+
+    private final int IN_WIDTH = 300;
+    private final int IN_HEIGHT = 300;
+    private final float WH_RATIO = (float)IN_WIDTH / IN_HEIGHT;
+    private final double IN_SCALE_FACTOR = 0.007843;
+    private final double MEAN_VAL = 127.5;
+    private final double THRESHOLD = 0.5;
 
     private class CameraWorker implements Runnable {
         private ReactApplicationContext mContext;
@@ -85,11 +105,11 @@ public class Test_TestCameraMotionDetectionHandler implements JSActionHandler {
                 if (cameraMotionDetectionService.isRunning()) {
                     cameraMotionDetectionService.requestImage(requestImageCallback);
 
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             } while (!mStopThread);
             Log.d("tag", "Finish processing thread");
@@ -112,6 +132,125 @@ public class Test_TestCameraMotionDetectionHandler implements JSActionHandler {
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "Test_TestCameraMotionDetectionHandler->handle()");
+
+        // ===
+        // =====
+        Set<String> assetsToCopy = new HashSet<>();
+        assetsToCopy.add("MobileNetSSD_deploy.caffemodel");
+        assetsToCopy.add("MobileNetSSD_deploy.prototxt");
+        assetsToCopy.add("image.jpg");
+
+        CopyAssetsHelper.copyAssets(context, assetsToCopy);
+
+        mClassNames = new String[] {"background",
+                "aeroplane", "bicycle", "bird", "boat",
+                "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+                "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+                "sofa", "train", "tvmonitor"};
+
+        File modelFile = context.getExternalFilesDir("MobileNetSSD_deploy.caffemodel");
+        if (modelFile != null && modelFile.exists()) {
+            Log.d("tag", "===> MODEL_EXISTS");
+        } else {
+            Log.d("tag", "===> FILE_NOT_EXISTS");
+        }
+
+        File protoFile = context.getExternalFilesDir("MobileNetSSD_deploy.prototxt");
+        if (protoFile != null && protoFile.exists()) {
+            Log.d("tag", "===> PROTO_EXISTS");
+        } else {
+            Log.d("tag", "===> FILE_NOT_EXISTS");
+        }
+
+        mNet = Dnn.readNetFromCaffe(protoFile.getAbsolutePath(), modelFile.getAbsolutePath());
+        Log.d("tag", "NET_IS_EMPTY: " + mNet.empty());
+
+        File imageFile = context.getExternalFilesDir("image.jpg");
+        if (imageFile == null || !imageFile.exists()) {
+            Log.d("tag", "IMAGE_FILE_NOT_EXIST");
+            return;
+        }
+        Log.d("tag", "IMAGE_LOADED");
+
+        Mat inputFrame = Imgcodecs.imread(imageFile.getAbsolutePath());
+        Imgproc.cvtColor(inputFrame, inputFrame, Imgproc.COLOR_RGBA2RGB);
+
+        Mat blob = Dnn.blobFromImage(
+                inputFrame,
+                IN_SCALE_FACTOR,
+                new Size(IN_WIDTH, IN_HEIGHT),
+                new Scalar(MEAN_VAL, MEAN_VAL, MEAN_VAL),
+                false
+        );
+        Log.d("tag", "BLOB: " + blob.toString());
+
+        mNet.setInput(blob);
+        Mat detections = mNet.forward();
+
+        int cols = inputFrame.cols();
+        int rows = inputFrame.rows();
+
+        Size cropSize;
+        if ((float)cols / rows > WH_RATIO) {
+            cropSize = new Size(rows * WH_RATIO, rows);
+        } else {
+            cropSize = new Size(cols, cols / WH_RATIO);
+        }
+
+        int y1 = (int)(rows - cropSize.height) / 2;
+        int y2 = (int)(y1 + cropSize.height);
+        int x1 = (int)(cols - cropSize.width) / 2;
+        int x2 = (int)(x1 + cropSize.width);
+
+        Mat subFrame = inputFrame.submat(y1, y2, x1, x2);
+        cols = subFrame.cols();
+        rows = subFrame.rows();
+        detections = detections.reshape(1, (int)detections.total() / 7);
+
+        for (int i = 0; i < detections.rows(); ++i) {
+            double confidence = detections.get(i, 2)[0];
+            if (confidence > THRESHOLD) {
+                int classId = (int)detections.get(i, 1)[0];
+                int xLeftBottom = (int)(detections.get(i, 3)[0] * cols);
+                int yLeftBottom = (int)(detections.get(i, 4)[0] * rows);
+                int xRightTop   = (int)(detections.get(i, 5)[0] * cols);
+                int yRightTop   = (int)(detections.get(i, 6)[0] * rows);
+                // Draw rectangle around detected object.
+                Imgproc.rectangle(subFrame, new Point(xLeftBottom, yLeftBottom),
+                        new Point(xRightTop, yRightTop),
+                        new Scalar(0, 255, 0));
+                String label = mClassNames[classId] + ": " + confidence;
+
+                int[] baseLine = new int[1];
+                Size labelSize = Imgproc.getTextSize(label, Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, 1, baseLine);
+                // Draw background for label.
+                Imgproc.rectangle(subFrame, new Point(xLeftBottom, yLeftBottom - labelSize.height),
+                        new Point(xLeftBottom + labelSize.width, yLeftBottom + baseLine[0]),
+                        new Scalar(255, 255, 255), Core.FILLED);
+                // Write class name and confidence.
+                Imgproc.putText(subFrame, label, new Point(xLeftBottom, yLeftBottom),
+                        Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 0, 0));
+            }
+        }
+
+        Log.d("tag", "END: " + subFrame.toString());
+
+        // create a temporary buffer
+        MatOfByte buffer = new MatOfByte();
+        // encode the frame in the buffer, according to the PNG format
+        Imgcodecs.imencode(".jpg", subFrame, buffer);
+
+        Log.d("tag", "BUFFER: " + buffer.toString());
+
+        String base64 = Base64.encodeToString(buffer.toArray(), Base64.DEFAULT);
+        context
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(
+                        "IMAGE_TAKEN_EVENT",
+                        imageTakenEventPayload(base64)
+                );
+        // =====
+        // ===
 
 //        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
 //        cameraMotionDetectionService.test();
@@ -204,29 +343,29 @@ public class Test_TestCameraMotionDetectionHandler implements JSActionHandler {
 
         // ===
         // =====
-        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
-        cameraMotionDetectionService.test();
-
-        if (mThread == null && cameraMotionDetectionService.isRunning()) {
-            Log.d("tag", "WILL_START_THREAD");
-
-            mStopThread = false;
-            mThread = new Thread(new CameraWorker(context));
-            mThread.start();
-        } else {
-            Log.d("tag", "WILL_STOP_THREAD");
-
-            try {
-                mStopThread = true;
-                if (mThread != null) {
-                    mThread.join();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                mThread =  null;
-            }
-        }
+//        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
+//        cameraMotionDetectionService.test();
+//
+//        if (mThread == null && cameraMotionDetectionService.isRunning()) {
+//            Log.d("tag", "WILL_START_THREAD");
+//
+//            mStopThread = false;
+//            mThread = new Thread(new CameraWorker(context));
+//            mThread.start();
+//        } else {
+//            Log.d("tag", "WILL_STOP_THREAD");
+//
+//            try {
+//                mStopThread = true;
+//                if (mThread != null) {
+//                    mThread.join();
+//                }
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } finally {
+//                mThread =  null;
+//            }
+//        }
         // =====
         // ===
 

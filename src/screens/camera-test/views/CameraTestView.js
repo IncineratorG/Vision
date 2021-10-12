@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 import SimpleButton from '../../../components/common/simple-button/SimpleButton';
 import Services from '../../../services/Services';
@@ -8,22 +8,15 @@ const CameraTestView = ({model, controller}) => {
   const [currentBase64ImageString, setCurrentBase64ImageString] =
     useState(null);
 
-  const test = () => {
+  const test = useCallback(() => {
     setCurrentBase64ImageString(null);
 
-    // Services.services().surveillanceService.nativeService.addImageTakenListener(
-    //   (data) => {
-    //     const {base64String} = data;
-    //
-    //     SystemEventsHandler.onInfo({
-    //       info: 'IMAGE_TAKEN: ' + base64String.length,
-    //     });
-    //
-    //     setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
-    //   },
-    // );
     Services.services().surveillanceService.testCameraMotionDetection();
-  };
+  }, []);
+
+  const getPermissions = useCallback(() => {
+    Services.services().surveillanceService.getAppPermissions();
+  }, []);
 
   useEffect(() => {
     Services.services().surveillanceService.nativeService.addImageTakenListener(
@@ -57,6 +50,9 @@ const CameraTestView = ({model, controller}) => {
         </View>
       </View>
       <View style={styles.buttons}>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Get Permission'} onPress={getPermissions} />
+        </View>
         <View style={styles.buttonContainer}>
           <SimpleButton title={'Test request'} onPress={test} />
         </View>

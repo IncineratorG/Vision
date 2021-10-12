@@ -63,6 +63,113 @@ public class CameraMotionDetectionService {
         }
     }
 
+    // ===
+    // =====
+    public void requestBackCameraImage(RequestImageCallback requestImageCallback) {
+        try {
+            if (mCurrentCamera != null) {
+                mCurrentCamera.stopPreview();
+                mCurrentCamera.setPreviewCallback(null);
+                mCurrentCamera.release();
+                mCurrentCamera = null;
+
+                mCurrentSurfaceTexture.release();
+            }
+        } catch (Exception e) {
+            Log.d("tag", "CameraMotionDetectionService->requestBackCameraImage()->ERROR");
+            e.printStackTrace();
+        }
+
+        int backCameraId = getBackCameraId();
+        if (backCameraId < 0) {
+            Log.d("tag", "CameraMotionDetectionService->requestBackCameraImage(): BAD_BACK_CAMERA_ID");
+            return;
+        }
+
+        mCurrentCamera = Camera.open(backCameraId);
+        if (mCurrentCamera == null) {
+            Log.d("tag", "CameraMotionDetectionService->requestBackCameraImage(): BAD_CURRENT_CAMERA");
+            return;
+        }
+
+        Camera.Parameters parameters = mCurrentCamera.getParameters();
+
+        List<android.hardware.Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+        Collections.sort(previewSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
+        Camera.Size cameraPreviewSize = previewSizes.get(0);
+
+        /* Image format NV21 causes issues in the Android emulators */
+        if (Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT)) {
+            parameters.setPreviewFormat(ImageFormat.YV12);  // "generic" or "android" = android emulator
+        } else {
+            parameters.setPreviewFormat(ImageFormat.NV21);
+        }
+
+        mPreviewFormat = parameters.getPreviewFormat();
+        Log.d("tag", "PREVIEW_FORMAT: " + mPreviewFormat);
+
+        parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && !android.os.Build.MODEL.equals("GT-I9100")) {
+            parameters.setRecordingHint(true);
+        }
+
+        List<String> FocusModes = parameters.getSupportedFocusModes();
+        if (FocusModes != null && FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        }
+
+        try {
+            mCurrentCamera.setParameters(parameters);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int width = parameters.getPreviewSize().width;
+        int height = parameters.getPreviewSize().height;
+
+        int size = width * height;
+        size  = size * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()) / 8;
+        Log.d(TAG, "CameraMotionDetectionService->requestBackCameraImage()->BUFFER_SIZE: " + size);
+        mBuffer = new byte[size];
+
+        mCurrentCamera.addCallbackBuffer(mBuffer);
+        mCurrentCamera.setPreviewCallbackWithBuffer((bytes, camera) -> {
+            requestImageCallback.onRequestedImage(bytes, width, height, mPreviewFormat);
+
+            try {
+                if (mCurrentCamera != null) {
+                    mCurrentCamera.stopPreview();
+                    mCurrentCamera.setPreviewCallback(null);
+                    mCurrentCamera.release();
+                    mCurrentCamera = null;
+
+                    mCurrentSurfaceTexture.release();
+                }
+            } catch (Exception e) {
+                Log.d("tag", "CameraMotionDetectionService->requestBackCameraImage()->ERROR");
+                e.printStackTrace();
+            }
+        });
+
+        mCurrentSurfaceTexture = new SurfaceTexture(1);
+        try {
+            mCurrentCamera.setPreviewTexture(mCurrentSurfaceTexture);
+            mCurrentCamera.startPreview();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // =====
+    // ===
+
     public void requestImage(RequestImageCallback requestImageCallback) {
         mRequestImageCallback = requestImageCallback;
     }
