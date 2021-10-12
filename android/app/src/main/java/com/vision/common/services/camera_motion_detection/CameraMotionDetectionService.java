@@ -88,7 +88,7 @@ public class CameraMotionDetectionService {
 
         List<android.hardware.Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
         Collections.sort(previewSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
-        Camera.Size cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
+        Camera.Size cameraPreviewSize = previewSizes.get(0);
 
         /* Image format NV21 causes issues in the Android emulators */
         if (Build.FINGERPRINT.startsWith("generic")
