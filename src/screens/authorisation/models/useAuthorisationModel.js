@@ -115,6 +115,7 @@ const useAuthorisationModel = () => {
     if (currentErrorCode) {
       const errorMessage = mapAuthorisationErrorCodesToErrorMessages({
         errorCode: currentErrorCode,
+        t,
       });
 
       setAuthorisationStatus(errorMessage);
@@ -128,6 +129,7 @@ const useAuthorisationModel = () => {
     loginDeviceInGroupErrorCode,
     createGroupWithDeviceErrorCode,
     registerDeviceInGroupErrorCode,
+    t,
   ]);
 
   useEffect(() => {
@@ -195,50 +197,50 @@ const useAuthorisationModel = () => {
   };
 };
 
-const mapAuthorisationErrorCodesToErrorMessages = ({errorCode}) => {
+const mapAuthorisationErrorCodesToErrorMessages = ({errorCode, t}) => {
   switch (errorCode) {
     case '5': {
-      return 'Укажите название группы';
+      return t('AuthorisationStatus_errorEmptyGroupName');
     }
 
     case '6': {
-      return 'Введите пароль от группы';
+      return t('AuthorisationStatus_errorEmptyGroupPassword');
     }
 
     case '7': {
-      return 'Введите название устройства';
+      return t('AuthorisationStatus_errorEmptyDeviceName');
     }
 
     case '8': {
-      return 'Указанная группа не зарегестрирована';
+      return t('AuthorisationStatus_errorGroupNotExist');
     }
 
     case '9': {
-      return 'Указанная группа уже существует';
+      return t('AuthorisationStatus_errorGroupAlreadyExist');
     }
 
     case '12': {
-      return 'Неправилльный пароль от группы';
+      return t('AuthorisationStatus_errorIncorrectGroupPassword');
     }
 
     case '13': {
-      return 'Название устройства уже занято';
+      return t('AuthorisationStatus_errorDeviceNameAlreadyExist');
     }
 
     case '15': {
-      return 'Устройство уже в сети';
+      return t('AuthorisationStatus_errorDeviceAlreadyLoggedIn');
     }
 
     case '16': {
-      return 'Неверное имя устройства';
+      return t('AuthorisationStatus_errorDeviceNameNotExist');
     }
 
     case '17': {
-      return 'Не удалось связаться с сервисом';
+      return t('AuthorisationStatus_errorFirebaseFailure');
     }
 
     default: {
-      return 'Неизвестная ошибка';
+      return t('AuthorisationStatus_errorUnknown');
     }
   }
 };

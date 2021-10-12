@@ -30,6 +30,7 @@ import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.common.services.auth.AuthService;
 import com.vision.common.services.device_group.DeviceGroupService;
 import com.vision.common.services.device_info.DeviceInfoService;
+import com.vision.common.services.device_movement.DeviceMovementService;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
@@ -41,6 +42,7 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDe
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
+import com.vision.common.services.surveillance.data.notifications.SurveillanceServiceNotifications;
 import com.vision.common.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
 import com.vision.common.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
 import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
@@ -59,6 +61,8 @@ public class SurveillanceService implements
         ServiceRequestSender,
         ServiceRequestInterrupter,
         ServiceNotificationSender {
+    public static final String NAME = "SurveillanceService";
+
     private final String SERVICE_WAKE_LOCK_TAG = "Vision:ServiceWakeLockTag";
 
     private static SurveillanceService sInstance;
@@ -245,14 +249,16 @@ public class SurveillanceService implements
         } else if (savedGlobalTopic.equals(currentGlobalTopic)) {
             Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 2");
 
-            successCallback.onSuccess(null);
-//            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
+//            successCallback.onSuccess(null);
+            messagingService.subscribeToTopic(currentGlobalTopic, successCallback, errorCallback);
         } else {
             Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 3");
 
             messagingService.unsubscribeFromTopic(
                     savedGlobalTopic,
                     (resultUnsubscribe) -> {
+                        Log.d("tag", "SurveillanceService->subscribeToGlobalNotifications(): 4");
+
                         messagingService.subscribeToTopic(
                                 currentGlobalTopic,
                                 successCallback,
@@ -419,6 +425,12 @@ public class SurveillanceService implements
         serviceIntent.setAction("stop");
         context.startService(serviceIntent);
 
+        // ===
+        // =====
+        DeviceMovementService.get().stop(context);
+        // =====
+        // ===
+
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 currentGroupName(), currentGroupPassword(), currentDeviceName()
         );
@@ -471,6 +483,133 @@ public class SurveillanceService implements
         }
         return false;
     }
+
+    // ===
+    // =====
+    public void startDetectDeviceMovement(Context context,
+                                          OnTaskSuccess<Void> onSuccess,
+                                          OnTaskError<ServiceError> onError) {
+        Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
+
+        OnTaskSuccess<Void> movementStartCallback = (data) -> {
+            Log.d("tag", "movementStartCallback()");
+
+            sendNotificationToAll(
+                    context,
+                    SurveillanceServiceNotifications.deviceMovementStartNotification(
+                            currentGroupName(),
+                            currentDeviceName()
+                    )
+            );
+        };
+        OnTaskSuccess<Void> movementEndCallback = (data) -> {
+            Log.d("tag", "movementEndCallback()");
+
+            sendNotificationToAll(
+                    context,
+                    SurveillanceServiceNotifications.deviceMovementEndNotification(
+                            currentGroupName(),
+                            currentDeviceName()
+                    )
+            );
+        };
+
+        DeviceMovementService.get().start(context, movementStartCallback, movementEndCallback);
+
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_SERVICE
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
+                    FBSCommunicationService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+    }
+
+    public void stopDetectDeviceMovement(Context context,
+                                         OnTaskSuccess<Void> onSuccess,
+                                         OnTaskError<ServiceError> onError) {
+        Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
+
+        DeviceMovementService.get().stop(context);
+
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                AppConstants.DEVICE_MODE_SERVICE
+                        );
+                    }
+
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
+                    FBSCommunicationService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+    }
+
+    public boolean isDetectDeviceMovementServiceRunning() {
+        Log.d("tag", "SurveillanceService->isDetectDeviceMovementServiceRunning()");
+
+        return DeviceMovementService.get().isRunning();
+    }
+    // =====
+    // ===
 
     @Override
     public void sendRequest(String groupName,

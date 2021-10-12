@@ -9,6 +9,8 @@ const initialState = {
     deviceMode: '',
     hasFrontCamera: false,
     hasBackCamera: false,
+    canDetectDeviceMovement: false,
+    deviceMovementServiceRunning: false,
   },
   devicesInGroup: {
     inProgress: false,

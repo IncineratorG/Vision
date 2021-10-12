@@ -167,6 +167,11 @@ const NativeSurveillance = () => {
     const action = NativeSurveillanceActions.sendTestNotification();
     return await nativeService.execute(action);
   };
+
+  const testMotionSensor = async () => {
+    const action = NativeSurveillanceActions.testMotionSensor();
+    return await nativeService.execute(action);
+  };
   // ===
 
   return {
@@ -182,6 +187,7 @@ const NativeSurveillance = () => {
     cancelRequest,
     // ===
     sendTestNotification,
+    testMotionSensor,
     // ===
   };
 };

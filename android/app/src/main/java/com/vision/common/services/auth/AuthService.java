@@ -24,6 +24,8 @@ import com.vision.common.services.firebase_paths.FBSPathsService;
 import java.util.List;
 
 public class AuthService {
+    public static final String NAME = "AuthService";
+
     private static AuthService sInstance;
 
     private String mCurrentGroupName;
@@ -219,7 +221,7 @@ public class AuthService {
                     Object deviceInfoObject = deviceInfoSnapshot.getValue();
                     if (deviceInfoObject != null) {
                         DeviceInfo deviceInfo = new DeviceInfo(deviceInfoObject);
-                        DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(deviceInfo);
+                        DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, deviceInfo);
                         updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(AppConstants.DEVICE_MODE_USER, updatedDeviceInfo);
 
                         long isAliveDelta = updatedDeviceInfo.lastUpdateTimestamp() - deviceInfo.lastUpdateTimestamp();

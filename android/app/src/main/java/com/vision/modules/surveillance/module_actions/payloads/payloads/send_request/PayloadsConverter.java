@@ -38,6 +38,10 @@ public class PayloadsConverter {
                 return SurveillanceServiceRequestPayloads.takeFrontCameraImageRequestPayload(imageQuality);
             }
 
+            case (SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT): {
+                return SurveillanceServiceRequestPayloads.toggleDetectDeviceMovementRequestPayload();
+            }
+
             default: {
                 return null;
             }

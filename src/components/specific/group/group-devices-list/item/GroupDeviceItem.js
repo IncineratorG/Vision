@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
+import useTranslation from '../../../../../utils/common/localization';
 
 const GroupDeviceItem = ({device, onDevicePress}) => {
+  const {t} = useTranslation();
+
   const {
     deviceName,
     deviceMode,
@@ -10,17 +13,23 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     lastUpdateTimestamp,
     hasFrontCamera,
     hasBackCamera,
+    canDetectDeviceMovement,
+    deviceMovementServiceRunning,
   } = device;
 
   const activeOptionColor = '#2ecc71';
   const notActiveOptionColor = 'lightgrey';
 
-  // const backgroundColor =
-  //   deviceMode === 'user' ? notActiveOptionColor : activeOptionColor;
+  const lastLoginDateText = new Date(lastLoginTimestamp).toLocaleString();
+  const deviceOnlineStatus =
+    Math.abs(Date.now() - lastUpdateTimestamp) < 30000
+      ? t('GroupDeviceItem_deviceOnline')
+      : t('GroupDeviceItem_deviceOffline');
 
-  SystemEventsHandler.onInfo({
-    info: 'DEF: ' + deviceName + ': ' + (Date.now() - lastUpdateTimestamp),
-  });
+  // const lastUpdateDateText =
+  //   lastUpdateTimestamp > 0
+  //     ? new Date(lastUpdateTimestamp).toLocaleString()
+  //     : '-';
 
   const backgroundColor =
     deviceMode === 'user'
@@ -29,29 +38,55 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       ? '#d35400'
       : activeOptionColor;
 
-  const hasBackCameraIndicatorColor = hasBackCamera
+  const hasBackCameraOptionIndicatorColor = hasBackCamera
     ? activeOptionColor
     : notActiveOptionColor;
-  const hasFrontCameraIndicatorColor = hasFrontCamera
+  const hasFrontCameraOptionIndicatorColor = hasFrontCamera
+    ? activeOptionColor
+    : notActiveOptionColor;
+  const canDetectDeviceMovementOptionIndicatorColor = canDetectDeviceMovement
     ? activeOptionColor
     : notActiveOptionColor;
 
-  const hasBackCameraIndicator = (
+  const deviceMovementServiceIndicatorColor = deviceMovementServiceRunning
+    ? activeOptionColor
+    : notActiveOptionColor;
+
+  const hasBackCameraOptionIndicator = (
     <View
       style={[
         styles.statusBarIndicator,
-        {backgroundColor: hasBackCameraIndicatorColor},
+        {backgroundColor: hasBackCameraOptionIndicatorColor},
       ]}>
       <Text style={styles.statusBarIndicatorText}>{'BC'}</Text>
     </View>
   );
-  const hasFrontCameraIndicator = (
+  const hasFrontCameraOptionIndicator = (
     <View
       style={[
         styles.statusBarIndicator,
-        {backgroundColor: hasFrontCameraIndicatorColor},
+        {backgroundColor: hasFrontCameraOptionIndicatorColor},
       ]}>
       <Text style={styles.statusBarIndicatorText}>{'FC'}</Text>
+    </View>
+  );
+  const canDetectDeviceMovementOptionIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: canDetectDeviceMovementOptionIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
+    </View>
+  );
+
+  const deviceMovementServiceRunningIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: deviceMovementServiceIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
     </View>
   );
 
@@ -62,14 +97,18 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={devicePressHandler}>
       <View style={[styles.itemContainer, {backgroundColor}]}>
-        <View style={styles.statusBar}>
-          {hasBackCameraIndicator}
-          {hasFrontCameraIndicator}
+        <Text style={styles.itemName}>{deviceName}</Text>
+        <View style={styles.deviceOptionsBar}>
+          {hasBackCameraOptionIndicator}
+          {hasFrontCameraOptionIndicator}
+          {canDetectDeviceMovementOptionIndicator}
+        </View>
+        <View style={styles.deviceStatusBar}>
+          {deviceMovementServiceRunningIndicator}
         </View>
         <View style={styles.freeSpace} />
-        <Text style={styles.itemName}>{deviceName}</Text>
-        <Text style={styles.itemCode}>{lastLoginTimestamp}</Text>
-        <Text style={styles.itemCode}>{lastUpdateTimestamp}</Text>
+        <Text style={styles.itemCode}>{lastLoginDateText}</Text>
+        <Text style={styles.itemCode}>{deviceOnlineStatus}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -89,13 +128,17 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: 'grey',
     backgroundColor: 'orange',
-    padding: 10,
-    height: 150,
+    // padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    height: 170,
   },
   itemName: {
     fontSize: 16,
     color: '#fff',
     fontWeight: '600',
+    margin: 4,
   },
   itemCode: {
     fontWeight: '600',
@@ -105,7 +148,15 @@ const styles = StyleSheet.create({
   freeSpace: {
     flex: 1,
   },
-  statusBar: {
+  deviceOptionsBar: {
+    height: 16,
+    backgroundColor: '#2c3e50',
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  deviceStatusBar: {
+    marginTop: 4,
     height: 16,
     backgroundColor: '#2c3e50',
     alignSelf: 'stretch',
@@ -125,30 +176,5 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-// const styles = StyleSheet.create({
-//   mainContainer: {
-//     height: 100,
-//     width: 200,
-//     backgroundColor: 'red',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   itemContainer: {
-//     justifyContent: 'flex-end',
-//     borderRadius: 5,
-//     padding: 10,
-//     height: 150,
-//   },
-//   itemName: {
-//     fontSize: 16,
-//     color: '#fff',
-//     fontWeight: '600',
-//   },
-//   itemCode: {
-//     fontWeight: '600',
-//     fontSize: 12,
-//     color: '#fff',
-//   },
-// });
 
 export default React.memo(GroupDeviceItem);

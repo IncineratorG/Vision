@@ -20,6 +20,11 @@ const GroupLocalActions = () => {
       'GLA_SET_REQUEST_STATUS_DIALOG_RESPONSE_DATA',
     CLEAR_REQUEST_STATUS_DIALOG_DATA: 'GLA_CLEAR_REQUEST_STATUS_DIALOG_DATA',
 
+    SET_CURRENT_REQUEST_STATUS_DIALOG_DATA:
+      'GLA_SET_CURRENT_REQUEST_STATUS_DIALOG_DATA',
+    CLEAR_CURRENT_REQUEST_STATUS_DIALOG_DATA:
+      'GLA_CLEAR_CURRENT_REQUEST_STATUS_DIALOG_DATA',
+
     OPEN_IMAGE_VIEWER: 'GLA_OPEN_IMAGE_VIEWER',
     CLOSE_IMAGE_VIEWER: 'GLA_CLOSE_IMAGE_VIEWER',
   };
@@ -93,6 +98,41 @@ const GroupLocalActions = () => {
     };
   };
 
+  // ===
+  const setCurrentRequestStatusDialogData = ({
+    visible,
+    statusText,
+    leftButtonVisible,
+    leftButtonText,
+    leftButtonPressHandler,
+    rightButtonVisible,
+    rightButtonText,
+    rightButtonPressHandler,
+    onCancel,
+  }) => {
+    return {
+      type: types.SET_CURRENT_REQUEST_STATUS_DIALOG_DATA,
+      payload: {
+        visible,
+        statusText,
+        leftButtonVisible,
+        leftButtonText,
+        leftButtonPressHandler,
+        rightButtonVisible,
+        rightButtonText,
+        rightButtonPressHandler,
+        onCancel,
+      },
+    };
+  };
+
+  const clearCurrentRequestStatusDialogData = () => {
+    return {
+      type: types.CLEAR_CURRENT_REQUEST_STATUS_DIALOG_DATA,
+    };
+  };
+  // ===
+
   const openImageViewer = ({image}) => {
     return {
       type: types.OPEN_IMAGE_VIEWER,
@@ -118,6 +158,8 @@ const GroupLocalActions = () => {
       setRequestStatusDialogVisibility,
       setRequestStatusDialogResponseData,
       clearRequestStatusDialogData,
+      setCurrentRequestStatusDialogData,
+      clearCurrentRequestStatusDialogData,
       openImageViewer,
       closeImageViewer,
     },

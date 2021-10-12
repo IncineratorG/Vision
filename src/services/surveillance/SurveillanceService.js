@@ -62,6 +62,10 @@ const SurveillanceService = () => {
   const sendTestNotification = async () => {
     return await nativeService.sendTestNotification();
   };
+
+  const testMotionSensor = async () => {
+    return await nativeService.testMotionSensor();
+  };
   // ===
 
   return {
@@ -77,6 +81,7 @@ const SurveillanceService = () => {
     cancelRequest,
     // ===
     sendTestNotification,
+    testMotionSensor,
     // ===
   };
 };

@@ -12,6 +12,7 @@ import com.vision.common.services.surveillance.data.requests.handlers.is_device_
 import com.vision.common.services.surveillance.data.requests.handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_fron_camera_image.TakeFrontCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
+import com.vision.common.services.surveillance.data.requests.handlers.toggle_detect_device_movement.ToggleDetectDeviceMovementServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.unknown.UnknownRequestServiceHandler;
 import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
@@ -30,6 +31,7 @@ public class FBSRequestsExecutor implements ServiceRequestsExecutor {
         mHandlers.put(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, new IsDeviceAliveServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, new TakeFrontCameraImageServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, new ToggleDetectDeviceMovementServiceHandler());
     }
 
     @Override

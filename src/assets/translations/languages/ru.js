@@ -41,6 +41,20 @@ const ru = {
   AuthorisationStatus_registerDeviceInGroupInProgress: 'Регистрация в группе',
   AuthorisationStatus_createGroupWithDeviceInProgress: 'Создание группы',
   AuthorisationStatus_loginDeviceInGroupInProgress: 'Вход в группу',
+  AuthorisationStatus_errorEmptyGroupName: 'Укажите название группы',
+  AuthorisationStatus_errorEmptyGroupPassword: 'Введите пароль от группы',
+  AuthorisationStatus_errorEmptyDeviceName: 'Введите название устройства',
+  AuthorisationStatus_errorGroupNotExist:
+    'Указанная группа не зарегестрирована',
+  AuthorisationStatus_errorGroupAlreadyExist: 'Указанная группа уже существует',
+  AuthorisationStatus_errorIncorrectGroupPassword:
+    'Неправилльный пароль от группы',
+  AuthorisationStatus_errorDeviceNameAlreadyExist:
+    'Название устройства уже занято',
+  AuthorisationStatus_errorDeviceAlreadyLoggedIn: 'Устройство уже в сети',
+  AuthorisationStatus_errorDeviceNameNotExist: 'Неверное имя устройства',
+  AuthorisationStatus_errorFirebaseFailure: 'Не удалось связаться с сервисом',
+  AuthorisationStatus_errorUnknown: 'Неизвестная ошибка',
 
   DeviceRequestDialog_cancelButton: 'ОТМЕНА',
 
@@ -53,6 +67,7 @@ const ru = {
   DeviceRequestsDialog_title: 'Доступные запросы',
   DeviceRequestsDialog_getFrontCameraImage: 'Изображение передней камеры',
   DeviceRequestsDialog_getBackCameraImage: 'Изображение задней камеры',
+  DeviceRequestsDialog_detectDeviceMovement: 'Следить за движением устройства',
 
   SelectedDeviceNotAvailable_message: 'Устройство не доступно.',
 
@@ -93,6 +108,36 @@ const ru = {
   FrontCameraImageQualityDialog_qualityHigh: 'Высокое',
   FrontCameraImageQualityDialog_qualityMedium: 'Среднее',
   FrontCameraImageQualityDialog_qualityLow: 'Низкое',
+
+  GroupDeviceItem_deviceOnline: 'В сети',
+  GroupDeviceItem_deviceOffline: 'Не сети',
+
+  CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressStatusText:
+    'Получение изображения',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressRightButtonText:
+    'ОТМЕНА',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedStatusText:
+    'Изображение получено',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedLeftButtonText:
+    'ПОСМОТРЕТЬ',
+  CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedRightButtonText:
+    'ЗАКРЫТЬ',
+
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressStatusText:
+    'Получение изображения',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressRightButtonText:
+    'ОТМЕНА',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedStatusText:
+    'Изображение получено',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedLeftButtonText:
+    'ПОСМОТРЕТЬ',
+  CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedRightButtonText:
+    'ЗАКРЫТЬ',
+
+  CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressStatusText:
+    'Выполнение',
+  CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressRightButtonText:
+    'ОТМЕНА',
 };
 
 export default ru;

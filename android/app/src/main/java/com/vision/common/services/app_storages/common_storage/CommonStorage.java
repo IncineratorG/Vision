@@ -7,6 +7,8 @@ import com.tencent.mmkv.MMKV;
 import com.vision.common.services.app_storages.helper.AppStoragesHelper;
 
 public class CommonStorage {
+    public static final String NAME = "CommonStorage";
+
     private static final String sClassName = "CommonStorage";
 
     public CommonStorage() {

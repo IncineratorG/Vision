@@ -1,5 +1,7 @@
 const SurveillanceTakeFrontCameraImageRequestActions = () => {
   const types = {
+    CLEAR: 'STFCIRA_CLEAR',
+
     SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST:
       'STFCIRA_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST',
     SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_BEGIN:
@@ -14,6 +16,12 @@ const SurveillanceTakeFrontCameraImageRequestActions = () => {
       'STFCIRA_CANCEL_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST',
     SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_CANCELLED:
       'STFCIRA_SEND_TAKE_FRONT_CAMERA_IMAGE_REQUEST_CANCELLED',
+  };
+
+  const clear = () => {
+    return {
+      type: types.CLEAR,
+    };
   };
 
   const sendTakeFrontCameraImageRequest = ({receiverDeviceName}) => {
@@ -65,6 +73,7 @@ const SurveillanceTakeFrontCameraImageRequestActions = () => {
   return {
     types,
     actions: {
+      clear,
       sendTakeFrontCameraImageRequest,
       sendTakeFrontCameraImageRequestBegin,
       sendTakeFrontCameraImageRequestSended,

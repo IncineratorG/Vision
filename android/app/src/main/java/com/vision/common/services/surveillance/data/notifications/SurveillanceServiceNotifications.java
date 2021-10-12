@@ -19,4 +19,24 @@ public class SurveillanceServiceNotifications {
                 payload.jsonObject()
         );
     }
+
+    public static ServiceNotification deviceMovementStartNotification(String senderGroupName,
+                                                                      String senderDeviceName) {
+        return new ServiceNotification(
+                SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_START,
+                senderGroupName,
+                senderDeviceName,
+                null
+        );
+    }
+
+    public static ServiceNotification deviceMovementEndNotification(String senderGroupName,
+                                                                    String senderDeviceName) {
+        return new ServiceNotification(
+                SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_END,
+                senderGroupName,
+                senderDeviceName,
+                null
+        );
+    }
 }

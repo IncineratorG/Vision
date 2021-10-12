@@ -1,7 +1,13 @@
 import React, {useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Checkbox} from 'react-native-paper';
 
-const DeviceRequestsDialogRequestsListItem = ({type, name, icon, onPress}) => {
+const DeviceRequestsDialogRequestsListCheckboxItem = ({
+  type,
+  name,
+  checked,
+  onPress,
+}) => {
   const itemPressHandler = useCallback(() => {
     if (onPress) {
       onPress({type});
@@ -12,7 +18,7 @@ const DeviceRequestsDialogRequestsListItem = ({type, name, icon, onPress}) => {
     <TouchableOpacity onPress={itemPressHandler}>
       <View style={styles.mainContainer}>
         <View style={styles.iconContainer}>
-          <View style={[styles.icon]}>{icon}</View>
+          <Checkbox status={checked ? 'checked' : 'unchecked'} onPress={null} />
         </View>
         <View style={styles.requestNameContainer}>
           <Text style={styles.requestName}>{name}</Text>
@@ -20,14 +26,6 @@ const DeviceRequestsDialogRequestsListItem = ({type, name, icon, onPress}) => {
       </View>
     </TouchableOpacity>
   );
-
-  // return (
-  //   <TouchableOpacity onPress={itemPressHandler}>
-  //     <View style={styles.mainContainer}>
-  //       <Text style={styles.requestName}>{name}</Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
 };
 
 const styles = StyleSheet.create({
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     flexDirection: 'row',
 
-    backgroundColor: 'white',
+    // backgroundColor: 'orange',
     padding: 8,
     justifyContent: 'center',
     // borderWidth: 1,
@@ -75,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(DeviceRequestsDialogRequestsListItem);
+export default React.memo(DeviceRequestsDialogRequestsListCheckboxItem);

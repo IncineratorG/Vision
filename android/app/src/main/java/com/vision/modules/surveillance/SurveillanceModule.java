@@ -47,6 +47,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
         actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, SurveillanceJSActionTypes.TEST_MOTION_SENSOR);
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, SurveillanceJSActionTypes.GET_APP_PERMISSIONS);
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);
@@ -61,6 +62,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         requestTypes.putString(SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE, SurveillanceServiceRequestTypes.IS_DEVICE_ALIVE);
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE);
+        requestTypes.putString(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT);
 
         WritableMap eventTypes = new WritableNativeMap();
         eventTypes.putString(SurveillanceEventTypes.REQUEST_DELIVERED, SurveillanceEventTypes.REQUEST_DELIVERED);

@@ -19,6 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class CameraService {
+    public static final String NAME = "CameraService";
+
     private static CameraService sInstance;
 
     private Camera mCamera;

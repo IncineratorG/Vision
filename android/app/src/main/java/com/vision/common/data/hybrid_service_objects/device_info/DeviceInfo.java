@@ -9,9 +9,7 @@ import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_object.ServiceObject;
 import com.vision.modules.modules_common.interfaces.hybrid_object.HybridObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DeviceInfo implements ServiceObject, HybridObject {
@@ -19,8 +17,12 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     public final String LAST_UPDATE_TIMESTAMP_KEY = "lastUpdateTimestamp";
     public final String DEVICE_NAME_KEY = "deviceName";
     public final String DEVICE_MODE_KEY = "deviceMode";
+
     public final String HAS_FRONT_CAMERA_KEY = "hasFrontCamera";
     public final String HAS_BACK_CAMERA_KEY = "hasBackCamera";
+    public final String CAN_DETECT_DEVICE_MOVEMENT_KEY = "canDetectDeviceMovement";
+
+    public final String DEVICE_MOVEMENT_SERVICE_RUNNING = "deviceMovementServiceRunning";
 
     private final String UNKNOWN_DEVICE_NAME = "Unknown";
 
@@ -28,8 +30,12 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     private long mLastUpdateTimestamp = -1;
     private String mDeviceName = UNKNOWN_DEVICE_NAME;
     private String mDeviceMode = AppConstants.DEVICE_MODE_USER;
+
     private boolean mHasFrontCamera;
     private boolean mHasBackCamera;
+    private boolean mCanDetectDeviceMovement;
+
+    private boolean mDeviceMovementServiceRunning;
 
     public DeviceInfo() {
         mLastLoginTimestamp = -1;
@@ -38,6 +44,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMode = AppConstants.DEVICE_MODE_USER;
         mHasFrontCamera = false;
         mHasBackCamera = false;
+        mCanDetectDeviceMovement = false;
+        mDeviceMovementServiceRunning = false;
     }
 
     public DeviceInfo(DeviceInfo other) {
@@ -47,6 +55,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMode = other.mDeviceMode;
         mHasFrontCamera = other.mHasFrontCamera;
         mHasBackCamera = other.mHasBackCamera;
+        mCanDetectDeviceMovement = other.mCanDetectDeviceMovement;
+        mDeviceMovementServiceRunning = other.mDeviceMovementServiceRunning;
     }
 
     public DeviceInfo(Object object) {
@@ -131,6 +141,28 @@ public class DeviceInfo implements ServiceObject, HybridObject {
             } else {
                 Log.d("tag", "DeviceInfo->NO_BACK_CAMERA_VALUE");
             }
+
+            if (map.containsKey(CAN_DETECT_DEVICE_MOVEMENT_KEY)) {
+                Boolean canDetectDeviceMovement = (Boolean) map.get(CAN_DETECT_DEVICE_MOVEMENT_KEY);
+                if (canDetectDeviceMovement != null) {
+                    mCanDetectDeviceMovement = canDetectDeviceMovement;
+                } else {
+                    Log.d("tag", "DeviceInfo->CAN_DETECT_DEVICE_MOVEMENT_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_CAN_DETECT_DEVICE_MOVEMENT_VALUE");
+            }
+
+            if (map.containsKey(DEVICE_MOVEMENT_SERVICE_RUNNING)) {
+                Boolean detectDeviceMovementServiceRunning = (Boolean) map.get(DEVICE_MOVEMENT_SERVICE_RUNNING);
+                if (detectDeviceMovementServiceRunning != null) {
+                    mDeviceMovementServiceRunning = detectDeviceMovementServiceRunning;
+                } else {
+                    Log.d("tag", "DeviceInfo->DEVICE_MOVEMENT_SERVICE_RUNNING_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_DEVICE_MOVEMENT_SERVICE_RUNNING_VALUE");
+            }
         } else {
             Log.d("tag", "DeviceInfo->BAD_OBJECT_MAP");
         }
@@ -160,6 +192,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         return mHasBackCamera;
     }
 
+    public boolean canDetectDeviceMovement() {
+        return mCanDetectDeviceMovement;
+    }
+
+    public boolean deviceMovementServiceRunning() {
+        return mDeviceMovementServiceRunning;
+    }
+
     public void setLastLoginTimestamp(long timestamp) {
         mLastLoginTimestamp = timestamp;
     }
@@ -184,6 +224,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mHasBackCamera = hasBackCamera;
     }
 
+    public void setCanDetectDeviceMovement(boolean canDetectDeviceMovement) {
+        mCanDetectDeviceMovement = canDetectDeviceMovement;
+    }
+
+    public void setDeviceMovementServiceRunning(boolean deviceMovementServiceRunning) {
+        mDeviceMovementServiceRunning = deviceMovementServiceRunning;
+    }
+
     @Override
     public boolean isEmpty() {
         return mLastLoginTimestamp == -1 && mDeviceName.equalsIgnoreCase(UNKNOWN_DEVICE_NAME);
@@ -197,8 +245,12 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         writableMap.putDouble(LAST_UPDATE_TIMESTAMP_KEY, mLastUpdateTimestamp);
         writableMap.putString(DEVICE_NAME_KEY, mDeviceName);
         writableMap.putString(DEVICE_MODE_KEY, mDeviceMode);
+
         writableMap.putBoolean(HAS_FRONT_CAMERA_KEY, mHasFrontCamera);
         writableMap.putBoolean(HAS_BACK_CAMERA_KEY, mHasBackCamera);
+        writableMap.putBoolean(CAN_DETECT_DEVICE_MOVEMENT_KEY, mCanDetectDeviceMovement);
+
+        writableMap.putBoolean(DEVICE_MOVEMENT_SERVICE_RUNNING, mDeviceMovementServiceRunning);
 
         return writableMap;
     }
@@ -220,8 +272,12 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         serviceObjectMap.put(LAST_UPDATE_TIMESTAMP_KEY, String.valueOf(mLastUpdateTimestamp));
         serviceObjectMap.put(DEVICE_NAME_KEY, mDeviceName);
         serviceObjectMap.put(DEVICE_MODE_KEY, mDeviceMode);
+
         serviceObjectMap.put(HAS_FRONT_CAMERA_KEY, mHasFrontCamera);
         serviceObjectMap.put(HAS_BACK_CAMERA_KEY, mHasBackCamera);
+        serviceObjectMap.put(CAN_DETECT_DEVICE_MOVEMENT_KEY, mCanDetectDeviceMovement);
+
+        serviceObjectMap.put(DEVICE_MOVEMENT_SERVICE_RUNNING, mDeviceMovementServiceRunning);
 
         return serviceObjectMap;
     }

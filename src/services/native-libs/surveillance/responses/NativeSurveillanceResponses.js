@@ -31,11 +31,20 @@ const NativeSurveillanceResponses = () => {
     };
   };
 
+  const toggleDetectDeviceMovement = (data) => {
+    const {detectDeviceMovementServiceRunning} = data;
+
+    return {
+      detectDeviceMovementServiceRunning,
+    };
+  };
+
   return {
     testRequestWithPayloadResponse,
     isDeviceAlive,
     takeBackCameraImage,
     takeFrontCameraImage,
+    toggleDetectDeviceMovement,
   };
 };
 

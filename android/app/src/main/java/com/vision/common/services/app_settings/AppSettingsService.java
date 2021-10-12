@@ -11,6 +11,8 @@ import com.vision.common.services.app_storages.AppStorages;
 import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 
 public class AppSettingsService {
+    public static final String NAME = "AppSettingsService";
+
     private static AppSettingsService sInstance;
 
     private AppSettings mDefaultAppSettings;

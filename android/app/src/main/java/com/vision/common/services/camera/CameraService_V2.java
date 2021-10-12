@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class CameraService_V2 {
+    public static final String NAME = "CameraService";
+
     public static CameraService_V2 sInstance;
 
     private Camera mCurrentCamera;

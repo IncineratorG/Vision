@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FBSPathsService {
+    public static final String NAME = "FBSPathsService";
+
     private static FBSPathsService sInstance;
 
     public final String APP_PATH = "vision";

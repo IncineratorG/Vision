@@ -11,7 +11,10 @@ const NativeSurveillanceActions = () => {
       GET_DEVICES_IN_GROUP,
       SEND_REQUEST,
       CANCEL_REQUEST,
+      // ===
       SEND_TEST_NOTIFICATION,
+      TEST_MOTION_SENSOR,
+      // ===
     },
   } = NativeSurveillanceConstants;
 
@@ -72,6 +75,12 @@ const NativeSurveillanceActions = () => {
       type: SEND_TEST_NOTIFICATION,
     };
   };
+
+  const testMotionSensor = () => {
+    return {
+      type: TEST_MOTION_SENSOR,
+    };
+  };
   // ===
 
   return {
@@ -85,6 +94,7 @@ const NativeSurveillanceActions = () => {
     cancelRequestAction,
     // ===
     sendTestNotification,
+    testMotionSensor,
     // ===
   };
 };

@@ -35,7 +35,6 @@ public class FBSRequestSender implements ServiceRequestSender {
 
         OnCompleteListener<Void> onCompleteListener = task -> {
             Log.d("tag", "FBRequestSender->send()");
-//            onDeliveredCallback.handle();
         };
 
         OnFailureListener onFailureListener = e -> {

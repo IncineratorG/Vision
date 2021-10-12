@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DeviceGroupService {
+    public static final String NAME = "DeviceGroupService";
+
     private static DeviceGroupService sInstance;
 
     public DeviceGroupService() {

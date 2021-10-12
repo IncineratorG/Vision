@@ -4,6 +4,7 @@ import SurveillanceIsDeviceAliveRequestActions from './surveillance/Surveillance
 import SurveillanceTakeBackCameraImageRequestActions from './surveillance/SurveillanceTakeBackCameraImageRequestActions';
 import AppSettingsActions from './app-settings/AppSettingsActions';
 import SurveillanceTakeFrontCameraImageRequestActions from './surveillance/SurveillanceTakeFrontCameraImageRequestActions';
+import SurveillanceToggleDetectDeviceMovementRequestActions from './surveillance/SurveillanceToggleDetectDeviceMovementRequestActions';
 
 const AppActions = () => {
   const auth = AuthActions();
@@ -15,6 +16,8 @@ const AppActions = () => {
     SurveillanceTakeBackCameraImageRequestActions();
   const surveillanceTakeFrontCameraImageRequest =
     SurveillanceTakeFrontCameraImageRequestActions();
+  const surveillanceToggleDetectDeviceMovementRequest =
+    SurveillanceToggleDetectDeviceMovementRequestActions();
 
   return {
     auth,
@@ -23,6 +26,7 @@ const AppActions = () => {
     surveillanceIsDeviceAliveRequest,
     surveillanceTakeBackCameraImageRequest,
     surveillanceTakeFrontCameraImageRequest,
+    surveillanceToggleDetectDeviceMovementRequest,
   };
 };
 

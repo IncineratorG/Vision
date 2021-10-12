@@ -39,11 +39,20 @@ const useServiceController = (model) => {
     Services.services().surveillanceService.sendTestNotification();
   }, []);
 
+  const testMotionSensorPressHandler = useCallback(() => {
+    SystemEventsHandler.onInfo({
+      info: 'useServiceController()->testMotionSensorPressHandler()',
+    });
+
+    Services.services().surveillanceService.testMotionSensor();
+  }, []);
+
   return {
     backButtonPressHandler,
     stopService,
     testCameraPressHandler,
     testNotificationPressHandler,
+    testMotionSensorPressHandler,
   };
 };
 

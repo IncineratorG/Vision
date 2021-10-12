@@ -1,7 +1,6 @@
 import {call, put, select} from '@redux-saga/core/effects';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
-import AppActions from '../../../actions/AppActions';
-import Services from '../../../../services/Services';
+import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
+import Services from '../../../../../services/Services';
 
 const SS_cancelIsDeviceAliveRequestHandler = ({channel}) => {
   const handler = function* (action) {
@@ -15,9 +14,9 @@ const SS_cancelIsDeviceAliveRequestHandler = ({channel}) => {
         yield call(surveillanceService.cancelRequest, {requestId});
       }
 
-      yield put(
-        AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestCancelled(),
-      );
+      // yield put(
+      //   AppActions.surveillanceIsDeviceAliveRequest.actions.sendIsAliveRequestCancelled(),
+      // );
     } catch (e) {
       SystemEventsHandler.onError({
         err:

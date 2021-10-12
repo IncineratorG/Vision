@@ -5,6 +5,7 @@ import com.vision.common.services.surveillance.data.requests.payloads.payloads.I
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeFrontCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TestRequestWithPayloadRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.ToggleDetectDeviceMovementRequestPayload;
 
 import org.json.JSONObject;
 
@@ -32,5 +33,9 @@ public class SurveillanceServiceRequestPayloads {
 
     public static TakeFrontCameraImageRequestPayload takeFrontCameraImageRequestPayload(JSONObject jsonObject) {
         return new TakeFrontCameraImageRequestPayload(jsonObject);
+    }
+
+    public static ToggleDetectDeviceMovementRequestPayload toggleDetectDeviceMovementRequestPayload() {
+        return new ToggleDetectDeviceMovementRequestPayload();
     }
 }

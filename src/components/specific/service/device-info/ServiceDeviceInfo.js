@@ -10,6 +10,7 @@ const ServiceDeviceInfo = ({
   deviceName,
   onTestCameraPress,
   onTestNotificationPress,
+  onTestMotionSensorPress,
   onStopServicePress,
 }) => {
   const groupNameIcon = useMemo(() => {
