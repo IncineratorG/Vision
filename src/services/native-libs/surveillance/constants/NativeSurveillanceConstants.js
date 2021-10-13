@@ -15,6 +15,9 @@ const NativeSurveillanceConstants = () => {
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
       TEST_CAMERA_MOTION_DETECTION,
+      TEST_START_CAMERA_PREVIEW,
+      TEST_STOP_CAMERA_PREVIEW,
+      TEST_TAKE_CAMERA_PREVIEW_PICTURE,
       // ===
     },
     requestTypes: {
@@ -42,6 +45,9 @@ const NativeSurveillanceConstants = () => {
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
       TEST_CAMERA_MOTION_DETECTION,
+      TEST_START_CAMERA_PREVIEW,
+      TEST_STOP_CAMERA_PREVIEW,
+      TEST_TAKE_CAMERA_PREVIEW_PICTURE,
       // ===
     },
     requestTypes: {

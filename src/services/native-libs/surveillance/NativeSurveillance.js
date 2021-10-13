@@ -189,6 +189,22 @@ const NativeSurveillance = () => {
   const addImageTakenListener = (listener) => {
     imageTakenListener = listener;
   };
+
+  const testStartCameraPreview = async () => {
+    const action = NativeSurveillanceActions.testStartCameraPreviewAction();
+    return await nativeService.execute(action);
+  };
+
+  const testStopCameraPreview = async () => {
+    const action = NativeSurveillanceActions.testStopCameraPreviewAction();
+    return await nativeService.execute(action);
+  };
+
+  const testTakeCameraPreviewPicture = async () => {
+    const action =
+      NativeSurveillanceActions.testTakeCameraPreviewPictureAction();
+    return await nativeService.execute(action);
+  };
   // ===
 
   return {
@@ -207,6 +223,9 @@ const NativeSurveillance = () => {
     testMotionSensor,
     testCameraMotionDetection,
     addImageTakenListener,
+    testStartCameraPreview,
+    testStopCameraPreview,
+    testTakeCameraPreviewPicture,
     // ===
   };
 };

@@ -15,6 +15,9 @@ const NativeSurveillanceActions = () => {
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
       TEST_CAMERA_MOTION_DETECTION,
+      TEST_START_CAMERA_PREVIEW,
+      TEST_STOP_CAMERA_PREVIEW,
+      TEST_TAKE_CAMERA_PREVIEW_PICTURE,
       // ===
     },
   } = NativeSurveillanceConstants;
@@ -88,6 +91,24 @@ const NativeSurveillanceActions = () => {
       type: TEST_CAMERA_MOTION_DETECTION,
     };
   };
+
+  const testStartCameraPreviewAction = () => {
+    return {
+      type: TEST_START_CAMERA_PREVIEW,
+    };
+  };
+
+  const testStopCameraPreviewAction = () => {
+    return {
+      type: TEST_STOP_CAMERA_PREVIEW,
+    };
+  };
+
+  const testTakeCameraPreviewPictureAction = () => {
+    return {
+      type: TEST_TAKE_CAMERA_PREVIEW_PICTURE,
+    };
+  };
   // ===
 
   return {
@@ -103,6 +124,9 @@ const NativeSurveillanceActions = () => {
     sendTestNotification,
     testMotionSensor,
     testCameraMotionDetection,
+    testStartCameraPreviewAction,
+    testStopCameraPreviewAction,
+    testTakeCameraPreviewPictureAction,
     // ===
   };
 };

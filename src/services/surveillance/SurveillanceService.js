@@ -70,6 +70,18 @@ const SurveillanceService = () => {
   const testCameraMotionDetection = async () => {
     return await nativeService.testCameraMotionDetection();
   };
+
+  const testStartCameraPreview = async () => {
+    return await nativeService.testStartCameraPreview();
+  };
+
+  const testStopCameraPreview = async () => {
+    return await nativeService.testStopCameraPreview();
+  };
+
+  const testTakeCameraPreviewPicture = async () => {
+    return await nativeService.testTakeCameraPreviewPicture();
+  };
   // ===
 
   return {
@@ -88,6 +100,9 @@ const SurveillanceService = () => {
     testMotionSensor,
     testCameraMotionDetection,
     nativeService,
+    testStartCameraPreview,
+    testStopCameraPreview,
+    testTakeCameraPreviewPicture,
     // ===
   };
 };

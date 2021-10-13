@@ -16,6 +16,9 @@ import com.vision.modules.surveillance.module_actions_executor.handlers.Test_Sen
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler_V2;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestMotionSensorHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStartCameraPreviewHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStopCameraPreviewHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestTakeCameraPreviewPictureHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.SendRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StartServiceHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StopServiceHandler;
@@ -36,6 +39,10 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, new Test_SentTestNotificationHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, new Test_TestMotionSensorHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler_V2());
+
+        mHandlers.put(SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW, new Test_TestStartCameraPreviewHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW, new Test_TestStopCameraPreviewHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE, new Test_TestTakeCameraPreviewPictureHandler());
         // ===
         mHandlers.put(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, new GetAppPermissionsHandler());
         mHandlers.put(SurveillanceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());

@@ -5,14 +5,15 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Surface;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.vision.common.services.camera_motion_detection.CameraMotionDetectionService;
+import com.vision.common.services.camera.CameraPreviewImageData;
+import com.vision.common.services.camera.CameraService_V3;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
@@ -32,7 +33,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler {
+public class Test_TestTakeCameraPreviewPictureHandler implements JSActionHandler {
     private final int IN_WIDTH = 300;
     private final int IN_HEIGHT = 300;
     private final float WH_RATIO = (float)IN_WIDTH / IN_HEIGHT;
@@ -42,42 +43,58 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
 
     @Override
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
-        Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle()");
+        Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle()");
 
-        copyAssets(context);
-
-        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
-        cameraMotionDetectionService.requestBackCameraImage((imageBytes, width, height, previewFormat) -> {
-            Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): " + imageBytes.length + " - " + width + " - " + height + " - " + previewFormat);
-
-            Mat bgraMat = cameraPreviewImageToRgbaMat(imageBytes, width, height, previewFormat);
-            if (bgraMat == null) {
-                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): BGRA_MAT_IS_NULL");
-                return;
-            }
-            Mat rotatedBgraMat = rotateMat(bgraMat, 270);
-////            Mat rotatedRgbaMat = loadTestImageMat(context);
-            byte[] processedImageBytes = processImage(context, rotatedBgraMat);
-            if (processedImageBytes == null) {
-                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): PROCESSED_IMAGE_BYTES_IS_NULL");
-                return;
-            }
+        // ===
+//        int rotation = context.getCurrentActivity().getWindowManager().getDefaultDisplay()
+//                .getRotation();
 //
-//            // create a temporary buffer
-//            MatOfByte buffer = new MatOfByte();
-//            // encode the frame in the buffer, according to the PNG format
-//            Imgcodecs.imencode(".jpg", rotatedRgbaMat, buffer);
+//        int degrees = 0;
+//        switch (rotation) {
+//            case Surface.ROTATION_0: degrees = 0; break;
+//            case Surface.ROTATION_90: degrees = 90; break;
+//            case Surface.ROTATION_180: degrees = 180; break;
+//            case Surface.ROTATION_270: degrees = 270; break;
+//        }
+//
+//        Log.d("tag", rotation + " - " + degrees);
+        // ===
 
-            String base64 = Base64.encodeToString(processedImageBytes, Base64.DEFAULT);
-            context
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(
-                            "IMAGE_TAKEN_EVENT",
-                            imageTakenEventPayload(base64)
-                    );
-        });
+        CameraService_V3 cameraService = CameraService_V3.get();
+        if (cameraService.isCameraPreviewRunning()) {
+            CameraPreviewImageData previewImageData = cameraService.getPreviewImageData();
+            if (previewImageData == null || !previewImageData.hasImage()) {
+                Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): PREVIEW_IMAGE_DATA_IS_NULL");
+                result.resolve(null);
+            }
 
-        result.resolve(true);
+            Mat rgbaMat = cameraPreviewImageToRgbaMat(
+                    previewImageData.imageBytes(),
+                    previewImageData.width(),
+                    previewImageData.height(),
+                    previewImageData.imageFormat()
+            );
+            rgbaMat = rotateMat(rgbaMat, 270);
+
+//            byte[] processedImage = processImage(context, rgbaMat);
+            byte[] jpgBytes = matToJpgBytes(rgbaMat);
+
+            String base64ImageString = bytesToBase64String(jpgBytes);
+            result.resolve(imageTakenEventPayload(base64ImageString));
+        } else {
+            Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): CAMERA_SERVICE_NOT_RUNNING");
+            result.resolve(null);
+        }
+    }
+
+    private WritableMap imageTakenEventPayload(String base64String) {
+        WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("base64String", base64String);
+        return jsPayload;
+    }
+
+    private String bytesToBase64String(byte[] bytes) {
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
     private Mat cameraPreviewImageToRgbaMat(byte[] imageBytes, int width, int height, int previewFormat) {
@@ -86,10 +103,8 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
 
         Mat mRgba = new Mat();
         if (previewFormat == ImageFormat.NV21) {
-            Log.d("tag", "1");
             Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2BGRA_NV21, 4);
         } else if (previewFormat == ImageFormat.YV12) {
-            Log.d("tag", "2");
             Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2BGRA_YV12, 4);
         } else {
             Log.d("tag", "Test_TestCameraMotionDetectionHandler->handle()->UNKNOWN_IMAGE_FORMAT: " + previewFormat);
@@ -106,13 +121,20 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
 //        }
 
         return mRgba;
+    }
 
-//        // create a temporary buffer
-//        MatOfByte buffer = new MatOfByte();
-//        // encode the frame in the buffer, according to the PNG format
-//        Imgcodecs.imencode(".jpg", mRgba, buffer);
-//
-//        return buffer.toArray();
+    private Mat rotateMat(Mat mat, int angle) {
+        Mat dst = new Mat(mat.rows(), mat.cols(), mat.type());
+
+        Point center = new Point(dst.cols() / 2, dst.rows() / 2);
+
+        Mat rotationMatrix = Imgproc.getRotationMatrix2D(center, angle, 1.5);
+
+        Size size = new Size(mat.cols(), mat.cols());
+
+        Imgproc.warpAffine(mat, dst, rotationMatrix, size);
+
+        return dst;
     }
 
     private byte[] processImage(Context context, Mat bgraMat) {
@@ -186,6 +208,7 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
                         new Point(xRightTop, yRightTop),
                         new Scalar(0, 255, 0));
                 String label = classNames[classId] + ": " + confidence;
+                Log.d("tag", "DETECTION: " + label);
 
                 int[] baseLine = new int[1];
                 Size labelSize = Imgproc.getTextSize(label, Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, 1, baseLine);
@@ -216,32 +239,13 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
         return buffer.toArray();
     }
 
-    private Mat rotateMat(Mat mat, int angle) {
-        Mat dst = new Mat(mat.rows(), mat.cols(), mat.type());
+    private byte[] matToJpgBytes(Mat mat) {
+        // create a temporary buffer
+        MatOfByte buffer = new MatOfByte();
+        // encode the frame in the buffer, according to the PNG format
+        Imgcodecs.imencode(".jpg", mat, buffer);
 
-        Point center = new Point(dst.cols() / 2, dst.rows() / 2);
-
-        Mat rotationMatrix = Imgproc.getRotationMatrix2D(center, angle, 1.5);
-
-        Size size = new Size(mat.cols(), mat.cols());
-
-        Imgproc.warpAffine(mat, dst, rotationMatrix, size);
-
-        return dst;
-    }
-
-    private Mat loadTestImageMat(Context context) {
-        File imageFile = context.getExternalFilesDir("image.jpg");
-        if (imageFile == null || !imageFile.exists()) {
-            Log.d("tag", "IMAGE_FILE_NOT_EXIST");
-            return null;
-        }
-        Log.d("tag", "IMAGE_LOADED");
-
-        Mat inputFrame = Imgcodecs.imread(imageFile.getAbsolutePath());
-        Imgproc.cvtColor(inputFrame, inputFrame, Imgproc.COLOR_RGBA2RGB);
-
-        return inputFrame;
+        return buffer.toArray();
     }
 
     private void copyAssets(Context context) {
@@ -251,11 +255,5 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
         assetsToCopy.add("image.jpg");
 
         CopyAssetsHelper.copyAssets(context, assetsToCopy);
-    }
-
-    private WritableMap imageTakenEventPayload(String base64String) {
-        WritableMap jsPayload = new WritableNativeMap();
-        jsPayload.putString("base64String", base64String);
-        return jsPayload;
     }
 }

@@ -6,6 +6,9 @@ public class SurveillanceJSActionTypes {
     public static final String SEND_TEST_NOTIFICATION = "SEND_TEST_NOTIFICATION";
     public static final String TEST_MOTION_SENSOR = "TEST_MOTION_SENSOR";
     public static final String TEST_CAMERA_MOTION_DETECTION = "TEST_CAMERA_MOTION_DETECTION";
+    public static final String TEST_START_CAMERA_PREVIEW = "TEST_START_CAMERA_PREVIEW";
+    public static final String TEST_STOP_CAMERA_PREVIEW = "TEST_STOP_CAMERA_PREVIEW";
+    public static final String TEST_TAKE_CAMERA_PREVIEW_PICTURE = "TEST_TAKE_CAMERA_PREVIEW_PICTURE";
     // ===
     public static final String GET_APP_PERMISSIONS = "GET_APP_PERMISSIONS";
     public static final String IS_RUNNING = "IS_RUNNING";
