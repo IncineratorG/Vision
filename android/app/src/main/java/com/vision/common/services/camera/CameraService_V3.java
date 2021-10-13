@@ -7,6 +7,9 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
 
+import com.vision.common.services.camera.callbacks.OnImageTakeError;
+import com.vision.common.services.camera.callbacks.OnImageTaken;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +38,19 @@ public class CameraService_V3 {
         }
 
         return sInstance;
+    }
+
+    public int getBackCameraId() {
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        int camerasCount = Camera.getNumberOfCameras();
+        for (int cameraIdx = 0; cameraIdx < camerasCount; ++cameraIdx) {
+            Camera.getCameraInfo(cameraIdx, cameraInfo);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                return cameraIdx;
+            }
+        }
+
+        return -1;
     }
 
     public boolean isCameraPreviewRunning() {
@@ -161,18 +177,5 @@ public class CameraService_V3 {
                     previewImageBytes, imageWidth, imageHeight, imageFormat
             );
         }
-    }
-
-    private int getBackCameraId() {
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        int camerasCount = Camera.getNumberOfCameras();
-        for (int cameraIdx = 0; cameraIdx < camerasCount; ++cameraIdx) {
-            Camera.getCameraInfo(cameraIdx, cameraInfo);
-            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                return cameraIdx;
-            }
-        }
-
-        return -1;
     }
 }

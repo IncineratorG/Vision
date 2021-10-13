@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Surface;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -14,9 +13,11 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.services.camera.CameraPreviewImageData;
 import com.vision.common.services.camera.CameraService_V3;
+import com.vision.common.services.camera.data.opencv.OpenCVHelper;
 import com.vision.modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
+import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;

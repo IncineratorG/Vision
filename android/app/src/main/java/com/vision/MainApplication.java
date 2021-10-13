@@ -1,6 +1,5 @@
 package com.vision;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDexApplication;
@@ -11,12 +10,11 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.vision.common.services.camera.data.opencv.OpenCVHelper;
 import com.vision.modules.app_settings.AppSettingsPackage;
 import com.vision.modules.auth.AuthPackage;
 import com.vision.modules.firebase.FirebasePackage;
 import com.vision.modules.surveillance.SurveillancePackage;
-
-import org.opencv.android.OpenCVLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -58,7 +56,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    OpenCVLoader.initDebug();
+      OpenCVHelper.init();
+//    OpenCVLoader.initDebug();
 //    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
