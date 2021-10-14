@@ -4,6 +4,8 @@ package com.vision.common.services.surveillance.data.responses.payloads;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.ErrorResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.StartRecognizePersonResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.StopRecognizePersonResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeFrontCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
@@ -53,12 +55,45 @@ public class SurveillanceServiceResponsePayloads {
     }
 
     public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
-            boolean detectDeviceMovementServiceRunning) {
+            boolean detectDeviceMovementServiceRunning
+    ) {
         return new ToggleDetectDeviceMovementResponsePayload(detectDeviceMovementServiceRunning);
     }
 
     public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
-            JSONObject jsonObject) {
+            JSONObject jsonObject
+    ) {
         return new ToggleDetectDeviceMovementResponsePayload(jsonObject);
+    }
+
+    public static StartRecognizePersonResponsePayload startRecognizePersonResponsePayload(
+            boolean frontCameraRecognizeServiceRunning,
+            boolean backCameraRecognizeServiceRunning
+    ) {
+        return new StartRecognizePersonResponsePayload(
+                frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+        );
+    }
+
+    public static StartRecognizePersonResponsePayload startRecognizePersonResponsePayload(
+            JSONObject jsonObject
+    ) {
+        return new StartRecognizePersonResponsePayload(jsonObject);
+    }
+
+
+    public static StopRecognizePersonResponsePayload stopRecognizePersonResponsePayload(
+            boolean frontCameraRecognizeServiceRunning,
+            boolean backCameraRecognizeServiceRunning
+    ) {
+        return new StopRecognizePersonResponsePayload(
+                frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+        );
+    }
+
+    public static StopRecognizePersonResponsePayload stopRecognizePersonResponsePayload(
+            JSONObject jsonObject
+    ) {
+        return new StopRecognizePersonResponsePayload(jsonObject);
     }
 }

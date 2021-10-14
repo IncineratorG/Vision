@@ -42,6 +42,24 @@ public class PayloadsConverter {
                 return SurveillanceServiceRequestPayloads.toggleDetectDeviceMovementRequestPayload();
             }
 
+            case (SurveillanceServiceRequestTypes.START_RECOGNIZE_PERSON): {
+                String cameraType = requestPayloadMap.getString("cameraType");
+                if (cameraType == null) {
+                    return null;
+                }
+
+                return SurveillanceServiceRequestPayloads.startRecognizePersonRequestPayload(cameraType);
+            }
+
+            case (SurveillanceServiceRequestTypes.STOP_RECOGNIZE_PERSON): {
+                String cameraType = requestPayloadMap.getString("cameraType");
+                if (cameraType == null) {
+                    return null;
+                }
+
+                return SurveillanceServiceRequestPayloads.stopRecognizePersonRequestPayload(cameraType);
+            }
+
             default: {
                 return null;
             }

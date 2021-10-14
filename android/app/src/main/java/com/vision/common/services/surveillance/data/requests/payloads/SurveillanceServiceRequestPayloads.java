@@ -2,6 +2,8 @@ package com.vision.common.services.surveillance.data.requests.payloads;
 
 
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.IsDeviceAliveRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.StartRecognizePersonRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.StopRecognizePersonRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeFrontCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TestRequestWithPayloadRequestPayload;
@@ -37,5 +39,21 @@ public class SurveillanceServiceRequestPayloads {
 
     public static ToggleDetectDeviceMovementRequestPayload toggleDetectDeviceMovementRequestPayload() {
         return new ToggleDetectDeviceMovementRequestPayload();
+    }
+
+    public static StartRecognizePersonRequestPayload startRecognizePersonRequestPayload(String cameraType) {
+        return new StartRecognizePersonRequestPayload(cameraType);
+    }
+
+    public static StartRecognizePersonRequestPayload startRecognizePersonRequestPayload(JSONObject jsonObject) {
+        return new StartRecognizePersonRequestPayload(jsonObject);
+    }
+
+    public static StopRecognizePersonRequestPayload stopRecognizePersonRequestPayload(String cameraType) {
+        return new StopRecognizePersonRequestPayload(cameraType);
+    }
+
+    public static StopRecognizePersonRequestPayload stopRecognizePersonRequestPayload(JSONObject jsonObject) {
+        return new StopRecognizePersonRequestPayload(jsonObject);
     }
 }
