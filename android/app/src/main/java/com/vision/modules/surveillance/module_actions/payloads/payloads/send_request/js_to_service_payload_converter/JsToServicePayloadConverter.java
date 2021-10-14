@@ -1,4 +1,4 @@
-package com.vision.modules.surveillance.module_actions.payloads.payloads.send_request;
+package com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.js_to_service_payload_converter;
 
 
 import com.facebook.react.bridge.ReadableMap;
@@ -6,7 +6,7 @@ import com.vision.common.interfaces.service_request_payload.ServiceRequestPayloa
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 
-public class PayloadsConverter {
+public class JsToServicePayloadConverter {
     public static ServiceRequestPayload toServiceRequestPayload(String requestType, ReadableMap requestPayloadMap) {
         switch (requestType) {
             case (SurveillanceServiceRequestTypes.TEST_REQUEST_WITH_PAYLOAD): {
