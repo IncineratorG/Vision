@@ -9,43 +9,46 @@ const CameraTestView = ({model, controller}) => {
   const [currentBase64ImageString, setCurrentBase64ImageString] =
     useState(null);
 
-  // const test = useCallback(() => {
-  //   setCurrentBase64ImageString(null);
-  //
-  //   Services.services().surveillanceService.testCameraMotionDetection();
-  // }, []);
-
   const getPermissions = useCallback(() => {
     Services.services().surveillanceService.getAppPermissions();
   }, []);
 
-  const startPreview = useCallback(async () => {
-    SystemEventsHandler.onInfo({info: 'startPreview()'});
+  const startBackCamera = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'CameraTestView->startBackCamera()'});
 
-    const started =
-      await Services.services().surveillanceService.testStartCameraPreview();
-    setCameraRunning(started);
+    Services.services().surveillanceService.startBackCamera();
   }, []);
 
-  const stopPreview = useCallback(async () => {
-    SystemEventsHandler.onInfo({info: 'stopPreview()'});
+  const startFrontCamera = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'CameraTestView->startFrontCamera()'});
 
-    const stopped =
-      await Services.services().surveillanceService.testStopCameraPreview();
-    setCameraRunning(!stopped);
+    Services.services().surveillanceService.startFrontCamera();
   }, []);
 
-  const takePreviewPicture = useCallback(async () => {
-    SystemEventsHandler.onInfo({info: 'takePreviewPicture()'});
+  const stopBackCamera = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'CameraTestView->stopBackCamera()'});
+
+    Services.services().surveillanceService.stopBackCamera();
+  }, []);
+
+  const stopFrontCamera = useCallback(() => {
+    SystemEventsHandler.onInfo({info: 'CameraTestView->stopFrontCamera()'});
+
+    Services.services().surveillanceService.stopFrontCamera();
+  }, []);
+
+  const takeBackCameraPicture = useCallback(async () => {
+    SystemEventsHandler.onInfo({
+      info: 'CameraTestView->takeBackCameraPicture()',
+    });
 
     setCurrentBase64ImageString(null);
 
     const imageData =
-      await Services.services().surveillanceService.testTakeCameraPreviewPicture();
-
+      await Services.services().surveillanceService.takeBackCameraPicture();
     if (imageData === null) {
       SystemEventsHandler.onInfo({
-        info: 'CameraTestView->takePreviewPicture(): IMAGE_DATA_IS_NULL',
+        info: 'CameraTestView->takeBackCameraPicture(): IMAGE_DATA_IS_NULL',
       });
       return;
     }
@@ -53,7 +56,7 @@ const CameraTestView = ({model, controller}) => {
     const {base64String} = imageData;
     if (base64String === null) {
       SystemEventsHandler.onInfo({
-        info: 'CameraTestView->takePreviewPicture(): BASE_64_STRING_IS_NULL',
+        info: 'CameraTestView->takeBackCameraPicture(): BASE_64_STRING_IS_NULL',
       });
       return;
     }
@@ -61,18 +64,31 @@ const CameraTestView = ({model, controller}) => {
     setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
   }, []);
 
-  useEffect(() => {
-    Services.services().surveillanceService.nativeService.addImageTakenListener(
-      (data) => {
-        const {base64String} = data;
+  const takeFrontCameraPicture = useCallback(async () => {
+    SystemEventsHandler.onInfo({
+      info: 'CameraTestView->takeFrontCameraPicture()',
+    });
 
-        SystemEventsHandler.onInfo({
-          info: 'IMAGE_TAKEN: ' + base64String.length,
-        });
+    setCurrentBase64ImageString(null);
 
-        setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
-      },
-    );
+    const imageData =
+      await Services.services().surveillanceService.takeFrontCameraPicture();
+    if (imageData === null) {
+      SystemEventsHandler.onInfo({
+        info: 'CameraTestView->takeFrontCameraPicture(): IMAGE_DATA_IS_NULL',
+      });
+      return;
+    }
+
+    const {base64String} = imageData;
+    if (base64String === null) {
+      SystemEventsHandler.onInfo({
+        info: 'CameraTestView->takeFrontCameraPicture(): BASE_64_STRING_IS_NULL',
+      });
+      return;
+    }
+
+    setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
   }, []);
 
   return (
@@ -103,13 +119,31 @@ const CameraTestView = ({model, controller}) => {
           <SimpleButton title={'Get Permission'} onPress={getPermissions} />
         </View>
         <View style={styles.buttonContainer}>
-          <SimpleButton title={'Start Preview'} onPress={startPreview} />
+          <SimpleButton title={'Start Back Camera'} onPress={startBackCamera} />
         </View>
         <View style={styles.buttonContainer}>
-          <SimpleButton title={'Stop Preview'} onPress={stopPreview} />
+          <SimpleButton
+            title={'Start Front Camera'}
+            onPress={startFrontCamera}
+          />
         </View>
         <View style={styles.buttonContainer}>
-          <SimpleButton title={'Take Picture'} onPress={takePreviewPicture} />
+          <SimpleButton title={'Stop Back Camera'} onPress={stopBackCamera} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton title={'Stop Front Camera'} onPress={stopFrontCamera} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton
+            title={'Take Back Camera Picture'}
+            onPress={takeBackCameraPicture}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <SimpleButton
+            title={'Take Front Camera Picture'}
+            onPress={takeFrontCameraPicture}
+          />
         </View>
       </View>
     </View>
@@ -147,3 +181,65 @@ const styles = StyleSheet.create({
 });
 
 export default React.memo(CameraTestView);
+
+// const test = useCallback(() => {
+//   setCurrentBase64ImageString(null);
+//
+//   Services.services().surveillanceService.testCameraMotionDetection();
+// }, []);
+
+// const startPreview = useCallback(async () => {
+//   SystemEventsHandler.onInfo({info: 'startPreview()'});
+//
+//   const started =
+//     await Services.services().surveillanceService.testStartCameraPreview();
+//   setCameraRunning(started);
+// }, []);
+//
+// const stopPreview = useCallback(async () => {
+//   SystemEventsHandler.onInfo({info: 'stopPreview()'});
+//
+//   const stopped =
+//     await Services.services().surveillanceService.testStopCameraPreview();
+//   setCameraRunning(!stopped);
+// }, []);
+//
+// const takePreviewPicture = useCallback(async () => {
+//   SystemEventsHandler.onInfo({info: 'takePreviewPicture()'});
+//
+//   setCurrentBase64ImageString(null);
+//
+//   const imageData =
+//     await Services.services().surveillanceService.testTakeCameraPreviewPicture();
+//
+//   if (imageData === null) {
+//     SystemEventsHandler.onInfo({
+//       info: 'CameraTestView->takePreviewPicture(): IMAGE_DATA_IS_NULL',
+//     });
+//     return;
+//   }
+//
+//   const {base64String} = imageData;
+//   if (base64String === null) {
+//     SystemEventsHandler.onInfo({
+//       info: 'CameraTestView->takePreviewPicture(): BASE_64_STRING_IS_NULL',
+//     });
+//     return;
+//   }
+//
+//   setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
+// }, []);
+//
+// useEffect(() => {
+//   Services.services().surveillanceService.nativeService.addImageTakenListener(
+//     (data) => {
+//       const {base64String} = data;
+//
+//       SystemEventsHandler.onInfo({
+//         info: 'IMAGE_TAKEN: ' + base64String.length,
+//       });
+//
+//       setCurrentBase64ImageString('data:image/jpg;base64,' + base64String);
+//     },
+//   );
+// }, []);

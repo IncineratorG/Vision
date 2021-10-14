@@ -9,6 +9,13 @@ public class SurveillanceJSActionTypes {
     public static final String TEST_START_CAMERA_PREVIEW = "TEST_START_CAMERA_PREVIEW";
     public static final String TEST_STOP_CAMERA_PREVIEW = "TEST_STOP_CAMERA_PREVIEW";
     public static final String TEST_TAKE_CAMERA_PREVIEW_PICTURE = "TEST_TAKE_CAMERA_PREVIEW_PICTURE";
+
+    public static final String TEST_START_BACK_CAMERA = "TEST_START_BACK_CAMERA";
+    public static final String TEST_START_FRONT_CAMERA = "TEST_START_FRONT_CAMERA";
+    public static final String TEST_STOP_BACK_CAMERA = "TEST_STOP_BACK_CAMERA";
+    public static final String TEST_STOP_FRONT_CAMERA = "TEST_STOP_FRONT_CAMERA";
+    public static final String TEST_TAKE_BACK_CAMERA_PICTURE = "TEST_TAKE_BACK_CAMERA_PICTURE";
+    public static final String TEST_TAKE_FRONT_CAMERA_PICTURE = "TEST_TAKE_FRONT_CAMERA_PICTURE";
     // ===
     public static final String GET_APP_PERMISSIONS = "GET_APP_PERMISSIONS";
     public static final String IS_RUNNING = "IS_RUNNING";

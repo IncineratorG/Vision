@@ -1,5 +1,6 @@
 import NativeSurveillance from '../native-libs/surveillance/NativeSurveillance';
 import {SystemEventsHandler} from '../../utils/common/system-events-handler/SystemEventsHandler';
+import NativeSurveillanceActions from '../native-libs/surveillance/actions/NativeSurveillanceActions';
 
 const SurveillanceService = () => {
   const nativeService = NativeSurveillance();
@@ -82,6 +83,32 @@ const SurveillanceService = () => {
   const testTakeCameraPreviewPicture = async () => {
     return await nativeService.testTakeCameraPreviewPicture();
   };
+
+  // =====
+  const startBackCamera = async () => {
+    return await nativeService.startBackCamera();
+  };
+
+  const startFrontCamera = async () => {
+    return await nativeService.startFrontCamera();
+  };
+
+  const stopBackCamera = async () => {
+    return await nativeService.stopBackCamera();
+  };
+
+  const stopFrontCamera = async () => {
+    return await nativeService.stopFrontCamera();
+  };
+
+  const takeBackCameraPicture = async () => {
+    return await nativeService.takeBackCameraPicture();
+  };
+
+  const takeFrontCameraPicture = async () => {
+    return await nativeService.takeFrontCameraPicture();
+  };
+  // =====
   // ===
 
   return {
@@ -103,6 +130,13 @@ const SurveillanceService = () => {
     testStartCameraPreview,
     testStopCameraPreview,
     testTakeCameraPreviewPicture,
+
+    startBackCamera,
+    startFrontCamera,
+    stopBackCamera,
+    stopFrontCamera,
+    takeBackCameraPicture,
+    takeFrontCameraPicture,
     // ===
   };
 };

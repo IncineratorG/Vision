@@ -7,8 +7,7 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
 
-import com.vision.common.services.camera.callbacks.OnImageTakeError;
-import com.vision.common.services.camera.callbacks.OnImageTaken;
+import com.vision.common.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
 
 import java.io.IOException;
 import java.util.Collections;

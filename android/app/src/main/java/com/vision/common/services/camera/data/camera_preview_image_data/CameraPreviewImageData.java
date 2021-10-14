@@ -1,4 +1,4 @@
-package com.vision.common.services.camera;
+package com.vision.common.services.camera.data.camera_preview_image_data;
 
 
 import java.util.Arrays;

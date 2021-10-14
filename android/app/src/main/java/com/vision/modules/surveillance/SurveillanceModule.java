@@ -52,6 +52,13 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW, SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW);
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW, SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW);
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE);
+
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_BACK_CAMERA, SurveillanceJSActionTypes.TEST_START_BACK_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_FRONT_CAMERA, SurveillanceJSActionTypes.TEST_START_FRONT_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_BACK_CAMERA, SurveillanceJSActionTypes.TEST_STOP_BACK_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_FRONT_CAMERA, SurveillanceJSActionTypes.TEST_STOP_FRONT_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_BACK_CAMERA_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_BACK_CAMERA_PICTURE);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_FRONT_CAMERA_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_FRONT_CAMERA_PICTURE);
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, SurveillanceJSActionTypes.GET_APP_PERMISSIONS);
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);

@@ -18,6 +18,13 @@ const NativeSurveillanceActions = () => {
       TEST_START_CAMERA_PREVIEW,
       TEST_STOP_CAMERA_PREVIEW,
       TEST_TAKE_CAMERA_PREVIEW_PICTURE,
+
+      TEST_START_BACK_CAMERA,
+      TEST_START_FRONT_CAMERA,
+      TEST_STOP_BACK_CAMERA,
+      TEST_STOP_FRONT_CAMERA,
+      TEST_TAKE_BACK_CAMERA_PICTURE,
+      TEST_TAKE_FRONT_CAMERA_PICTURE,
       // ===
     },
   } = NativeSurveillanceConstants;
@@ -109,6 +116,42 @@ const NativeSurveillanceActions = () => {
       type: TEST_TAKE_CAMERA_PREVIEW_PICTURE,
     };
   };
+
+  const startBackCameraAction = () => {
+    return {
+      type: TEST_START_BACK_CAMERA,
+    };
+  };
+
+  const startFrontCameraAction = () => {
+    return {
+      type: TEST_START_FRONT_CAMERA,
+    };
+  };
+
+  const stopBackCameraAction = () => {
+    return {
+      type: TEST_STOP_BACK_CAMERA,
+    };
+  };
+
+  const stopFrontCameraAction = () => {
+    return {
+      type: TEST_STOP_FRONT_CAMERA,
+    };
+  };
+
+  const takeBackCameraPictureAction = () => {
+    return {
+      type: TEST_TAKE_BACK_CAMERA_PICTURE,
+    };
+  };
+
+  const takeFrontCameraPictureAction = () => {
+    return {
+      type: TEST_TAKE_FRONT_CAMERA_PICTURE,
+    };
+  };
   // ===
 
   return {
@@ -127,6 +170,13 @@ const NativeSurveillanceActions = () => {
     testStartCameraPreviewAction,
     testStopCameraPreviewAction,
     testTakeCameraPreviewPictureAction,
+
+    startBackCameraAction,
+    startFrontCameraAction,
+    stopBackCameraAction,
+    stopFrontCameraAction,
+    takeBackCameraPictureAction,
+    takeFrontCameraPictureAction,
     // ===
   };
 };

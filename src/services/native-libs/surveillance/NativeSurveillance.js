@@ -205,6 +205,36 @@ const NativeSurveillance = () => {
       NativeSurveillanceActions.testTakeCameraPreviewPictureAction();
     return await nativeService.execute(action);
   };
+
+  const startBackCamera = async () => {
+    const action = NativeSurveillanceActions.startBackCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const startFrontCamera = async () => {
+    const action = NativeSurveillanceActions.startFrontCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const stopBackCamera = async () => {
+    const action = NativeSurveillanceActions.stopBackCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const stopFrontCamera = async () => {
+    const action = NativeSurveillanceActions.stopFrontCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const takeBackCameraPicture = async () => {
+    const action = NativeSurveillanceActions.takeBackCameraPictureAction();
+    return await nativeService.execute(action);
+  };
+
+  const takeFrontCameraPicture = async () => {
+    const action = NativeSurveillanceActions.takeFrontCameraPictureAction();
+    return await nativeService.execute(action);
+  };
   // ===
 
   return {
@@ -226,6 +256,13 @@ const NativeSurveillance = () => {
     testStartCameraPreview,
     testStopCameraPreview,
     testTakeCameraPreviewPicture,
+
+    startBackCamera,
+    startFrontCamera,
+    stopBackCamera,
+    stopFrontCamera,
+    takeBackCameraPicture,
+    takeFrontCameraPicture,
     // ===
   };
 };
