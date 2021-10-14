@@ -3,7 +3,7 @@ package com.vision.common.services.device_info;
 import android.content.Context;
 
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.services.camera.CameraService_V2;
+import com.vision.common.services.camera.CameraService_V4;
 import com.vision.common.services.device_movement.DeviceMovementService;
 
 public class DeviceInfoService {
@@ -72,11 +72,11 @@ public class DeviceInfoService {
     }
 
     private boolean hasFrontCamera() {
-        return CameraService_V2.get().hasFrontCamera();
+        return CameraService_V4.get().hasFrontCamera();
     }
 
     private boolean hasBackCamera() {
-        return CameraService_V2.get().hasBackCamera();
+        return CameraService_V4.get().hasBackCamera();
     }
 
     private boolean canDetectDeviceMovement(Context context) {

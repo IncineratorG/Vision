@@ -100,7 +100,7 @@ public class CameraService_V2 {
             Log.d("tag", "CameraService_V2->takeCameraImage()->IN_JPEG_PICTURE_CALLBACK->CURRENT_PICTURE_SIZE: " + size.width + " - " + size.height);
 
             String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-            imageTakenCallback.onImageTaken(bytes, base64);
+            imageTakenCallback.onImageTaken(base64);
 
             disposeCurrentCamera();
         });

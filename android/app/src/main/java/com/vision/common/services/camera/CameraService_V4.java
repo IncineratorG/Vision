@@ -105,7 +105,7 @@ public class CameraService_V4 {
                     cameraPreviewImageData.height()
             );
 
-            imageTakenCallback.onImageTaken(null, base64);
+            imageTakenCallback.onImageTaken(base64);
         } else {
             long taskStartTimestamp = System.currentTimeMillis();
 
@@ -126,7 +126,7 @@ public class CameraService_V4 {
                         previewFrame.height()
                 );
 
-                imageTakenCallback.onImageTaken(null, base64);
+                imageTakenCallback.onImageTaken(base64);
 
                 stopBackCameraPreview();
 
@@ -157,7 +157,7 @@ public class CameraService_V4 {
                     cameraPreviewImageData.height()
             );
 
-            imageTakenCallback.onImageTaken(null, base64);
+            imageTakenCallback.onImageTaken(base64);
         } else {
             long taskStartTimestamp = System.currentTimeMillis();
 
@@ -178,7 +178,7 @@ public class CameraService_V4 {
                         previewFrame.height()
                 );
 
-                imageTakenCallback.onImageTaken(null, base64);
+                imageTakenCallback.onImageTaken(base64);
 
                 stopFrontCameraPreview();
 
@@ -192,7 +192,7 @@ public class CameraService_V4 {
         }
     }
 
-    public void startFrontCameraPreview(String quality) {
+    private void startFrontCameraPreview(String quality) {
         if (mFrontCameraRunning) {
             return;
         }
@@ -282,7 +282,7 @@ public class CameraService_V4 {
         }
     }
 
-    public void startBackCameraPreview(String quality) {
+    private void startBackCameraPreview(String quality) {
         if (mBackCameraRunning) {
             return;
         }
@@ -372,7 +372,7 @@ public class CameraService_V4 {
         }
     }
 
-    public void stopFrontCameraPreview() {
+    private void stopFrontCameraPreview() {
         try {
             if (mFrontCamera != null) {
                 mFrontCamera.stopPreview();
@@ -394,7 +394,7 @@ public class CameraService_V4 {
         }
     }
 
-    public void stopBackCameraPreview() {
+    private void stopBackCameraPreview() {
         try {
             if (mBackCamera != null) {
                 mBackCamera.stopPreview();

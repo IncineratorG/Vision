@@ -15,8 +15,8 @@ public class Test_TestStartBackCameraHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "Test_TestStartBackCameraHandler->handle()");
 
-        CameraService_V4 cameraService = CameraService_V4.get();
-        cameraService.startBackCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
+//        CameraService_V4 cameraService = CameraService_V4.get();
+//        cameraService.startBackCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
 
         result.resolve(true);
     }

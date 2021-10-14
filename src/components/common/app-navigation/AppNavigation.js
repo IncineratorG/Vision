@@ -15,10 +15,8 @@ import CameraTest from '../../../screens/camera-test/CameraTest';
 const MainStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
-  const mainStack = useMemo(() => {
-    return (
-      <MainStack.Navigator mode="card">
-        <MainStack.Screen
+  /*
+            <MainStack.Screen
           name={'CameraTest'}
           component={CameraTest}
           options={({navigation, route}) => ({
@@ -30,6 +28,11 @@ const AppNavigation = () => {
             headerStatusBarHeight: 0,
           })}
         />
+     */
+
+  const mainStack = useMemo(() => {
+    return (
+      <MainStack.Navigator mode="card">
         <MainStack.Screen
           name={AppRoutes.Loader}
           component={Loader}

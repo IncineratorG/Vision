@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
-import com.vision.common.services.camera.CameraService_V2;
+import com.vision.common.services.camera.CameraService_V4;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
@@ -38,15 +38,12 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        CameraService_V2 cameraService = CameraService_V2.get();
+        CameraService_V4 cameraService = CameraService_V4.get();
 
-        int backCameraId = cameraService.getBackCameraId();
-
-        cameraService.takeCameraImage(
-                backCameraId,
+        cameraService.takeBackCameraImage(
                 requestPayload.imageQuality(),
-                (bytes, base64String) -> {
-                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken(): " + bytes.length + " - " + base64String.length());
+                (base64String) -> {
+                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken()");
 
                     TakeBackCameraImageResponsePayload responsePayload =
                             SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload(base64String);

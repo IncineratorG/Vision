@@ -26,7 +26,7 @@ public class Test_TestTakeBackCameraImageHandler implements JSActionHandler {
 
         cameraService.takeBackCameraImage(
                 AppConstants.CAMERA_IMAGE_QUALITY_HIGH,
-                (bytes, base64String) -> {
+                (base64String) -> {
                     result.resolve(imageTakenEventPayload(base64String));
                 },
                 (code, message) -> {

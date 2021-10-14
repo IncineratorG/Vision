@@ -27,7 +27,7 @@ public class Test_TestTakeFrontCameraImageHandler implements JSActionHandler {
 
         cameraService.takeFrontCameraImage(
                 AppConstants.CAMERA_IMAGE_QUALITY_HIGH,
-                (bytes, base64String) -> {
+                (base64String) -> {
                     result.resolve(imageTakenEventPayload(base64String));
                 },
                 (code, message) -> {

@@ -14,8 +14,8 @@ public class Test_TestStopFrontCameraHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "Test_TestStopFrontCameraHandler->handle()");
 
-        CameraService_V4 cameraService = CameraService_V4.get();
-        cameraService.stopFrontCameraPreview();
+//        CameraService_V4 cameraService = CameraService_V4.get();
+//        cameraService.stopFrontCameraPreview();
 
         result.resolve(true);
     }

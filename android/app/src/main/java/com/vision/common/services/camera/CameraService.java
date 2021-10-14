@@ -35,7 +35,7 @@ public class CameraService {
 
         // ===
         if (mCurrentImageTakenCallback != null) {
-            mCurrentImageTakenCallback.onImageTaken(bytes, base64);
+            mCurrentImageTakenCallback.onImageTaken(base64);
         } else {
             Log.d("tag", "CameraService->BAD_CURRENT_IMAGE_TAKEN_CALLBACK");
         }
