@@ -10,6 +10,7 @@ const initialState = {
     hasFrontCamera: false,
     hasBackCamera: false,
     canDetectDeviceMovement: false,
+    canRecognizePerson: false,
     deviceMovementServiceRunning: false,
   },
   devicesInGroup: {

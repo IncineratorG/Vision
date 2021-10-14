@@ -22,11 +22,11 @@ const SS_getDevicesInGroupSaga = ({channel}) => {
         deviceName,
       });
 
-      SystemEventsHandler.onInfo({
-        info:
-          'SS_getDevicesInGroupSaga->handler()->RESULT: ' +
-          JSON.stringify(result),
-      });
+      // SystemEventsHandler.onInfo({
+      //   info:
+      //     'SS_getDevicesInGroupSaga->handler()->RESULT: ' +
+      //     JSON.stringify(result),
+      // });
 
       yield put(
         AppActions.surveillanceCommon.actions.getDevicesInGroupFinished({

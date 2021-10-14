@@ -14,6 +14,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     hasFrontCamera,
     hasBackCamera,
     canDetectDeviceMovement,
+    canRecognizePerson,
     deviceMovementServiceRunning,
   } = device;
 
@@ -45,6 +46,9 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     ? activeOptionColor
     : notActiveOptionColor;
   const canDetectDeviceMovementOptionIndicatorColor = canDetectDeviceMovement
+    ? activeOptionColor
+    : notActiveOptionColor;
+  const canRecognizePersonIndicatorColor = canRecognizePerson
     ? activeOptionColor
     : notActiveOptionColor;
 
@@ -79,6 +83,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
     </View>
   );
+  const canRecognizePersonOptionIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: canRecognizePersonIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RP'}</Text>
+    </View>
+  );
 
   const deviceMovementServiceRunningIndicator = (
     <View
@@ -102,6 +115,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
           {hasBackCameraOptionIndicator}
           {hasFrontCameraOptionIndicator}
           {canDetectDeviceMovementOptionIndicator}
+          {canRecognizePersonOptionIndicator}
         </View>
         <View style={styles.deviceStatusBar}>
           {deviceMovementServiceRunningIndicator}

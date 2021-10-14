@@ -37,6 +37,7 @@ public class DeviceInfoService {
         deviceInfo.setHasFrontCamera(hasFrontCamera());
         deviceInfo.setHasBackCamera(hasBackCamera());
         deviceInfo.setCanDetectDeviceMovement(canDetectDeviceMovement(context));
+        deviceInfo.setCanRecognizePerson(canRecognizePerson());
 
         deviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
 
@@ -53,6 +54,7 @@ public class DeviceInfoService {
         updatedDeviceInfo.setHasFrontCamera(hasFrontCamera());
         updatedDeviceInfo.setHasBackCamera(hasBackCamera());
         updatedDeviceInfo.setCanDetectDeviceMovement(canDetectDeviceMovement(context));
+        updatedDeviceInfo.setCanRecognizePerson(canRecognizePerson());
 
         updatedDeviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
 
@@ -85,5 +87,9 @@ public class DeviceInfoService {
 
     private boolean deviceMovementServiceRunning() {
         return DeviceMovementService.get().isRunning();
+    }
+
+    private boolean canRecognizePerson() {
+        return CameraService_V4.get().canRecognizePerson();
     }
 }

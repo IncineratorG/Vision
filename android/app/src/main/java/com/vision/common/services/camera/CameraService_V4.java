@@ -84,7 +84,7 @@ public class CameraService_V4 {
         return false;
     }
 
-    public boolean canRecognizeObjects() {
+    public boolean canRecognizePerson() {
         return OpenCVHelper.available();
     }
 
