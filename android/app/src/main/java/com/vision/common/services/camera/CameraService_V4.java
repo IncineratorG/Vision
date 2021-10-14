@@ -231,10 +231,13 @@ public class CameraService_V4 {
         Camera.Size cameraPreviewSize = previewSizes.get(0);
         if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_HIGH)) {
             cameraPreviewSize = previewSizes.get(0);
+            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_MEDIUM)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() / 2);
+            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_LOW)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
+            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         }
         parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
 
@@ -321,10 +324,13 @@ public class CameraService_V4 {
         Camera.Size cameraPreviewSize = previewSizes.get(0);
         if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_HIGH)) {
             cameraPreviewSize = previewSizes.get(0);
+            Log.d("tag", "CameraService_V4->startBackCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_MEDIUM)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() / 2);
+            Log.d("tag", "CameraService_V4->startBackCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_LOW)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
+            Log.d("tag", "CameraService_V4->startBackCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         }
         parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
 

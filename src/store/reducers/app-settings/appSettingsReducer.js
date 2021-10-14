@@ -49,6 +49,12 @@ const appSettingsReducer = (state = initialState, action) => {
           ? appSettings.surveillance
           : state.surveillance;
 
+      // SystemEventsHandler.onInfo({
+      //   info:
+      //     'appSettingsReducer->GET_APP_SETTINGS_FINISHED: ' +
+      //     JSON.stringify(surveillanceSettings),
+      // });
+
       return {
         ...state,
         getAppSettings: {

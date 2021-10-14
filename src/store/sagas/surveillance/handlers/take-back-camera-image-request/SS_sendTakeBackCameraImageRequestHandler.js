@@ -14,7 +14,11 @@ const SS_sendTakeBackCameraImageRequestHandler = ({channel}) => {
     );
 
     SystemEventsHandler.onInfo({
-      info: 'SS_sendTakeBackCameraImageRequestHandler: ' + receiverDeviceName,
+      info:
+        'SS_sendTakeBackCameraImageRequestHandler: ' +
+        receiverDeviceName +
+        ' - ' +
+        backCameraImageQuality,
     });
 
     yield put(
