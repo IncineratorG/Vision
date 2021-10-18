@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import useTranslation from '../../../../utils/common/localization';
 import GroupLocalActions from '../../store/GroupLocalActions';
 import AppActions from '../../../../store/actions/AppActions';
+import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const useToggleRecognizePersonRequestGroupScreenBehavior = ({
   localDispatch,
@@ -50,6 +51,12 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
 
     if (toggleRecognizePersonRequestInProgress) {
+      SystemEventsHandler.onInfo({
+        info:
+          '===> HERE->REQUEST_IN_PROGRESS: ' +
+          toggleRecognizePersonRequestInProgress,
+      });
+
       localDispatch(
         GroupLocalActions.actions.setCurrentRequestStatusDialogData({
           visible: true,
@@ -96,8 +103,18 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
 
     if (toggleRecognizePersonRequestCompleted) {
+      SystemEventsHandler.onInfo({
+        info:
+          '===> HERE->REQUEST_COMPLETED: ' +
+          toggleRecognizePersonRequestCompleted +
+          ' - ' +
+          frontCameraRecognizePersonServiceRunning +
+          ' - ' +
+          backCameraRecognizePersonServiceRunning,
+      });
+
       dispatch(
-        AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.clear(),
+        AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
       );
       dispatch(
         AppActions.surveillanceCommon.actions.getDevicesInGroup({
@@ -118,7 +135,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
       );
       localDispatch(
         GroupLocalActions.actions.setDeviceRequestsDialogData({
-          device: updatedSelectedDevice,
+          device: {...updatedSelectedDevice},
         }),
       );
       localDispatch(
