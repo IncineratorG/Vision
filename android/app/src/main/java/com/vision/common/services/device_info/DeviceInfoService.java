@@ -40,6 +40,8 @@ public class DeviceInfoService {
         deviceInfo.setCanRecognizePerson(canRecognizePerson());
 
         deviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
+        deviceInfo.setFrontCameraRecognizePersonServiceRunning(frontCameraRecognizePersonServiceRunning());
+        deviceInfo.setBackCameraRecognizePersonServiceRunning(backCameraRecognizePersonServiceRunning());
 
         return deviceInfo;
     }
@@ -57,6 +59,8 @@ public class DeviceInfoService {
         updatedDeviceInfo.setCanRecognizePerson(canRecognizePerson());
 
         updatedDeviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
+        updatedDeviceInfo.setFrontCameraRecognizePersonServiceRunning(frontCameraRecognizePersonServiceRunning());
+        updatedDeviceInfo.setBackCameraRecognizePersonServiceRunning(backCameraRecognizePersonServiceRunning());
 
         return updatedDeviceInfo;
     }
@@ -69,6 +73,8 @@ public class DeviceInfoService {
         updatedDeviceInfo.setDeviceMode(mode);
 
         updatedDeviceInfo.setDeviceMovementServiceRunning(deviceMovementServiceRunning());
+        updatedDeviceInfo.setFrontCameraRecognizePersonServiceRunning(frontCameraRecognizePersonServiceRunning());
+        updatedDeviceInfo.setBackCameraRecognizePersonServiceRunning(backCameraRecognizePersonServiceRunning());
 
         return updatedDeviceInfo;
     }
@@ -85,11 +91,19 @@ public class DeviceInfoService {
         return DeviceMovementService.get().canDetectDeviceMovement(context);
     }
 
+    private boolean canRecognizePerson() {
+        return CameraService_V4.get().canRecognizePerson();
+    }
+
     private boolean deviceMovementServiceRunning() {
         return DeviceMovementService.get().isRunning();
     }
 
-    private boolean canRecognizePerson() {
-        return CameraService_V4.get().canRecognizePerson();
+    private boolean frontCameraRecognizePersonServiceRunning() {
+        return CameraService_V4.get().isFrontCameraRecognizePersonRunning();
+    }
+
+    private boolean backCameraRecognizePersonServiceRunning() {
+        return CameraService_V4.get().isBackCameraRecognizePersonRunning();
     }
 }

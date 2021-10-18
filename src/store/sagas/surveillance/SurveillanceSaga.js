@@ -16,6 +16,8 @@ import SS_sendTakeFrontCameraImageRequestHandler from './handlers/take-front-cam
 import SS_cancelTakeFrontCameraImageRequestHandler from './handlers/take-front-camera-image-request/SS_cancelTakeFrontCameraImageRequestHandler';
 import SS_sendToggleDetectDeviceMovementRequestHandler from './handlers/toggle-detect-device-movement-request/SS_sendToggleDetectDeviceMovementRequestHandler';
 import SS_cancelToggleDetectDeviceMovementRequestHandler from './handlers/toggle-detect-device-movement-request/SS_cancelToggleDetectDeviceMovementRequestHandler';
+import SS_sendToggleRecognizePersonRequestHandler from './handlers/toggle-recognize-person-request/SS_sendToggleRecognizePersonRequestHandler';
+import SS_cancelToggleRecognizePersonRequestHandler from './handlers/toggle-recognize-person-request/SS_cancelToggleRecognizePersonRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -52,6 +54,10 @@ const SurveillanceSaga = () => {
     SS_sendToggleDetectDeviceMovementRequestHandler({channel: sagaChannel});
   const {handler: cancelToggleDetectDeviceMovementRequestHandler} =
     SS_cancelToggleDetectDeviceMovementRequestHandler({channel: sagaChannel});
+  const {handler: sendToggleRecognizePersonRequestHandler} =
+    SS_sendToggleRecognizePersonRequestHandler({channel: sagaChannel});
+  const {handler: cancelToggleRecognizePersonRequestHandler} =
+    SS_cancelToggleRecognizePersonRequestHandler({channel: sagaChannel});
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
@@ -118,6 +124,16 @@ const SurveillanceSaga = () => {
       AppActions.surveillanceToggleDetectDeviceMovementRequest.types
         .CANCEL_SEND_TOGGLE_DETECT_DEVICE_MOVEMENT_REQUEST,
       cancelToggleDetectDeviceMovementRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceToggleRecognizePersonRequest.types
+        .SEND_TOGGLE_RECOGNIZE_PERSON_REQUEST,
+      sendToggleRecognizePersonRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceToggleRecognizePersonRequest.types
+        .CANCEL_SEND_TOGGLE_RECOGNIZE_PERSON_REQUEST,
+      cancelToggleRecognizePersonRequestHandler,
     );
   };
 

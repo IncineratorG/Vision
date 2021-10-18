@@ -9,12 +9,11 @@ import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.handlers.is_device_alive.IsDeviceAliveServiceHandler;
-import com.vision.common.services.surveillance.data.requests.handlers.start_recognize_person.StartRecognizePersonServiceHandler;
-import com.vision.common.services.surveillance.data.requests.handlers.stop_recognize_person.StopRecognizePersonServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.take_fron_camera_image.TakeFrontCameraImageServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.toggle_detect_device_movement.ToggleDetectDeviceMovementServiceHandler;
+import com.vision.common.services.surveillance.data.requests.handlers.toggle_recongnize_person.ToggleRecognizePersonServiceHandler;
 import com.vision.common.services.surveillance.data.requests.handlers.unknown.UnknownRequestServiceHandler;
 import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
@@ -34,8 +33,7 @@ public class FBSRequestsExecutor implements ServiceRequestsExecutor {
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, new TakeFrontCameraImageServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, new ToggleDetectDeviceMovementServiceHandler());
-        mHandlers.put(SurveillanceServiceRequestTypes.START_RECOGNIZE_PERSON, new StartRecognizePersonServiceHandler());
-        mHandlers.put(SurveillanceServiceRequestTypes.STOP_RECOGNIZE_PERSON, new StopRecognizePersonServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON, new ToggleRecognizePersonServiceHandler());
     }
 
     @Override

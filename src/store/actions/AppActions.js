@@ -5,6 +5,7 @@ import SurveillanceTakeBackCameraImageRequestActions from './surveillance/Survei
 import AppSettingsActions from './app-settings/AppSettingsActions';
 import SurveillanceTakeFrontCameraImageRequestActions from './surveillance/SurveillanceTakeFrontCameraImageRequestActions';
 import SurveillanceToggleDetectDeviceMovementRequestActions from './surveillance/SurveillanceToggleDetectDeviceMovementRequestActions';
+import SurveillanceToggleRecognizePersonRequestActions from './surveillance/SurveillanceToggleRecognizePersonRequestActions';
 
 const AppActions = () => {
   const auth = AuthActions();
@@ -18,6 +19,8 @@ const AppActions = () => {
     SurveillanceTakeFrontCameraImageRequestActions();
   const surveillanceToggleDetectDeviceMovementRequest =
     SurveillanceToggleDetectDeviceMovementRequestActions();
+  const surveillanceToggleRecognizePersonRequest =
+    SurveillanceToggleRecognizePersonRequestActions();
 
   return {
     auth,
@@ -27,6 +30,7 @@ const AppActions = () => {
     surveillanceTakeBackCameraImageRequest,
     surveillanceTakeFrontCameraImageRequest,
     surveillanceToggleDetectDeviceMovementRequest,
+    surveillanceToggleRecognizePersonRequest,
   };
 };
 

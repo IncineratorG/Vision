@@ -6,6 +6,7 @@ import surveillanceTakeBackCameraImageRequestReducer from './surveillance/survei
 import appSettingsReducer from './app-settings/appSettingsReducer';
 import surveillanceTakeFrontCameraImageRequestReducer from './surveillance/surveillanceTakeFrontCameraImageRequestReducer';
 import surveillanceToggleDetectDeviceMovementRequestReducer from './surveillance/surveillanceToggleDetectDeviceMovementRequestReducer';
+import surveillanceToggleRecognizePersonRequestReducer from './surveillance/surveillanceToggleRecognizePersonRequestReducer';
 
 const AppReducers = () => {
   const temp = tempReducer;
@@ -20,6 +21,8 @@ const AppReducers = () => {
     surveillanceTakeFrontCameraImageRequestReducer;
   const surveillanceToggleDetectDeviceMovementRequest =
     surveillanceToggleDetectDeviceMovementRequestReducer;
+  const surveillanceToggleRecognizePersonRequest =
+    surveillanceToggleRecognizePersonRequestReducer;
 
   return {
     temp,
@@ -30,6 +33,7 @@ const AppReducers = () => {
     surveillanceTakeBackCameraImageRequest,
     surveillanceTakeFrontCameraImageRequest,
     surveillanceToggleDetectDeviceMovementRequest,
+    surveillanceToggleRecognizePersonRequest,
   };
 };
 

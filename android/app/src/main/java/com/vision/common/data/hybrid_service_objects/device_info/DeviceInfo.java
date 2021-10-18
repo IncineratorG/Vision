@@ -24,6 +24,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     public final String CAN_RECOGNIZE_PERSON_KEY = "canRecognizePerson";
 
     public final String DEVICE_MOVEMENT_SERVICE_RUNNING_KEY = "deviceMovementServiceRunning";
+    public final String FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY = "frontCameraRecognizePersonServiceRunning";
+    public final String BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY = "backCameraRecognizePersonServiceRunning";
 
     private final String UNKNOWN_DEVICE_NAME = "Unknown";
 
@@ -38,6 +40,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     private boolean mCanRecognizePerson;
 
     private boolean mDeviceMovementServiceRunning;
+    private boolean mFrontCameraRecognizePersonServiceRunning;
+    private boolean mBackCameraRecognizePersonServiceRunning;
 
     public DeviceInfo() {
         mLastLoginTimestamp = -1;
@@ -51,6 +55,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mCanRecognizePerson = false;
 
         mDeviceMovementServiceRunning = false;
+        mFrontCameraRecognizePersonServiceRunning = false;
+        mBackCameraRecognizePersonServiceRunning = false;
     }
 
     public DeviceInfo(DeviceInfo other) {
@@ -65,6 +71,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mCanRecognizePerson = other.mCanRecognizePerson;
 
         mDeviceMovementServiceRunning = other.mDeviceMovementServiceRunning;
+        mFrontCameraRecognizePersonServiceRunning = other.mFrontCameraRecognizePersonServiceRunning;
+        mBackCameraRecognizePersonServiceRunning = other.mBackCameraRecognizePersonServiceRunning;
     }
 
     public DeviceInfo(Object object) {
@@ -161,6 +169,17 @@ public class DeviceInfo implements ServiceObject, HybridObject {
                 Log.d("tag", "DeviceInfo->NO_CAN_DETECT_DEVICE_MOVEMENT_VALUE");
             }
 
+            if (map.containsKey(CAN_RECOGNIZE_PERSON_KEY)) {
+                Boolean canRecognizePerson = (Boolean) map.get(CAN_RECOGNIZE_PERSON_KEY);
+                if (canRecognizePerson != null) {
+                    mCanRecognizePerson = canRecognizePerson;
+                } else {
+                    Log.d("tag", "DeviceInfo->CAN_RECOGNIZE_PERSON_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_CAN_RECOGNIZE_PERSON_VALUE");
+            }
+
             if (map.containsKey(DEVICE_MOVEMENT_SERVICE_RUNNING_KEY)) {
                 Boolean detectDeviceMovementServiceRunning = (Boolean) map.get(DEVICE_MOVEMENT_SERVICE_RUNNING_KEY);
                 if (detectDeviceMovementServiceRunning != null) {
@@ -172,15 +191,26 @@ public class DeviceInfo implements ServiceObject, HybridObject {
                 Log.d("tag", "DeviceInfo->NO_DEVICE_MOVEMENT_SERVICE_RUNNING_VALUE");
             }
 
-            if (map.containsKey(CAN_RECOGNIZE_PERSON_KEY)) {
-                Boolean canRecognizePerson = (Boolean) map.get(CAN_RECOGNIZE_PERSON_KEY);
-                if (canRecognizePerson != null) {
-                    mCanRecognizePerson = canRecognizePerson;
+            if (map.containsKey(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY)) {
+                Boolean frontCameraRecognizePersonServiceRunning = (Boolean) map.get(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY);
+                if (frontCameraRecognizePersonServiceRunning != null) {
+                    mFrontCameraRecognizePersonServiceRunning = frontCameraRecognizePersonServiceRunning;
                 } else {
-                    Log.d("tag", "DeviceInfo->CAN_RECOGNIZE_PERSON_VALUE_IS_NULL");
+                    Log.d("tag", "DeviceInfo->FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_VALUE_IS_NULL");
                 }
             } else {
-                Log.d("tag", "DeviceInfo->NO_CAN_RECOGNIZE_PERSON_VALUE");
+                Log.d("tag", "DeviceInfo->NO_FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_VALUE");
+            }
+
+            if (map.containsKey(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY)) {
+                Boolean backCameraRecognizePersonServiceRunning = (Boolean) map.get(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY);
+                if (backCameraRecognizePersonServiceRunning != null) {
+                    mBackCameraRecognizePersonServiceRunning = backCameraRecognizePersonServiceRunning;
+                } else {
+                    Log.d("tag", "DeviceInfo->BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_VALUE_IS_NULL");
+                }
+            } else {
+                Log.d("tag", "DeviceInfo->NO_BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_VALUE");
             }
         } else {
             Log.d("tag", "DeviceInfo->BAD_OBJECT_MAP");
@@ -223,6 +253,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         return mDeviceMovementServiceRunning;
     }
 
+    public boolean frontCameraRecognizePersonServiceRunning() {
+        return mFrontCameraRecognizePersonServiceRunning;
+    }
+
+    public boolean backCameraRecognizePersonServiceRunning() {
+        return mBackCameraRecognizePersonServiceRunning;
+    }
+
     public void setLastLoginTimestamp(long timestamp) {
         mLastLoginTimestamp = timestamp;
     }
@@ -259,6 +297,14 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMovementServiceRunning = deviceMovementServiceRunning;
     }
 
+    public void setFrontCameraRecognizePersonServiceRunning(boolean frontCameraRecognizePersonServiceRunning) {
+        mFrontCameraRecognizePersonServiceRunning = frontCameraRecognizePersonServiceRunning;
+    }
+
+    public void setBackCameraRecognizePersonServiceRunning(boolean backCameraRecognizePersonServiceRunning) {
+        mBackCameraRecognizePersonServiceRunning = backCameraRecognizePersonServiceRunning;
+    }
+
     @Override
     public boolean isEmpty() {
         return mLastLoginTimestamp == -1 && mDeviceName.equalsIgnoreCase(UNKNOWN_DEVICE_NAME);
@@ -279,6 +325,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         writableMap.putBoolean(CAN_RECOGNIZE_PERSON_KEY, mCanRecognizePerson);
 
         writableMap.putBoolean(DEVICE_MOVEMENT_SERVICE_RUNNING_KEY, mDeviceMovementServiceRunning);
+        writableMap.putBoolean(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mFrontCameraRecognizePersonServiceRunning);
+        writableMap.putBoolean(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mBackCameraRecognizePersonServiceRunning);
 
         return writableMap;
     }
@@ -307,6 +355,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         serviceObjectMap.put(CAN_RECOGNIZE_PERSON_KEY, mCanRecognizePerson);
 
         serviceObjectMap.put(DEVICE_MOVEMENT_SERVICE_RUNNING_KEY, mDeviceMovementServiceRunning);
+        serviceObjectMap.put(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mFrontCameraRecognizePersonServiceRunning);
+        serviceObjectMap.put(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mBackCameraRecognizePersonServiceRunning);
 
         return serviceObjectMap;
     }

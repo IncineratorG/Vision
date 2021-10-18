@@ -38,6 +38,7 @@ public class CameraService_V4 {
     private boolean mFrontCameraRunning = false;
     private CameraPreviewImageData mFrontCameraPreviewImageData;
     private Map<String, CameraFrameChangedTask> mFrontCameraFrameChangeTasks;
+    private boolean mFrontCameraRecognizePersonRunning;
 
     private Camera mBackCamera;
     private SurfaceTexture mBackCameraSurfaceTexture;
@@ -46,6 +47,7 @@ public class CameraService_V4 {
     private boolean mBackCameraRunning = false;
     private CameraPreviewImageData mBackCameraPreviewImageData;
     private Map<String, CameraFrameChangedTask> mBackCameraFrameChangeTasks;
+    private boolean mBackCameraRecognizePersonRunning;
 
     private CameraService_V4() {
         mFrontCameraFrameChangeTasks = new ConcurrentHashMap<>();
@@ -86,6 +88,14 @@ public class CameraService_V4 {
 
     public boolean canRecognizePerson() {
         return OpenCVHelper.available();
+    }
+
+    public boolean isFrontCameraRecognizePersonRunning() {
+        return mFrontCameraRecognizePersonRunning;
+    }
+
+    public boolean isBackCameraRecognizePersonRunning() {
+        return mBackCameraRecognizePersonRunning;
     }
 
     public void takeBackCameraImage(String quality,

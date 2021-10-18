@@ -34,6 +34,7 @@ const NativeSurveillanceConstants = () => {
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
+      TOGGLE_RECOGNIZE_PERSON,
     },
     eventTypes: {REQUEST_DELIVERED, REQUEST_ERROR, RESPONSE_RECEIVED},
   } = NativeSurveillanceLib.getConstants();
@@ -71,6 +72,7 @@ const NativeSurveillanceConstants = () => {
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
+      TOGGLE_RECOGNIZE_PERSON,
     },
     eventTypes: {REQUEST_DELIVERED, REQUEST_ERROR, RESPONSE_RECEIVED},
   };

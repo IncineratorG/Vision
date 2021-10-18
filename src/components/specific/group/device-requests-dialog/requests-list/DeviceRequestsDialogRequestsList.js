@@ -2,37 +2,46 @@ import React, {useCallback} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import DeviceRequestsDialogRequestsListTextItem from './item/DeviceRequestsDialogRequestsListTextItem';
 import DeviceRequestsDialogRequestsListCheckboxItem from './item/DeviceRequestsDialogRequestsListCheckboxItem';
+import DeviceRequestsDialogRequestsListDividerItem from './item/DeviceRequestsDialogRequestsListDividerItem';
 
 const DeviceRequestsDialogRequestsList = ({requestsList, onRequestPress}) => {
   const renderItem = useCallback(
     ({item}) => {
       const {type, recomendedComponentType, name, icon, checked} = item;
 
-      if (recomendedComponentType === 'text') {
-        return (
-          <DeviceRequestsDialogRequestsListTextItem
-            type={type}
-            name={name}
-            icon={icon}
-            onPress={onRequestPress}
-          />
-        );
-      } else {
-        return (
-          <DeviceRequestsDialogRequestsListCheckboxItem
-            type={type}
-            name={name}
-            checked={checked}
-            onPress={onRequestPress}
-          />
-        );
+      switch (recomendedComponentType) {
+        case 'divider': {
+          return <DeviceRequestsDialogRequestsListDividerItem />;
+        }
+
+        case 'text': {
+          return (
+            <DeviceRequestsDialogRequestsListTextItem
+              type={type}
+              name={name}
+              icon={icon}
+              onPress={onRequestPress}
+            />
+          );
+        }
+
+        case 'checkbox': {
+          return (
+            <DeviceRequestsDialogRequestsListCheckboxItem
+              type={type}
+              name={name}
+              checked={checked}
+              onPress={onRequestPress}
+            />
+          );
+        }
       }
     },
     [onRequestPress],
   );
 
   const keyExtractor = useCallback((item) => {
-    return item.type;
+    return item.id;
   }, []);
 
   return (

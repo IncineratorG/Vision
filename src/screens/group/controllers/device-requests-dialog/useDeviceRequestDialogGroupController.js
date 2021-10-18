@@ -4,25 +4,7 @@ import GroupLocalActions from '../../store/GroupLocalActions';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const useDeviceRequestsDialogGroupController = (model) => {
-  const {
-    data: {
-      deviceRequestTypes,
-      currentGroupName,
-      currentGroupPassword,
-      currentDeviceName,
-      loggedIn,
-      localState: {
-        deviceRequestsDialog: {
-          visible: deviceRequestsDialogVisible,
-          selectedDeviceName: deviceRequestsDialogSelectedDeviceName,
-        },
-      },
-    },
-    setters: {setCurrentRequestType},
-    navigation,
-    dispatch,
-    localDispatch,
-  } = model;
+  const {dispatch, localDispatch} = model;
 
   const deviceRequestsDialogCancelHandler = useCallback(() => {
     dispatch(
@@ -57,9 +39,8 @@ const useDeviceRequestsDialogGroupController = (model) => {
             {receiverDeviceName: selectedDeviceName},
           ),
         );
-        setCurrentRequestType(deviceRequestTypes.TAKE_FRONT_CAMERA_IMAGE);
       },
-      [deviceRequestTypes, setCurrentRequestType, localDispatch, dispatch],
+      [localDispatch, dispatch],
     );
 
   const deviceRequestsDialogGetBackCameraImageRequestPressHandler = useCallback(
@@ -83,9 +64,8 @@ const useDeviceRequestsDialogGroupController = (model) => {
           {receiverDeviceName: selectedDeviceName},
         ),
       );
-      setCurrentRequestType(deviceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
     },
-    [deviceRequestTypes, setCurrentRequestType, localDispatch, dispatch],
+    [localDispatch, dispatch],
   );
 
   const deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler =
@@ -99,11 +79,11 @@ const useDeviceRequestsDialogGroupController = (model) => {
 
         const {deviceName: selectedDeviceName} = selectedDevice;
 
-        localDispatch(
-          GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-            visible: false,
-          }),
-        );
+        // localDispatch(
+        //   GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+        //     visible: false,
+        //   }),
+        // );
 
         dispatch(
           AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.sendToggleDetectDeviceMovementRequest(
@@ -111,7 +91,47 @@ const useDeviceRequestsDialogGroupController = (model) => {
           ),
         );
       },
-      [localDispatch, dispatch],
+      [dispatch],
+    );
+
+  const deviceRequestsDialogToggleRecognizePersonWithFrontCameraRequestPressHandler =
+    useCallback(
+      ({selectedDevice}) => {
+        SystemEventsHandler.onInfo({
+          info:
+            'useDeviceRequestsDialogGroupController->deviceRequestsDialogToggleRecognizePersonWithFrontCameraRequestPressHandler(): ' +
+            JSON.stringify(selectedDevice),
+        });
+
+        const {deviceName: selectedDeviceName} = selectedDevice;
+
+        dispatch(
+          AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+            {receiverDeviceName: selectedDeviceName, cameraType: 'front'},
+          ),
+        );
+      },
+      [dispatch],
+    );
+
+  const deviceRequestsDialogToggleRecognizePersonWithBackCameraRequestPressHandler =
+    useCallback(
+      ({selectedDevice}) => {
+        SystemEventsHandler.onInfo({
+          info:
+            'useDeviceRequestsDialogGroupController->deviceRequestsDialogToggleRecognizePersonWithBackCameraRequestPressHandler(): ' +
+            JSON.stringify(selectedDevice),
+        });
+
+        const {deviceName: selectedDeviceName} = selectedDevice;
+
+        dispatch(
+          AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+            {receiverDeviceName: selectedDeviceName, cameraType: 'back'},
+          ),
+        );
+      },
+      [dispatch],
     );
 
   return {
@@ -119,6 +139,8 @@ const useDeviceRequestsDialogGroupController = (model) => {
     deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
     deviceRequestsDialogGetBackCameraImageRequestPressHandler,
     deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler,
+    deviceRequestsDialogToggleRecognizePersonWithFrontCameraRequestPressHandler,
+    deviceRequestsDialogToggleRecognizePersonWithBackCameraRequestPressHandler,
   };
 };
 

@@ -6,10 +6,10 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import AppActions from '../../../store/actions/AppActions';
 import groupLocalReducer from '../store/groupLocalReducer';
 import groupLocalState from '../store/groupLocalState';
-import GroupLocalActions from '../store/GroupLocalActions';
 import useTakeBackCameraImageRequestGroupScreenBehavior from '../hooks/take-back-camera-image-request/useTakeBackCameraImageRequestGroupScreenBehavior';
 import useTakeFrontCameraImageRequestGroupScreenBehavior from '../hooks/take-front-camera-image-request/useTakeFrontCameraImageRequestGroupScreenBehavior';
 import useToggleDetectDeviceMovementRequestGroupScreenBehavior from '../hooks/toggle-detect-device-movement-request/useToggleDetectDeviceMovementRequestGroupScreenBehavior';
+import useToggleRecognizePersonRequestGroupScreenBehavior from '../hooks/toggle-recognize-person-request/useToggleRecognizePersonRequestGroupScreenBehavior';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ const useGroupModel = () => {
     deviceRequestsDialog: {device: selectedDevice},
   } = localState;
 
-  const [currentRequestType, setCurrentRequestType] = useState(null);
+  // const [currentRequestType, setCurrentRequestType] = useState(null);
   const [screenFocused, setScreenFocused] = useState(false);
 
   const deviceRequestTypes = {
@@ -60,6 +60,14 @@ const useGroupModel = () => {
   useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useToggleDetectDeviceMovementRequestGroupScreenBehavior({
+    localDispatch,
+    dispatch,
+    currentGroupName,
+    currentGroupPassword,
+    currentDeviceName,
+    selectedDevice,
+  });
+  useToggleRecognizePersonRequestGroupScreenBehavior({
     localDispatch,
     dispatch,
     currentGroupName,
@@ -123,7 +131,7 @@ const useGroupModel = () => {
   return {
     data: {
       deviceRequestTypes,
-      currentRequestType,
+      // currentRequestType,
       localState,
       currentGroupName,
       currentGroupPassword,
@@ -137,7 +145,7 @@ const useGroupModel = () => {
       // selectedDeviceBackCameraImage,
     },
     setters: {
-      setCurrentRequestType,
+      // setCurrentRequestType,
     },
     dispatch,
     localDispatch,

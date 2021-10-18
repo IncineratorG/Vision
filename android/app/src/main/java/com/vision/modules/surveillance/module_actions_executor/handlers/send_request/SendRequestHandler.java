@@ -20,12 +20,11 @@ import com.vision.modules.modules_common.interfaces.response_handler.ResponseHan
 import com.vision.modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;
 import com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.SendRequestPayload;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.IsDeviceAliveResponseHandler;
-import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.StartRecognizePersonResponseHandler;
-import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.StopRecognizePersonResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TakeBackCameraImageResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TakeFrontCameraImageResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.TestRequestWithPayloadResponseHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.ToggleDetectDeviceMovementResponseHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.ToggleRecognizePersonResponseHandler;
 import com.vision.modules.surveillance.module_errors.SurveillanceModuleErrors;
 import com.vision.modules.surveillance.module_events.payloads.SurveillanceEventsJSPayloads;
 import com.vision.modules.surveillance.module_events.types.SurveillanceEventTypes;
@@ -45,8 +44,7 @@ public class SendRequestHandler implements JSActionHandler {
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, new TakeBackCameraImageResponseHandler());
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, new TakeFrontCameraImageResponseHandler());
         mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, new ToggleDetectDeviceMovementResponseHandler());
-        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.START_RECOGNIZE_PERSON, new StartRecognizePersonResponseHandler());
-        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.STOP_RECOGNIZE_PERSON, new StopRecognizePersonResponseHandler());
+        mRequestResponseHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON, new ToggleRecognizePersonResponseHandler());
     }
 
     @Override

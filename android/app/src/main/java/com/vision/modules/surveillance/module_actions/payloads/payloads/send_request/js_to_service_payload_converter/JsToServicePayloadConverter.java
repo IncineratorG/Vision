@@ -42,22 +42,13 @@ public class JsToServicePayloadConverter {
                 return SurveillanceServiceRequestPayloads.toggleDetectDeviceMovementRequestPayload();
             }
 
-            case (SurveillanceServiceRequestTypes.START_RECOGNIZE_PERSON): {
+            case (SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON): {
                 String cameraType = requestPayloadMap.getString("cameraType");
                 if (cameraType == null) {
                     return null;
                 }
 
-                return SurveillanceServiceRequestPayloads.startRecognizePersonRequestPayload(cameraType);
-            }
-
-            case (SurveillanceServiceRequestTypes.STOP_RECOGNIZE_PERSON): {
-                String cameraType = requestPayloadMap.getString("cameraType");
-                if (cameraType == null) {
-                    return null;
-                }
-
-                return SurveillanceServiceRequestPayloads.stopRecognizePersonRequestPayload(cameraType);
+                return SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(cameraType);
             }
 
             default: {

@@ -7,11 +7,15 @@ const initialState = {
     lastUpdateTimestamp: -1,
     deviceName: '',
     deviceMode: '',
+
     hasFrontCamera: false,
     hasBackCamera: false,
     canDetectDeviceMovement: false,
     canRecognizePerson: false,
+
     deviceMovementServiceRunning: false,
+    frontCameraRecognizePersonServiceRunning: false,
+    backCameraRecognizePersonServiceRunning: false,
   },
   devicesInGroup: {
     inProgress: false,

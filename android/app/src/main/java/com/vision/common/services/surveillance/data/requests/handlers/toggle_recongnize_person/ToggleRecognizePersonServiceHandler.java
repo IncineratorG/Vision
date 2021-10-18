@@ -1,4 +1,5 @@
-package com.vision.common.services.surveillance.data.requests.handlers.stop_recognize_person;
+package com.vision.common.services.surveillance.data.requests.handlers.toggle_recongnize_person;
+
 
 import android.content.Context;
 import android.util.Log;
@@ -10,20 +11,20 @@ import com.vision.common.services.firebase_communication.FBSCommunicationService
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
-import com.vision.common.services.surveillance.data.requests.payloads.payloads.StopRecognizePersonRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.ToggleRecognizePersonRequestPayload;
 import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
-import com.vision.common.services.surveillance.data.responses.payloads.payloads.StopRecognizePersonResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ToggleRecognizePersonResponsePayload;
 
 import java.util.List;
 
-public class StopRecognizePersonServiceHandler implements ServiceRequestHandler {
+public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandler {
     @Override
     public void handle(Context context, ServiceRequest request) {
-        Log.d("tag", "StopRecognizePersonServiceHandler->handle(): " + request.stringify());
+        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): " + request.stringify());
 
-        StopRecognizePersonRequestPayload requestPayload =
-                SurveillanceServiceRequestPayloads.stopRecognizePersonRequestPayload(request.payload());
-        Log.d("tag", "StopRecognizePersonServiceHandler->handle()->CAMERA_TYPE: " + requestPayload.cameraType());
+        ToggleRecognizePersonRequestPayload requestPayload =
+                SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(request.payload());
+        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->CAMERA_TYPE: " + requestPayload.cameraType());
 
         SurveillanceService surveillanceService = SurveillanceService.get();
 
@@ -34,10 +35,10 @@ public class StopRecognizePersonServiceHandler implements ServiceRequestHandler 
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        Log.d("tag", "StopRecognizePersonServiceHandler->handle(): NOT_IMPLEMENTED");
+        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): NOT_IMPLEMENTED");
 
-        StopRecognizePersonResponsePayload responsePayload =
-                SurveillanceServiceResponsePayloads.stopRecognizePersonResponsePayload(
+        ToggleRecognizePersonResponsePayload responsePayload =
+                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
                         false, false
                 );
 
@@ -59,7 +60,7 @@ public class StopRecognizePersonServiceHandler implements ServiceRequestHandler 
         if (request.key() != null) {
             FBSCommunicationService.get().removeValueFromList(requestsPath, request.key());
         } else {
-            Log.d("tag", "StopRecognizePersonServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
+            Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
         }
     }
 }

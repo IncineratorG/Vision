@@ -1,29 +1,30 @@
 package com.vision.common.services.surveillance.data.responses.payloads.payloads;
 
+
 import com.vision.common.interfaces.service_response_payload.ServiceResponsePayload;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StopRecognizePersonResponsePayload implements ServiceResponsePayload {
+public class ToggleRecognizePersonResponsePayload implements ServiceResponsePayload {
     private final String FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD = "frontCameraRecognizePersonServiceRunning";
     private final String BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD = "backCameraRecognizePersonServiceRunning";
 
     private JSONObject mJsonObject;
 
-    public StopRecognizePersonResponsePayload(boolean frontCameraRecognizeServiceRunning,
-                                              boolean backCameraRecognizeServiceRunning) {
+    public ToggleRecognizePersonResponsePayload(boolean frontCameraRecognizePersonServiceRunning,
+                                                boolean backCameraRecognizePersonServiceRunning) {
         mJsonObject = new JSONObject();
 
         try {
-            mJsonObject.put(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD, frontCameraRecognizeServiceRunning);
-            mJsonObject.put(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD, backCameraRecognizeServiceRunning);
+            mJsonObject.put(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD, frontCameraRecognizePersonServiceRunning);
+            mJsonObject.put(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_FIELD, backCameraRecognizePersonServiceRunning);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public StopRecognizePersonResponsePayload(JSONObject jsonObject) {
+    public ToggleRecognizePersonResponsePayload(JSONObject jsonObject) {
         try {
             mJsonObject = new JSONObject(jsonObject.toString());
         } catch (JSONException e) {
@@ -66,4 +67,3 @@ public class StopRecognizePersonResponsePayload implements ServiceResponsePayloa
         return mJsonObject;
     }
 }
-

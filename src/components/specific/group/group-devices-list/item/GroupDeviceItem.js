@@ -16,6 +16,8 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     canDetectDeviceMovement,
     canRecognizePerson,
     deviceMovementServiceRunning,
+    frontCameraRecognizePersonServiceRunning,
+    backCameraRecognizePersonServiceRunning,
   } = device;
 
   const activeOptionColor = '#2ecc71';
@@ -55,6 +57,14 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const deviceMovementServiceIndicatorColor = deviceMovementServiceRunning
     ? activeOptionColor
     : notActiveOptionColor;
+  const frontCameraRecognizePersonServiceIndicatorColor =
+    frontCameraRecognizePersonServiceRunning
+      ? activeOptionColor
+      : notActiveOptionColor;
+  const backCameraRecognizePersonServiceIndicatorColor =
+    backCameraRecognizePersonServiceRunning
+      ? activeOptionColor
+      : notActiveOptionColor;
 
   const hasBackCameraOptionIndicator = (
     <View
@@ -102,6 +112,24 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
     </View>
   );
+  const frontCameraRecognizePersonServiceRunningIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: frontCameraRecognizePersonServiceIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RF'}</Text>
+    </View>
+  );
+  const backCameraRecognizePersonServiceRunningIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: backCameraRecognizePersonServiceIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RB'}</Text>
+    </View>
+  );
 
   const devicePressHandler = useCallback(() => {
     onDevicePress({device});
@@ -119,6 +147,8 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
         </View>
         <View style={styles.deviceStatusBar}>
           {deviceMovementServiceRunningIndicator}
+          {frontCameraRecognizePersonServiceRunningIndicator}
+          {backCameraRecognizePersonServiceRunningIndicator}
         </View>
         <View style={styles.freeSpace} />
         <Text style={styles.itemCode}>{lastLoginDateText}</Text>

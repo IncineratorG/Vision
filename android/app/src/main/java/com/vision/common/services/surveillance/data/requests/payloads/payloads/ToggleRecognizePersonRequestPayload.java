@@ -1,16 +1,17 @@
 package com.vision.common.services.surveillance.data.requests.payloads.payloads;
 
+
 import com.vision.common.interfaces.service_request_payload.ServiceRequestPayload;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StartRecognizePersonRequestPayload implements ServiceRequestPayload {
+public class ToggleRecognizePersonRequestPayload implements ServiceRequestPayload {
     private final String CAMERA_TYPE_FIELD = "cameraType";
 
     private JSONObject mJsonObject;
 
-    public StartRecognizePersonRequestPayload(String cameraType) {
+    public ToggleRecognizePersonRequestPayload(String cameraType) {
         mJsonObject = new JSONObject();
 
         try {
@@ -20,7 +21,7 @@ public class StartRecognizePersonRequestPayload implements ServiceRequestPayload
         }
     }
 
-    public StartRecognizePersonRequestPayload(JSONObject jsonObject) {
+    public ToggleRecognizePersonRequestPayload(JSONObject jsonObject) {
         try {
             mJsonObject = new JSONObject(jsonObject.toString());
         } catch (JSONException e) {
