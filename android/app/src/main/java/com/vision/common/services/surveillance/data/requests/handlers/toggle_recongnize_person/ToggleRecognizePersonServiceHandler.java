@@ -103,26 +103,88 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                     }
             );
         } else {
-            surveillanceService.startRecognizePersonWithCamera(context, requestPayload.cameraType(), null, null);
+            surveillanceService.startRecognizePersonWithCamera(
+                    context,
+                    requestPayload.cameraType(),
+                    (result) -> {
+                        ServiceError error = new ServiceError("-1", "Test Error");
+
+                        ErrorResponsePayload errorResponsePayload =
+                                SurveillanceServiceResponsePayloads.errorResponsePayload(SurveillanceService.NAME, error);
+
+                        ServiceResponse errorResponse = new ServiceResponse(
+                                ServiceResponse.TYPE_ERROR,
+                                request.id(),
+                                errorResponsePayload.jsonObject()
+                        );
+
+                        surveillanceService.sendResponse(
+                                currentGroupName,
+                                currentGroupPassword,
+                                requestSenderDeviceName,
+                                errorResponse
+                        );
+
+//                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
+//                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
+//
+//                        ToggleRecognizePersonResponsePayload responsePayload =
+//                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
+//                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+//                                );
+//
+//                        ServiceResponse response = new ServiceResponse(
+//                                ServiceResponse.TYPE_RESULT,
+//                                request.id(),
+//                                responsePayload.jsonObject()
+//                        );
+//
+//                        surveillanceService.sendResponse(
+//                                currentGroupName,
+//                                currentGroupPassword,
+//                                requestSenderDeviceName,
+//                                response
+//                        );
+                    },
+                    (error) -> {
+                        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->ERROR: " + error.code() + " - " + error.message());
+
+                        ErrorResponsePayload errorResponsePayload =
+                                SurveillanceServiceResponsePayloads.errorResponsePayload(SurveillanceService.NAME, error);
+
+                        ServiceResponse errorResponse = new ServiceResponse(
+                                ServiceResponse.TYPE_ERROR,
+                                request.id(),
+                                errorResponsePayload.jsonObject()
+                        );
+
+                        surveillanceService.sendResponse(
+                                currentGroupName,
+                                currentGroupPassword,
+                                requestSenderDeviceName,
+                                errorResponse
+                        );
+                    }
+            );
         }
 
-        ToggleRecognizePersonResponsePayload responsePayload =
-                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
-                        false, false
-                );
-
-        ServiceResponse response = new ServiceResponse(
-                ServiceResponse.TYPE_RESULT,
-                request.id(),
-                responsePayload.jsonObject()
-        );
-
-        surveillanceService.sendResponse(
-                currentGroupName,
-                currentGroupPassword,
-                requestSenderDeviceName,
-                response
-        );
+//        ToggleRecognizePersonResponsePayload responsePayload =
+//                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
+//                        false, false
+//                );
+//
+//        ServiceResponse response = new ServiceResponse(
+//                ServiceResponse.TYPE_RESULT,
+//                request.id(),
+//                responsePayload.jsonObject()
+//        );
+//
+//        surveillanceService.sendResponse(
+//                currentGroupName,
+//                currentGroupPassword,
+//                requestSenderDeviceName,
+//                response
+//        );
         // ===
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
