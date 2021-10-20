@@ -88,6 +88,8 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
     private void handleResponse(ServiceResponse response,
                                 Map<String, ServiceRequestCallbacks> requestCallbacksMap,
                                 Map<String, Timer> requestTimeoutsMap) {
+        Log.d("tag", "=====> FBSResponsesHandler->handleResponse(): " + response.type() + " <=======");
+
         SurveillanceService surveillanceService = SurveillanceService.get();
 
         String currentGroupName = surveillanceService.currentGroupName();

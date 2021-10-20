@@ -17,7 +17,7 @@ public class FBSResponseSender implements ServiceResponseSender {
 
     @Override
     public void sendResponse(String groupName, String groupPassword, String receiverDeviceName, ServiceResponse response) {
-        Log.d("tag", "FBSResponseSender->sendResponse()");
+        Log.d("tag", "FBSResponseSender->sendResponse(): " + response.type());
 
         List<String> requestSenderResponsePath = FBSPathsService.get().responsesPath(groupName, groupPassword, receiverDeviceName);
 
