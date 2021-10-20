@@ -357,47 +357,7 @@ public class SurveillanceService implements
         serviceIntent.setAction("start");
         context.startService(serviceIntent);
 
-        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
-                currentGroupName(), currentGroupPassword(), currentDeviceName()
-        );
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Object value = snapshot.getValue();
-                    DeviceInfo currentDeviceInfo;
-
-                    if (value != null) {
-                        currentDeviceInfo = new DeviceInfo(value);
-                    } else {
-                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
-                                context,
-                                currentDeviceName(),
-                                AppConstants.DEVICE_MODE_USER
-                        );
-                    }
-
-                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
-                            AppConstants.DEVICE_MODE_SERVICE,
-                            currentDeviceInfo
-                    );
-                    FBSCommunicationService.get().setMapValue(
-                            deviceInfoPath,
-                            updatedDeviceInfo.toServiceObject(),
-                            (data) -> onSuccess.onSuccess(null),
-                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
-                    );
-                } else {
-                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                onError.onError(SurveillanceServiceErrors.firebaseFailure());
-            }
-        };
-        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+        updateAndPublishDeviceInfo(context, true, onSuccess, onError);
     }
 
     public void stopForegroundService(Context context,
@@ -431,48 +391,7 @@ public class SurveillanceService implements
         DeviceMovementService.get().stop(context);
         // =====
         // ===
-
-        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
-                currentGroupName(), currentGroupPassword(), currentDeviceName()
-        );
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Object value = snapshot.getValue();
-                    DeviceInfo currentDeviceInfo;
-
-                    if (value != null) {
-                        currentDeviceInfo = new DeviceInfo(value);
-                    } else {
-                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
-                                context,
-                                currentDeviceName(),
-                                AppConstants.DEVICE_MODE_USER
-                        );
-                    }
-
-                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
-                            AppConstants.DEVICE_MODE_USER,
-                            currentDeviceInfo
-                    );
-                    FBSCommunicationService.get().setMapValue(
-                            deviceInfoPath,
-                            updatedDeviceInfo.toServiceObject(),
-                            (data) -> onSuccess.onSuccess(null),
-                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
-                    );
-                } else {
-                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                onError.onError(SurveillanceServiceErrors.firebaseFailure());
-            }
-        };
-        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+        updateAndPublishDeviceInfo(context, true, onSuccess, onError);
     }
 
     public boolean isForegroundServiceRunning(Context context) {
@@ -514,45 +433,7 @@ public class SurveillanceService implements
         };
 
         DeviceMovementService.get().start(context, movementStartCallback, movementEndCallback);
-
-        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
-                currentGroupName(), currentGroupPassword(), currentDeviceName()
-        );
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Object value = snapshot.getValue();
-                    DeviceInfo currentDeviceInfo;
-
-                    if (value != null) {
-                        currentDeviceInfo = new DeviceInfo(value);
-                    } else {
-                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
-                                context,
-                                currentDeviceName(),
-                                AppConstants.DEVICE_MODE_SERVICE
-                        );
-                    }
-
-                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
-                    FBSCommunicationService.get().setMapValue(
-                            deviceInfoPath,
-                            updatedDeviceInfo.toServiceObject(),
-                            (data) -> onSuccess.onSuccess(null),
-                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
-                    );
-                } else {
-                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                onError.onError(SurveillanceServiceErrors.firebaseFailure());
-            }
-        };
-        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+        updateAndPublishDeviceInfo(context, false, onSuccess, onError);
     }
 
     public void stopDetectDeviceMovement(Context context,
@@ -561,45 +442,7 @@ public class SurveillanceService implements
         Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
 
         DeviceMovementService.get().stop(context);
-
-        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
-                currentGroupName(), currentGroupPassword(), currentDeviceName()
-        );
-        ValueEventListener listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Object value = snapshot.getValue();
-                    DeviceInfo currentDeviceInfo;
-
-                    if (value != null) {
-                        currentDeviceInfo = new DeviceInfo(value);
-                    } else {
-                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
-                                context,
-                                currentDeviceName(),
-                                AppConstants.DEVICE_MODE_SERVICE
-                        );
-                    }
-
-                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo);
-                    FBSCommunicationService.get().setMapValue(
-                            deviceInfoPath,
-                            updatedDeviceInfo.toServiceObject(),
-                            (data) -> onSuccess.onSuccess(null),
-                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
-                    );
-                } else {
-                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                onError.onError(SurveillanceServiceErrors.firebaseFailure());
-            }
-        };
-        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+        updateAndPublishDeviceInfo(context, false, onSuccess, onError);
     }
 
     public boolean isDetectDeviceMovementServiceRunning() {
@@ -750,4 +593,138 @@ public class SurveillanceService implements
         stopForegroundService(context, (data) -> {}, (error) -> {});
         mCommunicationManager.stopIsAliveSignaling(context);
     }
+
+    private void updateAndPublishDeviceInfo(Context context,
+                                            boolean needUpdateDeviceMode,
+                                            OnTaskSuccess<Void> onSuccess,
+                                            OnTaskError<ServiceError> onError) {
+        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+                currentGroupName(), currentGroupPassword(), currentDeviceName()
+        );
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object value = snapshot.getValue();
+                    DeviceInfo currentDeviceInfo;
+
+                    if (value != null) {
+                        currentDeviceInfo = new DeviceInfo(value);
+                    } else {
+                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+                                context,
+                                currentDeviceName(),
+                                currentServiceMode()
+                        );
+                    }
+                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().updateDeviceInfo(context, currentDeviceInfo, false);
+                    if (needUpdateDeviceMode) {
+                        updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+                                currentServiceMode(),
+                                updatedDeviceInfo
+                        );
+                    }
+                    FBSCommunicationService.get().setMapValue(
+                            deviceInfoPath,
+                            updatedDeviceInfo.toServiceObject(),
+                            (data) -> onSuccess.onSuccess(null),
+                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+                    );
+                } else {
+                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+            }
+        };
+        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+    }
 }
+
+
+//        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+//                currentGroupName(), currentGroupPassword(), currentDeviceName()
+//        );
+//        ValueEventListener listener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+//                    Object value = snapshot.getValue();
+//                    DeviceInfo currentDeviceInfo;
+//
+//                    if (value != null) {
+//                        currentDeviceInfo = new DeviceInfo(value);
+//                    } else {
+//                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+//                                context,
+//                                currentDeviceName(),
+//                                AppConstants.DEVICE_MODE_USER
+//                        );
+//                    }
+//
+//                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+//                            AppConstants.DEVICE_MODE_SERVICE,
+//                            currentDeviceInfo
+//                    );
+//                    FBSCommunicationService.get().setMapValue(
+//                            deviceInfoPath,
+//                            updatedDeviceInfo.toServiceObject(),
+//                            (data) -> onSuccess.onSuccess(null),
+//                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+//                    );
+//                } else {
+//                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+//            }
+//        };
+//        FBSCommunicationService.get().getValue(deviceInfoPath, listener);
+
+//        List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
+//                currentGroupName(), currentGroupPassword(), currentDeviceName()
+//        );
+//        ValueEventListener listener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+//                    Object value = snapshot.getValue();
+//                    DeviceInfo currentDeviceInfo;
+//
+//                    if (value != null) {
+//                        currentDeviceInfo = new DeviceInfo(value);
+//                    } else {
+//                        currentDeviceInfo = DeviceInfoService.get().currentDeviceInfo(
+//                                context,
+//                                currentDeviceName(),
+//                                AppConstants.DEVICE_MODE_USER
+//                        );
+//                    }
+//
+//                    DeviceInfo updatedDeviceInfo = DeviceInfoService.get().changeDeviceMode(
+//                            AppConstants.DEVICE_MODE_USER,
+//                            currentDeviceInfo
+//                    );
+//                    FBSCommunicationService.get().setMapValue(
+//                            deviceInfoPath,
+//                            updatedDeviceInfo.toServiceObject(),
+//                            (data) -> onSuccess.onSuccess(null),
+//                            (error) -> onError.onError(SurveillanceServiceErrors.firebaseFailure())
+//                    );
+//                } else {
+//                    onError.onError(SurveillanceServiceErrors.firebaseFailure());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                onError.onError(SurveillanceServiceErrors.firebaseFailure());
+//            }
+//        };
+//        FBSCommunicationService.get().getValue(deviceInfoPath, listener);

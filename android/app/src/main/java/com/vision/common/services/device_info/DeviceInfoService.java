@@ -2,9 +2,24 @@ package com.vision.common.services.device_info;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
+import com.vision.common.data.service_error.ServiceError;
+import com.vision.common.data.service_generic_callbacks.OnTaskError;
+import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.services.camera.CameraService_V4;
 import com.vision.common.services.device_movement.DeviceMovementService;
+import com.vision.common.services.firebase_communication.FBSCommunicationService;
+import com.vision.common.services.firebase_paths.FBSPathsService;
+import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.service_errors.SurveillanceServiceErrors;
+
+import java.util.List;
 
 public class DeviceInfoService {
     public static final String NAME = "DeviceInfoService";
@@ -46,11 +61,13 @@ public class DeviceInfoService {
         return deviceInfo;
     }
 
-    public DeviceInfo updateDeviceInfo(Context context, DeviceInfo deviceInfo) {
+    public DeviceInfo updateDeviceInfo(Context context, DeviceInfo deviceInfo, boolean needUpdateLoginTimestamp) {
         long timestamp = System.currentTimeMillis();
 
         DeviceInfo updatedDeviceInfo = new DeviceInfo(deviceInfo);
-        updatedDeviceInfo.setLastLoginTimestamp(timestamp);
+        if (needUpdateLoginTimestamp) {
+            updatedDeviceInfo.setLastLoginTimestamp(timestamp);
+        }
         updatedDeviceInfo.setLastUpdateTimestamp(timestamp);
 
         updatedDeviceInfo.setHasFrontCamera(hasFrontCamera());
