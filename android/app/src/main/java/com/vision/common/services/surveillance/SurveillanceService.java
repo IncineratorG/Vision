@@ -28,6 +28,7 @@ import com.vision.common.interfaces.service_responses_executor.ServiceResponsesE
 import com.vision.common.services.app_storages.AppStorages;
 import com.vision.common.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.common.services.auth.AuthService;
+import com.vision.common.services.camera.CameraService_V4;
 import com.vision.common.services.device_group.DeviceGroupService;
 import com.vision.common.services.device_info.DeviceInfoService;
 import com.vision.common.services.device_movement.DeviceMovementService;
@@ -484,8 +485,6 @@ public class SurveillanceService implements
         return false;
     }
 
-    // ===
-    // =====
     public void startDetectDeviceMovement(Context context,
                                           OnTaskSuccess<Void> onSuccess,
                                           OnTaskError<ServiceError> onError) {
@@ -607,6 +606,27 @@ public class SurveillanceService implements
         Log.d("tag", "SurveillanceService->isDetectDeviceMovementServiceRunning()");
 
         return DeviceMovementService.get().isRunning();
+    }
+
+    // ===
+    // =====
+    public void startRecognizePersonWithCamera(Context context,
+                                               String cameraType,
+                                               OnTaskSuccess<Void> onSuccess,
+                                               OnTaskError<ServiceError> onError) {
+        
+    }
+
+    public void stopRecognizePersonWithCamera(Context context,
+                                              String cameraType,
+                                              OnTaskSuccess<Void> onSuccess,
+                                              OnTaskError<ServiceError> onError) {
+
+    }
+
+    public boolean isRecognizePersonServiceRunning() {
+        CameraService_V4 cameraService = CameraService_V4.get();
+        return cameraService.isFrontCameraRecognizePersonRunning() || cameraService.isBackCameraRecognizePersonRunning();
     }
     // =====
     // ===
