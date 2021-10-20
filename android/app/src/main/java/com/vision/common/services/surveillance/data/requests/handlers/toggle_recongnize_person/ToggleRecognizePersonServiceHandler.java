@@ -13,6 +13,7 @@ import com.vision.common.services.surveillance.SurveillanceService;
 import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.ToggleRecognizePersonRequestPayload;
 import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ErrorResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.ToggleRecognizePersonResponsePayload;
 
 import java.util.List;
@@ -36,6 +37,55 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
 
         // ===
         Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): NOT_IMPLEMENTED");
+        if (surveillanceService.isRecognizePersonServiceRunning()) {
+            surveillanceService.stopRecognizePersonWithCamera(
+                    context,
+                    requestPayload.cameraType(),
+                    (result) -> {
+                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
+                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
+
+                        ToggleRecognizePersonResponsePayload responsePayload =
+                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
+                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+                                );
+
+                        ServiceResponse response = new ServiceResponse(
+                                ServiceResponse.TYPE_RESULT,
+                                request.id(),
+                                responsePayload.jsonObject()
+                        );
+
+                        surveillanceService.sendResponse(
+                                currentGroupName,
+                                currentGroupPassword,
+                                requestSenderDeviceName,
+                                response
+                        );
+                    },
+                    (error) -> {
+                        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->ERROR: " + error.code() + " - " + error.message());
+
+                        ErrorResponsePayload errorResponsePayload =
+                                SurveillanceServiceResponsePayloads.errorResponsePayload(SurveillanceService.NAME, error);
+
+                        ServiceResponse errorResponse = new ServiceResponse(
+                                ServiceResponse.TYPE_ERROR,
+                                request.id(),
+                                errorResponsePayload.jsonObject()
+                        );
+
+                        surveillanceService.sendResponse(
+                                currentGroupName,
+                                currentGroupPassword,
+                                requestSenderDeviceName,
+                                errorResponse
+                        );
+                    }
+            );
+        } else {
+            surveillanceService.startRecognizePersonWithCamera(context, requestPayload.cameraType(), null, null);
+        }
 
         ToggleRecognizePersonResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(

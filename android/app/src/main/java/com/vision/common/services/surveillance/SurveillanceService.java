@@ -457,19 +457,29 @@ public class SurveillanceService implements
                                                String cameraType,
                                                OnTaskSuccess<Void> onSuccess,
                                                OnTaskError<ServiceError> onError) {
-        
+        Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
     }
 
     public void stopRecognizePersonWithCamera(Context context,
                                               String cameraType,
                                               OnTaskSuccess<Void> onSuccess,
                                               OnTaskError<ServiceError> onError) {
-
+        Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera(): " + cameraType);
     }
 
     public boolean isRecognizePersonServiceRunning() {
+        Log.d("tag", "SurveillanceService->isRecognizePersonServiceRunning()");
+
         CameraService_V4 cameraService = CameraService_V4.get();
         return cameraService.isFrontCameraRecognizePersonRunning() || cameraService.isBackCameraRecognizePersonRunning();
+    }
+
+    public boolean isRecognizePersonWithFrontCameraServiceRunning() {
+        return CameraService_V4.get().isFrontCameraRecognizePersonRunning();
+    }
+
+    public boolean isRecognizePersonWithBackCameraServiceRunning() {
+        return CameraService_V4.get().isBackCameraRecognizePersonRunning();
     }
     // =====
     // ===
