@@ -16,7 +16,7 @@ public class SurveillanceServiceErrors {
         return new ServiceError("2", "REQUEST_TIMEOUT");
     }
 
-    // === AuthServiceErrors
+    // === AuthServiceErrors ===
     public static ServiceError firebaseFailure() {
         return new ServiceError("3", "FIREBASE_FAILURE");
     }
@@ -44,5 +44,11 @@ public class SurveillanceServiceErrors {
     public static ServiceError deviceAlreadyLoggedIn() {
         return new ServiceError("9", "DEVICE_ALREADY_LOGGED_IN");
     }
-    // ===
+    // ===========================
+
+    // === CameraServiceErrors ===
+    public static ServiceError badCameraPreviewImageData() {
+        return new ServiceError("10", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
+    }
+    // ===========================
 }

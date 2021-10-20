@@ -237,7 +237,7 @@ public class SurveillanceService implements
         OnTaskError<ServiceError> errorCallback = (error) -> {
             onError.onError(
                     mErrorsMapper.mapToSurveillanceServiceError(
-                            ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE,
+                            ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE_TYPE,
                             error
                     )
             );
@@ -278,7 +278,7 @@ public class SurveillanceService implements
         OnTaskError<ServiceError> errorCallback = (error) -> {
             onError.onError(
                     mErrorsMapper.mapToSurveillanceServiceError(
-                            ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE,
+                            ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE_TYPE,
                             error
                     )
             );

@@ -36,8 +36,6 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
 
         String requestSenderDeviceName = request.senderDeviceName();
 
-        // ===
-        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): NOT_IMPLEMENTED");
         if (surveillanceService.isRecognizePersonServiceRunning()) {
             surveillanceService.stopRecognizePersonWithCamera(
                     context,
@@ -131,25 +129,6 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                     }
             );
         }
-
-//        ToggleRecognizePersonResponsePayload responsePayload =
-//                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
-//                        false, false
-//                );
-//
-//        ServiceResponse response = new ServiceResponse(
-//                ServiceResponse.TYPE_RESULT,
-//                request.id(),
-//                responsePayload.jsonObject()
-//        );
-//
-//        surveillanceService.sendResponse(
-//                currentGroupName,
-//                currentGroupPassword,
-//                requestSenderDeviceName,
-//                response
-//        );
-        // ===
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);
         if (request.key() != null) {

@@ -1,4 +1,4 @@
-package com.vision.common.services.camera.callbacks;
+package com.vision.common.services.camera.data.callbacks;
 
 
 public interface OnImageTaken {

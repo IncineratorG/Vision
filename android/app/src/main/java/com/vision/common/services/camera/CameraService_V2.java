@@ -7,8 +7,8 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
-import com.vision.common.services.camera.callbacks.OnImageTakeError;
-import com.vision.common.services.camera.callbacks.OnImageTaken;
+import com.vision.common.services.camera.data.callbacks.OnImageTakeError;
+import com.vision.common.services.camera.data.callbacks.OnImageTaken;
 
 import java.io.IOException;
 import java.util.Collections;
