@@ -458,6 +458,8 @@ public class SurveillanceService implements
                                                OnTaskSuccess<Void> onSuccess,
                                                OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
+
+        onError.onError(SurveillanceServiceErrors.commonServiceError());
     }
 
     public void stopRecognizePersonWithCamera(Context context,
@@ -465,6 +467,8 @@ public class SurveillanceService implements
                                               OnTaskSuccess<Void> onSuccess,
                                               OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera(): " + cameraType);
+
+        onError.onError(SurveillanceServiceErrors.commonServiceError());
     }
 
     public boolean isRecognizePersonServiceRunning() {

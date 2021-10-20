@@ -43,44 +43,26 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                     context,
                     requestPayload.cameraType(),
                     (result) -> {
-                        ServiceError error = new ServiceError("-1", "Test Error");
+                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
+                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
 
-                        ErrorResponsePayload errorResponsePayload =
-                                SurveillanceServiceResponsePayloads.errorResponsePayload(SurveillanceService.NAME, error);
+                        ToggleRecognizePersonResponsePayload responsePayload =
+                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
+                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+                                );
 
-                        ServiceResponse errorResponse = new ServiceResponse(
-                                ServiceResponse.TYPE_ERROR,
+                        ServiceResponse response = new ServiceResponse(
+                                ServiceResponse.TYPE_RESULT,
                                 request.id(),
-                                errorResponsePayload.jsonObject()
+                                responsePayload.jsonObject()
                         );
 
                         surveillanceService.sendResponse(
                                 currentGroupName,
                                 currentGroupPassword,
                                 requestSenderDeviceName,
-                                errorResponse
+                                response
                         );
-
-//                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
-//                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
-//
-//                        ToggleRecognizePersonResponsePayload responsePayload =
-//                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
-//                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
-//                                );
-//
-//                        ServiceResponse response = new ServiceResponse(
-//                                ServiceResponse.TYPE_RESULT,
-//                                request.id(),
-//                                responsePayload.jsonObject()
-//                        );
-//
-//                        surveillanceService.sendResponse(
-//                                currentGroupName,
-//                                currentGroupPassword,
-//                                requestSenderDeviceName,
-//                                response
-//                        );
                     },
                     (error) -> {
                         Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->ERROR: " + error.code() + " - " + error.message());
@@ -107,44 +89,26 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                     context,
                     requestPayload.cameraType(),
                     (result) -> {
-                        ServiceError error = new ServiceError("-1", "Test Error");
+                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
+                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
 
-                        ErrorResponsePayload errorResponsePayload =
-                                SurveillanceServiceResponsePayloads.errorResponsePayload(SurveillanceService.NAME, error);
+                        ToggleRecognizePersonResponsePayload responsePayload =
+                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
+                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+                                );
 
-                        ServiceResponse errorResponse = new ServiceResponse(
-                                ServiceResponse.TYPE_ERROR,
+                        ServiceResponse response = new ServiceResponse(
+                                ServiceResponse.TYPE_RESULT,
                                 request.id(),
-                                errorResponsePayload.jsonObject()
+                                responsePayload.jsonObject()
                         );
 
                         surveillanceService.sendResponse(
                                 currentGroupName,
                                 currentGroupPassword,
                                 requestSenderDeviceName,
-                                errorResponse
+                                response
                         );
-
-//                        boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
-//                        boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
-//
-//                        ToggleRecognizePersonResponsePayload responsePayload =
-//                                SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
-//                                        frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
-//                                );
-//
-//                        ServiceResponse response = new ServiceResponse(
-//                                ServiceResponse.TYPE_RESULT,
-//                                request.id(),
-//                                responsePayload.jsonObject()
-//                        );
-//
-//                        surveillanceService.sendResponse(
-//                                currentGroupName,
-//                                currentGroupPassword,
-//                                requestSenderDeviceName,
-//                                response
-//                        );
                     },
                     (error) -> {
                         Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->ERROR: " + error.code() + " - " + error.message());
