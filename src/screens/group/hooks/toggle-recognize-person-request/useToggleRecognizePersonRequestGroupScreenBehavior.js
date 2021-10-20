@@ -103,16 +103,6 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
 
     if (toggleRecognizePersonRequestCompleted) {
-      SystemEventsHandler.onInfo({
-        info:
-          '===> HERE->REQUEST_COMPLETED: ' +
-          toggleRecognizePersonRequestCompleted +
-          ' - ' +
-          frontCameraRecognizePersonServiceRunning +
-          ' - ' +
-          backCameraRecognizePersonServiceRunning,
-      });
-
       dispatch(
         AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
       );
@@ -153,6 +143,64 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     currentGroupPassword,
     currentDeviceName,
     selectedDevice,
+    localDispatch,
+    dispatch,
+    t,
+  ]);
+
+  useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
+    if (toggleRecognizePersonRequestHasError) {
+      SystemEventsHandler.onInfo({
+        info:
+          'useToggleRecognizePersonRequestGroupScreenBehavior()->ERROR: ' +
+          toggleRecognizePersonRequestErrorCode,
+      });
+
+      // dispatch(
+      //   AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+      // );
+
+      localDispatch(
+        GroupLocalActions.actions.setCurrentRequestStatusDialogData({
+          visible: true,
+          statusText: t('CurrentRequestStatusDialog_generalErrorStatusText'),
+          leftButtonVisible: false,
+          leftButtonText: '',
+          leftButtonPressHandler: null,
+          rightButtonVisible: true,
+          rightButtonText: t(
+            'CurrentRequestStatusDialog_generalErrorRightButtonText',
+          ),
+          rightButtonPressHandler: () => {
+            dispatch(
+              AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+          onCancel: () => {
+            dispatch(
+              AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+        }),
+      );
+    }
+  }, [
+    screenFocused,
+    toggleRecognizePersonRequestHasError,
+    toggleRecognizePersonRequestErrorCode,
+    currentGroupName,
+    currentGroupPassword,
+    currentDeviceName,
     localDispatch,
     dispatch,
     t,

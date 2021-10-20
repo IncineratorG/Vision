@@ -137,6 +137,57 @@ const useToggleDetectDeviceMovementRequestGroupScreenBehavior = ({
     t,
   ]);
 
+  useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
+    if (toggleDetectDeviceMovementRequestHasError) {
+      SystemEventsHandler.onInfo({
+        info:
+          'useToggleDetectDeviceMovementRequestGroupScreenBehavior()->ERROR: ' +
+          toggleDetectDeviceMovementRequestErrorCode,
+      });
+
+      localDispatch(
+        GroupLocalActions.actions.setCurrentRequestStatusDialogData({
+          visible: true,
+          statusText: t('CurrentRequestStatusDialog_generalErrorStatusText'),
+          leftButtonVisible: false,
+          leftButtonText: '',
+          leftButtonPressHandler: null,
+          rightButtonVisible: true,
+          rightButtonText: t(
+            'CurrentRequestStatusDialog_generalErrorRightButtonText',
+          ),
+          rightButtonPressHandler: () => {
+            dispatch(
+              AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+          onCancel: () => {
+            dispatch(
+              AppActions.surveillanceToggleDetectDeviceMovementRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+        }),
+      );
+    }
+  }, [
+    screenFocused,
+    toggleDetectDeviceMovementRequestHasError,
+    toggleDetectDeviceMovementRequestErrorCode,
+    dispatch,
+    localDispatch,
+    t,
+  ]);
+
   return {
     inProgress: toggleDetectDeviceMovementRequestInProgress,
     completed: toggleDetectDeviceMovementRequestCompleted,

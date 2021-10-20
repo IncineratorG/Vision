@@ -25,7 +25,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
 
   const lastLoginDateText = new Date(lastLoginTimestamp).toLocaleString();
   const deviceOnlineStatus =
-    Math.abs(Date.now() - lastUpdateTimestamp) < 30000
+    Math.abs(Date.now() - lastUpdateTimestamp) < 5 * 60 * 1000
       ? t('GroupDeviceItem_deviceOnline')
       : t('GroupDeviceItem_deviceOffline');
 
@@ -37,9 +37,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const backgroundColor =
     deviceMode === 'user'
       ? notActiveOptionColor
-      : Date.now() - lastUpdateTimestamp > 90000
+      : Date.now() - lastUpdateTimestamp > 5 * 60 * 1000
       ? '#d35400'
       : activeOptionColor;
+  // const backgroundColor =
+  //   deviceMode === 'user'
+  //     ? notActiveOptionColor
+  //     : Date.now() - lastUpdateTimestamp > 90000
+  //     ? '#d35400'
+  //     : activeOptionColor;
 
   const hasBackCameraOptionIndicatorColor = hasBackCamera
     ? activeOptionColor

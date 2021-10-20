@@ -177,6 +177,57 @@ const useTakeFrontCameraImageRequestGroupScreenBehavior = ({
     dispatch,
   ]);
 
+  useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
+    if (takeFrontCameraImageRequestHasError) {
+      SystemEventsHandler.onInfo({
+        info:
+          'useTakeFrontCameraImageRequestGroupScreenBehavior()->ERROR: ' +
+          takeFrontCameraImageRequestErrorCode,
+      });
+
+      localDispatch(
+        GroupLocalActions.actions.setCurrentRequestStatusDialogData({
+          visible: true,
+          statusText: t('CurrentRequestStatusDialog_generalErrorStatusText'),
+          leftButtonVisible: false,
+          leftButtonText: '',
+          leftButtonPressHandler: null,
+          rightButtonVisible: true,
+          rightButtonText: t(
+            'CurrentRequestStatusDialog_generalErrorRightButtonText',
+          ),
+          rightButtonPressHandler: () => {
+            dispatch(
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+          onCancel: () => {
+            dispatch(
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+        }),
+      );
+    }
+  }, [
+    screenFocused,
+    takeFrontCameraImageRequestHasError,
+    takeFrontCameraImageRequestErrorCode,
+    localDispatch,
+    dispatch,
+    t,
+  ]);
+
   return {
     inProgress: takeFrontCameraImageRequestInProgress,
     completed: takeFrontCameraImageRequestCompleted,

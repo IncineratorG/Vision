@@ -116,6 +116,10 @@ const ru = {
   GroupDeviceItem_deviceOnline: 'В сети',
   GroupDeviceItem_deviceOffline: 'Не сети',
 
+  CurrentRequestStatusDialog_generalErrorStatusText:
+    'При выполнении запроса произошла ошибка',
+  CurrentRequestStatusDialog_generalErrorRightButtonText: 'OK',
+
   CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressStatusText:
     'Получение изображения',
   CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressRightButtonText:
