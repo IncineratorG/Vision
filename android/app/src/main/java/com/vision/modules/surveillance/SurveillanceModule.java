@@ -48,6 +48,17 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_REQUEST, SurveillanceJSActionTypes.TEST_REQUEST);
         actionTypesConstants.putString(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION);
         actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, SurveillanceJSActionTypes.TEST_MOTION_SENSOR);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW, SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW, SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE);
+
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_BACK_CAMERA, SurveillanceJSActionTypes.TEST_START_BACK_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_START_FRONT_CAMERA, SurveillanceJSActionTypes.TEST_START_FRONT_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_BACK_CAMERA, SurveillanceJSActionTypes.TEST_STOP_BACK_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_STOP_FRONT_CAMERA, SurveillanceJSActionTypes.TEST_STOP_FRONT_CAMERA);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_BACK_CAMERA_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_BACK_CAMERA_PICTURE);
+        actionTypesConstants.putString(SurveillanceJSActionTypes.TEST_TAKE_FRONT_CAMERA_PICTURE, SurveillanceJSActionTypes.TEST_TAKE_FRONT_CAMERA_PICTURE);
         // ===
         actionTypesConstants.putString(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, SurveillanceJSActionTypes.GET_APP_PERMISSIONS);
         actionTypesConstants.putString(SurveillanceJSActionTypes.IS_RUNNING, SurveillanceJSActionTypes.IS_RUNNING);
@@ -63,6 +74,7 @@ public class SurveillanceModule extends ReactContextBaseJavaModule implements Pe
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_BACK_CAMERA_IMAGE);
         requestTypes.putString(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE);
         requestTypes.putString(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT);
+        requestTypes.putString(SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON, SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON);
 
         WritableMap eventTypes = new WritableNativeMap();
         eventTypes.putString(SurveillanceEventTypes.REQUEST_DELIVERED, SurveillanceEventTypes.REQUEST_DELIVERED);

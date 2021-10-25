@@ -16,20 +16,28 @@ const DeviceRequestsDialog = ({
   onGetFrontCameraRequestPress,
   onGetBackCameraRequestPress,
   onToggleDetectDeviceMovementRequestPress,
+  onToggleRecognizePersonWithFrontCameraRequestPress,
+  onToggleRecognizePersonWithBackCameraRequestPress,
   onCancelPress,
 }) => {
   const {t} = useTranslation();
 
   const requestTypes = useMemo(() => {
     return {
+      UNKNOWN: 'unknown',
       GET_FRONT_CAMERA_IMAGE: 'getFrontCameraImage',
       GET_BACK_CAMERA_IMAGE: 'getBackCameraImage',
       TOGGLE_DETECT_DEVICE_MOVEMENT: 'toggleDetectDeviceMovement',
+      TOGGLE_RECOGNIZE_PERSON_WITH_FRONT_CAMERA:
+        'TOGGLE_RECOGNIZE_PERSON_WITH_FRONT_CAMERA',
+      TOGGLE_RECOGNIZE_PERSON_WITH_BACK_CAMERA:
+        'TOGGLE_RECOGNIZE_PERSON_WITH_BACK_CAMERA',
     };
   }, []);
 
   const requestComponentTypes = useMemo(() => {
     return {
+      DIVIDER: 'divider',
       TEXT: 'text',
       CHECKBOX: 'checkbox',
     };
@@ -66,6 +74,24 @@ const DeviceRequestsDialog = ({
           break;
         }
 
+        case requestTypes.TOGGLE_RECOGNIZE_PERSON_WITH_FRONT_CAMERA: {
+          if (onToggleRecognizePersonWithFrontCameraRequestPress) {
+            onToggleRecognizePersonWithFrontCameraRequestPress({
+              selectedDevice: device,
+            });
+          }
+          break;
+        }
+
+        case requestTypes.TOGGLE_RECOGNIZE_PERSON_WITH_BACK_CAMERA: {
+          if (onToggleRecognizePersonWithBackCameraRequestPress) {
+            onToggleRecognizePersonWithBackCameraRequestPress({
+              selectedDevice: device,
+            });
+          }
+          break;
+        }
+
         default: {
           SystemEventsHandler.onInfo({
             info:
@@ -81,6 +107,8 @@ const DeviceRequestsDialog = ({
       onGetFrontCameraRequestPress,
       onGetBackCameraRequestPress,
       onToggleDetectDeviceMovementRequestPress,
+      onToggleRecognizePersonWithFrontCameraRequestPress,
+      onToggleRecognizePersonWithBackCameraRequestPress,
     ],
   );
 
@@ -107,12 +135,16 @@ const DeviceRequestsDialog = ({
         hasFrontCamera,
         hasBackCamera,
         canDetectDeviceMovement,
+        canRecognizePerson,
         deviceMovementServiceRunning,
+        frontCameraRecognizePersonServiceRunning,
+        backCameraRecognizePersonServiceRunning,
       } = device;
 
       const requests = [];
       if (hasFrontCamera) {
         requests.push({
+          id: '1',
           type: requestTypes.GET_FRONT_CAMERA_IMAGE,
           recomendedComponentType: requestComponentTypes.TEXT,
           name: t('DeviceRequestsDialog_getFrontCameraImage'),
@@ -123,18 +155,48 @@ const DeviceRequestsDialog = ({
       }
       if (hasBackCamera) {
         requests.push({
+          id: '2',
           type: requestTypes.GET_BACK_CAMERA_IMAGE,
           recomendedComponentType: requestComponentTypes.TEXT,
           name: t('DeviceRequestsDialog_getBackCameraImage'),
           icon: <MaterialIcon name="photo-camera" size={28} color="grey" />,
         });
       }
+      requests.push({
+        id: '3',
+        type: requestTypes.UNKNOWN,
+        recomendedComponentType: requestComponentTypes.DIVIDER,
+      });
       if (canDetectDeviceMovement) {
         requests.push({
+          id: '4',
           type: requestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT,
           recomendedComponentType: requestComponentTypes.CHECKBOX,
           name: t('DeviceRequestsDialog_detectDeviceMovement'),
           checked: deviceMovementServiceRunning,
+        });
+      }
+      requests.push({
+        id: '5',
+        type: requestTypes.UNKNOWN,
+        recomendedComponentType: requestComponentTypes.DIVIDER,
+      });
+      if (canRecognizePerson && hasFrontCamera) {
+        requests.push({
+          id: '6',
+          type: requestTypes.TOGGLE_RECOGNIZE_PERSON_WITH_FRONT_CAMERA,
+          recomendedComponentType: requestComponentTypes.CHECKBOX,
+          name: t('DeviceRequestsDialog_recognizePersonWithFrontCamera'),
+          checked: frontCameraRecognizePersonServiceRunning,
+        });
+      }
+      if (canRecognizePerson && hasBackCamera) {
+        requests.push({
+          id: '7',
+          type: requestTypes.TOGGLE_RECOGNIZE_PERSON_WITH_BACK_CAMERA,
+          recomendedComponentType: requestComponentTypes.CHECKBOX,
+          name: t('DeviceRequestsDialog_recognizePersonWithBackCamera'),
+          checked: backCameraRecognizePersonServiceRunning,
         });
       }
 

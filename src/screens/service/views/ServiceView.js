@@ -12,6 +12,7 @@ const ServiceView = ({model, controller}) => {
     testCameraPressHandler,
     testNotificationPressHandler,
     testMotionSensorPressHandler,
+    testCameraMotionDetectionPressHandler,
   } = controller;
 
   const serviceDeviceInfoComponent = (
@@ -22,6 +23,7 @@ const ServiceView = ({model, controller}) => {
       onTestCameraPress={testCameraPressHandler}
       onTestNotificationPress={testNotificationPressHandler}
       onTestMotionSensorPress={testMotionSensorPressHandler}
+      onTestCameraMotionDetectionPress={testCameraMotionDetectionPressHandler}
       onStopServicePress={stopService}
     />
   );

@@ -14,6 +14,17 @@ const NativeSurveillanceConstants = () => {
       // ===
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
+      TEST_CAMERA_MOTION_DETECTION,
+      TEST_START_CAMERA_PREVIEW,
+      TEST_STOP_CAMERA_PREVIEW,
+      TEST_TAKE_CAMERA_PREVIEW_PICTURE,
+
+      TEST_START_BACK_CAMERA,
+      TEST_START_FRONT_CAMERA,
+      TEST_STOP_BACK_CAMERA,
+      TEST_STOP_FRONT_CAMERA,
+      TEST_TAKE_BACK_CAMERA_PICTURE,
+      TEST_TAKE_FRONT_CAMERA_PICTURE,
       // ===
     },
     requestTypes: {
@@ -23,6 +34,7 @@ const NativeSurveillanceConstants = () => {
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
+      TOGGLE_RECOGNIZE_PERSON,
     },
     eventTypes: {REQUEST_DELIVERED, REQUEST_ERROR, RESPONSE_RECEIVED},
   } = NativeSurveillanceLib.getConstants();
@@ -40,6 +52,17 @@ const NativeSurveillanceConstants = () => {
       // ===
       SEND_TEST_NOTIFICATION,
       TEST_MOTION_SENSOR,
+      TEST_CAMERA_MOTION_DETECTION,
+      TEST_START_CAMERA_PREVIEW,
+      TEST_STOP_CAMERA_PREVIEW,
+      TEST_TAKE_CAMERA_PREVIEW_PICTURE,
+
+      TEST_START_BACK_CAMERA,
+      TEST_START_FRONT_CAMERA,
+      TEST_STOP_BACK_CAMERA,
+      TEST_STOP_FRONT_CAMERA,
+      TEST_TAKE_BACK_CAMERA_PICTURE,
+      TEST_TAKE_FRONT_CAMERA_PICTURE,
       // ===
     },
     requestTypes: {
@@ -49,6 +72,7 @@ const NativeSurveillanceConstants = () => {
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
+      TOGGLE_RECOGNIZE_PERSON,
     },
     eventTypes: {REQUEST_DELIVERED, REQUEST_ERROR, RESPONSE_RECEIVED},
   };

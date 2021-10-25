@@ -4,9 +4,9 @@ import SimpleButton from '../../../components/common/simple-button/SimpleButton'
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
-import RequestStatusDialog from '../../../components/specific/group/request-status-dialog/RequestStatusDialog';
 import ImageViewerModal from '../../../components/specific/group/image-viewer-modal/ImageViewerModal';
 import CurrentRequestStatusDialog from '../../../components/specific/group/current-request-status-dialog/CurrentRequestStatusDialog';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -69,6 +69,8 @@ const GroupView = ({model, controller}) => {
       deviceRequestsDialogGetFrontCameraImageRequestPressHandler,
       deviceRequestsDialogGetBackCameraImageRequestPressHandler,
       deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler,
+      deviceRequestsDialogToggleRecognizePersonWithFrontCameraRequestPressHandler,
+      deviceRequestsDialogToggleRecognizePersonWithBackCameraRequestPressHandler,
     },
     imageViewerController: {imageViewerCloseHandler},
   } = controller;
@@ -99,6 +101,12 @@ const GroupView = ({model, controller}) => {
       onToggleDetectDeviceMovementRequestPress={
         deviceRequestsDialogToggleDetectDeviceMovementRequestPressHandler
       }
+      onToggleRecognizePersonWithFrontCameraRequestPress={
+        deviceRequestsDialogToggleRecognizePersonWithFrontCameraRequestPressHandler
+      }
+      onToggleRecognizePersonWithBackCameraRequestPress={
+        deviceRequestsDialogToggleRecognizePersonWithBackCameraRequestPressHandler
+      }
       onCancelPress={deviceRequestsDialogCancelHandler}
     />
   );
@@ -110,17 +118,6 @@ const GroupView = ({model, controller}) => {
       onCancelPress={selectedDeviceErrorDialogCancelHandler}
     />
   );
-
-  // const requestStatusDialog = (
-  //   <RequestStatusDialog
-  //     visible={requestStatusDialogVisible}
-  //     completed={requestStatusDialogCompleted}
-  //     responseData={requestStatusDialogResponseData}
-  //     canViewResponse={requestStatusDialogCanViewResponse}
-  //     responseViewerCallback={requestStatusDialogResponseViewerCallback}
-  //     onCancelPress={requestStatusDialogCancelHandler}
-  //   />
-  // );
 
   const currentRequestStatusDialog = (
     <CurrentRequestStatusDialog

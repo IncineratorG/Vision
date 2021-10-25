@@ -79,4 +79,19 @@ public class SurveillanceEventsJSPayloads {
 
         return jsPayload;
     }
+
+    public static WritableMap toggleRecognizePersonResponseEventPayload(String requestId,
+                                                                        boolean frontCameraRecognizeServiceRunning,
+                                                                        boolean backCameraRecognizeServiceRunning) {
+        WritableMap jsPayload = new WritableNativeMap();
+        jsPayload.putString("requestId", requestId);
+
+        WritableMap payload = new WritableNativeMap();
+        payload.putBoolean("frontCameraRecognizePersonServiceRunning", frontCameraRecognizeServiceRunning);
+        payload.putBoolean("backCameraRecognizePersonServiceRunning", backCameraRecognizeServiceRunning);
+
+        jsPayload.putMap("payload", payload);
+
+        return jsPayload;
+    }
 }

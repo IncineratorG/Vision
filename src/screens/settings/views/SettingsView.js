@@ -59,20 +59,6 @@ const SettingsView = ({model, controller}) => {
         </List.Subheader>
         <List.Item
           style={{borderBottomColor: 'lightgrey', borderBottomWidth: 1}}
-          title={t('SettingsView_backCameraImageQuality')}
-          description={
-            backCameraImageQuality === CameraImageQuality.HIGH
-              ? t('SettingsView_backCameraImageQualityHigh')
-              : backCameraImageQuality === CameraImageQuality.MEDIUM
-              ? t('SettingsView_backCameraImageQualityMedium')
-              : backCameraImageQuality === CameraImageQuality.LOW
-              ? t('SettingsView_backCameraImageQualityLow')
-              : t('SettingsView_backCameraImageQualityUnknown')
-          }
-          onPress={backCameraImageQualityPressHandler}
-        />
-        <List.Item
-          style={{borderBottomColor: 'lightgrey', borderBottomWidth: 1}}
           title={t('SettingsView_frontCameraImageQuality')}
           description={
             frontCameraImageQuality === CameraImageQuality.HIGH
@@ -84,6 +70,20 @@ const SettingsView = ({model, controller}) => {
               : t('SettingsView_frontCameraImageQualityUnknown')
           }
           onPress={frontCameraImageQualityPressHandler}
+        />
+        <List.Item
+          style={{borderBottomColor: 'lightgrey', borderBottomWidth: 1}}
+          title={t('SettingsView_backCameraImageQuality')}
+          description={
+            backCameraImageQuality === CameraImageQuality.HIGH
+              ? t('SettingsView_backCameraImageQualityHigh')
+              : backCameraImageQuality === CameraImageQuality.MEDIUM
+              ? t('SettingsView_backCameraImageQualityMedium')
+              : backCameraImageQuality === CameraImageQuality.LOW
+              ? t('SettingsView_backCameraImageQualityLow')
+              : t('SettingsView_backCameraImageQualityUnknown')
+          }
+          onPress={backCameraImageQualityPressHandler}
         />
       </List.Section>
       <List.Section>

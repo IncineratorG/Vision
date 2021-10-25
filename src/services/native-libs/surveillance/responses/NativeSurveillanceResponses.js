@@ -39,12 +39,25 @@ const NativeSurveillanceResponses = () => {
     };
   };
 
+  const toggleRecognizePerson = (data) => {
+    const {
+      frontCameraRecognizePersonServiceRunning,
+      backCameraRecognizePersonServiceRunning,
+    } = data;
+
+    return {
+      frontCameraRecognizePersonServiceRunning,
+      backCameraRecognizePersonServiceRunning,
+    };
+  };
+
   return {
     testRequestWithPayloadResponse,
     isDeviceAlive,
     takeBackCameraImage,
     takeFrontCameraImage,
     toggleDetectDeviceMovement,
+    toggleRecognizePerson,
   };
 };
 

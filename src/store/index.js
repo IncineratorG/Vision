@@ -18,6 +18,8 @@ const reducers = combineReducers({
     AppReducers.surveillanceTakeFrontCameraImageRequest,
   surveillanceToggleDetectDeviceMovementRequest:
     AppReducers.surveillanceToggleDetectDeviceMovementRequest,
+  surveillanceToggleRecognizePersonRequest:
+    AppReducers.surveillanceToggleRecognizePersonRequest,
 });
 
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));

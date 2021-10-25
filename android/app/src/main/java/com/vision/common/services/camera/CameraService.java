@@ -4,18 +4,14 @@ package com.vision.common.services.camera;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.media.ExifInterface;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Surface;
 
-import com.vision.common.services.camera.callbacks.OnImageTakeError;
-import com.vision.common.services.camera.callbacks.OnImageTaken;
+import com.vision.common.services.camera.data.callbacks.OnImageTakeError;
+import com.vision.common.services.camera.data.callbacks.OnImageTaken;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class CameraService {
@@ -35,7 +31,7 @@ public class CameraService {
 
         // ===
         if (mCurrentImageTakenCallback != null) {
-            mCurrentImageTakenCallback.onImageTaken(bytes, base64);
+            mCurrentImageTakenCallback.onImageTaken(base64);
         } else {
             Log.d("tag", "CameraService->BAD_CURRENT_IMAGE_TAKEN_CALLBACK");
         }
@@ -216,8 +212,8 @@ public class CameraService {
 //import android.util.Log;
 //import android.view.Surface;
 //
-//import com.vision.common.services.camera.callbacks.OnImageTakeError;
-//import com.vision.common.services.camera.callbacks.OnImageTaken;
+//import com.vision.common.services.camera.data.callbacks.OnImageTakeError;
+//import com.vision.common.services.camera.data.callbacks.OnImageTaken;
 //
 //import java.io.ByteArrayInputStream;
 //import java.io.IOException;

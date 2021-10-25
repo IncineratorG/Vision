@@ -9,7 +9,8 @@ import com.vision.common.services.surveillance.data.service_errors.SurveillanceS
 public class ExternalServiceErrorsMapper {
     public static final String AUTH_SERVICE_TYPE = "authService";
     public static final String DEVICE_GROUP_SERVICE_TYPE = "deviceGroupService";
-    public static final String FBS_MESSAGING_SERVICE = "messagingService";
+    public static final String FBS_MESSAGING_SERVICE_TYPE = "messagingService";
+    public static final String CAMERA_SERVICE_TYPE = "cameraService";
 
     public ExternalServiceErrorsMapper() {
 
@@ -26,7 +27,7 @@ public class ExternalServiceErrorsMapper {
                 return mapFromDeviceGroupService(externalServiceError);
             }
 
-            case (FBS_MESSAGING_SERVICE): {
+            case (FBS_MESSAGING_SERVICE_TYPE): {
                 return mapFromFbsMessagingService(externalServiceError);
             }
 
@@ -95,6 +96,19 @@ public class ExternalServiceErrorsMapper {
 
             default: {
                 Log.d("tag", "ExternalServiceErrorsMapping->mapFromFbsMessagingService()->UNKNOWN_ERROR_CODE: " + error.code() + " - " + error.message());
+                return SurveillanceServiceErrors.commonServiceError();
+            }
+        }
+    }
+
+    private ServiceError mapFromCameraService(ServiceError error) {
+        switch (error.code()) {
+            case ("1"): {
+                return SurveillanceServiceErrors.badCameraPreviewImageData();
+            }
+
+            default: {
+                Log.d("tag", "ExternalServiceErrorsMapping->mapFromCameraService()->UNKNOWN_ERROR_CODE: " + error.code() + " - " + error.message());
                 return SurveillanceServiceErrors.commonServiceError();
             }
         }

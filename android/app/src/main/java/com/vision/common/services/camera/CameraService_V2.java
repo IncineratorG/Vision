@@ -7,8 +7,8 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
-import com.vision.common.services.camera.callbacks.OnImageTakeError;
-import com.vision.common.services.camera.callbacks.OnImageTaken;
+import com.vision.common.services.camera.data.callbacks.OnImageTakeError;
+import com.vision.common.services.camera.data.callbacks.OnImageTaken;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -100,7 +100,7 @@ public class CameraService_V2 {
             Log.d("tag", "CameraService_V2->takeCameraImage()->IN_JPEG_PICTURE_CALLBACK->CURRENT_PICTURE_SIZE: " + size.width + " - " + size.height);
 
             String base64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-            imageTakenCallback.onImageTaken(bytes, base64);
+            imageTakenCallback.onImageTaken(base64);
 
             disposeCurrentCamera();
         });
@@ -134,12 +134,18 @@ public class CameraService_V2 {
     }
 
     private void setCurrentCameraParameters(String imageQuality) {
+//        Camera.CameraInfo info = new Camera.CameraInfo();
+//        Camera.getCameraInfo(id, info);
+//        if (info.canDisableShutterSound) {
+//            mCamera.enableShutterSound(false);
+//        }
+
         Camera.Parameters parameters = mCurrentCamera.getParameters();
 
         List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
         Collections.sort(previewSizes, (a, b) -> (b.height * b.width) - (a.height * a.width));
         for (int i = 0; i < previewSizes.size(); ++i) {
-            Camera.Size size = previewSizes.get(i);;
+            Camera.Size size = previewSizes.get(i);
             Log.d("tag", "CameraService_V2->setCameraParameters()->SUPPORTED_PREVIEW_SIZE: " + size.width + " - " + size.height);
         }
 

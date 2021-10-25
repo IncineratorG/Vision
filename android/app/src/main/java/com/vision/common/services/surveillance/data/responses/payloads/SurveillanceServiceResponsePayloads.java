@@ -8,6 +8,7 @@ import com.vision.common.services.surveillance.data.responses.payloads.payloads.
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TakeFrontCameraImageResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.TestRequestWithPayloadResponsePayload;
 import com.vision.common.services.surveillance.data.responses.payloads.payloads.ToggleDetectDeviceMovementResponsePayload;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ToggleRecognizePersonResponsePayload;
 
 import org.json.JSONObject;
 
@@ -53,12 +54,29 @@ public class SurveillanceServiceResponsePayloads {
     }
 
     public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
-            boolean detectDeviceMovementServiceRunning) {
+            boolean detectDeviceMovementServiceRunning
+    ) {
         return new ToggleDetectDeviceMovementResponsePayload(detectDeviceMovementServiceRunning);
     }
 
     public static ToggleDetectDeviceMovementResponsePayload toggleDetectDeviceMovementResponsePayload(
-            JSONObject jsonObject) {
+            JSONObject jsonObject
+    ) {
         return new ToggleDetectDeviceMovementResponsePayload(jsonObject);
+    }
+
+    public static ToggleRecognizePersonResponsePayload toggleRecognizePersonResponsePayload(
+            boolean frontCameraRecognizeServiceRunning,
+            boolean backCameraRecognizeServiceRunning
+    ) {
+        return new ToggleRecognizePersonResponsePayload(
+                frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
+        );
+    }
+
+    public static ToggleRecognizePersonResponsePayload toggleRecognizePersonResponsePayload(
+            JSONObject jsonObject
+    ) {
+        return new ToggleRecognizePersonResponsePayload(jsonObject);
     }
 }

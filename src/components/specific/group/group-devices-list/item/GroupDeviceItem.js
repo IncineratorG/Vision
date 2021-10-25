@@ -14,7 +14,10 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     hasFrontCamera,
     hasBackCamera,
     canDetectDeviceMovement,
+    canRecognizePerson,
     deviceMovementServiceRunning,
+    frontCameraRecognizePersonServiceRunning,
+    backCameraRecognizePersonServiceRunning,
   } = device;
 
   const activeOptionColor = '#2ecc71';
@@ -22,7 +25,7 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
 
   const lastLoginDateText = new Date(lastLoginTimestamp).toLocaleString();
   const deviceOnlineStatus =
-    Math.abs(Date.now() - lastUpdateTimestamp) < 30000
+    Math.abs(Date.now() - lastUpdateTimestamp) < 5 * 60 * 1000
       ? t('GroupDeviceItem_deviceOnline')
       : t('GroupDeviceItem_deviceOffline');
 
@@ -34,9 +37,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const backgroundColor =
     deviceMode === 'user'
       ? notActiveOptionColor
-      : Date.now() - lastUpdateTimestamp > 90000
+      : Date.now() - lastUpdateTimestamp > 5 * 60 * 1000
       ? '#d35400'
       : activeOptionColor;
+  // const backgroundColor =
+  //   deviceMode === 'user'
+  //     ? notActiveOptionColor
+  //     : Date.now() - lastUpdateTimestamp > 90000
+  //     ? '#d35400'
+  //     : activeOptionColor;
 
   const hasBackCameraOptionIndicatorColor = hasBackCamera
     ? activeOptionColor
@@ -47,10 +56,21 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const canDetectDeviceMovementOptionIndicatorColor = canDetectDeviceMovement
     ? activeOptionColor
     : notActiveOptionColor;
+  const canRecognizePersonIndicatorColor = canRecognizePerson
+    ? activeOptionColor
+    : notActiveOptionColor;
 
   const deviceMovementServiceIndicatorColor = deviceMovementServiceRunning
     ? activeOptionColor
     : notActiveOptionColor;
+  const frontCameraRecognizePersonServiceIndicatorColor =
+    frontCameraRecognizePersonServiceRunning
+      ? activeOptionColor
+      : notActiveOptionColor;
+  const backCameraRecognizePersonServiceIndicatorColor =
+    backCameraRecognizePersonServiceRunning
+      ? activeOptionColor
+      : notActiveOptionColor;
 
   const hasBackCameraOptionIndicator = (
     <View
@@ -79,6 +99,15 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
       <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
     </View>
   );
+  const canRecognizePersonOptionIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: canRecognizePersonIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RP'}</Text>
+    </View>
+  );
 
   const deviceMovementServiceRunningIndicator = (
     <View
@@ -87,6 +116,24 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
         {backgroundColor: deviceMovementServiceIndicatorColor},
       ]}>
       <Text style={styles.statusBarIndicatorText}>{'DM'}</Text>
+    </View>
+  );
+  const frontCameraRecognizePersonServiceRunningIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: frontCameraRecognizePersonServiceIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RF'}</Text>
+    </View>
+  );
+  const backCameraRecognizePersonServiceRunningIndicator = (
+    <View
+      style={[
+        styles.statusBarIndicator,
+        {backgroundColor: backCameraRecognizePersonServiceIndicatorColor},
+      ]}>
+      <Text style={styles.statusBarIndicatorText}>{'RB'}</Text>
     </View>
   );
 
@@ -102,9 +149,12 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
           {hasBackCameraOptionIndicator}
           {hasFrontCameraOptionIndicator}
           {canDetectDeviceMovementOptionIndicator}
+          {canRecognizePersonOptionIndicator}
         </View>
         <View style={styles.deviceStatusBar}>
           {deviceMovementServiceRunningIndicator}
+          {frontCameraRecognizePersonServiceRunningIndicator}
+          {backCameraRecognizePersonServiceRunningIndicator}
         </View>
         <View style={styles.freeSpace} />
         <Text style={styles.itemCode}>{lastLoginDateText}</Text>

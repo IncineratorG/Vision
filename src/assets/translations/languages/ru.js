@@ -68,6 +68,10 @@ const ru = {
   DeviceRequestsDialog_getFrontCameraImage: 'Изображение передней камеры',
   DeviceRequestsDialog_getBackCameraImage: 'Изображение задней камеры',
   DeviceRequestsDialog_detectDeviceMovement: 'Следить за движением устройства',
+  DeviceRequestsDialog_recognizePersonWithFrontCamera:
+    'Реагировать на человека в кадре передней камеры',
+  DeviceRequestsDialog_recognizePersonWithBackCamera:
+    'Реагировать на человека в кадре задней камеры',
 
   SelectedDeviceNotAvailable_message: 'Устройство не доступно.',
 
@@ -112,6 +116,10 @@ const ru = {
   GroupDeviceItem_deviceOnline: 'В сети',
   GroupDeviceItem_deviceOffline: 'Не сети',
 
+  CurrentRequestStatusDialog_generalErrorStatusText:
+    'При выполнении запроса произошла ошибка',
+  CurrentRequestStatusDialog_generalErrorRightButtonText: 'OK',
+
   CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressStatusText:
     'Получение изображения',
   CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressRightButtonText:
@@ -137,6 +145,11 @@ const ru = {
   CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressStatusText:
     'Выполнение',
   CurrentRequestStatusDialog_toggleDetectDeviceMovementRequestInProgressRightButtonText:
+    'ОТМЕНА',
+
+  CurrentRequestStatusDialog_toggleRecognizePersonRequestInProgressStatusText:
+    'Выполнение',
+  CurrentRequestStatusDialog_toggleRecognizePersonRequestInProgressRightButtonText:
     'ОТМЕНА',
 };
 

@@ -6,6 +6,7 @@ import com.vision.common.services.surveillance.data.requests.payloads.payloads.T
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TakeFrontCameraImageRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.TestRequestWithPayloadRequestPayload;
 import com.vision.common.services.surveillance.data.requests.payloads.payloads.ToggleDetectDeviceMovementRequestPayload;
+import com.vision.common.services.surveillance.data.requests.payloads.payloads.ToggleRecognizePersonRequestPayload;
 
 import org.json.JSONObject;
 
@@ -37,5 +38,13 @@ public class SurveillanceServiceRequestPayloads {
 
     public static ToggleDetectDeviceMovementRequestPayload toggleDetectDeviceMovementRequestPayload() {
         return new ToggleDetectDeviceMovementRequestPayload();
+    }
+
+    public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(String cameraType) {
+        return new ToggleRecognizePersonRequestPayload(cameraType);
+    }
+
+    public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(JSONObject jsonObject) {
+        return new ToggleRecognizePersonRequestPayload(jsonObject);
     }
 }

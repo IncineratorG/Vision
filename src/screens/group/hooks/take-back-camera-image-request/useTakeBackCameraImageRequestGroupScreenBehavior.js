@@ -177,6 +177,57 @@ const useTakeBackCameraImageRequestGroupScreenBehavior = ({
     t,
   ]);
 
+  useEffect(() => {
+    if (!screenFocused) {
+      return;
+    }
+
+    if (takeBackCameraImageRequestHasError) {
+      SystemEventsHandler.onInfo({
+        info:
+          'useTakeBackCameraImageRequestGroupScreenBehavior()->ERROR: ' +
+          takeBackCameraImageRequestErrorCode,
+      });
+
+      localDispatch(
+        GroupLocalActions.actions.setCurrentRequestStatusDialogData({
+          visible: true,
+          statusText: t('CurrentRequestStatusDialog_generalErrorStatusText'),
+          leftButtonVisible: false,
+          leftButtonText: '',
+          leftButtonPressHandler: null,
+          rightButtonVisible: true,
+          rightButtonText: t(
+            'CurrentRequestStatusDialog_generalErrorRightButtonText',
+          ),
+          rightButtonPressHandler: () => {
+            dispatch(
+              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+          onCancel: () => {
+            dispatch(
+              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
+            );
+          },
+        }),
+      );
+    }
+  }, [
+    screenFocused,
+    takeBackCameraImageRequestHasError,
+    takeBackCameraImageRequestErrorCode,
+    dispatch,
+    localDispatch,
+    t,
+  ]);
+
   return {
     inProgress: takeBackCameraImageRequestInProgress,
     completed: takeBackCameraImageRequestCompleted,

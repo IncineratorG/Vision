@@ -4,14 +4,18 @@ package com.vision.common.services.surveillance.data.responses.executor.firebase
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_request_callbacks.ServiceRequestCallbacks;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
+import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_responses_executor.ServiceResponsesExecutor;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
 import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.common.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
+import com.vision.common.services.surveillance.data.responses.payloads.payloads.ErrorResponsePayload;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
                         Map<String, ServiceRequestCallbacks> requestCallbacksMap,
                         Map<String, Timer> requestTimeoutsMap,
                         Map<String, Object> params) {
-        Log.d("tag", "FBSResponsesHandler->execute(): " + stringifiedResponse + " - " + (context == null));
+        Log.d("tag", "FBSResponsesExecutor->execute(): " + stringifiedResponse + " - " + (context == null));
 
         if (!isSafeToProcessResponse(
                 context,
@@ -37,7 +41,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
                 requestTimeoutsMap,
                 params)
         ) {
-            Log.d("tag", "FBSResponsesHandler->execute(): WILL_NOT_PROCESS_RESPONSE");
+            Log.d("tag", "FBSResponsesExecutor->execute(): WILL_NOT_PROCESS_RESPONSE");
             return;
         }
 
@@ -51,22 +55,22 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
                                             Map<String, Timer> requestTimeoutsMap,
                                             Map<String, Object> params) {
         if (context == null) {
-            Log.d("tag", "FBSResponsesHandler->execute(): CONTEXT_IS_NULL");
+            Log.d("tag", "FBSResponsesExecutor->isSafeToProcessResponse(): CONTEXT_IS_NULL");
             return false;
         }
 
         if (stringifiedResponse == null) {
-            Log.d("tag", "FBSResponsesHandler->execute(): STRINGIFIED_RESPONSE_IS_NULL");
+            Log.d("tag", "FBSResponsesExecutor->isSafeToProcessResponse(): STRINGIFIED_RESPONSE_IS_NULL");
             return false;
         }
 
         if (params == null) {
-            Log.d("tag", "FBSResponsesHandler->execute(): PARAMS_IS_NULL");
+            Log.d("tag", "FBSResponsesExecutor->isSafeToProcessResponse(): PARAMS_IS_NULL");
             return false;
         }
 
         if (!params.containsKey("responseKey")) {
-            Log.d("tag", "FBSResponsesHandler->execute(): PARAMS_HAS_NO_KEY");
+            Log.d("tag", "FBSResponsesExecutor->isSafeToProcessResponse(): PARAMS_HAS_NO_KEY");
         }
 
         return true;
@@ -79,7 +83,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
         if (responseKey != null) {
             response.setKey(responseKey);
         } else {
-            Log.d("tag", "FBSResponsesHandler->getResponseFromString(): BAD_RESPONSE_KEY");
+            Log.d("tag", "FBSResponsesExecutor->getResponseFromString(): BAD_RESPONSE_KEY");
         }
 
         return response;
@@ -88,6 +92,8 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
     private void handleResponse(ServiceResponse response,
                                 Map<String, ServiceRequestCallbacks> requestCallbacksMap,
                                 Map<String, Timer> requestTimeoutsMap) {
+        Log.d("tag", "=====> FBSResponsesExecutor->handleResponse(): " + response.type() + " <=======");
+
         SurveillanceService surveillanceService = SurveillanceService.get();
 
         String currentGroupName = surveillanceService.currentGroupName();
@@ -103,7 +109,7 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
         String requestId = response.requestId();
         String responseType = response.type();
         if (responseType == null) {
-            Log.d("tag", "FBSResponsesHandler->handleResponse()->RESPONSE_TYPE_IS_NULL");
+            Log.d("tag", "FBSResponsesExecutor->handleResponse()->RESPONSE_TYPE_IS_NULL");
             responseType = ServiceResponse.TYPE_RESULT;
         }
 
@@ -116,10 +122,10 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
                     if (deliveredCallback != null) {
                         deliveredCallback.handle();
                     } else {
-                        Log.d("tag", "FBSResponsesHandler->handleResponse(): ON_DELIVERED_CALLBACK_IS_NULL");
+                        Log.d("tag", "FBSResponsesExecutor->handleResponse(): ON_DELIVERED_CALLBACK_IS_NULL");
                     }
                 } else {
-                    Log.d("tag", "FBSResponsesHandler->handleResponse(): REQUEST_CALLBACKS_IS_NULL");
+                    Log.d("tag", "FBSResponsesExecutor->handleResponse(): REQUEST_CALLBACKS_IS_NULL");
                 }
                 break;
             }
@@ -130,30 +136,54 @@ public class FBSResponsesExecutor implements ServiceResponsesExecutor {
                     if (responseCallback != null) {
                         responseCallback.handle(response);
                     } else {
-                        Log.d("tag", "FBSResponsesHandler->handleResponse(): RESPONSE_CALLBACK_IS_NULL");
+                        Log.d("tag", "FBSResponsesExecutor->handleResponse(): RESPONSE_CALLBACK_IS_NULL");
                     }
                 } else {
-                    Log.d("tag", "FBSResponsesHandler->handleResponse(): REQUEST_CALLBACKS_IS_NULL");
+                    Log.d("tag", "FBSResponsesExecutor->handleResponse(): REQUEST_CALLBACKS_IS_NULL");
+                }
+                Timer requestTimeout = requestTimeoutsMap.get(requestId);
+                if (requestTimeout != null) {
+                    requestTimeout.cancel();
+                }
+                requestTimeoutsMap.remove(requestId);
+                break;
+            }
+
+            case (ServiceResponse.TYPE_ERROR): {
+                if (requestCallbacks != null) {
+                    OnRequestErrorCallback errorCallback = requestCallbacks.errorCallback();
+                    if (errorCallback != null) {
+                        ErrorResponsePayload errorResponsePayload = SurveillanceServiceResponsePayloads.errorResponsePayload(response.payload());
+                        errorCallback.handle(new ServiceError(errorResponsePayload.serviceErrorCode(), errorResponsePayload.serviceErrorMessage()));
+                    } else {
+                        Log.d("tag", "FBSResponsesExecutor->handleResponse(): RESPONSE_ERROR_CALLBACK_IS_NULL");
+                    }
+                } else {
+                    Log.d("tag", "FBSResponsesExecutor->handleResponse(): REQUEST_CALLBACKS_IS_NULL");
+                }
+                Timer requestTimeout = requestTimeoutsMap.get(requestId);
+                if (requestTimeout != null) {
+                    requestTimeout.cancel();
                 }
                 requestTimeoutsMap.remove(requestId);
                 break;
             }
 
             default: {
-                Log.d("tag", "FBSResponsesHandler->handleResponse()->BAD_RESPONSE_TYPE: " + responseType);
+                Log.d("tag", "FBSResponsesExecutor->handleResponse()->BAD_RESPONSE_TYPE: " + responseType);
             }
         }
 
-        Timer requestTimeout = requestTimeoutsMap.get(requestId);
-        if (requestTimeout != null) {
-            requestTimeout.cancel();
-        }
-        requestTimeoutsMap.remove(requestId);
+//        Timer requestTimeout = requestTimeoutsMap.get(requestId);
+//        if (requestTimeout != null) {
+//            requestTimeout.cancel();
+//        }
+//        requestTimeoutsMap.remove(requestId);
 
         if (response.key() != null) {
             FBSCommunicationService.get().removeValueFromList(responsesPath, response.key());
         } else {
-            Log.d("tag", "FBSResponsesHandler->handleResponse()->BAD_RESPONSE_KEY: " + response.stringify());
+            Log.d("tag", "FBSResponsesExecutor->handleResponse()->BAD_RESPONSE_KEY: " + response.stringify());
         }
     }
 }

@@ -12,6 +12,15 @@ const NativeSurveillance = () => {
   const requests = NativeSurveillanceRequests;
   const responses = NativeSurveillanceResponses;
 
+  // ===
+  let imageTakenListener = null;
+  nativeServiceEventEmitter.addListener('IMAGE_TAKEN_EVENT', (data) => {
+    if (imageTakenListener) {
+      imageTakenListener(data);
+    }
+  });
+  // ===
+
   const requestCallbacksMap = new Map();
 
   nativeServiceEventEmitter.addListener(
@@ -172,6 +181,60 @@ const NativeSurveillance = () => {
     const action = NativeSurveillanceActions.testMotionSensor();
     return await nativeService.execute(action);
   };
+
+  const testCameraMotionDetection = async () => {
+    const action = NativeSurveillanceActions.testCameraMotionDetection();
+    return await nativeService.execute(action);
+  };
+  const addImageTakenListener = (listener) => {
+    imageTakenListener = listener;
+  };
+
+  const testStartCameraPreview = async () => {
+    const action = NativeSurveillanceActions.testStartCameraPreviewAction();
+    return await nativeService.execute(action);
+  };
+
+  const testStopCameraPreview = async () => {
+    const action = NativeSurveillanceActions.testStopCameraPreviewAction();
+    return await nativeService.execute(action);
+  };
+
+  const testTakeCameraPreviewPicture = async () => {
+    const action =
+      NativeSurveillanceActions.testTakeCameraPreviewPictureAction();
+    return await nativeService.execute(action);
+  };
+
+  const startBackCamera = async () => {
+    const action = NativeSurveillanceActions.startBackCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const startFrontCamera = async () => {
+    const action = NativeSurveillanceActions.startFrontCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const stopBackCamera = async () => {
+    const action = NativeSurveillanceActions.stopBackCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const stopFrontCamera = async () => {
+    const action = NativeSurveillanceActions.stopFrontCameraAction();
+    return await nativeService.execute(action);
+  };
+
+  const takeBackCameraPicture = async () => {
+    const action = NativeSurveillanceActions.takeBackCameraPictureAction();
+    return await nativeService.execute(action);
+  };
+
+  const takeFrontCameraPicture = async () => {
+    const action = NativeSurveillanceActions.takeFrontCameraPictureAction();
+    return await nativeService.execute(action);
+  };
   // ===
 
   return {
@@ -188,6 +251,18 @@ const NativeSurveillance = () => {
     // ===
     sendTestNotification,
     testMotionSensor,
+    testCameraMotionDetection,
+    addImageTakenListener,
+    testStartCameraPreview,
+    testStopCameraPreview,
+    testTakeCameraPreviewPicture,
+
+    startBackCamera,
+    startFrontCamera,
+    stopBackCamera,
+    stopFrontCamera,
+    takeBackCameraPicture,
+    takeFrontCameraPicture,
     // ===
   };
 };

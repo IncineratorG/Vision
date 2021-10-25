@@ -6,6 +6,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.interfaces.service_request_payload.ServiceRequestPayload;
 import com.vision.modules.modules_common.interfaces.js_payload.JSPayload;
+import com.vision.modules.surveillance.module_actions.payloads.payloads.send_request.js_to_service_payload_converter.JsToServicePayloadConverter;
 
 import org.json.JSONObject;
 
@@ -63,7 +64,7 @@ public class SendRequestPayload implements JSPayload {
     private JSONObject getPayloadFromMap(ReadableMap payloadMap) {
         ReadableMap requestPayloadMap = payloadMap.getMap(REQUEST_PAYLOAD_FIELD);
 
-        ServiceRequestPayload serviceRequestPayload = PayloadsConverter.toServiceRequestPayload(mRequestType, requestPayloadMap);
+        ServiceRequestPayload serviceRequestPayload = JsToServicePayloadConverter.toServiceRequestPayload(mRequestType, requestPayloadMap);
         if (serviceRequestPayload != null) {
             return serviceRequestPayload.jsonObject();
         } else {

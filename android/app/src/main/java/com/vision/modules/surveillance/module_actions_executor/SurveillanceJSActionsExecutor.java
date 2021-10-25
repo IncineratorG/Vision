@@ -13,7 +13,18 @@ import com.vision.modules.surveillance.module_actions_executor.handlers.GetAppPe
 import com.vision.modules.surveillance.module_actions_executor.handlers.GetDevicesInGroupHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_SentTestNotificationHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler_V2;
 import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestMotionSensorHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStartBackCameraHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStartCameraPreviewHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStartFrontCameraHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStopBackCameraHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStopCameraPreviewHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestStopFrontCameraHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestTakeBackCameraImageHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestTakeCameraPreviewPictureHandler;
+import com.vision.modules.surveillance.module_actions_executor.handlers.Test_TestTakeFrontCameraImageHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.send_request.SendRequestHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StartServiceHandler;
 import com.vision.modules.surveillance.module_actions_executor.handlers.StopServiceHandler;
@@ -33,6 +44,18 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(SurveillanceJSActionTypes.TEST_REQUEST, new Test_TestRequestHandler());
         mHandlers.put(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, new Test_SentTestNotificationHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, new Test_TestMotionSensorHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler_V2());
+
+        mHandlers.put(SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW, new Test_TestStartCameraPreviewHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW, new Test_TestStopCameraPreviewHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_TAKE_CAMERA_PREVIEW_PICTURE, new Test_TestTakeCameraPreviewPictureHandler());
+
+        mHandlers.put(SurveillanceJSActionTypes.TEST_START_BACK_CAMERA, new Test_TestStartBackCameraHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_START_FRONT_CAMERA, new Test_TestStartFrontCameraHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_STOP_BACK_CAMERA, new Test_TestStopBackCameraHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_STOP_FRONT_CAMERA, new Test_TestStopFrontCameraHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_TAKE_BACK_CAMERA_PICTURE, new Test_TestTakeBackCameraImageHandler());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_TAKE_FRONT_CAMERA_PICTURE, new Test_TestTakeFrontCameraImageHandler());
         // ===
         mHandlers.put(SurveillanceJSActionTypes.GET_APP_PERMISSIONS, new GetAppPermissionsHandler());
         mHandlers.put(SurveillanceJSActionTypes.IS_RUNNING, new IsServiceRunningHandler());

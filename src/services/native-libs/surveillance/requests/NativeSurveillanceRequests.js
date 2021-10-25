@@ -8,6 +8,7 @@ const NativeSurveillanceRequests = () => {
       TAKE_BACK_CAMERA_IMAGE,
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
+      TOGGLE_RECOGNIZE_PERSON,
     },
   } = NativeSurveillanceConstants;
 
@@ -56,12 +57,23 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
+  const toggleRecognizePerson = ({receiverDeviceName, cameraType}) => {
+    return {
+      requestType: TOGGLE_RECOGNIZE_PERSON,
+      receiverDeviceName,
+      requestPayload: {
+        cameraType,
+      },
+    };
+  };
+
   return {
     testRequestWithPayload,
     isDeviceAlive,
     takeBackCameraImage,
     takeFrontCameraImage,
     toggleDetectDeviceMovement,
+    toggleRecognizePerson,
   };
 };
 
