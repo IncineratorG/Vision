@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.services.surveillance.SurveillanceService;
 import com.vision.rn_modules.modules_common.data.error.ModuleError;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions.payloads.SurveillanceJSActionsPayloads;

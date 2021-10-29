@@ -10,7 +10,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.vision.common.services.camera.data.opencv.OpenCVHelper;
+import com.vision.services.camera.data.opencv.OpenCVHelper;
 import com.vision.rn_modules.app_settings.AppSettingsPackage;
 import com.vision.rn_modules.auth.AuthPackage;
 import com.vision.rn_modules.firebase.FirebasePackage;

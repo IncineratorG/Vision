@@ -11,8 +11,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.common.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-import com.vision.common.services.camera.CameraService_V3;
+import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
+import com.vision.services.camera.CameraService_V3;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 

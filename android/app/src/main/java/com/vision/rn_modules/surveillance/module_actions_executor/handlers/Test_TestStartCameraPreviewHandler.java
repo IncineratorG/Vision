@@ -6,7 +6,7 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.services.camera.CameraService_V3;
+import com.vision.services.camera.CameraService_V3;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 public class Test_TestStartCameraPreviewHandler implements JSActionHandler {

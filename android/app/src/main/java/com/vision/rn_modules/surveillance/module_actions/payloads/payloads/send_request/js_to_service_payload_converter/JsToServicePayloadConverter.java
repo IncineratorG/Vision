@@ -3,8 +3,8 @@ package com.vision.rn_modules.surveillance.module_actions.payloads.payloads.send
 
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.interfaces.service_request_payload.ServiceRequestPayload;
-import com.vision.common.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
-import com.vision.common.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
+import com.vision.services.surveillance.data.requests.payloads.SurveillanceServiceRequestPayloads;
+import com.vision.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
 
 public class JsToServicePayloadConverter {
     public static ServiceRequestPayload toServiceRequestPayload(String requestType, ReadableMap requestPayloadMap) {

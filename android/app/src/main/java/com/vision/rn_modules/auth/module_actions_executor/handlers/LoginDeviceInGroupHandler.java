@@ -5,7 +5,7 @@ import android.util.Log;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.services.surveillance.SurveillanceService;
 import com.vision.rn_modules.auth.module_actions.payloads.AuthJSActionsPayloads;
 import com.vision.rn_modules.auth.module_actions.payloads.payloads.LoginDeviceInGroupPayload;
 import com.vision.rn_modules.auth.module_errors.AuthModuleErrors;

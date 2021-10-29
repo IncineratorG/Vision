@@ -10,9 +10,9 @@ import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
-import com.vision.common.services.firebase_communication.FBSCommunicationService;
-import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.services.firebase_communication.FBSCommunicationService;
+import com.vision.services.firebase_paths.FBSPathsService;
+import com.vision.services.surveillance.SurveillanceService;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 public class Test_TestRequestHandler implements JSActionHandler {

@@ -12,7 +12,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.constants.AppConstants;
-import com.vision.common.services.camera.CameraService_V4;
+import com.vision.services.camera.CameraService_V4;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 import java.io.ByteArrayOutputStream;
