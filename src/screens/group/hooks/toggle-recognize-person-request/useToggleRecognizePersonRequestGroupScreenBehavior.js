@@ -114,6 +114,14 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
         }),
       );
 
+      SystemEventsHandler.onInfo({
+        info:
+          'useToggleRecognizePersonRequestGroupScreenBehavior(): ' +
+          frontCameraRecognizePersonServiceRunning +
+          ' - ' +
+          backCameraRecognizePersonServiceRunning,
+      });
+
       const updatedSelectedDevice = {
         ...selectedDevice,
         frontCameraRecognizePersonServiceRunning,

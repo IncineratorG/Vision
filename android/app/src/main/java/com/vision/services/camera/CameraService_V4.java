@@ -816,16 +816,16 @@ public class CameraService_V4 {
         );
     }
 
-    public void stopRecognizePersonWithFrontCamera() {
-        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
-    }
-
     public void startRecognizePersonWithBackCamera() {
         Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
 
         mCameraManager.executeTask(
                 new RecognizePersonWithBackCameraCameraManagerTask()
         );
+    }
+
+    public void stopRecognizePersonWithFrontCamera() {
+        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
     }
 
     public void stopRecognizePersonWithBackCamera() {

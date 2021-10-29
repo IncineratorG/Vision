@@ -45,6 +45,8 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                         boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
                         boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
 
+                        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): " + frontCameraRecognizeServiceRunning + " - " + backCameraRecognizeServiceRunning);
+
                         ToggleRecognizePersonResponsePayload responsePayload =
                                 SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
                                         frontCameraRecognizeServiceRunning, backCameraRecognizeServiceRunning
@@ -90,6 +92,8 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
                     (result) -> {
                         boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
                         boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();
+
+                        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle(): " + frontCameraRecognizeServiceRunning + " - " + backCameraRecognizeServiceRunning);
 
                         ToggleRecognizePersonResponsePayload responsePayload =
                                 SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(
