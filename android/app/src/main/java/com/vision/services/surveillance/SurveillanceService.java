@@ -492,11 +492,17 @@ public class SurveillanceService implements
         }
     }
 
-    public boolean isRecognizePersonServiceRunning() {
-        Log.d("tag", "SurveillanceService->isRecognizePersonServiceRunning()");
-
+    public boolean isRecognizePersonWithCameraServiceRunning(String cameraType) {
         CameraService_V4 cameraService = CameraService_V4.get();
-        return cameraService.isFrontCameraRecognizePersonRunning() || cameraService.isBackCameraRecognizePersonRunning();
+        if (cameraType.equalsIgnoreCase("front")) {
+            return cameraService.isFrontCameraRecognizePersonRunning();
+        } else if (cameraType.equalsIgnoreCase("back")) {
+            return cameraService.isBackCameraRecognizePersonRunning();
+        } else {
+            Log.d("tag", "SurveillanceService->isRecognizePersonWithCameraServiceRunning()->UNKNOWN_CAMERA_TYPE: " + cameraType);
+        }
+
+        return false;
     }
 
     public boolean isRecognizePersonWithFrontCameraServiceRunning() {
