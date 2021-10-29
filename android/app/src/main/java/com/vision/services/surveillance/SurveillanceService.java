@@ -389,6 +389,7 @@ public class SurveillanceService implements
         // ===
         // =====
         DeviceMovementService.get().stop(context);
+        CameraService_V4.get().stop(context);
         // =====
         // ===
         updateAndPublishDeviceInfo(context, true, onSuccess, onError);
@@ -459,7 +460,17 @@ public class SurveillanceService implements
                                                OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
 
-        onError.onError(SurveillanceServiceErrors.commonServiceError());
+        CameraService_V4 cameraService = CameraService_V4.get();
+        if (cameraType.equalsIgnoreCase("front")) {
+            cameraService.startRecognizePersonWithFrontCamera();
+            onSuccess.onSuccess(null);
+        } else if (cameraType.equalsIgnoreCase("back")) {
+            cameraService.startRecognizePersonWithBackCamera();
+            onSuccess.onSuccess(null);
+        } else {
+            Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);
+            onError.onError(SurveillanceServiceErrors.commonServiceError());
+        }
     }
 
     public void stopRecognizePersonWithCamera(Context context,
@@ -468,7 +479,17 @@ public class SurveillanceService implements
                                               OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera(): " + cameraType);
 
-        onError.onError(SurveillanceServiceErrors.commonServiceError());
+        CameraService_V4 cameraService = CameraService_V4.get();
+        if (cameraType.equalsIgnoreCase("front")) {
+            cameraService.stopRecognizePersonWithFrontCamera();
+            onSuccess.onSuccess(null);
+        } else if (cameraType.equalsIgnoreCase("back")) {
+            cameraService.stopRecognizePersonWithBackCamera();
+            onSuccess.onSuccess(null);
+        } else {
+            Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);
+            onError.onError(SurveillanceServiceErrors.commonServiceError());
+        }
     }
 
     public boolean isRecognizePersonServiceRunning() {

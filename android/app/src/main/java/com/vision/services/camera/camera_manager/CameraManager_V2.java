@@ -7,6 +7,8 @@ import android.os.Build;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager_tasks.CameraManagerTasks;
@@ -14,14 +16,14 @@ import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewIm
 import com.vision.services.camera.data.opencv.OpenCVHelper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class CameraManager_V2 {
     public static final String TAKE_BACK_CAMERA_IMAGE = "TAKE_BACK_CAMERA_IMAGE";
     public static final String TAKE_FRONT_CAMERA_IMAGE = "TAKE_FRONT_CAMERA_IMAGE";
+    public static final String RECOGNIZE_PERSON_WITH_BACK_CAMERA = "RECOGNIZE_PERSON_WITH_BACK_CAMERA";
+    public static final String RECOGNIZE_PERSON_WITH_FRONT_CAMERA = "RECOGNIZE_PERSON_WITH_FRONT_CAMERA";
 
     public interface CameraManagerTask {
         String type();
@@ -84,11 +86,15 @@ public class CameraManager_V2 {
     }
 
     public boolean isFrontCameraRecognizePersonRunning() {
-        return mFrontCameraRecognizePersonRunning;
+        return mFrontCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_FRONT_CAMERA) > 0;
+
+//        return mFrontCameraRecognizePersonRunning;
     }
 
     public boolean isBackCameraRecognizePersonRunning() {
-        return mBackCameraRecognizePersonRunning;
+        return mBackCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_BACK_CAMERA) > 0;
+
+//        return mBackCameraRecognizePersonRunning;
     }
 
     public void executeTask(CameraManagerTask task) {
@@ -148,10 +154,79 @@ public class CameraManager_V2 {
                 break;
             }
 
+            case (RECOGNIZE_PERSON_WITH_BACK_CAMERA): {
+                if (!(task instanceof RecognizePersonWithBackCameraCameraManagerTask)) {
+                    Log.d("tag", "CameraManager_V2->executeTask()->RECOGNIZE_PERSON_WITH_BACK_CAMERA->BAD_TASK_INSTANCE");
+                    return;
+                }
+
+                if (mBackCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_BACK_CAMERA) > 0) {
+                    Log.d("tag", "CameraManager_V2->executeTask()->RECOGNIZE_PERSON_WITH_BACK_CAMERA->TASK_ALREADY_RUNNING");
+                    return;
+                }
+
+                if (mFrontCameraRunning) {
+                    stopFrontCameraPreview();
+                }
+
+                mBackCameraTasks.add(task);
+                if (!mBackCameraRunning) {
+                    startBackCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
+                }
+
+                break;
+            }
+
+            case (RECOGNIZE_PERSON_WITH_FRONT_CAMERA): {
+                if (!(task instanceof RecognizePersonWithFrontCameraCameraManagerTask)) {
+                    Log.d("tag", "CameraManager_V2->executeTask()->RECOGNIZE_PERSON_WITH_FRONT_CAMERA->BAD_TASK_INSTANCE");
+                    return;
+                }
+
+                if (mFrontCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_FRONT_CAMERA) > 0) {
+                    Log.d("tag", "CameraManager_V2->executeTask()->RECOGNIZE_PERSON_WITH_FRONT_CAMERA->TASK_ALREADY_RUNNING");
+                    return;
+                }
+
+                if (mBackCameraRunning) {
+                    stopBackCameraPreview();
+                }
+
+                mFrontCameraTasks.add(task);
+                if (!mFrontCameraRunning) {
+                    startFrontCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
+                }
+
+                break;
+            }
+
             default: {
                 Log.d("tag", "CameraManager_V2->executeTask()->UNKNOWN_TASK: " + task.type());
             }
         }
+    }
+
+    public void stopTaskOfType(String taskType) {
+        switch (taskType) {
+            case (RECOGNIZE_PERSON_WITH_BACK_CAMERA): {
+                mBackCameraTasks.removeTasksOfType(RECOGNIZE_PERSON_WITH_BACK_CAMERA);
+                break;
+            }
+
+            case (RECOGNIZE_PERSON_WITH_FRONT_CAMERA): {
+                mFrontCameraTasks.removeTasksOfType(RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
+                break;
+            }
+
+            default: {
+                Log.d("tag", "CameraManager_V2->stopTaskOfType()->UNKNOWN_TASK_TYPE: " + taskType);
+            }
+        }
+    }
+
+    public void stopAllTasks() {
+        stopFrontCameraPreview();
+        stopBackCameraPreview();
     }
 
     private void startFrontCameraPreview(String quality) {

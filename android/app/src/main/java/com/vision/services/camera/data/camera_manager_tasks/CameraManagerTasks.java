@@ -39,6 +39,11 @@ public class CameraManagerTasks {
         mTasksCleanup.put(taskType, cleanup);
     }
 
+    public synchronized void removeTasksOfType(String taskType) {
+        mTasks.remove(taskType);
+        mTasksCleanup.remove(taskType);
+    }
+
     public synchronized int tasksOfTypeCount(String taskType) {
         Map<String, CameraManager_V2.CameraManagerTask> tasksOfType = mTasks.get(taskType);
         if (tasksOfType == null) {

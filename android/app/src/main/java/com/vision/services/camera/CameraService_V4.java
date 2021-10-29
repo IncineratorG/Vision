@@ -730,7 +730,12 @@
 package com.vision.services.camera;
 
 
+import android.content.Context;
+import android.util.Log;
+
 import com.vision.services.camera.camera_manager.CameraManager_V2;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
 import com.vision.services.camera.data.callbacks.OnImageTakeError;
@@ -775,6 +780,10 @@ public class CameraService_V4 {
         return mCameraManager.isBackCameraRecognizePersonRunning();
     }
 
+    public void stop(Context context) {
+        mCameraManager.stopAllTasks();
+    }
+
     public void takeBackCameraImage(String quality,
                                     OnImageTaken imageTakenCallback,
                                     OnImageTakeError errorCallback) {
@@ -797,5 +806,29 @@ public class CameraService_V4 {
                         errorCallback
                 )
         );
+    }
+
+    public void startRecognizePersonWithFrontCamera() {
+        Log.d("tag", "CameraService_V4->startRecognizePersonWithFrontCamera()");
+
+        mCameraManager.executeTask(
+                new RecognizePersonWithFrontCameraCameraManagerTask()
+        );
+    }
+
+    public void stopRecognizePersonWithFrontCamera() {
+        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
+    }
+
+    public void startRecognizePersonWithBackCamera() {
+        Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
+
+        mCameraManager.executeTask(
+                new RecognizePersonWithBackCameraCameraManagerTask()
+        );
+    }
+
+    public void stopRecognizePersonWithBackCamera() {
+        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_BACK_CAMERA);
     }
 }
