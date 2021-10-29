@@ -730,31 +730,11 @@
 package com.vision.services.camera;
 
 
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.SurfaceTexture;
-import android.graphics.YuvImage;
-import android.hardware.Camera;
-import android.os.Build;
-import android.util.Base64;
-import android.util.Log;
-
-import com.vision.common.constants.AppConstants;
 import com.vision.services.camera.camera_manager.CameraManager_V2;
+import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
 import com.vision.services.camera.data.callbacks.OnImageTakeError;
 import com.vision.services.camera.data.callbacks.OnImageTaken;
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-import com.vision.services.camera.data.opencv.OpenCVHelper;
-import com.vision.services.camera.data.service_errors.CameraServiceErrors;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CameraService_V4 {
     public static final String NAME = "CameraService_V4";
@@ -798,14 +778,24 @@ public class CameraService_V4 {
     public void takeBackCameraImage(String quality,
                                     OnImageTaken imageTakenCallback,
                                     OnImageTakeError errorCallback) {
-        Log.d("tag", "===> HHHERE");
-
-        imageTakenCallback.onImageTaken("");
+        mCameraManager.executeTask(
+                new TakeBackCameraImageCameraManagerTask(
+                        quality,
+                        imageTakenCallback,
+                        errorCallback
+                )
+        );
     }
 
     public void takeFrontCameraImage(String quality,
                                      OnImageTaken imageTakenCallback,
                                      OnImageTakeError errorCallback) {
-        imageTakenCallback.onImageTaken("");
+        mCameraManager.executeTask(
+                new TakeFrontCameraImageCameraManagerTask(
+                        quality,
+                        imageTakenCallback,
+                        errorCallback
+                )
+        );
     }
 }

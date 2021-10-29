@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
 import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager_tasks.CameraManagerTasks;
 import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
 import com.vision.services.camera.data.opencv.OpenCVHelper;
@@ -25,6 +26,10 @@ public class CameraManager_V2 {
     public interface CameraManagerTask {
         String type();
         boolean onCameraPreviewImageData(CameraPreviewImageData previewImageData);
+    }
+
+    public interface CameraManagerTaskCleanup {
+        void cleanup();
     }
 
     private Camera mFrontCamera;
@@ -93,10 +98,51 @@ public class CameraManager_V2 {
         }
 
         switch (task.type()) {
+            case (TAKE_FRONT_CAMERA_IMAGE): {
+                if (!(task instanceof TakeFrontCameraImageCameraManagerTask)) {
+                    Log.d("tag", "CameraManager_V2->executeTask()->TAKE_FRONT_CAMERA_IMAGE->BAD_TASK_INSTANCE");
+                    return;
+                }
+
+                boolean backCameraWasRunning = false;
+                if (mBackCameraRunning) {
+                    backCameraWasRunning = true;
+                    pauseBackCameraPreview();
+                }
+
+                mFrontCameraTasks.add(task);
+                if (backCameraWasRunning) {
+                    CameraManagerTaskCleanup cleanup = this::resumeBackCameraPreview;
+                    mFrontCameraTasks.addTaskTypeCleanup(TAKE_FRONT_CAMERA_IMAGE, cleanup);
+                }
+
+                if (!mFrontCameraRunning) {
+                    startFrontCameraPreview(((TakeFrontCameraImageCameraManagerTask) task).imageQuality());
+                }
+
+                break;
+            }
+
             case (TAKE_BACK_CAMERA_IMAGE): {
                 if (!(task instanceof TakeBackCameraImageCameraManagerTask)) {
-                    Log.d("tag", "CameraManager_V2->executeTask(): BAD_TASK_INSTANCE");
+                    Log.d("tag", "CameraManager_V2->executeTask()->TAKE_BACK_CAMERA_IMAGE->BAD_TASK_INSTANCE");
                     return;
+                }
+
+                boolean frontCameraWasRunning = false;
+                if (mFrontCameraRunning) {
+                    frontCameraWasRunning = true;
+                    pauseFrontCameraPreview();
+                }
+
+                mBackCameraTasks.add(task);
+                if (frontCameraWasRunning) {
+                    CameraManagerTaskCleanup cleanup = this::resumeFrontCameraPreview;
+                    mBackCameraTasks.addTaskTypeCleanup(TAKE_BACK_CAMERA_IMAGE, cleanup);
+                }
+
+                if (!mBackCameraRunning) {
+                    startBackCameraPreview(((TakeBackCameraImageCameraManagerTask) task).imageQuality());
                 }
 
                 break;
@@ -112,16 +158,20 @@ public class CameraManager_V2 {
         if (mFrontCameraRunning) {
             return;
         }
+        if (mBackCameraRunning) {
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview()->CAN_NOT_START->BACK_CAMERA_RUNNING");
+            return;
+        }
 
         int frontCameraId = getFrontCameraId();
         if (frontCameraId < 0) {
-            Log.d("tag", "CameraService_V4->startFrontCameraPreview(): BAD_FRONT_CAMERA_ID");
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview(): BAD_FRONT_CAMERA_ID");
             return;
         }
 
         mFrontCamera = Camera.open(frontCameraId);
         if (mFrontCamera == null) {
-            Log.d("tag", "CameraService_V4->startFrontCameraPreview(): BAD_CURRENT_CAMERA");
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview(): BAD_CURRENT_CAMERA");
             return;
         }
 
@@ -147,13 +197,13 @@ public class CameraManager_V2 {
         Camera.Size cameraPreviewSize = previewSizes.get(0);
         if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_HIGH)) {
             cameraPreviewSize = previewSizes.get(0);
-            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_MEDIUM)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() / 2);
-            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_LOW)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
-            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startFrontCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         }
         parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
         mFrontCameraPreviousImageQuality = quality;
@@ -205,16 +255,20 @@ public class CameraManager_V2 {
         if (mBackCameraRunning) {
             return;
         }
+        if (mFrontCameraRunning) {
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview()->CAN_NOT_START->FRONT_CAMERA_RUNNING");
+            return;
+        }
 
         int backCameraId = getBackCameraId();
         if (backCameraId < 0) {
-            Log.d("tag", "CameraService_V4->startBackCameraPreview(): BAD_BACK_CAMERA_ID");
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview(): BAD_BACK_CAMERA_ID");
             return;
         }
 
         mBackCamera = Camera.open(backCameraId);
         if (mBackCamera == null) {
-            Log.d("tag", "CameraService_V4->startBackCameraPreview(): BAD_CURRENT_CAMERA");
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview(): BAD_CURRENT_CAMERA");
             return;
         }
 
@@ -240,13 +294,13 @@ public class CameraManager_V2 {
         Camera.Size cameraPreviewSize = previewSizes.get(0);
         if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_HIGH)) {
             cameraPreviewSize = previewSizes.get(0);
-            Log.d("tag", "CameraService_V4->startBackCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview()->HIGH_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_MEDIUM)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() / 2);
-            Log.d("tag", "CameraService_V4->startBackCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview()->MEDIUM_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         } else if (quality.equalsIgnoreCase(AppConstants.CAMERA_IMAGE_QUALITY_LOW)) {
             cameraPreviewSize = previewSizes.get(previewSizes.size() - 1);
-            Log.d("tag", "CameraService_V4->startBackCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
+            Log.d("tag", "CameraManager_V2->startBackCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
         }
         parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
         mBackCameraPreviousImageQuality = quality;
@@ -294,6 +348,22 @@ public class CameraManager_V2 {
         }
     }
 
+    private void resumeFrontCameraPreview() {
+        if (mFrontCameraPreviousImageQuality != null) {
+            startFrontCameraPreview(mFrontCameraPreviousImageQuality);
+        } else {
+            startFrontCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
+        }
+    }
+
+    private void resumeBackCameraPreview() {
+        if (mBackCameraPreviousImageQuality != null) {
+            startBackCameraPreview(mBackCameraPreviousImageQuality);
+        } else {
+            startBackCameraPreview(AppConstants.CAMERA_IMAGE_QUALITY_HIGH);
+        }
+    }
+
     private void stopFrontCameraPreview() {
         try {
             if (mFrontCamera != null) {
@@ -308,14 +378,11 @@ public class CameraManager_V2 {
             }
             mFrontCameraTasks.clear();
 
-//            clearFrontCameraPreviewImageData();
-//            clearFrontCameraFrameChangeTasks();
-
             mFrontCameraRunning = false;
 
             mFrontCameraPreviousImageQuality = null;
         } catch (Exception e) {
-            Log.d("tag", "CameraService_V4->stopFrontCameraPreview()->ERROR");
+            Log.d("tag", "CameraManager_V2->stopFrontCameraPreview()->ERROR");
             e.printStackTrace();
         }
     }
@@ -334,14 +401,11 @@ public class CameraManager_V2 {
             }
             mBackCameraTasks.clear();
 
-//            clearBackCameraPreviewImageData();
-//            clearBackCameraFrameChangeTasks();
-
             mBackCameraRunning = false;
 
             mBackCameraPreviousImageQuality = null;
         } catch (Exception e) {
-            Log.d("tag", "CameraService_V4->stopBackCameraPreview()->ERROR");
+            Log.d("tag", "CameraManager_V2->stopBackCameraPreview()->ERROR");
             e.printStackTrace();
         }
     }
@@ -358,11 +422,10 @@ public class CameraManager_V2 {
                     mFrontCameraSurfaceTexture.release();
                 }
             }
-//            clearFrontCameraPreviewImageData();
 
             mFrontCameraRunning = false;
         } catch (Exception e) {
-            Log.d("tag", "CameraService_V4->pauseFrontCameraPreview()->ERROR");
+            Log.d("tag", "CameraManager_V2->pauseFrontCameraPreview()->ERROR");
             e.printStackTrace();
         }
     }
@@ -379,11 +442,10 @@ public class CameraManager_V2 {
                     mBackCameraSurfaceTexture.release();
                 }
             }
-//            clearBackCameraPreviewImageData();
 
             mBackCameraRunning = false;
         } catch (Exception e) {
-            Log.d("tag", "CameraService_V4->pauseBackCameraPreview()->ERROR");
+            Log.d("tag", "CameraManager_V2->pauseBackCameraPreview()->ERROR");
             e.printStackTrace();
         }
     }
@@ -432,6 +494,7 @@ public class CameraManager_V2 {
         int remainingTasks = mBackCameraTasks.onFrameChanged(previewImageData);
         if (remainingTasks == 0) {
             stopBackCameraPreview();
+            mBackCameraTasks.runCleanups();
         }
     }
 
@@ -453,6 +516,7 @@ public class CameraManager_V2 {
         int remainingTasks = mFrontCameraTasks.onFrameChanged(previewImageData);
         if (remainingTasks == 0) {
             stopFrontCameraPreview();
+            mFrontCameraTasks.runCleanups();
         }
     }
 }

@@ -11,9 +11,11 @@ import java.util.UUID;
 
 public class CameraManagerTasks {
     private Map<String, Map<String, CameraManager_V2.CameraManagerTask>> mTasks;
+    private Map<String, CameraManager_V2.CameraManagerTaskCleanup> mTasksCleanup;
 
     public CameraManagerTasks() {
         mTasks = new HashMap<>();
+        mTasksCleanup = new HashMap<>();
     }
 
     public synchronized String add(CameraManager_V2.CameraManagerTask task) {
@@ -30,6 +32,11 @@ public class CameraManagerTasks {
         mTasks.put(taskType, tasksOfType);
 
         return taskId;
+    }
+
+    public synchronized void addTaskTypeCleanup(String taskType,
+                                                CameraManager_V2.CameraManagerTaskCleanup cleanup) {
+        mTasksCleanup.put(taskType, cleanup);
     }
 
     public synchronized int tasksOfTypeCount(String taskType) {
@@ -51,13 +58,13 @@ public class CameraManagerTasks {
 
     public synchronized void clear() {
         mTasks.clear();
+        mTasksCleanup.clear();
     }
 
     public synchronized int onFrameChanged(CameraPreviewImageData frame) {
         int totalNumberOfRemainingTasks = 0;
 
         for (Map.Entry<String, Map<String, CameraManager_V2.CameraManagerTask>> tasksOfTypeEntry : mTasks.entrySet()) {
-//            String tasksType = tasksOfTypeEntry.getKey();
             Map<String, CameraManager_V2.CameraManagerTask> tasksOfType = tasksOfTypeEntry.getValue();
 
             List<String> taskToRemoveIds = new ArrayList<>();
@@ -84,5 +91,12 @@ public class CameraManagerTasks {
         }
 
         return totalNumberOfRemainingTasks;
+    }
+
+    public synchronized void runCleanups() {
+        for (Map.Entry<String, CameraManager_V2.CameraManagerTaskCleanup> cleanupsEntry : mTasksCleanup.entrySet()) {
+            cleanupsEntry.getValue().cleanup();
+        }
+        mTasksCleanup.clear();
     }
 }
