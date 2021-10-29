@@ -1,5 +1,7 @@
 package com.vision.services.camera.data.camera_manager_tasks;
 
+import android.util.Log;
+
 import com.vision.services.camera.camera_manager.CameraManager_V2;
 import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
 
@@ -61,9 +63,11 @@ public class CameraManagerTasks {
         return totalTasksCount;
     }
 
-    public synchronized void clear() {
+    public synchronized void clear(boolean keepCleanups) {
         mTasks.clear();
-        mTasksCleanup.clear();
+        if (!keepCleanups) {
+            mTasksCleanup.clear();
+        }
     }
 
     public synchronized int onFrameChanged(CameraPreviewImageData frame) {

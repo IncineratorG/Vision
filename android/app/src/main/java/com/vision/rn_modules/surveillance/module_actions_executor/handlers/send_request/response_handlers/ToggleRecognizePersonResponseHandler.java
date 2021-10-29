@@ -18,8 +18,6 @@ public class ToggleRecognizePersonResponseHandler implements ResponseHandler {
         ToggleRecognizePersonResponsePayload responsePayload =
                 SurveillanceServiceResponsePayloads.toggleRecognizePersonResponsePayload(response.payload());
 
-        Log.d("tag", "==> ToggleRecognizePersonResponseHandler->handle(): " + responsePayload.frontCameraRecognizePersonServiceRunning() + " - " + responsePayload.backCameraRecognizePersonServiceRunning());
-
         context
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(

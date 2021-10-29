@@ -451,7 +451,7 @@ public class CameraManager_V2 {
                     mFrontCameraSurfaceTexture.release();
                 }
             }
-            mFrontCameraTasks.clear();
+            mFrontCameraTasks.clear(true);
 
             mFrontCameraRunning = false;
 
@@ -474,7 +474,7 @@ public class CameraManager_V2 {
                     mBackCameraSurfaceTexture.release();
                 }
             }
-            mBackCameraTasks.clear();
+            mBackCameraTasks.clear(true);
 
             mBackCameraRunning = false;
 
@@ -570,6 +570,7 @@ public class CameraManager_V2 {
         if (remainingTasks == 0) {
             stopBackCameraPreview();
             mBackCameraTasks.runCleanups();
+            mBackCameraTasks.clear(false);
         }
     }
 
@@ -592,6 +593,7 @@ public class CameraManager_V2 {
         if (remainingTasks == 0) {
             stopFrontCameraPreview();
             mFrontCameraTasks.runCleanups();
+            mFrontCameraTasks.clear(false);
         }
     }
 }
