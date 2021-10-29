@@ -31,6 +31,16 @@ const SS_sendToggleRecognizePersonRequestHandler = ({channel}) => {
           backCameraRecognizePersonServiceRunning,
         } = surveillanceService.responses.toggleRecognizePerson(data);
 
+        // ===
+        SystemEventsHandler.onInfo({
+          info:
+            '==> ==> --> SS_sendToggleRecognizePersonRequestHandler: ' +
+            frontCameraRecognizePersonServiceRunning +
+            ' - ' +
+            backCameraRecognizePersonServiceRunning,
+        });
+        // ===
+
         actionsChannel.put(
           AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequestCompleted(
             {
