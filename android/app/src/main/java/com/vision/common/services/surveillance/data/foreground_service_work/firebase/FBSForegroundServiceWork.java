@@ -4,7 +4,7 @@ package com.vision.common.services.surveillance.data.foreground_service_work.fir
 import android.content.Context;
 
 import com.vision.common.interfaces.service_communication_manager.ServiceCommunicationManager;
-import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
+import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
 
 public class FBSForegroundServiceWork implements ForegroundServiceWork {
     private ServiceCommunicationManager mCommunicationManager;

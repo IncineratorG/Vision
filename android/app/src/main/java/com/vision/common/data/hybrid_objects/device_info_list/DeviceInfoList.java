@@ -6,7 +6,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.data.hybrid_service_objects.device_info.DeviceInfo;
-import com.vision.modules.modules_common.interfaces.hybrid_object.HybridObject;
+import com.vision.rn_modules.modules_common.interfaces.hybrid_object.HybridObject;
 
 import java.util.ArrayList;
 import java.util.List;

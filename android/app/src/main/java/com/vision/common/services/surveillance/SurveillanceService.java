@@ -35,7 +35,7 @@ import com.vision.common.services.device_movement.DeviceMovementService;
 import com.vision.common.services.firebase_communication.FBSCommunicationService;
 import com.vision.common.services.firebase_messaging.FBSMessagingService;
 import com.vision.common.services.firebase_paths.FBSPathsService;
-import com.vision.common.interfaces.foregroun_service_work.ForegroundServiceWork;
+import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
 import com.vision.common.services.surveillance.data.communication_manager.firebase.FBSCommunicationManager;
 import com.vision.common.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
 import com.vision.common.data.service_request.ServiceRequest;

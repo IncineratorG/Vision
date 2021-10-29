@@ -11,10 +11,10 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.vision.common.services.camera.data.opencv.OpenCVHelper;
-import com.vision.modules.app_settings.AppSettingsPackage;
-import com.vision.modules.auth.AuthPackage;
-import com.vision.modules.firebase.FirebasePackage;
-import com.vision.modules.surveillance.SurveillancePackage;
+import com.vision.rn_modules.app_settings.AppSettingsPackage;
+import com.vision.rn_modules.auth.AuthPackage;
+import com.vision.rn_modules.firebase.FirebasePackage;
+import com.vision.rn_modules.surveillance.SurveillancePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

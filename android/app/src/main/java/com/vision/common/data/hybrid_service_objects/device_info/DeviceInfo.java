@@ -7,7 +7,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.interfaces.service_object.ServiceObject;
-import com.vision.modules.modules_common.interfaces.hybrid_object.HybridObject;
+import com.vision.rn_modules.modules_common.interfaces.hybrid_object.HybridObject;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.vision.common.services.camera.data.camera_detections.CameraDetections;
 import com.vision.common.services.camera.data.camera_detections.item.CameraDetectionItem;
-import com.vision.modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
+import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
