@@ -81,10 +81,16 @@ public class DeviceMovementService {
             return;
         }
 
+        long initializeTimestamp = System.currentTimeMillis();
         mSensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-                processSensorData(sensorEvent, movementStartCallback, movementEndCallback);
+                processSensorData(
+                        initializeTimestamp,
+                        sensorEvent,
+                        movementStartCallback,
+                        movementEndCallback
+                );
             }
 
             @Override
@@ -130,9 +136,15 @@ public class DeviceMovementService {
         mIsRunning = false;
     }
 
-    private void processSensorData(SensorEvent sensorEvent,
+    private void processSensorData(long initializeTimestamp,
+                                   SensorEvent sensorEvent,
                                    OnTaskSuccess<Void> movementStartCallback,
                                    OnTaskSuccess<Void> movementEndCallback) {
+        long currentDateTimestamp = System.currentTimeMillis();
+        if (currentDateTimestamp < initializeTimestamp + 1000) {
+            return;
+        }
+
         float[] values = sensorEvent.values;
 
         float x = values[0];
@@ -147,11 +159,9 @@ public class DeviceMovementService {
             return;
         }
 
-        float xDelta = Math.abs(mPrevX - x);
-        float yDelta = Math.abs(mPrevY - y);
-        float zDelta = Math.abs(mPrevZ - z);
-
-        long currentDateTimestamp = System.currentTimeMillis();
+//        float xDelta = Math.abs(mPrevX - x);
+//        float yDelta = Math.abs(mPrevY - y);
+//        float zDelta = Math.abs(mPrevZ - z);
 
         if (hasMovement(x, y, z)) {
             mLastMovementTimestamp = currentDateTimestamp;
