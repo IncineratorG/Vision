@@ -463,10 +463,10 @@ public class SurveillanceService implements
         CameraService_V4 cameraService = CameraService_V4.get();
         if (cameraType.equalsIgnoreCase("front")) {
             cameraService.startRecognizePersonWithFrontCamera();
-            onSuccess.onSuccess(null);
+            updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else if (cameraType.equalsIgnoreCase("back")) {
             cameraService.startRecognizePersonWithBackCamera();
-            onSuccess.onSuccess(null);
+            updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else {
             Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);
             onError.onError(SurveillanceServiceErrors.commonServiceError());
@@ -482,10 +482,10 @@ public class SurveillanceService implements
         CameraService_V4 cameraService = CameraService_V4.get();
         if (cameraType.equalsIgnoreCase("front")) {
             cameraService.stopRecognizePersonWithFrontCamera();
-            onSuccess.onSuccess(null);
+            updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else if (cameraType.equalsIgnoreCase("back")) {
             cameraService.stopRecognizePersonWithBackCamera();
-            onSuccess.onSuccess(null);
+            updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else {
             Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);
             onError.onError(SurveillanceServiceErrors.commonServiceError());
