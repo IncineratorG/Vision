@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {Button, Dialog, Portal} from 'react-native-paper';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 import useTranslation from '../../../../utils/common/localization';
 
 const CameraRecognizePersonSettingsDialog = ({
@@ -74,7 +73,11 @@ const CameraRecognizePersonSettingsDialog = ({
       <Dialog visible={visible} onDismiss={onCancel}>
         <Dialog.Content>
           <View style={styles.mainContainer}>
-            <View style={styles.messageContainer} />
+            <View style={styles.messageContainer}>
+              <Text style={styles.message}>
+                {'Поверните изображение так, чтобы оно стало вертикальным.'}
+              </Text>
+            </View>
             <View style={styles.imageContainer}>
               <Image
                 style={[
@@ -106,7 +109,11 @@ const styles = StyleSheet.create({
   messageContainer: {
     height: 75,
     alignSelf: 'stretch',
-    backgroundColor: 'orange',
+    // backgroundColor: 'orange',
+  },
+  message: {
+    fontSize: 16,
+    color: 'grey',
   },
   imageContainer: {
     height: 300,
