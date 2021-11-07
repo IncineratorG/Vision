@@ -51,6 +51,15 @@ public class JsToServicePayloadConverter {
                 return SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(cameraType);
             }
 
+            case (SurveillanceServiceRequestTypes.GET_CAMERA_RECOGNIZE_PERSON_SETTINGS): {
+                String cameraType = requestPayloadMap.getString("cameraType");
+                if (cameraType == null) {
+                    return null;
+                }
+
+                return SurveillanceServiceRequestPayloads.getCameraRecognizePersonSettingsRequestPayload(cameraType);
+            }
+
             default: {
                 return null;
             }

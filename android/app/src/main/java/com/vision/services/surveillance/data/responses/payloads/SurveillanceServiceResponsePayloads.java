@@ -3,6 +3,7 @@ package com.vision.services.surveillance.data.responses.payloads;
 
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.services.surveillance.data.responses.payloads.payloads.ErrorResponsePayload;
+import com.vision.services.surveillance.data.responses.payloads.payloads.GetCameraRecognizePersonSettingsResponsePayload;
 import com.vision.services.surveillance.data.responses.payloads.payloads.IsDeviceAliveResponsePayload;
 import com.vision.services.surveillance.data.responses.payloads.payloads.TakeBackCameraImageResponsePayload;
 import com.vision.services.surveillance.data.responses.payloads.payloads.TakeFrontCameraImageResponsePayload;
@@ -78,5 +79,17 @@ public class SurveillanceServiceResponsePayloads {
             JSONObject jsonObject
     ) {
         return new ToggleRecognizePersonResponsePayload(jsonObject);
+    }
+
+    public static GetCameraRecognizePersonSettingsResponsePayload getCameraRecognizePersonSettingsResponsePayload(
+            String base64Image
+    ) {
+        return new GetCameraRecognizePersonSettingsResponsePayload(base64Image);
+    }
+
+    public static GetCameraRecognizePersonSettingsResponsePayload getCameraRecognizePersonSettingsResponsePayload(
+            JSONObject jsonObject
+    ) {
+        return new GetCameraRecognizePersonSettingsResponsePayload(jsonObject);
     }
 }

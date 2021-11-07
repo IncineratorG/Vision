@@ -9,6 +9,7 @@ const NativeSurveillanceRequests = () => {
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
       TOGGLE_RECOGNIZE_PERSON,
+      GET_CAMERA_RECOGNIZE_PERSON_SETTINGS,
     },
   } = NativeSurveillanceConstants;
 
@@ -67,6 +68,19 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
+  const getCameraRecognizePersonSettings = ({
+    receiverDeviceName,
+    cameraType,
+  }) => {
+    return {
+      requestType: GET_CAMERA_RECOGNIZE_PERSON_SETTINGS,
+      receiverDeviceName,
+      requestPayload: {
+        cameraType,
+      },
+    };
+  };
+
   return {
     testRequestWithPayload,
     isDeviceAlive,
@@ -74,6 +88,7 @@ const NativeSurveillanceRequests = () => {
     takeFrontCameraImage,
     toggleDetectDeviceMovement,
     toggleRecognizePerson,
+    getCameraRecognizePersonSettings,
   };
 };
 

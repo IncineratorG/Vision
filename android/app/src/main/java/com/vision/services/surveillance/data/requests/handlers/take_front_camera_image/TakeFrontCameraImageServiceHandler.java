@@ -1,4 +1,4 @@
-package com.vision.services.surveillance.data.requests.handlers.take_fron_camera_image;
+package com.vision.services.surveillance.data.requests.handlers.take_front_camera_image;
 
 
 import android.content.Context;

@@ -1,6 +1,7 @@
 package com.vision.services.surveillance.data.requests.payloads;
 
 
+import com.vision.services.surveillance.data.requests.payloads.payloads.GetCameraRecognizePersonSettingsRequestPayload;
 import com.vision.services.surveillance.data.requests.payloads.payloads.IsDeviceAliveRequestPayload;
 import com.vision.services.surveillance.data.requests.payloads.payloads.TakeBackCameraImageRequestPayload;
 import com.vision.services.surveillance.data.requests.payloads.payloads.TakeFrontCameraImageRequestPayload;
@@ -46,5 +47,13 @@ public class SurveillanceServiceRequestPayloads {
 
     public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(JSONObject jsonObject) {
         return new ToggleRecognizePersonRequestPayload(jsonObject);
+    }
+
+    public static GetCameraRecognizePersonSettingsRequestPayload getCameraRecognizePersonSettingsRequestPayload(String cameraType) {
+        return new GetCameraRecognizePersonSettingsRequestPayload(cameraType);
+    }
+
+    public static GetCameraRecognizePersonSettingsRequestPayload getCameraRecognizePersonSettingsRequestPayload(JSONObject jsonObject) {
+        return new GetCameraRecognizePersonSettingsRequestPayload(jsonObject);
     }
 }

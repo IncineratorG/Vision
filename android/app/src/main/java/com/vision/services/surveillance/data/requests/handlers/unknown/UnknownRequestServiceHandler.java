@@ -20,7 +20,7 @@ public class UnknownRequestServiceHandler implements ServiceRequestHandler {
         if (request.key() != null) {
             FBSCommunicationService.get().removeValueFromList(requestsPath, request.key());
         } else {
-            Log.d("tag", "TestRequestServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
+            Log.d("tag", "UnknownRequestServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
         }
     }
 }

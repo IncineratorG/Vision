@@ -1,13 +1,13 @@
-import {call, put, select} from '@redux-saga/core/effects';
+import {call, select} from '@redux-saga/core/effects';
 import {SystemEventsHandler} from '../../../../../utils/common/system-events-handler/SystemEventsHandler';
 import Services from '../../../../../services/Services';
 
-const SS_cancelToggleRecognizePersonRequestHandler = ({channel}) => {
+const SS_cancelGetCameraRecognizePersonSettingsRequestHandler = ({channel}) => {
   const handler = function* (action) {
     const {requestId, inProgress} = yield select(
       (state) =>
-        state.surveillanceToggleRecognizePersonRequest
-          .toggleRecognizePersonRequest,
+        state.surveillanceGetCameraRecognizePersonSettingsRequest
+          .getCameraRecognizePersonSettingsRequest,
     );
 
     try {
@@ -22,7 +22,7 @@ const SS_cancelToggleRecognizePersonRequestHandler = ({channel}) => {
     } catch (e) {
       SystemEventsHandler.onError({
         err:
-          'SS_cancelToggleRecognizePersonRequestHandler->handler()->ERROR: ' +
+          'SS_cancelGetCameraRecognizePersonSettingsRequestHandler->handler()->ERROR: ' +
           e.toString(),
       });
     }
@@ -33,4 +33,4 @@ const SS_cancelToggleRecognizePersonRequestHandler = ({channel}) => {
   };
 };
 
-export default SS_cancelToggleRecognizePersonRequestHandler;
+export default SS_cancelGetCameraRecognizePersonSettingsRequestHandler;

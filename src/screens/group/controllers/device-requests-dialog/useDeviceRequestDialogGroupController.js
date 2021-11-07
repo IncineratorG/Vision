@@ -106,10 +106,19 @@ const useDeviceRequestsDialogGroupController = (model) => {
         const {deviceName: selectedDeviceName} = selectedDevice;
 
         dispatch(
-          AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
-            {receiverDeviceName: selectedDeviceName, cameraType: 'front'},
+          AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
+            {
+              receiverDeviceName: selectedDeviceName,
+              cameraType: 'front',
+            },
           ),
         );
+
+        // dispatch(
+        //   AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+        //     {receiverDeviceName: selectedDeviceName, cameraType: 'front'},
+        //   ),
+        // );
       },
       [dispatch],
     );
@@ -126,10 +135,19 @@ const useDeviceRequestsDialogGroupController = (model) => {
         const {deviceName: selectedDeviceName} = selectedDevice;
 
         dispatch(
-          AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
-            {receiverDeviceName: selectedDeviceName, cameraType: 'back'},
+          AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
+            {
+              receiverDeviceName: selectedDeviceName,
+              cameraType: 'back',
+            },
           ),
         );
+
+        // dispatch(
+        //   AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+        //     {receiverDeviceName: selectedDeviceName, cameraType: 'back'},
+        //   ),
+        // );
       },
       [dispatch],
     );

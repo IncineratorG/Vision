@@ -8,9 +8,10 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.services.surveillance.SurveillanceService;
+import com.vision.services.surveillance.data.requests.handlers.get_camera_recognize_person_settings.GetCameraRecognizePersonSettingsServiceHandler;
 import com.vision.services.surveillance.data.requests.handlers.is_device_alive.IsDeviceAliveServiceHandler;
 import com.vision.services.surveillance.data.requests.handlers.take_back_camera_image.TakeBackCameraImageServiceHandler;
-import com.vision.services.surveillance.data.requests.handlers.take_fron_camera_image.TakeFrontCameraImageServiceHandler;
+import com.vision.services.surveillance.data.requests.handlers.take_front_camera_image.TakeFrontCameraImageServiceHandler;
 import com.vision.services.surveillance.data.requests.handlers.test_with_payload.TestRequestWithPayloadServiceHandler;
 import com.vision.services.surveillance.data.requests.handlers.toggle_detect_device_movement.ToggleDetectDeviceMovementServiceHandler;
 import com.vision.services.surveillance.data.requests.handlers.toggle_recongnize_person.ToggleRecognizePersonServiceHandler;
@@ -34,6 +35,7 @@ public class FBSRequestsExecutor implements ServiceRequestsExecutor {
         mHandlers.put(SurveillanceServiceRequestTypes.TAKE_FRONT_CAMERA_IMAGE, new TakeFrontCameraImageServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_DETECT_DEVICE_MOVEMENT, new ToggleDetectDeviceMovementServiceHandler());
         mHandlers.put(SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON, new ToggleRecognizePersonServiceHandler());
+        mHandlers.put(SurveillanceServiceRequestTypes.GET_CAMERA_RECOGNIZE_PERSON_SETTINGS, new GetCameraRecognizePersonSettingsServiceHandler());
     }
 
     @Override
