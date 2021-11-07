@@ -8,14 +8,16 @@ import org.json.JSONObject;
 
 public class ToggleRecognizePersonRequestPayload implements ServiceRequestPayload {
     private final String CAMERA_TYPE_FIELD = "cameraType";
+    private final String IMAGE_ROTATION_DEG_FIELD = "imageRotationDeg";
 
     private JSONObject mJsonObject;
 
-    public ToggleRecognizePersonRequestPayload(String cameraType) {
+    public ToggleRecognizePersonRequestPayload(String cameraType, int imageRotationDeg) {
         mJsonObject = new JSONObject();
 
         try {
             mJsonObject.put(CAMERA_TYPE_FIELD, cameraType);
+            mJsonObject.put(IMAGE_ROTATION_DEG_FIELD, imageRotationDeg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -41,6 +43,20 @@ public class ToggleRecognizePersonRequestPayload implements ServiceRequestPayloa
             e.printStackTrace();
         }
         return cameraType;
+    }
+
+    public int imageRotationDeg() {
+        if (mJsonObject == null) {
+            return -1;
+        }
+
+        int imageRotationDeg = -1;
+        try {
+            imageRotationDeg = (int) mJsonObject.get(IMAGE_ROTATION_DEG_FIELD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return imageRotationDeg;
     }
 
     @Override

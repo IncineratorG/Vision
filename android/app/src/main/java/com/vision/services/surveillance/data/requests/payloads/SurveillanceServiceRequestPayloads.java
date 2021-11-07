@@ -41,8 +41,9 @@ public class SurveillanceServiceRequestPayloads {
         return new ToggleDetectDeviceMovementRequestPayload();
     }
 
-    public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(String cameraType) {
-        return new ToggleRecognizePersonRequestPayload(cameraType);
+    public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(String cameraType,
+                                                                                          int imageRotationDeg) {
+        return new ToggleRecognizePersonRequestPayload(cameraType, imageRotationDeg);
     }
 
     public static ToggleRecognizePersonRequestPayload toggleRecognizePersonRequestPayload(JSONObject jsonObject) {

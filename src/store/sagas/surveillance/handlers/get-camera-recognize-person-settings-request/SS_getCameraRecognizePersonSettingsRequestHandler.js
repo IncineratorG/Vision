@@ -16,7 +16,9 @@ const SS_getCameraRecognizePersonSettingsRequestHandler = ({channel}) => {
     });
 
     yield put(
-      AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequestBegin(),
+      AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequestBegin(
+        {cameraType},
+      ),
     );
 
     try {

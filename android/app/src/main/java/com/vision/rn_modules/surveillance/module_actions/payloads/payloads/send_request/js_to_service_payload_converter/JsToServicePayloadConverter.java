@@ -44,11 +44,12 @@ public class JsToServicePayloadConverter {
 
             case (SurveillanceServiceRequestTypes.TOGGLE_RECOGNIZE_PERSON): {
                 String cameraType = requestPayloadMap.getString("cameraType");
+                int imageRotationDeg = requestPayloadMap.getInt("imageRotationDeg");
                 if (cameraType == null) {
                     return null;
                 }
 
-                return SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(cameraType);
+                return SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(cameraType, imageRotationDeg);
             }
 
             case (SurveillanceServiceRequestTypes.GET_CAMERA_RECOGNIZE_PERSON_SETTINGS): {

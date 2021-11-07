@@ -58,12 +58,17 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
-  const toggleRecognizePerson = ({receiverDeviceName, cameraType}) => {
+  const toggleRecognizePerson = ({
+    receiverDeviceName,
+    cameraType,
+    imageRotationDeg,
+  }) => {
     return {
       requestType: TOGGLE_RECOGNIZE_PERSON,
       receiverDeviceName,
       requestPayload: {
         cameraType,
+        imageRotationDeg,
       },
     };
   };

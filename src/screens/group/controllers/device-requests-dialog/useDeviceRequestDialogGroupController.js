@@ -103,16 +103,31 @@ const useDeviceRequestsDialogGroupController = (model) => {
             JSON.stringify(selectedDevice),
         });
 
-        const {deviceName: selectedDeviceName} = selectedDevice;
+        const {
+          deviceName: selectedDeviceName,
+          frontCameraRecognizePersonServiceRunning,
+        } = selectedDevice;
 
-        dispatch(
-          AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
-            {
-              receiverDeviceName: selectedDeviceName,
-              cameraType: 'front',
-            },
-          ),
-        );
+        if (frontCameraRecognizePersonServiceRunning) {
+          dispatch(
+            AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+              {
+                receiverDeviceName: selectedDeviceName,
+                cameraType: 'front',
+                imageRotationDeg: 0,
+              },
+            ),
+          );
+        } else {
+          dispatch(
+            AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
+              {
+                receiverDeviceName: selectedDeviceName,
+                cameraType: 'front',
+              },
+            ),
+          );
+        }
 
         // dispatch(
         //   AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
@@ -132,16 +147,31 @@ const useDeviceRequestsDialogGroupController = (model) => {
             JSON.stringify(selectedDevice),
         });
 
-        const {deviceName: selectedDeviceName} = selectedDevice;
+        const {
+          deviceName: selectedDeviceName,
+          backCameraRecognizePersonServiceRunning,
+        } = selectedDevice;
 
-        dispatch(
-          AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
-            {
-              receiverDeviceName: selectedDeviceName,
-              cameraType: 'back',
-            },
-          ),
-        );
+        if (backCameraRecognizePersonServiceRunning) {
+          dispatch(
+            AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+              {
+                receiverDeviceName: selectedDeviceName,
+                cameraType: 'back',
+                imageRotationDeg: 0,
+              },
+            ),
+          );
+        } else {
+          dispatch(
+            AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.sendGetCameraRecognizePersonSettingsRequest(
+              {
+                receiverDeviceName: selectedDeviceName,
+                cameraType: 'back',
+              },
+            ),
+          );
+        }
 
         // dispatch(
         //   AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(

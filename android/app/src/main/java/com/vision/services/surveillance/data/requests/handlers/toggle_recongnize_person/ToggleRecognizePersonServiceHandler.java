@@ -26,6 +26,7 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
         ToggleRecognizePersonRequestPayload requestPayload =
                 SurveillanceServiceRequestPayloads.toggleRecognizePersonRequestPayload(request.payload());
         Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->CAMERA_TYPE: " + requestPayload.cameraType());
+        Log.d("tag", "ToggleRecognizePersonServiceHandler->handle()->ROTATION_DEG: " + requestPayload.imageRotationDeg());
 
         SurveillanceService surveillanceService = SurveillanceService.get();
 

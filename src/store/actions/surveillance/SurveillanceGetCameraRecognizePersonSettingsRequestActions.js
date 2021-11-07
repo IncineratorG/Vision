@@ -38,9 +38,10 @@ const SurveillanceGetCameraRecognizePersonSettingsRequestActions = () => {
     };
   };
 
-  const sendGetCameraRecognizePersonSettingsRequestBegin = () => {
+  const sendGetCameraRecognizePersonSettingsRequestBegin = ({cameraType}) => {
     return {
       type: types.SEND_GET_CAMERA_RECOGNIZE_PERSON_SETTINGS_REQUEST_BEGIN,
+      payload: {cameraType},
     };
   };
 

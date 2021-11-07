@@ -7,7 +7,7 @@ const SS_sendToggleRecognizePersonRequestHandler = ({channel}) => {
   const actionsChannel = channel;
 
   const handler = function* (action) {
-    const {receiverDeviceName, cameraType} = action.payload;
+    const {receiverDeviceName, cameraType, imageRotationDeg} = action.payload;
 
     SystemEventsHandler.onInfo({
       info: 'SS_sendToggleRecognizePersonRequestHandler: ' + receiverDeviceName,
@@ -23,6 +23,7 @@ const SS_sendToggleRecognizePersonRequestHandler = ({channel}) => {
       const request = surveillanceService.requests.toggleRecognizePerson({
         receiverDeviceName,
         cameraType,
+        imageRotationDeg,
       });
 
       const onComplete = (data) => {

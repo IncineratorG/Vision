@@ -1,4 +1,4 @@
-import {useState, useCallback, useEffect, useReducer, useMemo} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import useTranslation from '../../../../utils/common/localization';
@@ -22,7 +22,10 @@ const useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior = ({
     inProgress: getCameraRecognizePersonSettingsRequestInProgress,
     completed: getCameraRecognizePersonSettingsRequestCompleted,
     response: {
-      payload: {image: getCameraRecognizePersonSettingsRequestImage},
+      payload: {
+        cameraType: getCameraRecognizePersonSettingsRequestCameraType,
+        image: getCameraRecognizePersonSettingsRequestImage,
+      },
     },
     error: {
       hasError: getCameraRecognizePersonSettingsRequestHasError,
@@ -107,30 +110,35 @@ const useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior = ({
       localDispatch(
         GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
       );
-      // localDispatch(
-      //   GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-      //     visible: true,
-      //   }),
-      // );
-
       localDispatch(
         GroupLocalActions.actions.setCameraRecognizePersonSettingsDialogData({
           visible: true,
           image: getCameraRecognizePersonSettingsRequestImage,
           confirmSettingsButtonPressHandler: ({imageRotationDeg}) => {
+            const {deviceName: selectedDeviceName} = selectedDevice;
+
             SystemEventsHandler.onInfo({
               info:
-                'HERE->confirmSettingsButtonPressHandler(): ' +
-                imageRotationDeg,
+                'useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior->confirmSettingsButtonPressHandler(): ' +
+                getCameraRecognizePersonSettingsRequestCameraType +
+                ' - ' +
+                imageRotationDeg +
+                ' - ' +
+                selectedDeviceName,
             });
 
             localDispatch(
               GroupLocalActions.actions.clearCameraRecognizePersonSettingsDialogData(),
             );
-            localDispatch(
-              GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
-                visible: true,
-              }),
+
+            dispatch(
+              AppActions.surveillanceToggleRecognizePersonRequest.actions.sendToggleRecognizePersonRequest(
+                {
+                  receiverDeviceName: selectedDeviceName,
+                  cameraType: getCameraRecognizePersonSettingsRequestCameraType,
+                  imageRotationDeg,
+                },
+              ),
             );
           },
           cancelButtonPressHandler: () => {
@@ -148,8 +156,10 @@ const useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior = ({
     }
   }, [
     screenFocused,
+    selectedDevice,
     getCameraRecognizePersonSettingsRequestCompleted,
     getCameraRecognizePersonSettingsRequestImage,
+    getCameraRecognizePersonSettingsRequestCameraType,
     dispatch,
     localDispatch,
   ]);

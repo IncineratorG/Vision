@@ -10,6 +10,7 @@ const initialState = {
     cancelled: false,
     response: {
       payload: {
+        cameraType: null,
         image: null,
       },
     },
@@ -50,6 +51,8 @@ const surveillanceGetCameraRecognizePersonSettingsRequestReducer = (
 
     case AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.types
       .SEND_GET_CAMERA_RECOGNIZE_PERSON_SETTINGS_REQUEST_BEGIN: {
+      const {cameraType} = action.payload;
+
       return {
         ...state,
         getCameraRecognizePersonSettingsRequest: {
@@ -59,6 +62,13 @@ const surveillanceGetCameraRecognizePersonSettingsRequestReducer = (
           completed: false,
           cancelInProgress: false,
           cancelled: false,
+          response: {
+            ...state.getCameraRecognizePersonSettingsRequest.response,
+            payload: {
+              ...state.getCameraRecognizePersonSettingsRequest.response.payload,
+              cameraType,
+            },
+          },
           error: {
             ...state.getCameraRecognizePersonSettingsRequest.error,
             hasError: false,

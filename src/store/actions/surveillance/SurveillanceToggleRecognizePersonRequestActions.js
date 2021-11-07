@@ -27,10 +27,11 @@ const SurveillanceToggleRecognizePersonRequestActions = () => {
   const sendToggleRecognizePersonRequest = ({
     receiverDeviceName,
     cameraType,
+    imageRotationDeg,
   }) => {
     return {
       type: types.SEND_TOGGLE_RECOGNIZE_PERSON_REQUEST,
-      payload: {receiverDeviceName, cameraType},
+      payload: {receiverDeviceName, cameraType, imageRotationDeg},
     };
   };
 
