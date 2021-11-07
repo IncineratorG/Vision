@@ -151,6 +151,11 @@ const ru = {
     'Выполнение',
   CurrentRequestStatusDialog_toggleRecognizePersonRequestInProgressRightButtonText:
     'ОТМЕНА',
+
+  CurrentRequestStatusDialog_getCameraRecognizePersonSettingsRequestInProgressStatusText:
+    'Выполнение',
+  CurrentRequestStatusDialog_getCameraRecognizePersonSettingsRequestInProgressRightButtonText:
+    'ОТМЕНА',
 };
 
 export default ru;

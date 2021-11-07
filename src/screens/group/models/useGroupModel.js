@@ -10,6 +10,7 @@ import useTakeBackCameraImageRequestGroupScreenBehavior from '../hooks/take-back
 import useTakeFrontCameraImageRequestGroupScreenBehavior from '../hooks/take-front-camera-image-request/useTakeFrontCameraImageRequestGroupScreenBehavior';
 import useToggleDetectDeviceMovementRequestGroupScreenBehavior from '../hooks/toggle-detect-device-movement-request/useToggleDetectDeviceMovementRequestGroupScreenBehavior';
 import useToggleRecognizePersonRequestGroupScreenBehavior from '../hooks/toggle-recognize-person-request/useToggleRecognizePersonRequestGroupScreenBehavior';
+import useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior from '../hooks/get-camera-recognize-person-settings-request/useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior';
 
 const useGroupModel = () => {
   const navigation = useNavigation();
@@ -68,6 +69,14 @@ const useGroupModel = () => {
     selectedDevice,
   });
   useToggleRecognizePersonRequestGroupScreenBehavior({
+    localDispatch,
+    dispatch,
+    currentGroupName,
+    currentGroupPassword,
+    currentDeviceName,
+    selectedDevice,
+  });
+  useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior({
     localDispatch,
     dispatch,
     currentGroupName,

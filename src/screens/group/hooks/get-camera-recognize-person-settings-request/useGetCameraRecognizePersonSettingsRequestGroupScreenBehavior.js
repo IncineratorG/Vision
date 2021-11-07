@@ -6,7 +6,7 @@ import GroupLocalActions from '../../store/GroupLocalActions';
 import AppActions from '../../../../store/actions/AppActions';
 import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
-const useToggleRecognizePersonRequestGroupScreenBehavior = ({
+const useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior = ({
   localDispatch,
   dispatch,
   currentGroupName,
@@ -19,22 +19,19 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
   const [screenFocused, setScreenFocused] = useState(false);
 
   const {
-    inProgress: toggleRecognizePersonRequestInProgress,
-    completed: toggleRecognizePersonRequestCompleted,
+    inProgress: getCameraRecognizePersonSettingsRequestInProgress,
+    completed: getCameraRecognizePersonSettingsRequestCompleted,
     response: {
-      payload: {
-        frontCameraRecognizePersonServiceRunning,
-        backCameraRecognizePersonServiceRunning,
-      },
+      payload: {image: getCameraRecognizePersonSettingsRequestImage},
     },
     error: {
-      hasError: toggleRecognizePersonRequestHasError,
-      code: toggleRecognizePersonRequestErrorCode,
+      hasError: getCameraRecognizePersonSettingsRequestHasError,
+      code: getCameraRecognizePersonSettingsRequestErrorCode,
     },
   } = useSelector(
     (state) =>
-      state.surveillanceToggleRecognizePersonRequest
-        .toggleRecognizePersonRequest,
+      state.surveillanceGetCameraRecognizePersonSettingsRequest
+        .getCameraRecognizePersonSettingsRequest,
   );
 
   const focusChangedCallback = useCallback(() => {
@@ -50,29 +47,29 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
       return;
     }
 
-    if (toggleRecognizePersonRequestInProgress) {
+    if (getCameraRecognizePersonSettingsRequestInProgress) {
       SystemEventsHandler.onInfo({
         info:
-          '===> useToggleRecognizePersonRequestGroupScreenBehavior->REQUEST_IN_PROGRESS: ' +
-          toggleRecognizePersonRequestInProgress,
+          '===> useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior->REQUEST_IN_PROGRESS: ' +
+          getCameraRecognizePersonSettingsRequestInProgress,
       });
 
       localDispatch(
         GroupLocalActions.actions.setCurrentRequestStatusDialogData({
           visible: true,
           statusText: t(
-            'CurrentRequestStatusDialog_toggleRecognizePersonRequestInProgressStatusText',
+            'CurrentRequestStatusDialog_getCameraRecognizePersonSettingsRequestInProgressStatusText',
           ),
           leftButtonVisible: false,
           leftButtonText: '',
           leftButtonPressHandler: null,
           rightButtonVisible: true,
           rightButtonText: t(
-            'CurrentRequestStatusDialog_toggleRecognizePersonRequestInProgressRightButtonText',
+            'CurrentRequestStatusDialog_getCameraRecognizePersonSettingsRequestInProgressRightButtonText',
           ),
           rightButtonPressHandler: () => {
             dispatch(
-              AppActions.surveillanceToggleRecognizePersonRequest.actions.cancelSendToggleRecognizePersonRequest(),
+              AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.cancelSendGetCameraRecognizePersonSettingsRequest(),
             );
             localDispatch(
               GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -80,7 +77,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
           },
           onCancel: () => {
             dispatch(
-              AppActions.surveillanceToggleRecognizePersonRequest.actions.cancelSendToggleRecognizePersonRequest(),
+              AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.cancelSendGetCameraRecognizePersonSettingsRequest(),
             );
             localDispatch(
               GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -91,7 +88,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
   }, [
     screenFocused,
-    toggleRecognizePersonRequestInProgress,
+    getCameraRecognizePersonSettingsRequestInProgress,
     localDispatch,
     dispatch,
     t,
@@ -102,31 +99,13 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
       return;
     }
 
-    if (toggleRecognizePersonRequestCompleted) {
+    if (getCameraRecognizePersonSettingsRequestCompleted) {
       dispatch(
-        AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+        AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.clear(),
       );
-      dispatch(
-        AppActions.surveillanceCommon.actions.getDevicesInGroup({
-          groupName: currentGroupName,
-          groupPassword: currentGroupPassword,
-          deviceName: currentDeviceName,
-        }),
-      );
-
-      const updatedSelectedDevice = {
-        ...selectedDevice,
-        frontCameraRecognizePersonServiceRunning,
-        backCameraRecognizePersonServiceRunning,
-      };
 
       localDispatch(
         GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
-      );
-      localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogData({
-          device: {...updatedSelectedDevice},
-        }),
       );
       localDispatch(
         GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
@@ -136,16 +115,9 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
   }, [
     screenFocused,
-    toggleRecognizePersonRequestCompleted,
-    frontCameraRecognizePersonServiceRunning,
-    backCameraRecognizePersonServiceRunning,
-    currentGroupName,
-    currentGroupPassword,
-    currentDeviceName,
-    selectedDevice,
-    localDispatch,
+    getCameraRecognizePersonSettingsRequestCompleted,
     dispatch,
-    t,
+    localDispatch,
   ]);
 
   useEffect(() => {
@@ -153,16 +125,12 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
       return;
     }
 
-    if (toggleRecognizePersonRequestHasError) {
+    if (getCameraRecognizePersonSettingsRequestHasError) {
       SystemEventsHandler.onInfo({
         info:
-          'useToggleRecognizePersonRequestGroupScreenBehavior()->ERROR: ' +
-          toggleRecognizePersonRequestErrorCode,
+          'useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior()->ERROR: ' +
+          getCameraRecognizePersonSettingsRequestErrorCode,
       });
-
-      // dispatch(
-      //   AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
-      // );
 
       localDispatch(
         GroupLocalActions.actions.setCurrentRequestStatusDialogData({
@@ -177,7 +145,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
           ),
           rightButtonPressHandler: () => {
             dispatch(
-              AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+              AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.clear(),
             );
             localDispatch(
               GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -185,7 +153,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
           },
           onCancel: () => {
             dispatch(
-              AppActions.surveillanceToggleRecognizePersonRequest.actions.clear(),
+              AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.actions.clear(),
             );
             localDispatch(
               GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -196,15 +164,12 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     }
   }, [
     screenFocused,
-    toggleRecognizePersonRequestHasError,
-    toggleRecognizePersonRequestErrorCode,
-    currentGroupName,
-    currentGroupPassword,
-    currentDeviceName,
+    getCameraRecognizePersonSettingsRequestHasError,
+    getCameraRecognizePersonSettingsRequestErrorCode,
     localDispatch,
     dispatch,
     t,
   ]);
 };
 
-export default useToggleRecognizePersonRequestGroupScreenBehavior;
+export default useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior;
