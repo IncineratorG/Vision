@@ -107,15 +107,49 @@ const useGetCameraRecognizePersonSettingsRequestGroupScreenBehavior = ({
       localDispatch(
         GroupLocalActions.actions.clearCurrentRequestStatusDialogData(),
       );
+      // localDispatch(
+      //   GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+      //     visible: true,
+      //   }),
+      // );
+
       localDispatch(
-        GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+        GroupLocalActions.actions.setCameraRecognizePersonSettingsDialogData({
           visible: true,
+          image: getCameraRecognizePersonSettingsRequestImage,
+          confirmSettingsButtonPressHandler: ({imageRotationDeg}) => {
+            SystemEventsHandler.onInfo({
+              info:
+                'HERE->confirmSettingsButtonPressHandler(): ' +
+                imageRotationDeg,
+            });
+
+            localDispatch(
+              GroupLocalActions.actions.clearCameraRecognizePersonSettingsDialogData(),
+            );
+            localDispatch(
+              GroupLocalActions.actions.setDeviceRequestsDialogVisibility({
+                visible: true,
+              }),
+            );
+          },
+          cancelButtonPressHandler: () => {
+            localDispatch(
+              GroupLocalActions.actions.clearCameraRecognizePersonSettingsDialogData(),
+            );
+          },
+          onCancel: () => {
+            localDispatch(
+              GroupLocalActions.actions.clearCameraRecognizePersonSettingsDialogData(),
+            );
+          },
         }),
       );
     }
   }, [
     screenFocused,
     getCameraRecognizePersonSettingsRequestCompleted,
+    getCameraRecognizePersonSettingsRequestImage,
     dispatch,
     localDispatch,
   ]);

@@ -116,6 +116,10 @@ const ru = {
   GroupDeviceItem_deviceOnline: 'В сети',
   GroupDeviceItem_deviceOffline: 'Не сети',
 
+  CameraRecognizePersonSettingsDialog_rotateButtonText: 'ПОВЕРНУТЬ',
+  CameraRecognizePersonSettingsDialog_confirmButtonText: 'OK',
+  CameraRecognizePersonSettingsDialog_cancelButtonText: 'ОТМЕНА',
+
   CurrentRequestStatusDialog_generalErrorStatusText:
     'При выполнении запроса произошла ошибка',
   CurrentRequestStatusDialog_generalErrorRightButtonText: 'OK',

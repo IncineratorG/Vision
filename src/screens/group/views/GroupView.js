@@ -7,6 +7,7 @@ import SelectedDeviceErrorDialog from '../../../components/specific/group/select
 import ImageViewerModal from '../../../components/specific/group/image-viewer-modal/ImageViewerModal';
 import CurrentRequestStatusDialog from '../../../components/specific/group/current-request-status-dialog/CurrentRequestStatusDialog';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import CameraRecognizePersonSettingsDialog from '../../../components/specific/group/camera-recognize-person-settings-dialog/CameraRecognizePersonSettingsDialog';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -47,6 +48,15 @@ const GroupView = ({model, controller}) => {
           rightButtonPressHandler:
             currentRequestStatusDialogRightButtonPressHandler,
           onCancel: currentRequestStatusDialogOnCancel,
+        },
+        cameraRecognizePersonSettingsDialog: {
+          visible: cameraRecognizePersonSettingsDialogVisible,
+          image: cameraRecognizePersonSettingsDialogImage,
+          confirmSettingsButtonPressHandler:
+            cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler,
+          cancelButtonPressHandler:
+            cameraRecognizePersonSettingsDialogCancelButtonPressHandler,
+          onCancel: cameraRecognizePersonSettingsDialogOnCancel,
         },
         imageViewer: {visible: imageViewerVisible, image: imageViewerImage},
       },
@@ -143,6 +153,20 @@ const GroupView = ({model, controller}) => {
     />
   );
 
+  const cameraRecognizePersonSettingsDialog = (
+    <CameraRecognizePersonSettingsDialog
+      visible={cameraRecognizePersonSettingsDialogVisible}
+      image={cameraRecognizePersonSettingsDialogImage}
+      confirmSettingsButtonPressHandler={
+        cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler
+      }
+      cancelButtonPressHandler={
+        cameraRecognizePersonSettingsDialogCancelButtonPressHandler
+      }
+      onCancel={cameraRecognizePersonSettingsDialogOnCancel}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.contentContainer}>{devicesList}</View>
@@ -176,6 +200,7 @@ const GroupView = ({model, controller}) => {
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
       {currentRequestStatusDialog}
+      {cameraRecognizePersonSettingsDialog}
       {imageViewer}
     </View>
   );

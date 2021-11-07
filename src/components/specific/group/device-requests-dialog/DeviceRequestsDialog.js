@@ -239,7 +239,7 @@ const DeviceRequestsDialog = ({
 
 const styles = StyleSheet.create({
   mainContainer: {
-    minHeight: 200,
+    minHeight: 300,
     justifyContent: 'center',
   },
 });

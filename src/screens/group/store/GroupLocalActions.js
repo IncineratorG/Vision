@@ -27,6 +27,11 @@ const GroupLocalActions = () => {
 
     OPEN_IMAGE_VIEWER: 'GLA_OPEN_IMAGE_VIEWER',
     CLOSE_IMAGE_VIEWER: 'GLA_CLOSE_IMAGE_VIEWER',
+
+    SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA:
+      'GLA_SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG',
+    CLEAR_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA:
+      'GLA_CLEAR_CURRENT_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA',
   };
 
   const setDeviceRequestsDialogVisibility = ({visible}) => {
@@ -146,6 +151,31 @@ const GroupLocalActions = () => {
     };
   };
 
+  const setCameraRecognizePersonSettingsDialogData = ({
+    visible,
+    image,
+    confirmSettingsButtonPressHandler,
+    cancelButtonPressHandler,
+    onCancel,
+  }) => {
+    return {
+      type: types.SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA,
+      payload: {
+        visible,
+        image,
+        confirmSettingsButtonPressHandler,
+        cancelButtonPressHandler,
+        onCancel,
+      },
+    };
+  };
+
+  const clearCameraRecognizePersonSettingsDialogData = () => {
+    return {
+      type: types.CLEAR_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA,
+    };
+  };
+
   return {
     types,
     actions: {
@@ -162,6 +192,8 @@ const GroupLocalActions = () => {
       clearCurrentRequestStatusDialogData,
       openImageViewer,
       closeImageViewer,
+      setCameraRecognizePersonSettingsDialogData,
+      clearCameraRecognizePersonSettingsDialogData,
     },
   };
 };
