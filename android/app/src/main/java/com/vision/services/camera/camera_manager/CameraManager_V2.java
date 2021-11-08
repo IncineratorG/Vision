@@ -87,14 +87,10 @@ public class CameraManager_V2 {
 
     public boolean isFrontCameraRecognizePersonRunning() {
         return mFrontCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_FRONT_CAMERA) > 0;
-
-//        return mFrontCameraRecognizePersonRunning;
     }
 
     public boolean isBackCameraRecognizePersonRunning() {
         return mBackCameraTasks.tasksOfTypeCount(RECOGNIZE_PERSON_WITH_BACK_CAMERA) > 0;
-
-//        return mBackCameraRecognizePersonRunning;
     }
 
     public void executeTask(CameraManagerTask task) {
