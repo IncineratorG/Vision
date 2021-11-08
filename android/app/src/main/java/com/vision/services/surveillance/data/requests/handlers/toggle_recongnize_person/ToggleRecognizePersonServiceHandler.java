@@ -90,6 +90,7 @@ public class ToggleRecognizePersonServiceHandler implements ServiceRequestHandle
             surveillanceService.startRecognizePersonWithCamera(
                     context,
                     requestPayload.cameraType(),
+                    requestPayload.imageRotationDeg(),
                     (result) -> {
                         boolean frontCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithFrontCameraServiceRunning();
                         boolean backCameraRecognizeServiceRunning = surveillanceService.isRecognizePersonWithBackCameraServiceRunning();

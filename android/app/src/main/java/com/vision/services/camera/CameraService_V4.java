@@ -808,19 +808,19 @@ public class CameraService_V4 {
         );
     }
 
-    public void startRecognizePersonWithFrontCamera() {
+    public void startRecognizePersonWithFrontCamera(int imageRotationDeg) {
         Log.d("tag", "CameraService_V4->startRecognizePersonWithFrontCamera()");
 
         mCameraManager.executeTask(
-                new RecognizePersonWithFrontCameraCameraManagerTask()
+                new RecognizePersonWithFrontCameraCameraManagerTask(imageRotationDeg)
         );
     }
 
-    public void startRecognizePersonWithBackCamera() {
+    public void startRecognizePersonWithBackCamera(int imageRotationDeg) {
         Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
 
         mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask()
+                new RecognizePersonWithBackCameraCameraManagerTask(imageRotationDeg)
         );
     }
 

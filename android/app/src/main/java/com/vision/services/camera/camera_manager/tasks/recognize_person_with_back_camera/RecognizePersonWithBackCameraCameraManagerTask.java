@@ -7,10 +7,12 @@ import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewIm
 
 public class RecognizePersonWithBackCameraCameraManagerTask implements CameraManager_V2.CameraManagerTask {
     private String mType;
+    private int mImageRotationDeg;
     private long mLastLogTimestamp;
 
-    public RecognizePersonWithBackCameraCameraManagerTask() {
+    public RecognizePersonWithBackCameraCameraManagerTask(int imageRotationDeg) {
         mType = CameraManager_V2.RECOGNIZE_PERSON_WITH_BACK_CAMERA;
+        mImageRotationDeg = imageRotationDeg;
         mLastLogTimestamp = -1;
     }
 

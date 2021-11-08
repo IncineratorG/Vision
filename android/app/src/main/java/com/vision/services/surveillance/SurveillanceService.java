@@ -456,16 +456,17 @@ public class SurveillanceService implements
     // =====
     public void startRecognizePersonWithCamera(Context context,
                                                String cameraType,
+                                               int imageRotationDegrees,
                                                OnTaskSuccess<Void> onSuccess,
                                                OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
 
         CameraService_V4 cameraService = CameraService_V4.get();
         if (cameraType.equalsIgnoreCase("front")) {
-            cameraService.startRecognizePersonWithFrontCamera();
+            cameraService.startRecognizePersonWithFrontCamera(imageRotationDegrees);
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else if (cameraType.equalsIgnoreCase("back")) {
-            cameraService.startRecognizePersonWithBackCamera();
+            cameraService.startRecognizePersonWithBackCamera(imageRotationDegrees);
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else {
             Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);
