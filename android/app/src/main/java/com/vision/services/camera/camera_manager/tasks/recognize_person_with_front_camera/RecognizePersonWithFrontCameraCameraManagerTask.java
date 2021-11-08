@@ -23,13 +23,15 @@ public class RecognizePersonWithFrontCameraCameraManagerTask implements CameraMa
 
     @Override
     public boolean onCameraPreviewImageData(CameraPreviewImageData previewImageData) {
+        long currentTimestamp = System.currentTimeMillis();
+        Log.d("tag", "RecognizePersonWithFrontCameraCameraManagerTask->TIMESTAMP: " + currentTimestamp);
+
         if (mLastLogTimestamp < 0) {
             log();
-            mLastLogTimestamp = System.currentTimeMillis();
+            mLastLogTimestamp = currentTimestamp;
             return false;
         }
 
-        long currentTimestamp = System.currentTimeMillis();
         if (currentTimestamp > mLastLogTimestamp + 3000) {
             log();
             mLastLogTimestamp = currentTimestamp;
