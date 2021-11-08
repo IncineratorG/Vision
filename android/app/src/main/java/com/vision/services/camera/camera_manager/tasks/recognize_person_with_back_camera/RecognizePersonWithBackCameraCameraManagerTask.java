@@ -27,7 +27,7 @@ public class RecognizePersonWithBackCameraCameraManagerTask implements CameraMan
     @Override
     public boolean onCameraPreviewImageData(CameraPreviewImageData previewImageData) {
         long currentTimestamp = System.currentTimeMillis();
-        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask->TIMESTAMP: " + currentTimestamp);
+//        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask->TIMESTAMP: " + currentTimestamp);
 
         if (mLastLogTimestamp < 0) {
             timedProcessImage(previewImageData);
