@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.vision.services.camera.camera_manager.CameraManager_V2;
-import com.vision.services.camera.data.camera_detections.CameraDetections;
-import com.vision.services.camera.data.camera_detections.item.CameraDetectionItem;
+import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
+import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
 import com.vision.services.camera.data.opencv.OpenCVHelper;
 
@@ -86,10 +86,10 @@ public class RecognizePersonWithBackCameraCameraManagerTask implements CameraMan
             rotatedMat = rgbaMap.clone();
         }
 
-        CameraDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
-        List<CameraDetectionItem> detectionItems = detections.detections();
+        CameraFrameDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
+        List<CameraFrameDetectionItem> detectionItems = detections.detections();
         for (int i = 0; i < detectionItems.size(); ++i) {
-            CameraDetectionItem detectionItem = detectionItems.get(i);
+            CameraFrameDetectionItem detectionItem = detectionItems.get(i);
 
             Log.d(
                     "tag",

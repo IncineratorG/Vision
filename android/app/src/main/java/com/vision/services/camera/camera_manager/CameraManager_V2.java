@@ -39,7 +39,6 @@ public class CameraManager_V2 {
     private byte[] mFrontCameraBuffer;
     private int mFrontCameraPreviewFormat = ImageFormat.NV21;
     private boolean mFrontCameraRunning = false;
-    private boolean mFrontCameraRecognizePersonRunning;
     private String mFrontCameraPreviousImageQuality;
     private CameraManagerTasks mFrontCameraTasks;
 
@@ -48,7 +47,6 @@ public class CameraManager_V2 {
     private byte[] mBackCameraBuffer;
     private int mBackCameraPreviewFormat = ImageFormat.NV21;
     private boolean mBackCameraRunning = false;
-    private boolean mBackCameraRecognizePersonRunning;
     private String mBackCameraPreviousImageQuality;
     private CameraManagerTasks mBackCameraTasks;
 

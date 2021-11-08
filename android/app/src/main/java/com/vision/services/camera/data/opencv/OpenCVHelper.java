@@ -5,8 +5,8 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.util.Log;
 
-import com.vision.services.camera.data.camera_detections.CameraDetections;
-import com.vision.services.camera.data.camera_detections.item.CameraDetectionItem;
+import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
+import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
 import org.opencv.android.OpenCVLoader;
@@ -114,10 +114,10 @@ public class OpenCVHelper {
         return buffer.toArray();
     }
 
-    public static CameraDetections detectObjectsOnImageMat(Context context, Mat rgbaMat) {
+    public static CameraFrameDetections detectObjectsOnImageMat(Context context, Mat rgbaMat) {
         if (context == null || rgbaMat == null || rgbaMat.empty()) {
             Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->BAD_CONTEXT_OR_INPUT_MAT");
-            return new CameraDetections();
+            return new CameraFrameDetections();
         }
 
         boolean modelFileExists = false;
@@ -129,7 +129,7 @@ public class OpenCVHelper {
             modelFile = context.getExternalFilesDir(mCaffeModelFileName);
             if (modelFile == null || !modelFile.exists()) {
                 Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_MODEL_ASSETS");
-                return new CameraDetections();
+                return new CameraFrameDetections();
             }
         }
 
@@ -142,13 +142,13 @@ public class OpenCVHelper {
             protoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
             if (protoFile == null || !protoFile.exists()) {
                 Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_PROTO_ASSETS");
-                return new CameraDetections();
+                return new CameraFrameDetections();
             }
         }
 
         if (!modelFileExists || !protoFileExists) {
             Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->BAD_MODEL_OR_PROTO_FILE");
-            return new CameraDetections();
+            return new CameraFrameDetections();
         }
 
         Mat inputFrame = new Mat();
@@ -188,7 +188,7 @@ public class OpenCVHelper {
         rows = subFrame.rows();
         detections = detections.reshape(1, (int)detections.total() / 7);
 
-        CameraDetections cameraDetections = new CameraDetections();
+        CameraFrameDetections cameraDetections = new CameraFrameDetections();
         for (int i = 0; i < detections.rows(); ++i) {
             double confidence = detections.get(i, 2)[0];
             if (confidence > THRESHOLD) {
@@ -214,7 +214,7 @@ public class OpenCVHelper {
                 Imgproc.putText(subFrame, label, new Point(xLeftBottom, yLeftBottom),
                         Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 0, 0));
 
-                CameraDetectionItem detectionItem = new CameraDetectionItem(classId, mDetectedClassNames[classId], confidence);
+                CameraFrameDetectionItem detectionItem = new CameraFrameDetectionItem(classId, mDetectedClassNames[classId], confidence);
                 cameraDetections.add(detectionItem);
             }
         }
