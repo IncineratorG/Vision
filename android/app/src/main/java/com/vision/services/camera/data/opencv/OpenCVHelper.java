@@ -105,7 +105,7 @@ public class OpenCVHelper {
         return dst;
     }
 
-    public byte[] rgbaMatToJpgBytes(Mat rgbaMat) {
+    public static byte[] rgbaMatToJpgBytes(Mat rgbaMat) {
         // create a temporary buffer
         MatOfByte buffer = new MatOfByte();
         // encode the frame in the buffer, according to the PNG format
@@ -114,7 +114,7 @@ public class OpenCVHelper {
         return buffer.toArray();
     }
 
-    public CameraDetections detectObjectsOnImageMat(Context context, Mat rgbaMat) {
+    public static CameraDetections detectObjectsOnImageMat(Context context, Mat rgbaMat) {
         if (context == null || rgbaMat == null || rgbaMat.empty()) {
             Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->BAD_CONTEXT_OR_INPUT_MAT");
             return new CameraDetections();
@@ -228,7 +228,7 @@ public class OpenCVHelper {
         return cameraDetections;
     }
 
-    private void copyDnnModelAssets(Context context) {
+    private static void copyDnnModelAssets(Context context) {
         Set<String> assetsToCopy = new HashSet<>();
         assetsToCopy.add(mCaffeModelFileName);
         assetsToCopy.add(mCaffeModelProtoFileName);

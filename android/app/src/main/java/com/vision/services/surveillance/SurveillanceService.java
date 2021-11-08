@@ -463,10 +463,10 @@ public class SurveillanceService implements
 
         CameraService_V4 cameraService = CameraService_V4.get();
         if (cameraType.equalsIgnoreCase("front")) {
-            cameraService.startRecognizePersonWithFrontCamera(imageRotationDegrees);
+            cameraService.startRecognizePersonWithFrontCamera(context, imageRotationDegrees);
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else if (cameraType.equalsIgnoreCase("back")) {
-            cameraService.startRecognizePersonWithBackCamera(imageRotationDegrees);
+            cameraService.startRecognizePersonWithBackCamera(context, imageRotationDegrees);
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
         } else {
             Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera()->UNKNOWN_CAMERA_TYPE: " + cameraType);

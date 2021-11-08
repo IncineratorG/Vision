@@ -808,7 +808,7 @@ public class CameraService_V4 {
         );
     }
 
-    public void startRecognizePersonWithFrontCamera(int imageRotationDeg) {
+    public void startRecognizePersonWithFrontCamera(Context context, int imageRotationDeg) {
         Log.d("tag", "CameraService_V4->startRecognizePersonWithFrontCamera()");
 
         mCameraManager.executeTask(
@@ -816,11 +816,11 @@ public class CameraService_V4 {
         );
     }
 
-    public void startRecognizePersonWithBackCamera(int imageRotationDeg) {
+    public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
         Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
 
         mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask(imageRotationDeg)
+                new RecognizePersonWithBackCameraCameraManagerTask(context, imageRotationDeg)
         );
     }
 
