@@ -4,14 +4,14 @@ import android.app.ActivityManager;
 import android.content.Context;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.Map;
 
-public class IsForegroundServiceRunningSurveillanceServiceTask implements InternalTask {
+public class IsForegroundServiceRunningTask implements ServiceSyncTask {
     private Context mContext;
 
-    public IsForegroundServiceRunningSurveillanceServiceTask(Context context) {
+    public IsForegroundServiceRunningTask(Context context) {
         mContext = context;
     }
 

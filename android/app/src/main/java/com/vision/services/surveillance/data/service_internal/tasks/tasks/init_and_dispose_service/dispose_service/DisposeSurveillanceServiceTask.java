@@ -5,13 +5,13 @@ import android.content.Context;
 import com.vision.services.firebase_communication.FBSCommunicationService;
 import com.vision.services.firebase_paths.FBSPathsService;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.List;
 import java.util.Map;
 
-public class DisposeSurveillanceServiceTask implements InternalTask {
+public class DisposeSurveillanceServiceTask implements ServiceSyncTask {
     private Context mContext;
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
@@ -42,8 +42,8 @@ public class DisposeSurveillanceServiceTask implements InternalTask {
                 String.valueOf(-1)
         );
 
-        SurveillanceServiceInternalTasks.stopListenToResponsesSurveillanceServiceTask(mContext).run(null);
-        SurveillanceServiceInternalTasks.stopForegroundServiceSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.stopListenToResponsesTask(mContext).run(null);
+        SurveillanceServiceInternalTasks.stopForegroundServiceTask(
                 mContext,
                 true,
                 mCurrentGroupName,

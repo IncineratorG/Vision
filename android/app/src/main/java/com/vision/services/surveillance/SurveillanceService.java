@@ -1,10 +1,8 @@
 package com.vision.services.surveillance;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.util.Log;
 
-import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.constants.AppConstants;
 import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
 import com.vision.common.data.service_error.ServiceError;
@@ -14,9 +12,6 @@ import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.common.interfaces.service_notification_sender.ServiceNotificationSender;
 import com.vision.common.interfaces.service_notifications_executor.ServiceNotificationsExecutor;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
-import com.vision.services.auth.AuthService;
-import com.vision.services.camera.CameraService;
-import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
 import com.vision.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
 import com.vision.common.data.service_request.ServiceRequest;
@@ -27,18 +22,18 @@ import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
 import com.vision.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
-import com.vision.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
 import com.vision.services.surveillance.data.service_internal.tasks.task_results.SurveillanceServiceInternalTaskResults;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.get_current_service_mode.GetCurrentServiceModeSurveillanceServiceTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.is_service_initialized.IsServiceInitializedSurveillanceServiceTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.get_current_service_mode.GetCurrentServiceModeTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.is_service_initialized.IsServiceInitializedTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.recognize_person_with_camera.is_recognize_person_with_camera_service_running.IsRecognizePersonWithCameraServiceRunningTask;
 
 public class SurveillanceService implements
         ServiceResponseSender,
@@ -74,7 +69,7 @@ public class SurveillanceService implements
                                       String deviceName,
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.createGroupWithDeviceSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.createGroupWithDeviceTask(
                 context, groupName, groupPassword, deviceName, onSuccess, onError
         ).run(null);
     }
@@ -85,7 +80,7 @@ public class SurveillanceService implements
                                       String deviceName,
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.registerDeviceInGroupSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.registerDeviceInGroupTask(
                 context, groupName, groupPassword, deviceName, onSuccess, onError
         ).run(null);
     }
@@ -96,7 +91,7 @@ public class SurveillanceService implements
                                    String deviceName,
                                    OnTaskSuccess<Void> onSuccess,
                                    OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.loginDeviceInGroupSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.loginDeviceInGroupTask(
                 context, groupName, groupPassword, deviceName, onSuccess, onError
         ).run(null);
     }
@@ -104,7 +99,7 @@ public class SurveillanceService implements
     public void logoutDeviceFromGroup(Context context,
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.logoutDeviceFromGroupSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.logoutDeviceFromGroupTask(
                 context,
                 currentGroupName(),
                 currentGroupPassword(),
@@ -116,8 +111,8 @@ public class SurveillanceService implements
     }
 
     public boolean isInitialized() {
-        IsServiceInitializedSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.isServiceInitializedSurveillanceServiceTask();
+        IsServiceInitializedTask task =
+                SurveillanceServiceInternalTasks.isServiceInitializedTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
@@ -127,35 +122,35 @@ public class SurveillanceService implements
                                   String groupPassword,
                                   OnTaskSuccess<DeviceInfoList> onSuccess,
                                   OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.getDevicesInGroupSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.getDevicesInGroupTask(
                 context, groupName, groupPassword, onSuccess, onError
         ).run(null);
     }
 
     public String currentGroupName() {
-        GetCurrentGroupNameSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.getCurrentGroupNameSurveillanceServiceTask();
+        GetCurrentGroupNameTask task =
+                SurveillanceServiceInternalTasks.getCurrentGroupNameTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
 
     public String currentGroupPassword() {
-        GetCurrentGroupPasswordSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.getCurrentGroupPasswordSurveillanceServiceTask();
+        GetCurrentGroupPasswordTask task =
+                SurveillanceServiceInternalTasks.getCurrentGroupPasswordTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
 
     public String currentDeviceName() {
-        GetCurrentDeviceNameSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.getCurrentDeviceNameSurveillanceServiceTask();
+        GetCurrentDeviceNameTask task =
+                SurveillanceServiceInternalTasks.getCurrentDeviceNameTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
 
     public String currentServiceMode() {
-        GetCurrentServiceModeSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.getCurrentServiceModeSurveillanceServiceTask();
+        GetCurrentServiceModeTask task =
+                SurveillanceServiceInternalTasks.getCurrentServiceModeTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
@@ -175,7 +170,7 @@ public class SurveillanceService implements
             return;
         }
 
-        SurveillanceServiceInternalTasks.startForegroundServiceSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.startForegroundServiceTask(
                 context,
                 true,
                 currentGroupName(),
@@ -203,7 +198,7 @@ public class SurveillanceService implements
             return;
         }
 
-        SurveillanceServiceInternalTasks.stopForegroundServiceSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.stopForegroundServiceTask(
                 context,
                 true,
                 currentGroupName(),
@@ -216,8 +211,8 @@ public class SurveillanceService implements
     }
 
     public boolean isForegroundServiceRunning(Context context) {
-        IsForegroundServiceRunningSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.isForegroundServiceRunningSurveillanceServiceTask(context);
+        IsForegroundServiceRunningTask task =
+                SurveillanceServiceInternalTasks.isForegroundServiceRunningTask(context);
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
@@ -227,7 +222,7 @@ public class SurveillanceService implements
                                           OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startDetectDeviceMovement()");
 
-        SurveillanceServiceInternalTasks.startDetectDeviceMovementSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.startDetectDeviceMovementTask(
                 context,
                 false,
                 currentGroupName(),
@@ -244,7 +239,7 @@ public class SurveillanceService implements
                                          OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopDetectDeviceMovement()");
 
-        SurveillanceServiceInternalTasks.stopDetectDeviceMovementSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.stopDetectDeviceMovementTask(
                 context,
                 false,
                 currentGroupName(),
@@ -259,8 +254,8 @@ public class SurveillanceService implements
     public boolean isDetectDeviceMovementServiceRunning() {
         Log.d("tag", "SurveillanceService->isDetectDeviceMovementServiceRunning()");
 
-        IsDetectDeviceMovementServiceRunningSurveillanceServiceTask task =
-                SurveillanceServiceInternalTasks.isDetectDeviceMovementServiceRunningSurveillanceServiceTask();
+        IsDetectDeviceMovementServiceRunningTask task =
+                SurveillanceServiceInternalTasks.isDetectDeviceMovementServiceRunningTask();
 
         return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
@@ -274,7 +269,7 @@ public class SurveillanceService implements
                                                OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
 
-        SurveillanceServiceInternalTasks.startRecognizePersonWithCameraSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.startRecognizePersonWithCameraTask(
                 context,
                 cameraType,
                 imageRotationDegrees,
@@ -294,7 +289,7 @@ public class SurveillanceService implements
                                               OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera(): " + cameraType);
 
-        SurveillanceServiceInternalTasks.stopRecognizePersonWithCameraSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.stopRecognizePersonWithCameraTask(
                 context,
                 cameraType,
                 false,
@@ -308,27 +303,34 @@ public class SurveillanceService implements
     }
 
     public boolean isRecognizePersonWithCameraServiceRunning(String cameraType) {
-        CameraService cameraService = CameraService.get();
-        if (cameraType.equalsIgnoreCase("front")) {
-            return cameraService.isFrontCameraRecognizePersonRunning();
-        } else if (cameraType.equalsIgnoreCase("back")) {
-            return cameraService.isBackCameraRecognizePersonRunning();
-        } else {
-            Log.d("tag", "SurveillanceService->isRecognizePersonWithCameraServiceRunning()->UNKNOWN_CAMERA_TYPE: " + cameraType);
-        }
+        IsRecognizePersonWithCameraServiceRunningTask task =
+                SurveillanceServiceInternalTasks.isRecognizePersonWithCameraServiceRunningTask(cameraType);
 
-        return false;
+        return SurveillanceServiceInternalTaskResults.result(task, task.run(null));
     }
 
     public boolean isRecognizePersonWithFrontCameraServiceRunning() {
-        return CameraService.get().isFrontCameraRecognizePersonRunning();
+        return isRecognizePersonWithCameraServiceRunning("front");
     }
 
     public boolean isRecognizePersonWithBackCameraServiceRunning() {
-        return CameraService.get().isBackCameraRecognizePersonRunning();
+        return isRecognizePersonWithCameraServiceRunning("back");
     }
     // =====
     // ===
+
+    public ServiceNotificationsExecutor notificationsExecutor() {
+        if (mInternalData.mNotificationsManager == null) {
+            mInternalData.mNotificationsManager = new FBSNotificationsManager();
+        }
+
+        return mInternalData.mNotificationsManager;
+    }
+
+    public ForegroundServiceWork foregroundServiceWork() {
+        mInternalData.mForegroundServiceWork = new FBSForegroundServiceWork(mInternalData.mCommunicationManager);
+        return mInternalData.mForegroundServiceWork;
+    }
 
     @Override
     public void sendRequest(String groupName,
@@ -368,19 +370,6 @@ public class SurveillanceService implements
             mInternalData.mNotificationsManager = new FBSNotificationsManager();
         }
         mInternalData.mNotificationsManager.sendNotificationToAll(context, notification);
-    }
-
-    public ServiceNotificationsExecutor notificationsExecutor() {
-        if (mInternalData.mNotificationsManager == null) {
-            mInternalData.mNotificationsManager = new FBSNotificationsManager();
-        }
-
-        return mInternalData.mNotificationsManager;
-    }
-
-    public ForegroundServiceWork foregroundServiceWork() {
-        mInternalData.mForegroundServiceWork = new FBSForegroundServiceWork(mInternalData.mCommunicationManager);
-        return mInternalData.mForegroundServiceWork;
     }
 }
 

@@ -1,12 +1,12 @@
 package com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.is_service_initialized;
 
 import com.vision.services.auth.AuthService;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.Map;
 
-public class IsServiceInitializedSurveillanceServiceTask implements InternalTask {
-    public IsServiceInitializedSurveillanceServiceTask() {
+public class IsServiceInitializedTask implements ServiceSyncTask {
+    public IsServiceInitializedTask() {
 
     }
 

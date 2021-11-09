@@ -8,12 +8,12 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.auth.AuthService;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
 
-public class LogoutDeviceFromGroupSurveillanceServiceTask implements InternalTask {
+public class LogoutDeviceFromGroupTask implements ServiceSyncTask {
     private Context mContext;
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
@@ -22,13 +22,13 @@ public class LogoutDeviceFromGroupSurveillanceServiceTask implements InternalTas
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public LogoutDeviceFromGroupSurveillanceServiceTask(Context context,
-                                                        String currentGroupName,
-                                                        String currentGroupPassword,
-                                                        String currentDeviceName,
-                                                        String currentServiceMode,
-                                                        OnTaskSuccess<Void> onSuccess,
-                                                        OnTaskError<ServiceError> onError) {
+    public LogoutDeviceFromGroupTask(Context context,
+                                     String currentGroupName,
+                                     String currentGroupPassword,
+                                     String currentDeviceName,
+                                     String currentServiceMode,
+                                     OnTaskSuccess<Void> onSuccess,
+                                     OnTaskError<ServiceError> onError) {
         mContext = context;
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;

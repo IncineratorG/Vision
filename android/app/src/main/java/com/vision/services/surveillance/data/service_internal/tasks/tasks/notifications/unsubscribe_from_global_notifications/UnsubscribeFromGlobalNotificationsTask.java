@@ -10,22 +10,22 @@ import com.vision.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.services.firebase_messaging.FBSMessagingService;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.Map;
 
-public class UnsubscribeFromGlobalNotificationsSurveillanceServiceTask implements InternalTask {
+public class UnsubscribeFromGlobalNotificationsTask implements ServiceSyncTask {
     private Context mContext;
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public UnsubscribeFromGlobalNotificationsSurveillanceServiceTask(Context context,
-                                                                     String currentGroupName,
-                                                                     String currentGroupPassword,
-                                                                     OnTaskSuccess<Void> onSuccess,
-                                                                     OnTaskError<ServiceError> onError) {
+    public UnsubscribeFromGlobalNotificationsTask(Context context,
+                                                  String currentGroupName,
+                                                  String currentGroupPassword,
+                                                  OnTaskSuccess<Void> onSuccess,
+                                                  OnTaskError<ServiceError> onError) {
         mContext = context;
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;

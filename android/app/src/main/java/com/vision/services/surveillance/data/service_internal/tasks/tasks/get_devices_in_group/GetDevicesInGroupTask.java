@@ -9,22 +9,22 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.device_group.DeviceGroupService;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.Map;
 
-public class GetDevicesInGroupSurveillanceServiceTask implements InternalTask {
+public class GetDevicesInGroupTask implements ServiceSyncTask {
     private Context mContext;
     private String mGroupName;
     private String mGroupPassword;
     private OnTaskSuccess<DeviceInfoList> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public GetDevicesInGroupSurveillanceServiceTask(Context context,
-                                                    String groupName,
-                                                    String groupPassword,
-                                                    OnTaskSuccess<DeviceInfoList> onSuccess,
-                                                    OnTaskError<ServiceError> onError) {
+    public GetDevicesInGroupTask(Context context,
+                                 String groupName,
+                                 String groupPassword,
+                                 OnTaskSuccess<DeviceInfoList> onSuccess,
+                                 OnTaskError<ServiceError> onError) {
         mContext = context;
         mGroupName = groupName;
         mGroupPassword = groupPassword;

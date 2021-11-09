@@ -10,12 +10,12 @@ import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
 
-public class StartForegroundServiceSurveillanceServiceTask implements InternalTask {
+public class StartForegroundServiceTask implements ServiceSyncTask {
     private Context mContext;
     private boolean mNeedUpdateDeviceMode;
     private String mCurrentGroupName;
@@ -26,15 +26,15 @@ public class StartForegroundServiceSurveillanceServiceTask implements InternalTa
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public StartForegroundServiceSurveillanceServiceTask(Context context,
-                                                         boolean needUpdateDeviceMode,
-                                                         String currentGroupName,
-                                                         String currentGroupPassword,
-                                                         String currentDeviceName,
-                                                         String currentServiceMode,
-                                                         String serviceWakeLockTag,
-                                                         OnTaskSuccess<Void> onSuccess,
-                                                         OnTaskError<ServiceError> onError) {
+    public StartForegroundServiceTask(Context context,
+                                      boolean needUpdateDeviceMode,
+                                      String currentGroupName,
+                                      String currentGroupPassword,
+                                      String currentDeviceName,
+                                      String currentServiceMode,
+                                      String serviceWakeLockTag,
+                                      OnTaskSuccess<Void> onSuccess,
+                                      OnTaskError<ServiceError> onError) {
         mContext = context;
         mNeedUpdateDeviceMode = needUpdateDeviceMode;
         mCurrentGroupName = currentGroupName;
@@ -66,7 +66,7 @@ public class StartForegroundServiceSurveillanceServiceTask implements InternalTa
         serviceIntent.setAction("start");
         mContext.startService(serviceIntent);
 
-        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                 mContext,
                 mNeedUpdateDeviceMode,
                 mCurrentGroupName,

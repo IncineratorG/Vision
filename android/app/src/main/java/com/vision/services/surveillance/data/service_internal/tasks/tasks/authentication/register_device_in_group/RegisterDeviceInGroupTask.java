@@ -1,4 +1,4 @@
-package com.vision.services.surveillance.data.service_internal.tasks.tasks.create_group_with_device;
+package com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.register_device_in_group;
 
 import android.content.Context;
 
@@ -8,12 +8,12 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.auth.AuthService;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
 
-public class CreateGroupWithDeviceSurveillanceServiceTask implements InternalTask {
+public class RegisterDeviceInGroupTask implements ServiceSyncTask {
     private Context mContext;
     private String mGroupName;
     private String mGroupPassword;
@@ -21,12 +21,12 @@ public class CreateGroupWithDeviceSurveillanceServiceTask implements InternalTas
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public CreateGroupWithDeviceSurveillanceServiceTask(Context context,
-                                                        String groupName,
-                                                        String groupPassword,
-                                                        String deviceName,
-                                                        OnTaskSuccess<Void> onSuccess,
-                                                        OnTaskError<ServiceError> onError) {
+    public RegisterDeviceInGroupTask(Context context,
+                                     String groupName,
+                                     String groupPassword,
+                                     String deviceName,
+                                     OnTaskSuccess<Void> onSuccess,
+                                     OnTaskError<ServiceError> onError) {
         mContext = context;
         mGroupName = groupName;
         mGroupPassword = groupPassword;
@@ -62,7 +62,7 @@ public class CreateGroupWithDeviceSurveillanceServiceTask implements InternalTas
             );
         };
 
-        AuthService.get().createGroupWithDevice(
+        AuthService.get().registerDeviceInGroup(
                 mContext, mGroupName, mGroupPassword, mDeviceName, successCallback, errorCallback
         );
 

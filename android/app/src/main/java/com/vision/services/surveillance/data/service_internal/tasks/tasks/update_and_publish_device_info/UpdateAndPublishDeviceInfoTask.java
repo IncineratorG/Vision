@@ -16,12 +16,12 @@ import com.vision.services.firebase_communication.FBSCommunicationService;
 import com.vision.services.firebase_paths.FBSPathsService;
 import com.vision.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.List;
 import java.util.Map;
 
-public class UpdateAndPublishDeviceInfoSurveillanceServiceTask implements InternalTask {
+public class UpdateAndPublishDeviceInfoTask implements ServiceSyncTask {
     private Context mContext;
     private boolean mNeedUpdateDeviceMode;
     private String mCurrentGroupName;
@@ -31,14 +31,14 @@ public class UpdateAndPublishDeviceInfoSurveillanceServiceTask implements Intern
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public UpdateAndPublishDeviceInfoSurveillanceServiceTask(Context context,
-                                                             boolean needUpdateDeviceMode,
-                                                             String currentGroupName,
-                                                             String currentGroupPassword,
-                                                             String currentDeviceName,
-                                                             String currentServiceMode,
-                                                             OnTaskSuccess<Void> onSuccess,
-                                                             OnTaskError<ServiceError> onError) {
+    public UpdateAndPublishDeviceInfoTask(Context context,
+                                          boolean needUpdateDeviceMode,
+                                          String currentGroupName,
+                                          String currentGroupPassword,
+                                          String currentDeviceName,
+                                          String currentServiceMode,
+                                          OnTaskSuccess<Void> onSuccess,
+                                          OnTaskError<ServiceError> onError) {
         mContext = context;
         mNeedUpdateDeviceMode = needUpdateDeviceMode;
         mCurrentGroupName = currentGroupName;

@@ -14,13 +14,13 @@ import com.vision.services.surveillance.data.requests.sender.firebase.FBSRequest
 import com.vision.services.surveillance.data.responses.executor.firebase.FBSResponsesExecutor;
 import com.vision.services.surveillance.data.responses.sender.firebase.FBSResponseSender;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.List;
 import java.util.Map;
 
-public class InitSurveillanceServiceTask implements InternalTask {
+public class InitSurveillanceServiceTask implements ServiceSyncTask {
     private Context mContext;
     private String mGroupName;
     private String mGroupPassword;
@@ -85,14 +85,14 @@ public class InitSurveillanceServiceTask implements InternalTask {
 
             mInternalData.mCommunicationManager.startIsAliveSignaling(mContext);
 
-            SurveillanceServiceInternalTasks.startListenToResponsesSurveillanceServiceTask(mContext).run(null);
+            SurveillanceServiceInternalTasks.startListenToResponsesTask(mContext).run(null);
 //            mStartListenRoResponsesTask.run(null);
 //            startListenToResponses(mContext);
 
             mOnSuccess.onSuccess(null);
         };
 
-        SurveillanceServiceInternalTasks.subscribeToGlobalNotificationsSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.subscribeToGlobalNotificationsTask(
                 mContext,
                 mGroupName,
                 mGroupPassword,

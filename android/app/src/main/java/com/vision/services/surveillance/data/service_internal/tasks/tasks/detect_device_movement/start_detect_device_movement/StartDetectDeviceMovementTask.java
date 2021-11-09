@@ -9,12 +9,12 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.services.surveillance.SurveillanceService;
 import com.vision.services.surveillance.data.notifications.SurveillanceServiceNotifications;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
 
-public class StartDetectDeviceMovementSurveillanceServiceTask implements InternalTask {
+public class StartDetectDeviceMovementTask implements ServiceSyncTask {
     private Context mContext;
     private boolean mNeedUpdateDeviceMode;
     private String mCurrentGroupName;
@@ -24,14 +24,14 @@ public class StartDetectDeviceMovementSurveillanceServiceTask implements Interna
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
-    public StartDetectDeviceMovementSurveillanceServiceTask(Context context,
-                                                            boolean needUpdateDeviceMode,
-                                                            String currentGroupName,
-                                                            String currentGroupPassword,
-                                                            String currentDeviceName,
-                                                            String currentServiceMode,
-                                                            OnTaskSuccess<Void> onSuccess,
-                                                            OnTaskError<ServiceError> onError) {
+    public StartDetectDeviceMovementTask(Context context,
+                                         boolean needUpdateDeviceMode,
+                                         String currentGroupName,
+                                         String currentGroupPassword,
+                                         String currentDeviceName,
+                                         String currentServiceMode,
+                                         OnTaskSuccess<Void> onSuccess,
+                                         OnTaskError<ServiceError> onError) {
         mContext = context;
         mNeedUpdateDeviceMode = needUpdateDeviceMode;
         mCurrentGroupName = currentGroupName;
@@ -71,7 +71,7 @@ public class StartDetectDeviceMovementSurveillanceServiceTask implements Interna
 
         DeviceMovementService.get().start(mContext, movementStartCallback, movementEndCallback);
 
-        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoSurveillanceServiceTask(
+        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                 mContext,
                 mNeedUpdateDeviceMode,
                 mCurrentGroupName,

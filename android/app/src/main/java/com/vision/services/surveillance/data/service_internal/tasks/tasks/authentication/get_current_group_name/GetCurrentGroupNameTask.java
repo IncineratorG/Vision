@@ -1,12 +1,12 @@
 package com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_name;
 
 import com.vision.services.auth.AuthService;
-import com.vision.services.surveillance.data.service_internal.interfaces.internal_task.InternalTask;
+import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 
 import java.util.Map;
 
-public class GetCurrentGroupNameSurveillanceServiceTask implements InternalTask {
-    public GetCurrentGroupNameSurveillanceServiceTask() {
+public class GetCurrentGroupNameTask implements ServiceSyncTask {
+    public GetCurrentGroupNameTask() {
 
     }
 
