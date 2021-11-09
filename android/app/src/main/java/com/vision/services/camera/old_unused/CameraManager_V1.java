@@ -1,162 +1,45 @@
-//package com.vision.services.camera;
-//
-//
-//import com.vision.services.camera.data.callbacks.OnImageTakeError;
-//import com.vision.services.camera.data.callbacks.OnImageTaken;
-//import com.vision.services.camera.camera_manager.CameraManager;
-//
-//public class CameraService_V4 {
-//    public static final String NAME = "CameraService_V4";
-//
-//    private static CameraService_V4 sInstance;
-//
-//    private CameraManager mCameraManager;
-//
-//    private CameraService_V4() {
-//        mCameraManager = new CameraManager();
-//    }
-//
-//    public static CameraService_V4 get() {
-//        if (sInstance == null) {
-//            sInstance = new CameraService_V4();
-//        }
-//
-//        return sInstance;
-//    }
-//
-//    public boolean hasBackCamera() {
-//        return mCameraManager.hasBackCamera();
-//    }
-//
-//    public boolean hasFrontCamera() {
-//        return mCameraManager.hasFrontCamera();
-//    }
-//
-//    public boolean canRecognizePerson() {
-//        return mCameraManager.canRecognizePerson();
-//    }
-//
-//    public boolean isFrontCameraRecognizePersonRunning() {
-//        return mCameraManager.isFrontCameraRecognizePersonRunning();
-//    }
-//
-//    public boolean isBackCameraRecognizePersonRunning() {
-//        return mCameraManager.isBackCameraRecognizePersonRunning();
-//    }
-//
-//    public void takeBackCameraImage(String quality,
-//                                    OnImageTaken imageTakenCallback,
-//                                    OnImageTakeError errorCallback) {
-////        if (mBackCameraRunning) {
-////            CameraPreviewImageData cameraPreviewImageData = getBackCameraPreviewImageData();
-////            if (cameraPreviewImageData == null || !cameraPreviewImageData.hasImage()) {
-////                errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-////                return;
-////            }
-////
-////            String base64 = yuvToBase64(
-////                    cameraPreviewImageData.imageBytes(),
-////                    cameraPreviewImageData.imageFormat(),
-////                    cameraPreviewImageData.width(),
-////                    cameraPreviewImageData.height()
-////            );
-////
-////            imageTakenCallback.onImageTaken(base64);
-////        } else {
-////            long taskStartTimestamp = System.currentTimeMillis();
-////
-////            CameraFrameChangedTask takeBackCameraImageTask = previewFrame -> {
-////                if (System.currentTimeMillis() < taskStartTimestamp + 1000) {
-////                    return false;
-////                }
-////
-////                if (previewFrame == null || !previewFrame.hasImage()) {
-////                    errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-////                    return true;
-////                }
-////
-////                String base64 = yuvToBase64(
-////                        previewFrame.imageBytes(),
-////                        previewFrame.imageFormat(),
-////                        previewFrame.width(),
-////                        previewFrame.height()
-////                );
-////
-////                imageTakenCallback.onImageTaken(base64);
-////
-////                stopBackCameraPreview();
-////
-////                return true;
-////            };
-////
-////            String taskId = String.valueOf(System.currentTimeMillis()) + UUID.randomUUID().toString();
-////            mBackCameraFrameChangeTasks.put(taskId, takeBackCameraImageTask);
-////
-////            startBackCameraPreview(quality);
-////        }
-//    }
-//
-//    public void takeFrontCameraImage(String quality,
-//                                     OnImageTaken imageTakenCallback,
-//                                     OnImageTakeError errorCallback) {
-////        if (mFrontCameraRunning) {
-////            CameraPreviewImageData cameraPreviewImageData = getFrontCameraPreviewImageData();
-////            if (cameraPreviewImageData == null || !cameraPreviewImageData.hasImage()) {
-////                errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-////                return;
-////            }
-////
-////            String base64 = yuvToBase64(
-////                    cameraPreviewImageData.imageBytes(),
-////                    cameraPreviewImageData.imageFormat(),
-////                    cameraPreviewImageData.width(),
-////                    cameraPreviewImageData.height()
-////            );
-////
-////            imageTakenCallback.onImageTaken(base64);
-////        } else {
-////            long taskStartTimestamp = System.currentTimeMillis();
-////
-////            CameraFrameChangedTask takeFrontCameraImageTask = previewFrame -> {
-////                if (System.currentTimeMillis() < taskStartTimestamp + 1000) {
-////                    return false;
-////                }
-////
-////                if (previewFrame == null || !previewFrame.hasImage()) {
-////                    errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-////                    return true;
-////                }
-////
-////                String base64 = yuvToBase64(
-////                        previewFrame.imageBytes(),
-////                        previewFrame.imageFormat(),
-////                        previewFrame.width(),
-////                        previewFrame.height()
-////                );
-////
-////                imageTakenCallback.onImageTaken(base64);
-////
-////                stopFrontCameraPreview();
-////
-////                return true;
-////            };
-////
-////            String taskId = String.valueOf(System.currentTimeMillis()) + UUID.randomUUID().toString();
-////            mFrontCameraFrameChangeTasks.put(taskId, takeFrontCameraImageTask);
-////
-////            startFrontCameraPreview(quality);
-////        }
-//    }
-//}
+package com.vision.services.camera.old_unused;
+
+import android.hardware.Camera;
+
+import com.vision.services.camera.data.helpers.OpenCVHelper;
+
+public class CameraManager_V1 {
+    public CameraManager_V1() {
+
+    }
+
+    public boolean hasBackCamera() {
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.getCameraInfo(i, cameraInfo);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasFrontCamera() {
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.getCameraInfo(i, cameraInfo);
+            if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canRecognizePerson() {
+        return OpenCVHelper.available();
+    }
+}
 
 
-// =================================================================================
-// =================================================================================
-// =================================================================================
-// =================================================================================
-
-
-//package com.vision.services.camera;
+//package com.vision.services.camera.data.camera_manager;
 //
 //
 //import android.graphics.ImageFormat;
@@ -169,11 +52,11 @@
 //import android.util.Log;
 //
 //import com.vision.common.constants.AppConstants;
-//import com.vision.services.camera.data.callbacks.OnImageTakeError;
-//import com.vision.services.camera.data.callbacks.OnImageTaken;
 //import com.vision.services.camera.data.camera_frame_changed_task.CameraFrameChangedTask;
 //import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-//import com.vision.services.camera.data.opencv.OpenCVHelper;
+//import com.vision.services.camera.data.camera_tasks.tasks.take_front_camera_image.TakeFrontCameraImageCameraTask;
+//import com.vision.services.camera.data.camera_tasks.types.CameraTaskTypes;
+//import com.vision.services.camera.data.helpers.OpenCVHelper;
 //
 //import java.io.ByteArrayOutputStream;
 //import java.io.IOException;
@@ -184,11 +67,7 @@
 //import java.util.UUID;
 //import java.util.concurrent.ConcurrentHashMap;
 //
-//public class CameraService_V4 {
-//    public static final String NAME = "CameraService_V4";
-//
-//    private static CameraService_V4 sInstance;
-//
+//public class CameraManager {
 //    private Camera mFrontCamera;
 //    private SurfaceTexture mFrontCameraSurfaceTexture;
 //    private byte[] mFrontCameraBuffer;
@@ -197,6 +76,7 @@
 //    private CameraPreviewImageData mFrontCameraPreviewImageData;
 //    private Map<String, CameraFrameChangedTask> mFrontCameraFrameChangeTasks;
 //    private boolean mFrontCameraRecognizePersonRunning;
+//    private String mFrontCameraPreviousImageQuality;
 //
 //    private Camera mBackCamera;
 //    private SurfaceTexture mBackCameraSurfaceTexture;
@@ -206,18 +86,14 @@
 //    private CameraPreviewImageData mBackCameraPreviewImageData;
 //    private Map<String, CameraFrameChangedTask> mBackCameraFrameChangeTasks;
 //    private boolean mBackCameraRecognizePersonRunning;
+//    private String mBackCameraPreviousImageQuality;
 //
-//    private CameraService_V4() {
+//    public CameraManager() {
+//        mFrontCameraPreviousImageQuality = null;
+//        mBackCameraPreviousImageQuality = null;
+//
 //        mFrontCameraFrameChangeTasks = new ConcurrentHashMap<>();
 //        mBackCameraFrameChangeTasks = new ConcurrentHashMap<>();
-//    }
-//
-//    public static CameraService_V4 get() {
-//        if (sInstance == null) {
-//            sInstance = new CameraService_V4();
-//        }
-//
-//        return sInstance;
 //    }
 //
 //    public boolean hasBackCamera() {
@@ -256,109 +132,49 @@
 //        return mBackCameraRecognizePersonRunning;
 //    }
 //
-//    public void takeBackCameraImage(String quality,
-//                                    OnImageTaken imageTakenCallback,
-//                                    OnImageTakeError errorCallback) {
-//        if (mBackCameraRunning) {
-//            CameraPreviewImageData cameraPreviewImageData = getBackCameraPreviewImageData();
-//            if (cameraPreviewImageData == null || !cameraPreviewImageData.hasImage()) {
-//                errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-//                return;
+//    // ===
+//    // =====
+//    public void executeTask(CameraFrameChangedTask task) {
+//        if (task == null || task.getType() == null) {
+//            Log.d("tag", "CameraManager->executeTask(): BAD_TASK");
+//            return;
+//        }
+//
+//        String taskId = String.valueOf(System.currentTimeMillis()) + UUID.randomUUID().toString();
+//
+//        switch (task.getType()) {
+//            case (CameraTaskTypes.TAKE_FRONT_CAMERA_IMAGE): {
+//                if (!(task instanceof TakeFrontCameraImageCameraTask)) {
+//                    Log.d("tag", "CameraManager->executeTask(): BAD_TASK_TYPE");
+//                    return;
+//                }
+//                TakeFrontCameraImageCameraTask typedTask = (TakeFrontCameraImageCameraTask) task;
+//
+//                boolean backCameraWasRunning = false;
+//                if (mBackCameraRunning) {
+//                    backCameraWasRunning = true;
+//                    pauseBackCameraPreview();
+//                }
+//
+////                CameraFrameChangedTask innerTask = (cmeraFrame) -> {
+////                    return false;
+////                };
+//
+//                break;
 //            }
 //
-//            String base64 = yuvToBase64(
-//                    cameraPreviewImageData.imageBytes(),
-//                    cameraPreviewImageData.imageFormat(),
-//                    cameraPreviewImageData.width(),
-//                    cameraPreviewImageData.height()
-//            );
-//
-//            imageTakenCallback.onImageTaken(base64);
-//        } else {
-//            long taskStartTimestamp = System.currentTimeMillis();
-//
-//            CameraFrameChangedTask takeBackCameraImageTask = previewFrame -> {
-//                if (System.currentTimeMillis() < taskStartTimestamp + 1000) {
-//                    return false;
-//                }
-//
-//                if (previewFrame == null || !previewFrame.hasImage()) {
-//                    errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-//                    return true;
-//                }
-//
-//                String base64 = yuvToBase64(
-//                        previewFrame.imageBytes(),
-//                        previewFrame.imageFormat(),
-//                        previewFrame.width(),
-//                        previewFrame.height()
-//                );
-//
-//                imageTakenCallback.onImageTaken(base64);
-//
-//                stopBackCameraPreview();
-//
-//                return true;
-//            };
-//
-//            String taskId = String.valueOf(System.currentTimeMillis()) + UUID.randomUUID().toString();
-//            mBackCameraFrameChangeTasks.put(taskId, takeBackCameraImageTask);
-//
-//            startBackCameraPreview(quality);
-//        }
-//    }
-//
-//    public void takeFrontCameraImage(String quality,
-//                                     OnImageTaken imageTakenCallback,
-//                                     OnImageTakeError errorCallback) {
-//        if (mFrontCameraRunning) {
-//            CameraPreviewImageData cameraPreviewImageData = getFrontCameraPreviewImageData();
-//            if (cameraPreviewImageData == null || !cameraPreviewImageData.hasImage()) {
-//                errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-//                return;
+//            case (CameraTaskTypes.TAKE_BACK_CAMERA_IMAGE): {
+//                break;
 //            }
 //
-//            String base64 = yuvToBase64(
-//                    cameraPreviewImageData.imageBytes(),
-//                    cameraPreviewImageData.imageFormat(),
-//                    cameraPreviewImageData.width(),
-//                    cameraPreviewImageData.height()
-//            );
-//
-//            imageTakenCallback.onImageTaken(base64);
-//        } else {
-//            long taskStartTimestamp = System.currentTimeMillis();
-//
-//            CameraFrameChangedTask takeFrontCameraImageTask = previewFrame -> {
-//                if (System.currentTimeMillis() < taskStartTimestamp + 1000) {
-//                    return false;
-//                }
-//
-//                if (previewFrame == null || !previewFrame.hasImage()) {
-//                    errorCallback.onError("1", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
-//                    return true;
-//                }
-//
-//                String base64 = yuvToBase64(
-//                        previewFrame.imageBytes(),
-//                        previewFrame.imageFormat(),
-//                        previewFrame.width(),
-//                        previewFrame.height()
-//                );
-//
-//                imageTakenCallback.onImageTaken(base64);
-//
-//                stopFrontCameraPreview();
-//
-//                return true;
-//            };
-//
-//            String taskId = String.valueOf(System.currentTimeMillis()) + UUID.randomUUID().toString();
-//            mFrontCameraFrameChangeTasks.put(taskId, takeFrontCameraImageTask);
-//
-//            startFrontCameraPreview(quality);
+//            default: {
+//                Log.d("tag", "CameraManager->executeTask()->UNKNOWN_TASK_TYPE: " + task.getType());
+//                return;
+//            }
 //        }
 //    }
+//    // =====
+//    // ===
 //
 //    private void startFrontCameraPreview(String quality) {
 //        if (mFrontCameraRunning) {
@@ -408,6 +224,7 @@
 //            Log.d("tag", "CameraService_V4->startFrontCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
 //        }
 //        parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
+//        mFrontCameraPreviousImageQuality = quality;
 //
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && !android.os.Build.MODEL.equals("GT-I9100")) {
 //            parameters.setRecordingHint(true);
@@ -433,7 +250,6 @@
 //
 //        mFrontCamera.addCallbackBuffer(mFrontCameraBuffer);
 //        mFrontCamera.setPreviewCallbackWithBuffer((bytes, camera) -> {
-////            setFrontCameraPreviewImageData(bytes, width, height, mFrontCameraPreviewFormat);
 //            onFrontCameraPreviewFrameChanged(bytes, width, height, mFrontCameraPreviewFormat);
 //
 //            if (mFrontCamera != null) {
@@ -501,6 +317,7 @@
 //            Log.d("tag", "CameraService_V4->startBackCameraPreview()->LOW_IMAGE_QUALITY: " + cameraPreviewSize.width + " - " + cameraPreviewSize.height);
 //        }
 //        parameters.setPreviewSize(cameraPreviewSize.width, cameraPreviewSize.height);
+//        mBackCameraPreviousImageQuality = quality;
 //
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && !android.os.Build.MODEL.equals("GT-I9100")) {
 //            parameters.setRecordingHint(true);
@@ -526,7 +343,6 @@
 //
 //        mBackCamera.addCallbackBuffer(mBackCameraBuffer);
 //        mBackCamera.setPreviewCallbackWithBuffer((bytes, camera) -> {
-////            setBackCameraPreviewImageData(bytes, width, height, mBackCameraPreviewFormat);
 //            onBackCameraPreviewFrameChanged(bytes, width, height, mBackCameraPreviewFormat);
 //
 //            if (mBackCamera != null) {
@@ -562,6 +378,8 @@
 //            clearFrontCameraFrameChangeTasks();
 //
 //            mFrontCameraRunning = false;
+//
+//            mFrontCameraPreviousImageQuality = null;
 //        } catch (Exception e) {
 //            Log.d("tag", "CameraService_V4->stopFrontCameraPreview()->ERROR");
 //            e.printStackTrace();
@@ -584,8 +402,52 @@
 //            clearBackCameraFrameChangeTasks();
 //
 //            mBackCameraRunning = false;
+//
+//            mBackCameraPreviousImageQuality = null;
 //        } catch (Exception e) {
 //            Log.d("tag", "CameraService_V4->stopBackCameraPreview()->ERROR");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void pauseFrontCameraPreview() {
+//        try {
+//            if (mFrontCamera != null) {
+//                mFrontCamera.stopPreview();
+//                mFrontCamera.setPreviewCallback(null);
+//                mFrontCamera.release();
+//                mFrontCamera = null;
+//
+//                if (mFrontCameraSurfaceTexture != null) {
+//                    mFrontCameraSurfaceTexture.release();
+//                }
+//            }
+//            clearFrontCameraPreviewImageData();
+//
+//            mFrontCameraRunning = false;
+//        } catch (Exception e) {
+//            Log.d("tag", "CameraService_V4->pauseFrontCameraPreview()->ERROR");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void pauseBackCameraPreview() {
+//        try {
+//            if (mBackCamera != null) {
+//                mBackCamera.stopPreview();
+//                mBackCamera.setPreviewCallback(null);
+//                mBackCamera.release();
+//                mBackCamera = null;
+//
+//                if (mBackCameraSurfaceTexture != null) {
+//                    mBackCameraSurfaceTexture.release();
+//                }
+//            }
+//            clearBackCameraPreviewImageData();
+//
+//            mBackCameraRunning = false;
+//        } catch (Exception e) {
+//            Log.d("tag", "CameraService_V4->pauseBackCameraPreview()->ERROR");
 //            e.printStackTrace();
 //        }
 //    }
@@ -633,9 +495,9 @@
 //    }
 //
 //    private synchronized void setFrontCameraPreviewImageData(byte[] previewImageBytes,
-//                                                            int imageWidth,
-//                                                            int imageHeight,
-//                                                            int imageFormat) {
+//                                                             int imageWidth,
+//                                                             int imageHeight,
+//                                                             int imageFormat) {
 //        if (previewImageBytes != null) {
 //            mFrontCameraPreviewImageData = new CameraPreviewImageData(
 //                    previewImageBytes, imageWidth, imageHeight, imageFormat
@@ -690,6 +552,10 @@
 //        for (int i = 0; i < taskIdsToRemove.size(); ++i) {
 //            mBackCameraFrameChangeTasks.remove(taskIdsToRemove.get(i));
 //        }
+//
+//        if (mBackCameraFrameChangeTasks.size() <= 0) {
+//            stopBackCameraPreview();
+//        }
 //    }
 //
 //    private synchronized void onFrontCameraPreviewFrameChanged(byte[] previewImageBytes,
@@ -712,123 +578,21 @@
 //        for (int i = 0; i < taskIdsToRemove.size(); ++i) {
 //            mFrontCameraFrameChangeTasks.remove(taskIdsToRemove.get(i));
 //        }
+//
+//        if (mFrontCameraFrameChangeTasks.size() <= 0) {
+//            stopFrontCameraPreview();
+//        }
 //    }
 //
-//    private String yuvToBase64(byte[] yuvBytes, int imageFormat, int width, int height) {
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//        YuvImage yuvImage = new YuvImage(yuvBytes, imageFormat, width, height, null);
-//        yuvImage.compressToJpeg(new Rect(0, 0, width, height), 50, out);
-//        byte[] imageBytes = out.toByteArray();
-//
-//        //        Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-//        //        iv.setImageBitmap(image);
-//
-//        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-//    }
+////    private String yuvToBase64(byte[] yuvBytes, int imageFormat, int width, int height) {
+////        ByteArrayOutputStream out = new ByteArrayOutputStream();
+////        YuvImage yuvImage = new YuvImage(yuvBytes, imageFormat, width, height, null);
+////        yuvImage.compressToJpeg(new Rect(0, 0, width, height), 50, out);
+////        byte[] imageBytes = out.toByteArray();
+////
+////        //        Bitmap image = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+////        //        iv.setImageBitmap(image);
+////
+////        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+////    }
 //}
-
-package com.vision.services.camera;
-
-
-import android.content.Context;
-import android.util.Log;
-
-import com.vision.services.camera.camera_manager.CameraManager_V2;
-import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
-import com.vision.services.camera.data.callbacks.OnImageTakeError;
-import com.vision.services.camera.data.callbacks.OnImageTaken;
-
-public class CameraService_V4 {
-    public static final String NAME = "CameraService_V4";
-
-    private static CameraService_V4 sInstance;
-
-    private CameraManager_V2 mCameraManager;
-
-    private CameraService_V4() {
-        mCameraManager = new CameraManager_V2();
-    }
-
-    public static CameraService_V4 get() {
-        if (sInstance == null) {
-            sInstance = new CameraService_V4();
-        }
-
-        return sInstance;
-    }
-
-    public boolean hasBackCamera() {
-        return mCameraManager.hasBackCamera();
-    }
-
-    public boolean hasFrontCamera() {
-        return mCameraManager.hasFrontCamera();
-    }
-
-    public boolean canRecognizePerson() {
-        return mCameraManager.canRecognizePerson();
-    }
-
-    public boolean isFrontCameraRecognizePersonRunning() {
-        return mCameraManager.isFrontCameraRecognizePersonRunning();
-    }
-
-    public boolean isBackCameraRecognizePersonRunning() {
-        return mCameraManager.isBackCameraRecognizePersonRunning();
-    }
-
-    public void stop(Context context) {
-        mCameraManager.stopAllTasks();
-    }
-
-    public void takeBackCameraImage(String quality,
-                                    OnImageTaken imageTakenCallback,
-                                    OnImageTakeError errorCallback) {
-        mCameraManager.executeTask(
-                new TakeBackCameraImageCameraManagerTask(
-                        quality,
-                        imageTakenCallback,
-                        errorCallback
-                )
-        );
-    }
-
-    public void takeFrontCameraImage(String quality,
-                                     OnImageTaken imageTakenCallback,
-                                     OnImageTakeError errorCallback) {
-        mCameraManager.executeTask(
-                new TakeFrontCameraImageCameraManagerTask(
-                        quality,
-                        imageTakenCallback,
-                        errorCallback
-                )
-        );
-    }
-
-    public void startRecognizePersonWithFrontCamera(Context context, int imageRotationDeg) {
-        Log.d("tag", "CameraService_V4->startRecognizePersonWithFrontCamera()");
-
-        mCameraManager.executeTask(
-                new RecognizePersonWithFrontCameraCameraManagerTask(imageRotationDeg)
-        );
-    }
-
-    public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
-        Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
-
-        mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask(context, imageRotationDeg)
-        );
-    }
-
-    public void stopRecognizePersonWithFrontCamera() {
-        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
-    }
-
-    public void stopRecognizePersonWithBackCamera() {
-        mCameraManager.stopTaskOfType(CameraManager_V2.RECOGNIZE_PERSON_WITH_BACK_CAMERA);
-    }
-}

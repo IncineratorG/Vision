@@ -1,4 +1,4 @@
-package com.vision.services.camera;
+package com.vision.services.camera.old_unused;
 
 
 import android.graphics.ImageFormat;
@@ -7,7 +7,7 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.util.Log;
 
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
+import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -22,7 +22,7 @@ public class CameraService_V3 {
     private SurfaceTexture mCurrentSurfaceTexture;
     private byte mBuffer[];
 
-    private CameraPreviewImageData mCurrentCameraPreviewImageData;
+    private CameraPreviewFrameData mCurrentCameraPreviewImageData;
 
     private int mPreviewFormat = ImageFormat.NV21;
     private boolean mCameraRunning = false;
@@ -159,12 +159,12 @@ public class CameraService_V3 {
         }
     }
 
-    public synchronized CameraPreviewImageData getPreviewImageData() {
+    public synchronized CameraPreviewFrameData getPreviewImageData() {
         if (mCurrentCameraPreviewImageData == null) {
             return null;
         }
 
-        return new CameraPreviewImageData(mCurrentCameraPreviewImageData);
+        return new CameraPreviewFrameData(mCurrentCameraPreviewImageData);
     }
 
     private synchronized void setPreviewImageData(byte[] previewImageBytes,
@@ -172,7 +172,7 @@ public class CameraService_V3 {
                                                   int imageHeight,
                                                   int imageFormat) {
         if (previewImageBytes != null) {
-            mCurrentCameraPreviewImageData = new CameraPreviewImageData(
+            mCurrentCameraPreviewImageData = new CameraPreviewFrameData(
                     previewImageBytes, imageWidth, imageHeight, imageFormat
             );
         }

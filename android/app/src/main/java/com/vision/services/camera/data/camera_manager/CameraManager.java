@@ -1,4 +1,4 @@
-package com.vision.services.camera.camera_manager;
+package com.vision.services.camera.data.camera_manager;
 
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -7,19 +7,19 @@ import android.os.Build;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
-import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
-import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
-import com.vision.services.camera.data.camera_manager_tasks.CameraManagerTasks;
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-import com.vision.services.camera.data.opencv.OpenCVHelper;
+import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
+import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
+import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
+import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
+import com.vision.services.camera.data.camera_manager.camera_manager_tasks.CameraManagerTasks;
+import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
+import com.vision.services.camera.data.helpers.OpenCVHelper;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class CameraManager_V2 {
+public class CameraManager {
     public static final String TAKE_BACK_CAMERA_IMAGE = "TAKE_BACK_CAMERA_IMAGE";
     public static final String TAKE_FRONT_CAMERA_IMAGE = "TAKE_FRONT_CAMERA_IMAGE";
     public static final String RECOGNIZE_PERSON_WITH_BACK_CAMERA = "RECOGNIZE_PERSON_WITH_BACK_CAMERA";
@@ -27,7 +27,7 @@ public class CameraManager_V2 {
 
     public interface CameraManagerTask {
         String type();
-        boolean onCameraPreviewImageData(CameraPreviewImageData previewImageData);
+        boolean onCameraPreviewImageData(CameraPreviewFrameData previewImageData);
     }
 
     public interface CameraManagerTaskCleanup {
@@ -50,7 +50,7 @@ public class CameraManager_V2 {
     private String mBackCameraPreviousImageQuality;
     private CameraManagerTasks mBackCameraTasks;
 
-    public CameraManager_V2() {
+    public CameraManager() {
         mFrontCameraTasks = new CameraManagerTasks();
         mBackCameraTasks = new CameraManagerTasks();
     }
@@ -553,7 +553,7 @@ public class CameraManager_V2 {
             return;
         }
 
-        CameraPreviewImageData previewImageData = new CameraPreviewImageData(
+        CameraPreviewFrameData previewImageData = new CameraPreviewFrameData(
                 previewImageBytes,
                 imageWidth,
                 imageHeight,
@@ -576,7 +576,7 @@ public class CameraManager_V2 {
             return;
         }
 
-        CameraPreviewImageData previewImageData = new CameraPreviewImageData(
+        CameraPreviewFrameData previewImageData = new CameraPreviewFrameData(
                 previewImageBytes,
                 imageWidth,
                 imageHeight,

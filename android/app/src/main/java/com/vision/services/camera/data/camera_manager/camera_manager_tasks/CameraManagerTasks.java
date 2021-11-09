@@ -1,9 +1,8 @@
-package com.vision.services.camera.data.camera_manager_tasks;
+package com.vision.services.camera.data.camera_manager.camera_manager_tasks;
 
-import android.util.Log;
 
-import com.vision.services.camera.camera_manager.CameraManager_V2;
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
+import com.vision.services.camera.data.camera_manager.CameraManager;
+import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +11,18 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CameraManagerTasks {
-    private Map<String, Map<String, CameraManager_V2.CameraManagerTask>> mTasks;
-    private Map<String, CameraManager_V2.CameraManagerTaskCleanup> mTasksCleanup;
+    private Map<String, Map<String, CameraManager.CameraManagerTask>> mTasks;
+    private Map<String, CameraManager.CameraManagerTaskCleanup> mTasksCleanup;
 
     public CameraManagerTasks() {
         mTasks = new HashMap<>();
         mTasksCleanup = new HashMap<>();
     }
 
-    public synchronized String add(CameraManager_V2.CameraManagerTask task) {
+    public synchronized String add(CameraManager.CameraManagerTask task) {
         String taskType = task.type();
 
-        Map<String, CameraManager_V2.CameraManagerTask> tasksOfType = mTasks.get(taskType);
+        Map<String, CameraManager.CameraManagerTask> tasksOfType = mTasks.get(taskType);
         if (tasksOfType == null) {
             tasksOfType = new HashMap<>();
         }
@@ -37,7 +36,7 @@ public class CameraManagerTasks {
     }
 
     public synchronized void addTaskTypeCleanup(String taskType,
-                                                CameraManager_V2.CameraManagerTaskCleanup cleanup) {
+                                                CameraManager.CameraManagerTaskCleanup cleanup) {
         mTasksCleanup.put(taskType, cleanup);
     }
 
@@ -47,7 +46,7 @@ public class CameraManagerTasks {
     }
 
     public synchronized int tasksOfTypeCount(String taskType) {
-        Map<String, CameraManager_V2.CameraManagerTask> tasksOfType = mTasks.get(taskType);
+        Map<String, CameraManager.CameraManagerTask> tasksOfType = mTasks.get(taskType);
         if (tasksOfType == null) {
             return 0;
         }
@@ -57,7 +56,7 @@ public class CameraManagerTasks {
 
     public synchronized int totalTasksCount() {
         int totalTasksCount = 0;
-        for (Map.Entry<String, Map<String, CameraManager_V2.CameraManagerTask>> tasksOfTypeEntry : mTasks.entrySet()) {
+        for (Map.Entry<String, Map<String, CameraManager.CameraManagerTask>> tasksOfTypeEntry : mTasks.entrySet()) {
             totalTasksCount = totalTasksCount + tasksOfTypeEntry.getValue().size();
         }
         return totalTasksCount;
@@ -70,16 +69,16 @@ public class CameraManagerTasks {
         }
     }
 
-    public synchronized int onFrameChanged(CameraPreviewImageData frame) {
+    public synchronized int onFrameChanged(CameraPreviewFrameData frame) {
         int totalNumberOfRemainingTasks = 0;
 
-        for (Map.Entry<String, Map<String, CameraManager_V2.CameraManagerTask>> tasksOfTypeEntry : mTasks.entrySet()) {
-            Map<String, CameraManager_V2.CameraManagerTask> tasksOfType = tasksOfTypeEntry.getValue();
+        for (Map.Entry<String, Map<String, CameraManager.CameraManagerTask>> tasksOfTypeEntry : mTasks.entrySet()) {
+            Map<String, CameraManager.CameraManagerTask> tasksOfType = tasksOfTypeEntry.getValue();
 
             List<String> taskToRemoveIds = new ArrayList<>();
-            for (Map.Entry<String, CameraManager_V2.CameraManagerTask> tasksEntry : tasksOfType.entrySet()) {
+            for (Map.Entry<String, CameraManager.CameraManagerTask> tasksEntry : tasksOfType.entrySet()) {
                 String taskId = tasksEntry.getKey();
-                CameraManager_V2.CameraManagerTask task = tasksEntry.getValue();
+                CameraManager.CameraManagerTask task = tasksEntry.getValue();
 
                 boolean needRemoveTask = task.onCameraPreviewImageData(frame);
                 if (needRemoveTask) {
@@ -103,7 +102,7 @@ public class CameraManagerTasks {
     }
 
     public synchronized void runCleanups() {
-        for (Map.Entry<String, CameraManager_V2.CameraManagerTaskCleanup> cleanupsEntry : mTasksCleanup.entrySet()) {
+        for (Map.Entry<String, CameraManager.CameraManagerTaskCleanup> cleanupsEntry : mTasksCleanup.entrySet()) {
             cleanupsEntry.getValue().cleanup();
         }
         mTasksCleanup.clear();

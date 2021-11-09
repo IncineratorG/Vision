@@ -28,7 +28,7 @@ import com.vision.common.interfaces.service_responses_executor.ServiceResponsesE
 import com.vision.services.app_storages.AppStorages;
 import com.vision.services.app_storages.surveillance.SurveillanceStorage;
 import com.vision.services.auth.AuthService;
-import com.vision.services.camera.CameraService_V4;
+import com.vision.services.camera.CameraService;
 import com.vision.services.device_group.DeviceGroupService;
 import com.vision.services.device_info.DeviceInfoService;
 import com.vision.services.device_movement.DeviceMovementService;
@@ -389,7 +389,7 @@ public class SurveillanceService implements
         // ===
         // =====
         DeviceMovementService.get().stop(context);
-        CameraService_V4.get().stop(context);
+        CameraService.get().stop(context);
         // =====
         // ===
         updateAndPublishDeviceInfo(context, true, onSuccess, onError);
@@ -461,7 +461,7 @@ public class SurveillanceService implements
                                                OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startRecognizePersonWithCamera(): " + cameraType);
 
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
         if (cameraType.equalsIgnoreCase("front")) {
             cameraService.startRecognizePersonWithFrontCamera(context, imageRotationDegrees);
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
@@ -480,7 +480,7 @@ public class SurveillanceService implements
                                               OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopRecognizePersonWithCamera(): " + cameraType);
 
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
         if (cameraType.equalsIgnoreCase("front")) {
             cameraService.stopRecognizePersonWithFrontCamera();
             updateAndPublishDeviceInfo(context, false, onSuccess, onError);
@@ -494,7 +494,7 @@ public class SurveillanceService implements
     }
 
     public boolean isRecognizePersonWithCameraServiceRunning(String cameraType) {
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
         if (cameraType.equalsIgnoreCase("front")) {
             return cameraService.isFrontCameraRecognizePersonRunning();
         } else if (cameraType.equalsIgnoreCase("back")) {
@@ -507,11 +507,11 @@ public class SurveillanceService implements
     }
 
     public boolean isRecognizePersonWithFrontCameraServiceRunning() {
-        return CameraService_V4.get().isFrontCameraRecognizePersonRunning();
+        return CameraService.get().isFrontCameraRecognizePersonRunning();
     }
 
     public boolean isRecognizePersonWithBackCameraServiceRunning() {
-        return CameraService_V4.get().isBackCameraRecognizePersonRunning();
+        return CameraService.get().isBackCameraRecognizePersonRunning();
     }
     // =====
     // ===

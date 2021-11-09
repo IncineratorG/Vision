@@ -1,4 +1,4 @@
-package com.vision.services.camera.data.opencv;
+package com.vision.services.camera.data.helpers;
 
 
 import android.content.Context;

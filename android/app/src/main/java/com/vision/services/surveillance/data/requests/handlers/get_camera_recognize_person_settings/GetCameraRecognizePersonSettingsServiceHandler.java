@@ -7,7 +7,7 @@ import com.vision.common.constants.AppConstants;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
-import com.vision.services.camera.CameraService_V4;
+import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.callbacks.OnImageTakeError;
 import com.vision.services.camera.data.callbacks.OnImageTaken;
 import com.vision.services.firebase_communication.FBSCommunicationService;
@@ -36,7 +36,7 @@ public class GetCameraRecognizePersonSettingsServiceHandler implements ServiceRe
 
         String requestSenderDeviceName = request.senderDeviceName();
 
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
 
         // ===
         String imageQuality = AppConstants.CAMERA_IMAGE_QUALITY_HIGH;

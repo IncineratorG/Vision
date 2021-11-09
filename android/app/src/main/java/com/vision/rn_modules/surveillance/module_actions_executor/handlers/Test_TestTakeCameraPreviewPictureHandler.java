@@ -11,8 +11,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-import com.vision.services.camera.CameraService_V3;
+import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
+import com.vision.services.camera.old_unused.CameraService_V3;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
@@ -61,7 +61,7 @@ public class Test_TestTakeCameraPreviewPictureHandler implements JSActionHandler
 
         CameraService_V3 cameraService = CameraService_V3.get();
         if (cameraService.isCameraPreviewRunning()) {
-            CameraPreviewImageData previewImageData = cameraService.getPreviewImageData();
+            CameraPreviewFrameData previewImageData = cameraService.getPreviewImageData();
             if (previewImageData == null || !previewImageData.hasImage()) {
                 Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): PREVIEW_IMAGE_DATA_IS_NULL");
                 result.resolve(null);

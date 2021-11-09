@@ -1,17 +1,17 @@
-package com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera;
+package com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera;
 
 import android.util.Log;
 
-import com.vision.services.camera.camera_manager.CameraManager_V2;
-import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
+import com.vision.services.camera.data.camera_manager.CameraManager;
+import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 
-public class RecognizePersonWithFrontCameraCameraManagerTask implements CameraManager_V2.CameraManagerTask {
+public class RecognizePersonWithFrontCameraCameraManagerTask implements CameraManager.CameraManagerTask {
     private String mType;
     private int mImageRotationDeg;
     private long mLastLogTimestamp;
 
     public RecognizePersonWithFrontCameraCameraManagerTask(int imageRotationDeg) {
-        mType = CameraManager_V2.RECOGNIZE_PERSON_WITH_FRONT_CAMERA;
+        mType = CameraManager.RECOGNIZE_PERSON_WITH_FRONT_CAMERA;
         mImageRotationDeg = imageRotationDeg;
         mLastLogTimestamp = -1;
     }
@@ -22,7 +22,7 @@ public class RecognizePersonWithFrontCameraCameraManagerTask implements CameraMa
     }
 
     @Override
-    public boolean onCameraPreviewImageData(CameraPreviewImageData previewImageData) {
+    public boolean onCameraPreviewImageData(CameraPreviewFrameData previewImageData) {
         long currentTimestamp = System.currentTimeMillis();
         Log.d("tag", "RecognizePersonWithFrontCameraCameraManagerTask->TIMESTAMP: " + currentTimestamp);
 

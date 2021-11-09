@@ -12,7 +12,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.common.constants.AppConstants;
-import com.vision.services.camera.CameraService_V4;
+import com.vision.services.camera.CameraService;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 import java.io.ByteArrayOutputStream;
@@ -22,7 +22,7 @@ public class Test_TestTakeFrontCameraImageHandler implements JSActionHandler {
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "Test_TestTakeFrontCameraImageHandler->handle()");
 
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
 
         cameraService.takeFrontCameraImage(
                 AppConstants.CAMERA_IMAGE_QUALITY_HIGH,

@@ -7,7 +7,7 @@ import android.util.Log;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
-import com.vision.services.camera.CameraService_V4;
+import com.vision.services.camera.CameraService;
 import com.vision.services.firebase_communication.FBSCommunicationService;
 import com.vision.services.firebase_paths.FBSPathsService;
 import com.vision.services.surveillance.SurveillanceService;
@@ -36,7 +36,7 @@ public class TakeFrontCameraImageServiceHandler implements ServiceRequestHandler
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        CameraService_V4 cameraService = CameraService_V4.get();
+        CameraService cameraService = CameraService.get();
 
         cameraService.takeFrontCameraImage(
                 requestPayload.imageQuality(),

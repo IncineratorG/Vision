@@ -1,15 +1,15 @@
-package com.vision.services.camera.data.camera_preview_image_data;
+package com.vision.services.camera.data.camera_preview_frame_data;
 
 
 import java.util.Arrays;
 
-public class CameraPreviewImageData {
+public class CameraPreviewFrameData {
     private byte[] mPreviewImageBytes = null;
     private int mPreviewImageWidth = -1;
     private int mPreviewImageHeight = -1;
     private int mPreviewImageFormat = -1;
 
-    public CameraPreviewImageData(byte[] imageBytes,
+    public CameraPreviewFrameData(byte[] imageBytes,
                                   int imageWidth,
                                   int imageHeight,
                                   int imageFormat) {
@@ -19,7 +19,7 @@ public class CameraPreviewImageData {
         mPreviewImageFormat = imageFormat;
     }
 
-    public CameraPreviewImageData(CameraPreviewImageData other) {
+    public CameraPreviewFrameData(CameraPreviewFrameData other) {
         if (other.mPreviewImageBytes != null) {
             mPreviewImageBytes = Arrays.copyOf(other.mPreviewImageBytes, other.mPreviewImageBytes.length);
         }

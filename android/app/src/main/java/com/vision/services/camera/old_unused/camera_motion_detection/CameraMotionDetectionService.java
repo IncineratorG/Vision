@@ -1,4 +1,4 @@
-package com.vision.services.camera_motion_detection;
+package com.vision.services.camera.old_unused.camera_motion_detection;
 
 
 import android.graphics.ImageFormat;
