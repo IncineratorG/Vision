@@ -72,7 +72,7 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
                 mCurrentGroupName,
                 mCurrentGroupPassword,
                 mCurrentDeviceName,
-                mCurrentServiceMode,
+                mInternalData.mCurrentServiceMode,
                 mOnSuccess,
                 mOnError
         ).run(null);
