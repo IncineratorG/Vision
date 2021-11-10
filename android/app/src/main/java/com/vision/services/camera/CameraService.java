@@ -733,6 +733,7 @@ package com.vision.services.camera;
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
 import com.vision.services.camera.data.camera_manager.CameraManager;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
@@ -749,6 +750,10 @@ public class CameraService {
 
     public interface OnImageTakeError {
         void onError(String code, String message);
+    }
+
+    public interface OnFrameProcessed {
+        void onFrameProcessed(CameraFrameDetections frameDetections);
     }
 
     private static CameraService sInstance;
@@ -826,8 +831,19 @@ public class CameraService {
     public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
         Log.d("tag", "CameraService->startRecognizePersonWithBackCamera()");
 
+        OnFrameProcessed onFrameProcessed = (frameDetections) -> {
+            Log.d(
+                    "tag",
+                    "CameraService->onFrameProcessed(): " +
+                            frameDetections.timestamp() + " - " +
+                            frameDetections.detections().size()
+            );
+        };
+
         mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask_V2(context, imageRotationDeg)
+                new RecognizePersonWithBackCameraCameraManagerTask_V2(
+                        context, imageRotationDeg, onFrameProcessed
+                )
         );
     }
 

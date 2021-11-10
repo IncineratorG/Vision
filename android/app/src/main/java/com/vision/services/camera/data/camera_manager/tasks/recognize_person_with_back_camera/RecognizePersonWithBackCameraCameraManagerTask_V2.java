@@ -3,6 +3,7 @@ package com.vision.services.camera.data.camera_manager.tasks.recognize_person_wi
 import android.content.Context;
 import android.util.Log;
 
+import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
 import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.services.camera.data.camera_manager.CameraManager;
@@ -17,13 +18,18 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
     private String mType;
     private int mImageRotationDeg;
     private Context mContext;
+    private CameraService.OnFrameProcessed mOnFrameProcessed;
     private long mLastLogTimestamp;
 
-    public RecognizePersonWithBackCameraCameraManagerTask_V2(Context context, int imageRotationDeg) {
+    public RecognizePersonWithBackCameraCameraManagerTask_V2(Context context,
+                                                             int imageRotationDeg,
+                                                             CameraService.OnFrameProcessed onFrameProcessed) {
         mType = CameraManager.RECOGNIZE_PERSON_WITH_BACK_CAMERA;
 
         mContext = context;
         mImageRotationDeg = imageRotationDeg;
+        mOnFrameProcessed = onFrameProcessed;
+
         mLastLogTimestamp = -1;
     }
 
@@ -87,16 +93,18 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
         }
 
         CameraFrameDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
-        List<CameraFrameDetectionItem> detectionItems = detections.detections();
-        for (int i = 0; i < detectionItems.size(); ++i) {
-            CameraFrameDetectionItem detectionItem = detectionItems.get(i);
+        mOnFrameProcessed.onFrameProcessed(detections);
 
-            Log.d(
-                    "tag",
-                    "DETECTION_" + i +
-                            ": " + detectionItem.classId() +
-                            " - " + detectionItem.className() +
-                            " - " + detectionItem.confidence());
-        }
+//        List<CameraFrameDetectionItem> detectionItems = detections.detections();
+//        for (int i = 0; i < detectionItems.size(); ++i) {
+//            CameraFrameDetectionItem detectionItem = detectionItems.get(i);
+//
+//            Log.d(
+//                    "tag",
+//                    "DETECTION_" + i +
+//                            ": " + detectionItem.classId() +
+//                            " - " + detectionItem.className() +
+//                            " - " + detectionItem.confidence());
+//        }
     }
 }
