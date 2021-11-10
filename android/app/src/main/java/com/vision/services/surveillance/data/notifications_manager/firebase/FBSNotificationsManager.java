@@ -16,6 +16,7 @@ import com.vision.common.interfaces.service_notifications_manager.ServiceNotific
 import com.vision.services.app_settings.AppSettingsService;
 import com.vision.services.firebase_messaging.FBSMessagingService;
 import com.vision.services.surveillance.SurveillanceService;
+import com.vision.services.surveillance.data.notifications.handlers.detected_persons_count_in_camera_frame_changed.DetectedPersonsCountInCameraFrameChangedNotificationHandler;
 import com.vision.services.surveillance.data.notifications.handlers.device_movement_start.DeviceMovementStartNotificationHandler;
 import com.vision.services.surveillance.data.notifications.handlers.device_movement_stop.DeviceMovementEndNotificationHandler;
 import com.vision.services.surveillance.data.notifications.handlers.test_notification.TestNotificationHandler;
@@ -44,6 +45,7 @@ public class FBSNotificationsManager implements ServiceNotificationsManager {
         mHandlers.put(SurveillanceServiceNotificationTypes.TEST_NOTIFICATION, new TestNotificationHandler());
         mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_START, new DeviceMovementStartNotificationHandler());
         mHandlers.put(SurveillanceServiceNotificationTypes.DEVICE_MOVEMENT_END, new DeviceMovementEndNotificationHandler());
+        mHandlers.put(SurveillanceServiceNotificationTypes.DETECTED_PERSONS_COUNT_IN_CAMERA_FRAME_CHANGED, new DetectedPersonsCountInCameraFrameChangedNotificationHandler());
     }
 
     @Override
