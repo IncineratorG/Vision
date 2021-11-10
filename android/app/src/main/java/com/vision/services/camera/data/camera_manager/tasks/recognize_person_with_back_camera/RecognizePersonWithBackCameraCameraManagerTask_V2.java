@@ -66,7 +66,7 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
     }
 
     private void processImage(CameraPreviewFrameData previewImageData) {
-        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask_V2->processImage()");
+        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask_V2->processImage()->ROTATION_ANGLE: " + mImageRotationDeg);
 
         if (previewImageData == null || !previewImageData.hasImage() || mContext == null) {
             return;
