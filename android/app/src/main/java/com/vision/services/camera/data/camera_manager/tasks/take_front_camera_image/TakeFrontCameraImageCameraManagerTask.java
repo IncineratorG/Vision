@@ -1,9 +1,8 @@
 package com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image;
 
 import com.vision.common.data.service_error.ServiceError;
+import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.camera_manager.CameraManager;
-import com.vision.services.camera.data.callbacks.OnImageTakeError;
-import com.vision.services.camera.data.callbacks.OnImageTaken;
 import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 import com.vision.services.camera.data.helpers.CameraHelper;
 import com.vision.services.camera.data.service_errors.CameraServiceErrors;
@@ -12,12 +11,12 @@ public class TakeFrontCameraImageCameraManagerTask implements CameraManager.Came
     private String mType;
     private long mTaskInitializationTimestamp;
     private String mImageQuality;
-    private OnImageTaken mImageTakenCallback;
-    private OnImageTakeError mImageTakeErrorCallback;
+    private CameraService.OnImageTaken mImageTakenCallback;
+    private CameraService.OnImageTakeError mImageTakeErrorCallback;
 
     public TakeFrontCameraImageCameraManagerTask(String imageQuality,
-                                                OnImageTaken imageTakenCallback,
-                                                OnImageTakeError imageTakeErrorCallback) {
+                                                 CameraService.OnImageTaken imageTakenCallback,
+                                                 CameraService.OnImageTakeError imageTakeErrorCallback) {
         mType = CameraManager.TAKE_FRONT_CAMERA_IMAGE;
 
         mTaskInitializationTimestamp = System.currentTimeMillis();

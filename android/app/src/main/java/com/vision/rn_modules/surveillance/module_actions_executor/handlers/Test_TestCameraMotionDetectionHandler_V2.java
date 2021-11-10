@@ -11,8 +11,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.vision.services.camera.old_unused.camera_motion_detection.CameraMotionDetectionService;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
@@ -44,38 +42,38 @@ public class Test_TestCameraMotionDetectionHandler_V2 implements JSActionHandler
     public void handle(ReactApplicationContext context, ReadableMap action, Promise result) {
         Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle()");
 
-        copyAssets(context);
-
-        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
-        cameraMotionDetectionService.requestBackCameraImage((imageBytes, width, height, previewFormat) -> {
-            Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): " + imageBytes.length + " - " + width + " - " + height + " - " + previewFormat);
-
-            Mat bgraMat = cameraPreviewImageToRgbaMat(imageBytes, width, height, previewFormat);
-            if (bgraMat == null) {
-                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): BGRA_MAT_IS_NULL");
-                return;
-            }
-            Mat rotatedBgraMat = rotateMat(bgraMat, 270);
-////            Mat rotatedRgbaMat = loadTestImageMat(context);
-            byte[] processedImageBytes = processImage(context, rotatedBgraMat);
-            if (processedImageBytes == null) {
-                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): PROCESSED_IMAGE_BYTES_IS_NULL");
-                return;
-            }
+//        copyAssets(context);
 //
-//            // create a temporary buffer
-//            MatOfByte buffer = new MatOfByte();
-//            // encode the frame in the buffer, according to the PNG format
-//            Imgcodecs.imencode(".jpg", rotatedRgbaMat, buffer);
-
-            String base64 = Base64.encodeToString(processedImageBytes, Base64.DEFAULT);
-            context
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(
-                            "IMAGE_TAKEN_EVENT",
-                            imageTakenEventPayload(base64)
-                    );
-        });
+//        CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
+//        cameraMotionDetectionService.requestBackCameraImage((imageBytes, width, height, previewFormat) -> {
+//            Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): " + imageBytes.length + " - " + width + " - " + height + " - " + previewFormat);
+//
+//            Mat bgraMat = cameraPreviewImageToRgbaMat(imageBytes, width, height, previewFormat);
+//            if (bgraMat == null) {
+//                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): BGRA_MAT_IS_NULL");
+//                return;
+//            }
+//            Mat rotatedBgraMat = rotateMat(bgraMat, 270);
+//////            Mat rotatedRgbaMat = loadTestImageMat(context);
+//            byte[] processedImageBytes = processImage(context, rotatedBgraMat);
+//            if (processedImageBytes == null) {
+//                Log.d("tag", "Test_TestCameraMotionDetectionHandler_V2->handle(): PROCESSED_IMAGE_BYTES_IS_NULL");
+//                return;
+//            }
+////
+////            // create a temporary buffer
+////            MatOfByte buffer = new MatOfByte();
+////            // encode the frame in the buffer, according to the PNG format
+////            Imgcodecs.imencode(".jpg", rotatedRgbaMat, buffer);
+//
+//            String base64 = Base64.encodeToString(processedImageBytes, Base64.DEFAULT);
+//            context
+//                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+//                    .emit(
+//                            "IMAGE_TAKEN_EVENT",
+//                            imageTakenEventPayload(base64)
+//                    );
+//        });
 
         result.resolve(true);
     }

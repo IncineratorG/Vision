@@ -51,8 +51,6 @@ public class UpdateAndPublishDeviceInfoTask implements ServiceSyncTask {
 
     @Override
     public Object run(Map<String, Object> params) {
-        SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
-
         List<String> deviceInfoPath = FBSPathsService.get().deviceInfoPath(
                 mCurrentGroupName, mCurrentGroupPassword, mCurrentDeviceName
         );

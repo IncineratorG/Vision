@@ -13,12 +13,10 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.vision.services.camera.old_unused.camera_motion_detection.CameraMotionDetectionService;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Point;
@@ -63,56 +61,56 @@ public class Test_TestCameraMotionDetectionHandler implements JSActionHandler {
 
         @Override
         public void run() {
-            do {
-                Log.d("tag", "THREAD_RUNNING: " + System.currentTimeMillis());
-
-                CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
-
-                CameraMotionDetectionService.RequestImageCallback requestImageCallback = (imageBytes, width, height, previewFormat) -> {
-                    Log.d("tag", "CameraWorker->run()->requestImageCallback: " + imageBytes.length);
-
-                    Mat mYuvFrameData = new Mat(height + (height/2), width, CvType.CV_8UC1);
-                    mYuvFrameData.put(0, 0, imageBytes);
-
-                    Log.d("tag", "mYuvFrameData: " + mYuvFrameData.toString() + " - " + mYuvFrameData.empty());
-
-                    Mat mRgba = new Mat();
-                    if (previewFormat == ImageFormat.NV21) {
-                        Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGBA_NV21, 4);
-                    } else if (previewFormat == ImageFormat.YV12) {
-                        Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGB_I420, 4);
-                    } else {
-                        Log.d("tag", "Test_TestCameraMotionDetectionHandler->handle()->UNKNOWN_IMAGE_FORMAT: " + previewFormat);
-                        return;
-                    }
-
-                    // create a temporary buffer
-                    MatOfByte buffer = new MatOfByte();
-                    // encode the frame in the buffer, according to the PNG format
-                    Imgcodecs.imencode(".jpg", mRgba, buffer);
-
-                    Log.d("tag", "BUFFER: " + buffer.toString());
-
-                    String base64 = Base64.encodeToString(buffer.toArray(), Base64.DEFAULT);
-                    mContext
-                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit(
-                                    "IMAGE_TAKEN_EVENT",
-                                    imageTakenEventPayload(base64)
-                            );
-                };
-
-                if (cameraMotionDetectionService.isRunning()) {
-                    cameraMotionDetectionService.requestImage(requestImageCallback);
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } while (!mStopThread);
-            Log.d("tag", "Finish processing thread");
+//            do {
+//                Log.d("tag", "THREAD_RUNNING: " + System.currentTimeMillis());
+//
+//                CameraMotionDetectionService cameraMotionDetectionService = CameraMotionDetectionService.get();
+//
+//                CameraMotionDetectionService.RequestImageCallback requestImageCallback = (imageBytes, width, height, previewFormat) -> {
+//                    Log.d("tag", "CameraWorker->run()->requestImageCallback: " + imageBytes.length);
+//
+//                    Mat mYuvFrameData = new Mat(height + (height/2), width, CvType.CV_8UC1);
+//                    mYuvFrameData.put(0, 0, imageBytes);
+//
+//                    Log.d("tag", "mYuvFrameData: " + mYuvFrameData.toString() + " - " + mYuvFrameData.empty());
+//
+//                    Mat mRgba = new Mat();
+//                    if (previewFormat == ImageFormat.NV21) {
+//                        Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGBA_NV21, 4);
+//                    } else if (previewFormat == ImageFormat.YV12) {
+//                        Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGB_I420, 4);
+//                    } else {
+//                        Log.d("tag", "Test_TestCameraMotionDetectionHandler->handle()->UNKNOWN_IMAGE_FORMAT: " + previewFormat);
+//                        return;
+//                    }
+//
+//                    // create a temporary buffer
+//                    MatOfByte buffer = new MatOfByte();
+//                    // encode the frame in the buffer, according to the PNG format
+//                    Imgcodecs.imencode(".jpg", mRgba, buffer);
+//
+//                    Log.d("tag", "BUFFER: " + buffer.toString());
+//
+//                    String base64 = Base64.encodeToString(buffer.toArray(), Base64.DEFAULT);
+//                    mContext
+//                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+//                            .emit(
+//                                    "IMAGE_TAKEN_EVENT",
+//                                    imageTakenEventPayload(base64)
+//                            );
+//                };
+//
+//                if (cameraMotionDetectionService.isRunning()) {
+//                    cameraMotionDetectionService.requestImage(requestImageCallback);
+//
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            } while (!mStopThread);
+//            Log.d("tag", "Finish processing thread");
         }
     }
 

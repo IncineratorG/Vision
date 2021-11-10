@@ -735,14 +735,21 @@ import android.util.Log;
 
 import com.vision.services.camera.data.camera_manager.CameraManager;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
+import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
-import com.vision.services.camera.data.callbacks.OnImageTakeError;
-import com.vision.services.camera.data.callbacks.OnImageTaken;
 
 public class CameraService {
     public static final String NAME = "CameraService";
+
+    public interface OnImageTaken {
+        void onImageTaken(String base64String);
+    }
+
+    public interface OnImageTakeError {
+        void onError(String code, String message);
+    }
 
     private static CameraService sInstance;
 
@@ -809,7 +816,7 @@ public class CameraService {
     }
 
     public void startRecognizePersonWithFrontCamera(Context context, int imageRotationDeg) {
-        Log.d("tag", "CameraService_V4->startRecognizePersonWithFrontCamera()");
+        Log.d("tag", "CameraService->startRecognizePersonWithFrontCamera()");
 
         mCameraManager.executeTask(
                 new RecognizePersonWithFrontCameraCameraManagerTask(imageRotationDeg)
@@ -817,10 +824,10 @@ public class CameraService {
     }
 
     public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
-        Log.d("tag", "CameraService_V4->startRecognizePersonWithBackCamera()");
+        Log.d("tag", "CameraService->startRecognizePersonWithBackCamera()");
 
         mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask(context, imageRotationDeg)
+                new RecognizePersonWithBackCameraCameraManagerTask_V2(context, imageRotationDeg)
         );
     }
 

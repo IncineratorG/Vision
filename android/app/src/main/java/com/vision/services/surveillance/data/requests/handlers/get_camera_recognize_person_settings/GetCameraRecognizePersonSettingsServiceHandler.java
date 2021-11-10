@@ -8,8 +8,6 @@ import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_request_handler.ServiceRequestHandler;
 import com.vision.services.camera.CameraService;
-import com.vision.services.camera.data.callbacks.OnImageTakeError;
-import com.vision.services.camera.data.callbacks.OnImageTaken;
 import com.vision.services.firebase_communication.FBSCommunicationService;
 import com.vision.services.firebase_paths.FBSPathsService;
 import com.vision.services.surveillance.SurveillanceService;
@@ -40,7 +38,7 @@ public class GetCameraRecognizePersonSettingsServiceHandler implements ServiceRe
 
         // ===
         String imageQuality = AppConstants.CAMERA_IMAGE_QUALITY_HIGH;
-        OnImageTaken imageTakenCallback = (base64String) -> {
+        CameraService.OnImageTaken imageTakenCallback = (base64String) -> {
             Log.d("tag", "GetCameraRecognizePersonSettingsServiceHandler->OnImageTaken()");
 
             GetCameraRecognizePersonSettingsResponsePayload responsePayload =
@@ -59,7 +57,7 @@ public class GetCameraRecognizePersonSettingsServiceHandler implements ServiceRe
                     response
             );
         };
-        OnImageTakeError errorCallback = (code, message) -> {
+        CameraService.OnImageTakeError errorCallback = (code, message) -> {
             Log.d("tag", "GetCameraRecognizePersonSettingsServiceHandler->OnImageTakeError(): " + code + " - " + message);
         };
 

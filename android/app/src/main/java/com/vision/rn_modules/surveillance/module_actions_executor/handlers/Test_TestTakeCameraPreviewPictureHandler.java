@@ -11,8 +11,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
-import com.vision.services.camera.old_unused.CameraService_V3;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
 
@@ -59,31 +57,33 @@ public class Test_TestTakeCameraPreviewPictureHandler implements JSActionHandler
 //        Log.d("tag", rotation + " - " + degrees);
         // ===
 
-        CameraService_V3 cameraService = CameraService_V3.get();
-        if (cameraService.isCameraPreviewRunning()) {
-            CameraPreviewFrameData previewImageData = cameraService.getPreviewImageData();
-            if (previewImageData == null || !previewImageData.hasImage()) {
-                Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): PREVIEW_IMAGE_DATA_IS_NULL");
-                result.resolve(null);
-            }
+//        CameraService_V3 cameraService = CameraService_V3.get();
+//        if (cameraService.isCameraPreviewRunning()) {
+//            CameraPreviewFrameData previewImageData = cameraService.getPreviewImageData();
+//            if (previewImageData == null || !previewImageData.hasImage()) {
+//                Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): PREVIEW_IMAGE_DATA_IS_NULL");
+//                result.resolve(null);
+//            }
+//
+//            Mat rgbaMat = cameraPreviewImageToRgbaMat(
+//                    previewImageData.imageBytes(),
+//                    previewImageData.width(),
+//                    previewImageData.height(),
+//                    previewImageData.imageFormat()
+//            );
+//            rgbaMat = rotateMat(rgbaMat, 270);
+//
+////            byte[] processedImage = processImage(context, rgbaMat);
+//            byte[] jpgBytes = matToJpgBytes(rgbaMat);
+//
+//            String base64ImageString = bytesToBase64String(jpgBytes);
+//            result.resolve(imageTakenEventPayload(base64ImageString));
+//        } else {
+//            Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): CAMERA_SERVICE_NOT_RUNNING");
+//            result.resolve(null);
+//        }
 
-            Mat rgbaMat = cameraPreviewImageToRgbaMat(
-                    previewImageData.imageBytes(),
-                    previewImageData.width(),
-                    previewImageData.height(),
-                    previewImageData.imageFormat()
-            );
-            rgbaMat = rotateMat(rgbaMat, 270);
-
-//            byte[] processedImage = processImage(context, rgbaMat);
-            byte[] jpgBytes = matToJpgBytes(rgbaMat);
-
-            String base64ImageString = bytesToBase64String(jpgBytes);
-            result.resolve(imageTakenEventPayload(base64ImageString));
-        } else {
-            Log.d("tag", "Test_TestTakeCameraPreviewPictureHandler->handle(): CAMERA_SERVICE_NOT_RUNNING");
-            result.resolve(null);
-        }
+        result.resolve(null);
     }
 
     private WritableMap imageTakenEventPayload(String base64String) {

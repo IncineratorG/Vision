@@ -160,16 +160,6 @@ public class SurveillanceService implements
                                        OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startForegroundService()");
 
-        if (context == null) {
-            Log.d("tag", "SurveillanceService->startForegroundService(): CONTEXT_IS_NULL");
-            return;
-        }
-
-        if (isForegroundServiceRunning(context)) {
-            Log.d("tag", "SurveillanceService->startForegroundService(): SERVICE_IS_ALREADY_RUNNING");
-            return;
-        }
-
         SurveillanceServiceInternalTasks.startForegroundServiceTask(
                 context,
                 true,
@@ -187,16 +177,6 @@ public class SurveillanceService implements
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopForegroundService()");
-
-        if (context == null) {
-            Log.d("tag", "SurveillanceService->stopForegroundService(): CONTEXT_IS_NULL");
-            return;
-        }
-
-        if (!isForegroundServiceRunning(context)) {
-            Log.d("tag", "SurveillanceService->stopForegroundService(): SERVICE_ALREADY_NOT_RUNNING");
-            return;
-        }
 
         SurveillanceServiceInternalTasks.stopForegroundServiceTask(
                 context,
@@ -1041,6 +1021,7 @@ public class SurveillanceService implements
 //                                updatedDeviceInfo
 //                        );
 //                    }
+//
 //                    FBSCommunicationService.get().setMapValue(
 //                            deviceInfoPath,
 //                            updatedDeviceInfo.toServiceObject(),

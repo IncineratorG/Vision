@@ -2,6 +2,7 @@ package com.vision.services.surveillance.data.service_internal.tasks.tasks.foreg
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.vision.android_services.foreground.surveillance.SurveillanceForegroundService;
 import com.vision.common.constants.AppConstants;
@@ -12,7 +13,9 @@ import com.vision.services.camera.CameraService;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
+import com.vision.services.surveillance.data.service_internal.tasks.task_results.SurveillanceServiceInternalTaskResults;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
 
 import java.util.Map;
 
@@ -46,6 +49,19 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
 
     @Override
     public Object run(Map<String, Object> params) {
+        if (mContext == null) {
+            Log.d("tag", "StopForegroundServiceTask->run(): CONTEXT_IS_NULL");
+            return null;
+        }
+
+        IsForegroundServiceRunningTask task =
+                SurveillanceServiceInternalTasks.isForegroundServiceRunningTask(mContext);
+
+        if (!SurveillanceServiceInternalTaskResults.result(task, task.run(null))) {
+            Log.d("tag", "StopForegroundServiceTask->run(): SERVICE_ALREADY_NOT_RUNNING");
+            return null;
+        }
+
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
         if ((mInternalData.mServiceWakeLock != null) && (mInternalData.mServiceWakeLock.isHeld())) {
