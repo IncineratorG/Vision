@@ -66,7 +66,7 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
     }
 
     private void processImage(CameraPreviewFrameData previewImageData) {
-        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask_V2->processImage()->ROTATION_ANGLE: " + mImageRotationDeg);
+//        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask_V2->processImage()->ROTATION_ANGLE: " + mImageRotationDeg);
 
         if (previewImageData == null || !previewImageData.hasImage() || mContext == null) {
             return;
@@ -91,17 +91,5 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
 
         CameraFrameDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
         mOnFrameDetections.onFrameDetections(detections);
-
-//        List<CameraFrameDetectionItem> detectionItems = detections.detections();
-//        for (int i = 0; i < detectionItems.size(); ++i) {
-//            CameraFrameDetectionItem detectionItem = detectionItems.get(i);
-//
-//            Log.d(
-//                    "tag",
-//                    "DETECTION_" + i +
-//                            ": " + detectionItem.classId() +
-//                            " - " + detectionItem.className() +
-//                            " - " + detectionItem.confidence());
-//        }
     }
 }

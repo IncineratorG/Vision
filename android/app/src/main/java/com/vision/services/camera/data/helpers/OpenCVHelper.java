@@ -25,6 +25,7 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class OpenCVHelper {
@@ -63,6 +64,114 @@ public class OpenCVHelper {
 
     public static String[] detectedClassNames() {
         return Arrays.copyOf(mDetectedClassNames, mDetectedClassNames.length);
+    }
+
+    public static int getClassForDetectableObjectType(String objectType) {
+        switch (objectType) {
+            case ("background"): {
+                return 0;
+            }
+
+            case ("aeroplane"): {
+                return 1;
+            }
+
+            case ("bicycle"): {
+                return 2;
+            }
+
+
+            case ("bird"): {
+                return 3;
+            }
+
+            case ("boat"): {
+                return 4;
+            }
+
+            case ("bottle"): {
+                return 5;
+            }
+
+            case ("bus"): {
+                return 6;
+            }
+
+            case ("car"): {
+                return 7;
+            }
+
+            case ("cat"): {
+                return 8;
+            }
+
+            case ("chair"): {
+                return 9;
+            }
+
+            case ("cow"): {
+                return 10;
+            }
+
+            case ("diningtable"): {
+                return 11;
+            }
+
+            case ("dog"): {
+                return 12;
+            }
+
+            case ("horse"): {
+                return 13;
+            }
+
+            case ("motorbike"): {
+                return 14;
+            }
+
+            case ("person"): {
+                return 15;
+            }
+
+            case ("pottedplant"): {
+                return 16;
+            }
+
+            case ("sheep"): {
+                return 17;
+            }
+
+            case ("sofa"): {
+                return 18;
+            }
+
+            case ("train"): {
+                return 19;
+            }
+
+            case ("tvmonitor"): {
+                return 20;
+            }
+
+            default: {
+                Log.d("tag", "OpenCVHelper->getClassForDetectableObjectType()->UNKNOWN_OBJECT_TYPE: " + objectType);
+                return -1;
+            }
+        }
+    }
+
+    public static int getObjectOfClassInFrameCount(int classId, CameraFrameDetections frameDetections) {
+        int objectsOfClassInFrame = 0;
+
+        List<CameraFrameDetectionItem> frameDetectionItems = frameDetections.detections();
+        for (int i = 0; i < frameDetectionItems.size(); ++i) {
+            CameraFrameDetectionItem frameDetectionItem = frameDetectionItems.get(i);
+            if (frameDetectionItem.classId() == classId) {
+                ++objectsOfClassInFrame;
+            }
+        }
+
+        return objectsOfClassInFrame;
     }
 
     public static Mat yuvBytesToRgbaMat(byte[] yuvBytes, int width, int height, int yuvImageFormat) {
@@ -198,9 +307,12 @@ public class OpenCVHelper {
                 int xRightTop   = (int)(detections.get(i, 5)[0] * cols);
                 int yRightTop   = (int)(detections.get(i, 6)[0] * rows);
                 // Draw rectangle around detected object.
-                Imgproc.rectangle(subFrame, new Point(xLeftBottom, yLeftBottom),
+                Imgproc.rectangle(
+                        subFrame,
+                        new Point(xLeftBottom, yLeftBottom),
                         new Point(xRightTop, yRightTop),
-                        new Scalar(0, 255, 0));
+                        new Scalar(0, 255, 0)
+                );
                 String label = mDetectedClassNames[classId] + ": " + confidence;
                 Log.d("tag", "DETECTION: " + label);
 
@@ -214,7 +326,9 @@ public class OpenCVHelper {
                 Imgproc.putText(subFrame, label, new Point(xLeftBottom, yLeftBottom),
                         Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 0, 0));
 
-                CameraFrameDetectionItem detectionItem = new CameraFrameDetectionItem(classId, mDetectedClassNames[classId], confidence);
+                CameraFrameDetectionItem detectionItem = new CameraFrameDetectionItem(
+                        classId, mDetectedClassNames[classId], confidence
+                );
                 cameraDetections.add(detectionItem);
             }
         }

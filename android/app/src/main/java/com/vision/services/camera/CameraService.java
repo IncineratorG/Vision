@@ -735,11 +735,16 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
+import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.services.camera.data.camera_manager.CameraManager;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
+import com.vision.services.camera.data.helpers.OpenCVHelper;
+
+import java.util.List;
+
 
 public class CameraService {
     public static final String NAME = "CameraService";
@@ -754,6 +759,10 @@ public class CameraService {
 
     public interface OnFrameDetections {
         void onFrameDetections(CameraFrameDetections frameDetections);
+    }
+
+    public interface OnPersonInFrameCountChanged {
+        void onPersonInFrameCountChanged(int personCount);
     }
 
     private static CameraService sInstance;
@@ -842,10 +851,12 @@ public class CameraService {
         );
     }
 
-    public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
+    public void startRecognizePersonWithBackCamera(Context context,
+                                                   int imageRotationDeg,
+                                                   OnPersonInFrameCountChanged onPersonInFrameCountChanged) {
         Log.d("tag", "CameraService->startRecognizePersonWithBackCamera()");
 
-        OnFrameDetections onFrameDetections = (frameDetections) -> {
+        OnFrameDetections frameDetectionsCallback = (frameDetections) -> {
             Log.d(
                     "tag",
                     "CameraService->onFrameDetections(): " +
@@ -854,11 +865,14 @@ public class CameraService {
             );
 
             updatedLastFrameDetectionsData(frameDetections);
+            onPersonInFrameCountChanged.onPersonInFrameCountChanged(
+                    getPersonInFrameCount(frameDetections)
+            );
         };
 
         mCameraManager.executeTask(
                 new RecognizePersonWithBackCameraCameraManagerTask_V2(
-                        context, imageRotationDeg, onFrameDetections
+                        context, imageRotationDeg, frameDetectionsCallback
                 )
         );
     }
@@ -873,5 +887,14 @@ public class CameraService {
 
     private void updatedLastFrameDetectionsData(CameraFrameDetections frameDetections) {
         mLastFrameDetections = new CameraFrameDetections(frameDetections);
+    }
+
+    private int getPersonInFrameCount(CameraFrameDetections frameDetections) {
+        int personClassId = OpenCVHelper.getClassForDetectableObjectType("tvmonitor");
+        if (personClassId < 0) {
+            return 0;
+        }
+
+        return OpenCVHelper.getObjectOfClassInFrameCount(personClassId, frameDetections);
     }
 }

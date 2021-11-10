@@ -49,6 +49,13 @@ public class StartRecognizePersonWithCameraTask implements ServiceSyncTask {
 
     @Override
     public Object run(Map<String, Object> params) {
+        CameraService.OnPersonInFrameCountChanged onPersonInFrameCountChanged = (personsCount) -> {
+              Log.d(
+                      "tag",
+                      "StartRecognizePersonWithCameraSurveillanceServiceTask->onPersonInFrameCountChanged(): " + personsCount
+              );
+        };
+
         CameraService cameraService = CameraService.get();
         if (mCameraType.equalsIgnoreCase("front")) {
             cameraService.startRecognizePersonWithFrontCamera(mContext, mImageRotationDegrees);
@@ -64,7 +71,9 @@ public class StartRecognizePersonWithCameraTask implements ServiceSyncTask {
                     mOnError
             ).run(null);
         } else if (mCameraType.equalsIgnoreCase("back")) {
-            cameraService.startRecognizePersonWithBackCamera(mContext, mImageRotationDegrees);
+            cameraService.startRecognizePersonWithBackCamera(
+                    mContext, mImageRotationDegrees, onPersonInFrameCountChanged
+            );
 
             SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                     mContext,
