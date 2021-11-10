@@ -7,6 +7,7 @@ import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.camera.CameraService;
+import com.vision.services.surveillance.SurveillanceService;
 import com.vision.services.surveillance.data.notifications.SurveillanceServiceNotifications;
 import com.vision.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
@@ -67,10 +68,13 @@ public class StartRecognizePersonWithCameraTask implements ServiceSyncTask {
                           "StartRecognizePersonWithCameraSurveillanceServiceTask->onPersonInFrameCountChanged()->WILL_SEND_PERSON_CHANGED_NOTIFICATION"
                   );
 
-                  SurveillanceServiceNotifications.detectedPersonsCountInCameraFrameChangedNotification(
-                          mCurrentGroupName,
-                          mCurrentDeviceName,
-                          personsCount
+                  SurveillanceService.get().sendNotificationToAll(
+                          mContext,
+                          SurveillanceServiceNotifications.detectedPersonsCountInCameraFrameChangedNotification(
+                                  mCurrentGroupName,
+                                  mCurrentDeviceName,
+                                  personsCount
+                          )
                   );
               }
 
