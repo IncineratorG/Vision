@@ -96,7 +96,7 @@ public class OpenCVHelper {
 
         Point center = new Point(dst.cols() / 2, dst.rows() / 2);
 
-        Mat rotationMatrix = Imgproc.getRotationMatrix2D(center, angle, 1.5);
+        Mat rotationMatrix = Imgproc.getRotationMatrix2D(center, -angle, 1.5);
 
         Size size = new Size(mat.cols(), mat.cols());
 
