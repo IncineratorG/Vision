@@ -2,6 +2,7 @@ package com.vision.services.surveillance.data.notifications;
 
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.services.surveillance.data.notifications.payloads.SurveillanceServiceNotificationPayloads;
+import com.vision.services.surveillance.data.notifications.payloads.payloads.DetectedPersonsCountInCameraFrameChangedNotificationPayload;
 import com.vision.services.surveillance.data.notifications.payloads.payloads.TestNotificationPayload;
 import com.vision.services.surveillance.data.notifications.types.SurveillanceServiceNotificationTypes;
 
@@ -37,6 +38,22 @@ public class SurveillanceServiceNotifications {
                 senderGroupName,
                 senderDeviceName,
                 null
+        );
+    }
+
+    public static ServiceNotification detectedPersonsCountInCameraFrameChangedNotification(
+            String senderGroupName,
+            String senderDeviceName,
+            int personsInCameraFrameCount
+    ) {
+        DetectedPersonsCountInCameraFrameChangedNotificationPayload payload =
+                SurveillanceServiceNotificationPayloads.detectedPersonsCountInCameraFrameChangedNotificationPayload(personsInCameraFrameCount);
+
+        return new ServiceNotification(
+                SurveillanceServiceNotificationTypes.DETECTED_PERSONS_COUNT_IN_CAMERA_FRAME_CHANGED,
+                senderGroupName,
+                senderDeviceName,
+                payload.jsonObject()
         );
     }
 }
