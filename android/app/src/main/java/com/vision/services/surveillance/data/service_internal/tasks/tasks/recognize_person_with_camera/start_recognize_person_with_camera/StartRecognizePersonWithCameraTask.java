@@ -12,6 +12,7 @@ import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StartRecognizePersonWithCameraTask implements ServiceSyncTask {
     private Context mContext;
@@ -49,11 +50,24 @@ public class StartRecognizePersonWithCameraTask implements ServiceSyncTask {
 
     @Override
     public Object run(Map<String, Object> params) {
+        AtomicInteger previousPersonsCount = new AtomicInteger();
+
         CameraService.OnPersonInFrameCountChanged onPersonInFrameCountChanged = (personsCount) -> {
               Log.d(
                       "tag",
-                      "StartRecognizePersonWithCameraSurveillanceServiceTask->onPersonInFrameCountChanged(): " + personsCount
+                      "StartRecognizePersonWithCameraSurveillanceServiceTask->onPersonInFrameCountChanged(): " +
+                              personsCount + " - " +
+                              previousPersonsCount.get()
               );
+
+              if (previousPersonsCount.get() != personsCount) {
+                  Log.d(
+                          "tag",
+                          "StartRecognizePersonWithCameraSurveillanceServiceTask->onPersonInFrameCountChanged()->WILL_SEND_PERSON_CHANGED_NOTIFICATION"
+                  );
+              }
+
+              previousPersonsCount.set(personsCount);
         };
 
         CameraService cameraService = CameraService.get();
