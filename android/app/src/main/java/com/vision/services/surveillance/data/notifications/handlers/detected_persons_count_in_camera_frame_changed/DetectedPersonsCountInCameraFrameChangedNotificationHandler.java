@@ -1,0 +1,4 @@
+package com.vision.services.surveillance.data.notifications.handlers.detected_persons_count_in_camera_frame_changed;
+
+public class DetectedPersonsCountInCameraFrameChangedNotificationHandler {
+}
