@@ -5,30 +5,27 @@ import android.util.Log;
 
 import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
-import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.services.camera.data.camera_manager.CameraManager;
 import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 import com.vision.services.camera.data.helpers.OpenCVHelper;
 
 import org.opencv.core.Mat;
 
-import java.util.List;
-
 public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements CameraManager.CameraManagerTask {
     private String mType;
     private int mImageRotationDeg;
     private Context mContext;
-    private CameraService.OnFrameProcessed mOnFrameProcessed;
+    private CameraService.OnFrameDetections mOnFrameDetections;
     private long mLastLogTimestamp;
 
     public RecognizePersonWithBackCameraCameraManagerTask_V2(Context context,
                                                              int imageRotationDeg,
-                                                             CameraService.OnFrameProcessed onFrameProcessed) {
+                                                             CameraService.OnFrameDetections onFrameDetections) {
         mType = CameraManager.RECOGNIZE_PERSON_WITH_BACK_CAMERA;
 
         mContext = context;
         mImageRotationDeg = imageRotationDeg;
-        mOnFrameProcessed = onFrameProcessed;
+        mOnFrameDetections = onFrameDetections;
 
         mLastLogTimestamp = -1;
     }
@@ -93,7 +90,7 @@ public class RecognizePersonWithBackCameraCameraManagerTask_V2 implements Camera
         }
 
         CameraFrameDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
-        mOnFrameProcessed.onFrameProcessed(detections);
+        mOnFrameDetections.onFrameDetections(detections);
 
 //        List<CameraFrameDetectionItem> detectionItems = detections.detections();
 //        for (int i = 0; i < detectionItems.size(); ++i) {

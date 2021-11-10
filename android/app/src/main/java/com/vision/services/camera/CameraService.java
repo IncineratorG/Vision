@@ -731,11 +731,11 @@ package com.vision.services.camera;
 
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
 import com.vision.services.camera.data.camera_manager.CameraManager;
-import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
@@ -752,13 +752,14 @@ public class CameraService {
         void onError(String code, String message);
     }
 
-    public interface OnFrameProcessed {
-        void onFrameProcessed(CameraFrameDetections frameDetections);
+    public interface OnFrameDetections {
+        void onFrameDetections(CameraFrameDetections frameDetections);
     }
 
     private static CameraService sInstance;
 
     private CameraManager mCameraManager;
+    private CameraFrameDetections mLastFrameDetections;
 
     private CameraService() {
         mCameraManager = new CameraManager();
@@ -799,13 +800,26 @@ public class CameraService {
     public void takeBackCameraImage(String quality,
                                     OnImageTaken imageTakenCallback,
                                     OnImageTakeError errorCallback) {
-        mCameraManager.executeTask(
-                new TakeBackCameraImageCameraManagerTask(
-                        quality,
-                        imageTakenCallback,
-                        errorCallback
-                )
-        );
+        if (isBackCameraRecognizePersonRunning() && mLastFrameDetections.imageWithDetectionsBytes() != null) {
+            byte[] lastFrameImageBytes = mLastFrameDetections.imageWithDetectionsBytes();
+            imageTakenCallback.onImageTaken(Base64.encodeToString(lastFrameImageBytes, Base64.DEFAULT));
+        } else {
+            mCameraManager.executeTask(
+                    new TakeBackCameraImageCameraManagerTask(
+                            quality,
+                            imageTakenCallback,
+                            errorCallback
+                    )
+            );
+        }
+
+//        mCameraManager.executeTask(
+//                new TakeBackCameraImageCameraManagerTask(
+//                        quality,
+//                        imageTakenCallback,
+//                        errorCallback
+//                )
+//        );
     }
 
     public void takeFrontCameraImage(String quality,
@@ -831,18 +845,20 @@ public class CameraService {
     public void startRecognizePersonWithBackCamera(Context context, int imageRotationDeg) {
         Log.d("tag", "CameraService->startRecognizePersonWithBackCamera()");
 
-        OnFrameProcessed onFrameProcessed = (frameDetections) -> {
+        OnFrameDetections onFrameDetections = (frameDetections) -> {
             Log.d(
                     "tag",
-                    "CameraService->onFrameProcessed(): " +
+                    "CameraService->onFrameDetections(): " +
                             frameDetections.timestamp() + " - " +
                             frameDetections.detections().size()
             );
+
+            updatedLastFrameDetectionsData(frameDetections);
         };
 
         mCameraManager.executeTask(
                 new RecognizePersonWithBackCameraCameraManagerTask_V2(
-                        context, imageRotationDeg, onFrameProcessed
+                        context, imageRotationDeg, onFrameDetections
                 )
         );
     }
@@ -853,5 +869,9 @@ public class CameraService {
 
     public void stopRecognizePersonWithBackCamera() {
         mCameraManager.stopTaskOfType(CameraManager.RECOGNIZE_PERSON_WITH_BACK_CAMERA);
+    }
+
+    private void updatedLastFrameDetectionsData(CameraFrameDetections frameDetections) {
+        mLastFrameDetections = new CameraFrameDetections(frameDetections);
     }
 }
