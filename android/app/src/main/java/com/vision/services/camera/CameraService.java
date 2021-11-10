@@ -735,15 +735,12 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
-import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
 import com.vision.services.camera.data.camera_manager.CameraManager;
-import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
+import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
 import com.vision.services.camera.data.helpers.OpenCVHelper;
-
-import java.util.List;
 
 
 public class CameraService {
@@ -871,7 +868,7 @@ public class CameraService {
         };
 
         mCameraManager.executeTask(
-                new RecognizePersonWithBackCameraCameraManagerTask_V2(
+                new RecognizePersonWithBackCameraCameraManagerTask(
                         context, imageRotationDeg, frameDetectionsCallback
                 )
         );

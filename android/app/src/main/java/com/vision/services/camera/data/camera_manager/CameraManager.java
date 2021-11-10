@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
-import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask_V2;
 import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
@@ -150,7 +149,7 @@ public class CameraManager {
             }
 
             case (RECOGNIZE_PERSON_WITH_BACK_CAMERA): {
-                if (!(task instanceof RecognizePersonWithBackCameraCameraManagerTask_V2)) {
+                if (!(task instanceof RecognizePersonWithBackCameraCameraManagerTask)) {
                     Log.d("tag", "CameraManager->executeTask()->RECOGNIZE_PERSON_WITH_BACK_CAMERA->BAD_TASK_INSTANCE");
                     return;
                 }

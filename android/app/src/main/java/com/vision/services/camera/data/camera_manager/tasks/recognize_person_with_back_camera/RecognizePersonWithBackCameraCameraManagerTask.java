@@ -3,27 +3,30 @@ package com.vision.services.camera.data.camera_manager.tasks.recognize_person_wi
 import android.content.Context;
 import android.util.Log;
 
-import com.vision.services.camera.data.camera_manager.CameraManager;
+import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
-import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
+import com.vision.services.camera.data.camera_manager.CameraManager;
 import com.vision.services.camera.data.camera_preview_frame_data.CameraPreviewFrameData;
 import com.vision.services.camera.data.helpers.OpenCVHelper;
 
 import org.opencv.core.Mat;
 
-import java.util.List;
-
 public class RecognizePersonWithBackCameraCameraManagerTask implements CameraManager.CameraManagerTask {
     private String mType;
     private int mImageRotationDeg;
     private Context mContext;
+    private CameraService.OnFrameDetections mOnFrameDetections;
     private long mLastLogTimestamp;
 
-    public RecognizePersonWithBackCameraCameraManagerTask(Context context, int imageRotationDeg) {
+    public RecognizePersonWithBackCameraCameraManagerTask(Context context,
+                                                          int imageRotationDeg,
+                                                          CameraService.OnFrameDetections onFrameDetections) {
         mType = CameraManager.RECOGNIZE_PERSON_WITH_BACK_CAMERA;
 
         mContext = context;
         mImageRotationDeg = imageRotationDeg;
+        mOnFrameDetections = onFrameDetections;
+
         mLastLogTimestamp = -1;
     }
 
@@ -43,7 +46,7 @@ public class RecognizePersonWithBackCameraCameraManagerTask implements CameraMan
         }
 
         if (currentTimestamp > mLastLogTimestamp + 3000) {
-            timedProcessImage(previewImageData);;
+            timedProcessImage(previewImageData);
             mLastLogTimestamp = currentTimestamp;
             return false;
         }
@@ -58,13 +61,11 @@ public class RecognizePersonWithBackCameraCameraManagerTask implements CameraMan
 
         Log.d(
                 "tag",
-                "RecognizePersonWithBackCameraCameraManagerTask->timedProcessImage()->TIME_ELAPSED: " + (end - start)
+                "RecognizePersonWithBackCameraCameraManagerTask_V2->timedProcessImage()->TIME_ELAPSED: " + (end - start)
         );
     }
 
     private void processImage(CameraPreviewFrameData previewImageData) {
-        Log.d("tag", "RecognizePersonWithBackCameraCameraManagerTask->processImage()");
-
         if (previewImageData == null || !previewImageData.hasImage() || mContext == null) {
             return;
         }
@@ -87,16 +88,6 @@ public class RecognizePersonWithBackCameraCameraManagerTask implements CameraMan
         }
 
         CameraFrameDetections detections = OpenCVHelper.detectObjectsOnImageMat(mContext, rotatedMat);
-        List<CameraFrameDetectionItem> detectionItems = detections.detections();
-        for (int i = 0; i < detectionItems.size(); ++i) {
-            CameraFrameDetectionItem detectionItem = detectionItems.get(i);
-
-            Log.d(
-                    "tag",
-                    "DETECTION_" + i +
-                            ": " + detectionItem.classId() +
-                            " - " + detectionItem.className() +
-                            " - " + detectionItem.confidence());
-        }
+        mOnFrameDetections.onFrameDetections(detections);
     }
 }
