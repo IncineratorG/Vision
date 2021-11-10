@@ -890,7 +890,7 @@ public class CameraService {
     }
 
     private int getPersonInFrameCount(CameraFrameDetections frameDetections) {
-        int personClassId = OpenCVHelper.getClassForDetectableObjectType("tvmonitor");
+        int personClassId = OpenCVHelper.getClassForDetectableObjectType("person");
         if (personClassId < 0) {
             return 0;
         }
