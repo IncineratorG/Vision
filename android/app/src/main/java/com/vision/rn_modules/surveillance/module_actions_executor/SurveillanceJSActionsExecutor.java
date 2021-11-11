@@ -13,6 +13,7 @@ import com.vision.rn_modules.surveillance.module_actions_executor.handlers.GetAp
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.GetDevicesInGroupHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_SentTestNotificationHandler;
+import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler_V2;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestMotionSensorHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestStartBackCameraHandler;
@@ -43,7 +44,8 @@ public class SurveillanceJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(SurveillanceJSActionTypes.TEST_REQUEST, new Test_TestRequestHandler());
         mHandlers.put(SurveillanceJSActionTypes.SEND_TEST_NOTIFICATION, new Test_SentTestNotificationHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_MOTION_SENSOR, new Test_TestMotionSensorHandler());
-        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler_V2());
+//        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler_V2());
+        mHandlers.put(SurveillanceJSActionTypes.TEST_CAMERA_MOTION_DETECTION, new Test_TestCameraMotionDetectionHandler());
 
         mHandlers.put(SurveillanceJSActionTypes.TEST_START_CAMERA_PREVIEW, new Test_TestStartCameraPreviewHandler());
         mHandlers.put(SurveillanceJSActionTypes.TEST_STOP_CAMERA_PREVIEW, new Test_TestStopCameraPreviewHandler());

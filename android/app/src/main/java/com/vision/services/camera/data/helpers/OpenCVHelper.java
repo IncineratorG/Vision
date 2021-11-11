@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
 import com.vision.services.camera.data.camera_frame_detections.item.CameraFrameDetectionItem;
-import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
+import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.AssetFilesHelper;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
@@ -32,6 +32,8 @@ public class OpenCVHelper {
     private static boolean mInitialized = false;
     private static String mCaffeModelFileName = "MobileNetSSD_deploy.caffemodel";
     private static String mCaffeModelProtoFileName = "MobileNetSSD_deploy.prototxt";
+    private static File mCaffeModelFile = null;
+    private static File mCaffeModelProtoFile = null;
     private static String[] mDetectedClassNames = new String[] {"background",
             "aeroplane", "bicycle", "bird", "boat",
             "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
@@ -229,39 +231,48 @@ public class OpenCVHelper {
             return new CameraFrameDetections();
         }
 
-        boolean modelFileExists = false;
-        File modelFile = context.getExternalFilesDir(mCaffeModelFileName);
-        if (modelFile != null && modelFile.exists()) {
-            modelFileExists = true;
-        } else {
-            copyDnnModelAssets(context);
-            modelFile = context.getExternalFilesDir(mCaffeModelFileName);
-            if (modelFile == null || !modelFile.exists()) {
-                Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_MODEL_ASSETS");
-                return new CameraFrameDetections();
-            }
-        }
+//        boolean modelFileExists = false;
+//        File modelFile = context.getExternalFilesDir(mCaffeModelFileName);
+//        if (modelFile != null && modelFile.exists()) {
+//            modelFileExists = true;
+//        } else {
+//            copyDnnModelAssets(context);
+//            modelFile = context.getExternalFilesDir(mCaffeModelFileName);
+//            if (modelFile == null || !modelFile.exists()) {
+//                Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_MODEL_ASSETS");
+//                return new CameraFrameDetections();
+//            }
+//        }
 
-        boolean protoFileExists = false;
-        File protoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
-        if (protoFile != null && protoFile.exists()) {
-            protoFileExists = true;
-        } else {
-            copyDnnModelAssets(context);
-            protoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
-            if (protoFile == null || !protoFile.exists()) {
-                Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_PROTO_ASSETS");
-                return new CameraFrameDetections();
-            }
-        }
+//        boolean protoFileExists = false;
+//        File protoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
+//        if (protoFile != null && protoFile.exists()) {
+//            protoFileExists = true;
+//        } else {
+//            copyDnnModelAssets(context);
+//            protoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
+//            if (protoFile == null || !protoFile.exists()) {
+//                Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->UNABLE_TO_LOAD_PROTO_ASSETS");
+//                return new CameraFrameDetections();
+//            }
+//        }
 
-        if (!modelFileExists || !protoFileExists) {
-            Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->BAD_MODEL_OR_PROTO_FILE");
-            return new CameraFrameDetections();
+//        if (!modelFileExists || !protoFileExists) {
+//            Log.d("tag", "OpenCVHelper->detectObjectsOnImageMat()->BAD_MODEL_OR_PROTO_FILE");
+//            return new CameraFrameDetections();
+//        }
+
+        if (mCaffeModelFile == null || mCaffeModelProtoFile == null) {
+            copyDnnModelAssets(context);
+
+            mCaffeModelFile = context.getExternalFilesDir(mCaffeModelFileName);
+            mCaffeModelProtoFile = context.getExternalFilesDir(mCaffeModelProtoFileName);
         }
 
         Mat inputFrame = new Mat();
         Imgproc.cvtColor(rgbaMat, inputFrame, Imgproc.COLOR_RGBA2RGB);
+//        Imgproc.cvtColor(rgbaMat, inputFrame, Imgproc.COLOR_BGRA2RGB);
+//        Imgproc.COLOR_BGRA2RGB;
 
         Mat blob = Dnn.blobFromImage(
                 inputFrame,
@@ -272,8 +283,10 @@ public class OpenCVHelper {
         );
 
         if (mNet == null || mNet.empty()) {
-            mNet = Dnn.readNetFromCaffe(protoFile.getAbsolutePath(), modelFile.getAbsolutePath());
+            mNet = Dnn.readNetFromCaffe(mCaffeModelProtoFile.getAbsolutePath(), mCaffeModelFile.getAbsolutePath());
+//            mNet = Dnn.readNetFromCaffe(protoFile.getAbsolutePath(), modelFile.getAbsolutePath());
         }
+
         mNet.setInput(blob);
         Mat detections = mNet.forward();
 
@@ -347,6 +360,6 @@ public class OpenCVHelper {
         assetsToCopy.add(mCaffeModelFileName);
         assetsToCopy.add(mCaffeModelProtoFileName);
 
-        CopyAssetsHelper.copyAssets(context, assetsToCopy);
+        AssetFilesHelper.copyAssets(context, assetsToCopy);
     }
 }

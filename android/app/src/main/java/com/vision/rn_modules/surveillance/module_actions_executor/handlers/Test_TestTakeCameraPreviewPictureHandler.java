@@ -12,7 +12,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
-import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.CopyAssetsHelper;
+import com.vision.rn_modules.surveillance.module_actions_executor.handlers.helpers.AssetFilesHelper;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -253,6 +253,6 @@ public class Test_TestTakeCameraPreviewPictureHandler implements JSActionHandler
         assetsToCopy.add("MobileNetSSD_deploy.prototxt");
         assetsToCopy.add("image.jpg");
 
-        CopyAssetsHelper.copyAssets(context, assetsToCopy);
+        AssetFilesHelper.copyAssets(context, assetsToCopy);
     }
 }
