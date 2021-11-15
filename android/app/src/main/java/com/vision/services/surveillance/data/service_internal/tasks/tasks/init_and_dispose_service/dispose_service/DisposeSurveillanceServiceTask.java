@@ -16,18 +16,15 @@ public class DisposeSurveillanceServiceTask implements ServiceSyncTask {
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
-    private String mCurrentServiceMode;
 
     public DisposeSurveillanceServiceTask(Context context,
                                           String currentGroupName,
                                           String currentGroupPassword,
-                                          String currentDeviceName,
-                                          String currentServiceMode) {
+                                          String currentDeviceName) {
         mContext = context;
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;
         mCurrentDeviceName = currentDeviceName;
-        mCurrentServiceMode = currentServiceMode;
     }
 
     @Override
@@ -49,13 +46,14 @@ public class DisposeSurveillanceServiceTask implements ServiceSyncTask {
                 mCurrentGroupName,
                 mCurrentGroupPassword,
                 mCurrentDeviceName,
-                mCurrentServiceMode,
                 (data) -> {},
                 (error) -> {}
         ).run(null);
 
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
-        mInternalData.mCommunicationManager.stopIsAliveSignaling(mContext);
+        if (mInternalData.communicationManager != null) {
+            mInternalData.communicationManager.stopIsAliveSignaling(mContext);
+        }
 
         return null;
     }

@@ -16,16 +16,16 @@ import com.vision.services.surveillance.data.service_errors.external_service_err
 public class SurveillanceServiceInternalData {
     private static SurveillanceServiceInternalData sInstance;
 
-    public ExternalServiceErrorsMapper mErrorsMapper;
-    public String mCurrentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
-    public ForegroundServiceWork mForegroundServiceWork;
-    public ServiceRequestsExecutor mRequestsExecutor;
-    public ServiceRequestSender mRequestsSender;
-    public ServiceResponsesExecutor mResponsesExecutor;
-    public ServiceResponseSender mResponseSender;
-    public ServiceCommunicationManager mCommunicationManager;
-    public ServiceNotificationsManager mNotificationsManager;
-    public PowerManager.WakeLock mServiceWakeLock;
+    public ExternalServiceErrorsMapper errorsMapper;
+    public String currentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
+    public ForegroundServiceWork foregroundServiceWork;
+    public ServiceRequestsExecutor requestsExecutor;
+    public ServiceRequestSender requestsSender;
+    public ServiceResponsesExecutor responsesExecutor;
+    public ServiceResponseSender responseSender;
+    public ServiceCommunicationManager communicationManager;
+    public ServiceNotificationsManager notificationsManager;
+    public PowerManager.WakeLock serviceWakeLock;
 
     private SurveillanceServiceInternalData() {
 

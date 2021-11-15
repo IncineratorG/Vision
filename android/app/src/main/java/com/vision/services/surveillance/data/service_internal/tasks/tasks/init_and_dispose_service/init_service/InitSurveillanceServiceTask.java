@@ -49,7 +49,7 @@ public class InitSurveillanceServiceTask implements ServiceSyncTask {
 
             SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-            mInternalData.mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
+            mInternalData.currentServiceMode = AppConstants.DEVICE_MODE_USER;
 
             List<String> currentRequestsPath = FBSPathsService.get().requestsPath(
                     mGroupName,
@@ -67,23 +67,23 @@ public class InitSurveillanceServiceTask implements ServiceSyncTask {
                     mDeviceName
             );
 
-            mInternalData.mRequestsExecutor = new FBSRequestsExecutor();
-            mInternalData.mRequestsSender = new FBSRequestSender();
+            mInternalData.requestsExecutor = new FBSRequestsExecutor();
+            mInternalData.requestsSender = new FBSRequestSender();
 
-            mInternalData.mResponsesExecutor = new FBSResponsesExecutor();
-            mInternalData.mResponseSender = new FBSResponseSender();
+            mInternalData.responsesExecutor = new FBSResponsesExecutor();
+            mInternalData.responseSender = new FBSResponseSender();
 
-            mInternalData.mCommunicationManager = new FBSCommunicationManager(
-                    mInternalData.mRequestsExecutor,
-                    mInternalData.mResponsesExecutor,
-                    mInternalData.mRequestsSender,
-                    mInternalData.mResponseSender,
+            mInternalData.communicationManager = new FBSCommunicationManager(
+                    mInternalData.requestsExecutor,
+                    mInternalData.responsesExecutor,
+                    mInternalData.requestsSender,
+                    mInternalData.responseSender,
                     currentRequestsPath,
                     currentResponsesPath,
                     currentUpdateFieldPath
             );
 
-            mInternalData.mCommunicationManager.startIsAliveSignaling(mContext);
+            mInternalData.communicationManager.startIsAliveSignaling(mContext);
 
             SurveillanceServiceInternalTasks.startListenToResponsesTask(mContext).run(null);
 //            mStartListenRoResponsesTask.run(null);

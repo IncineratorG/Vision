@@ -52,7 +52,7 @@ public class SubscribeToGlobalNotificationsTask implements ServiceSyncTask {
         };
         OnTaskError<ServiceError> errorCallback = (error) -> {
             mOnError.onError(
-                    mInternalData.mErrorsMapper.mapToSurveillanceServiceError(
+                    mInternalData.errorsMapper.mapToSurveillanceServiceError(
                             ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE_TYPE,
                             error
                     )

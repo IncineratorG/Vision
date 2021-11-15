@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
+import com.vision.common.data.hybrid_objects.authentication_data.AuthenticationData;
 import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
@@ -42,8 +43,6 @@ public class SurveillanceService implements
         ServiceNotificationSender {
     public static final String NAME = "SurveillanceService";
 
-    private final String SERVICE_WAKE_LOCK_TAG = "Vision:ServiceWakeLockTag";
-
     private static SurveillanceService sInstance;
 
     private SurveillanceServiceInternalData mInternalData;
@@ -51,8 +50,8 @@ public class SurveillanceService implements
     private SurveillanceService() {
         mInternalData = SurveillanceServiceInternalData.get();
 
-        mInternalData.mCurrentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
-        mInternalData.mErrorsMapper = new ExternalServiceErrorsMapper();
+        mInternalData.currentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
+        mInternalData.errorsMapper = new ExternalServiceErrorsMapper();
     }
 
     public static synchronized SurveillanceService get() {
@@ -104,11 +103,38 @@ public class SurveillanceService implements
                 currentGroupName(),
                 currentGroupPassword(),
                 currentDeviceName(),
-                currentServiceMode(),
                 onSuccess,
                 onError
         ).run(null);
     }
+
+    public void restoreDeviceInGroup(Context context,
+                                     AuthenticationData lastAuthenticationData,
+                                     OnTaskSuccess<Void> onSuccess,
+                                     OnTaskError<ServiceError> onError) {
+        SurveillanceServiceInternalTasks.restoreDeviceInGroupTask(
+                context,
+                lastAuthenticationData.groupName(),
+                lastAuthenticationData.groupPassword(),
+                lastAuthenticationData.deviceName(),
+                onSuccess,
+                onError
+        ).run(null);
+    }
+
+//    public void logoutDeviceFromGroup(Context context,
+//                                      AuthenticationData lastAuthenticationData,
+//                                      OnTaskSuccess<Void> onSuccess,
+//                                      OnTaskError<ServiceError> onError) {
+//        SurveillanceServiceInternalTasks.logoutDeviceFromGroupTask(
+//                context,
+//                lastAuthenticationData.groupName(),
+//                lastAuthenticationData.groupPassword(),
+//                lastAuthenticationData.deviceName(),
+//                onSuccess,
+//                onError
+//        ).run(null);
+//    }
 
     public boolean isInitialized() {
         IsServiceInitializedTask task =
@@ -166,8 +192,6 @@ public class SurveillanceService implements
                 currentGroupName(),
                 currentGroupPassword(),
                 currentDeviceName(),
-                currentServiceMode(),
-                SERVICE_WAKE_LOCK_TAG,
                 onSuccess,
                 onError
         ).run(null);
@@ -184,7 +208,6 @@ public class SurveillanceService implements
                 currentGroupName(),
                 currentGroupPassword(),
                 currentDeviceName(),
-                currentServiceMode(),
                 onSuccess,
                 onError
         ).run(null);
@@ -300,16 +323,16 @@ public class SurveillanceService implements
     // ===
 
     public ServiceNotificationsExecutor notificationsExecutor() {
-        if (mInternalData.mNotificationsManager == null) {
-            mInternalData.mNotificationsManager = new FBSNotificationsManager();
+        if (mInternalData.notificationsManager == null) {
+            mInternalData.notificationsManager = new FBSNotificationsManager();
         }
 
-        return mInternalData.mNotificationsManager;
+        return mInternalData.notificationsManager;
     }
 
     public ForegroundServiceWork foregroundServiceWork() {
-        mInternalData.mForegroundServiceWork = new FBSForegroundServiceWork(mInternalData.mCommunicationManager);
-        return mInternalData.mForegroundServiceWork;
+        mInternalData.foregroundServiceWork = new FBSForegroundServiceWork(mInternalData.communicationManager);
+        return mInternalData.foregroundServiceWork;
     }
 
     @Override
@@ -320,7 +343,7 @@ public class SurveillanceService implements
                             OnRequestDeliveredCallback onDeliveredCallback,
                             OnRequestResponseCallback onResponseCallback,
                             OnRequestErrorCallback onErrorCallback) {
-        mInternalData.mCommunicationManager.sendRequest(
+        mInternalData.communicationManager.sendRequest(
                 groupName,
                 groupPassword,
                 receiverDeviceName,
@@ -333,7 +356,7 @@ public class SurveillanceService implements
 
     @Override
     public boolean cancelRequest(String requestId) {
-        return mInternalData.mCommunicationManager.cancelRequest(requestId);
+        return mInternalData.communicationManager.cancelRequest(requestId);
     }
 
     @Override
@@ -341,15 +364,15 @@ public class SurveillanceService implements
                              String groupPassword,
                              String receiverDeviceName,
                              ServiceResponse response) {
-        mInternalData.mCommunicationManager.sendResponse(groupName, groupPassword, receiverDeviceName, response);
+        mInternalData.communicationManager.sendResponse(groupName, groupPassword, receiverDeviceName, response);
     }
 
     @Override
     public void sendNotificationToAll(Context context, ServiceNotification notification) {
-        if (mInternalData.mNotificationsManager == null) {
-            mInternalData.mNotificationsManager = new FBSNotificationsManager();
+        if (mInternalData.notificationsManager == null) {
+            mInternalData.notificationsManager = new FBSNotificationsManager();
         }
-        mInternalData.mNotificationsManager.sendNotificationToAll(context, notification);
+        mInternalData.notificationsManager.sendNotificationToAll(context, notification);
     }
 }
 

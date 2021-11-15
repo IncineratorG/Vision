@@ -20,7 +20,9 @@ public class FBSForegroundServiceWork implements ForegroundServiceWork {
 
     @Override
     public void stop(Context context) {
-        mCommunicationManager.stopRequestsListener(context);
+        if (mCommunicationManager != null) {
+            mCommunicationManager.stopRequestsListener(context);
+        }
     }
 }
 

@@ -18,7 +18,6 @@ public class LogoutDeviceFromGroupTask implements ServiceSyncTask {
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
-    private String mCurrentServiceMode;
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
@@ -26,14 +25,12 @@ public class LogoutDeviceFromGroupTask implements ServiceSyncTask {
                                      String currentGroupName,
                                      String currentGroupPassword,
                                      String currentDeviceName,
-                                     String currentServiceMode,
                                      OnTaskSuccess<Void> onSuccess,
                                      OnTaskError<ServiceError> onError) {
         mContext = context;
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;
         mCurrentDeviceName = currentDeviceName;
-        mCurrentServiceMode = currentServiceMode;
         mOnSuccess = onSuccess;
         mOnError = onError;
     }
@@ -48,7 +45,7 @@ public class LogoutDeviceFromGroupTask implements ServiceSyncTask {
             SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
             mOnError.onError(
-                    mInternalData.mErrorsMapper.mapToSurveillanceServiceError(
+                    mInternalData.errorsMapper.mapToSurveillanceServiceError(
                             ExternalServiceErrorsMapper.AUTH_SERVICE_TYPE,
                             error
                     )
@@ -59,8 +56,7 @@ public class LogoutDeviceFromGroupTask implements ServiceSyncTask {
                 mContext,
                 mCurrentGroupName,
                 mCurrentGroupPassword,
-                mCurrentDeviceName,
-                mCurrentServiceMode
+                mCurrentDeviceName
         ).run(null);
         AuthService.get().logoutDeviceFromGroup(successCallback, errorCallback);
 

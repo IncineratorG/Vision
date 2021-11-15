@@ -10,6 +10,6 @@ public class GetCurrentServiceModeTask implements ServiceSyncTask {
     public Object run(Map<String, Object> params) {
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-        return mInternalData.mCurrentServiceMode;
+        return mInternalData.currentServiceMode;
     }
 }

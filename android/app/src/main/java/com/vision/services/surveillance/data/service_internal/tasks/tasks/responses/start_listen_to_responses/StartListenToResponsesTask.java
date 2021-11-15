@@ -19,12 +19,12 @@ public class StartListenToResponsesTask implements ServiceSyncTask {
     public Object run(Map<String, Object> params) {
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-        if (mInternalData.mCommunicationManager == null) {
+        if (mInternalData.communicationManager == null) {
             Log.d("tag", "StartListenToResponsesSurveillanceServiceTask->run(): COMMUNICATION_MANAGER_NOT_INITIALIZED");
             return null;
         }
 
-        mInternalData.mCommunicationManager.startResponsesListener(mContext);
+        mInternalData.communicationManager.startResponsesListener(mContext);
 
         return null;
     }

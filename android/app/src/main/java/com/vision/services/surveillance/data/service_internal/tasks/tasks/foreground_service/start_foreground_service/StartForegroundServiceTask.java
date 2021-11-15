@@ -24,8 +24,6 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
-    private String mCurrentServiceMode;
-    private String mServiceWakeLockTag;
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
@@ -34,8 +32,6 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
                                       String currentGroupName,
                                       String currentGroupPassword,
                                       String currentDeviceName,
-                                      String currentServiceMode,
-                                      String serviceWakeLockTag,
                                       OnTaskSuccess<Void> onSuccess,
                                       OnTaskError<ServiceError> onError) {
         mContext = context;
@@ -43,8 +39,6 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;
         mCurrentDeviceName = currentDeviceName;
-        mCurrentServiceMode = currentServiceMode;
-        mServiceWakeLockTag = serviceWakeLockTag;
         mOnSuccess = onSuccess;
         mOnError = onError;
     }
@@ -66,17 +60,17 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
 
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-        if (mInternalData.mServiceWakeLock != null && mInternalData.mServiceWakeLock.isHeld()) {
-            mInternalData.mServiceWakeLock.release();
-            mInternalData.mServiceWakeLock = null;
+        if (mInternalData.serviceWakeLock != null && mInternalData.serviceWakeLock.isHeld()) {
+            mInternalData.serviceWakeLock.release();
+            mInternalData.serviceWakeLock = null;
         }
 
         PowerManager powerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 
-        mInternalData.mServiceWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, mServiceWakeLockTag);
-        mInternalData.mServiceWakeLock.acquire();
+        mInternalData.serviceWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, AppConstants.SERVICE_WAKE_LOCK_TAG);
+        mInternalData.serviceWakeLock.acquire();
 
-        mInternalData.mCurrentServiceMode = AppConstants.DEVICE_MODE_SERVICE;
+        mInternalData.currentServiceMode = AppConstants.DEVICE_MODE_SERVICE;
 
         Intent serviceIntent = new Intent(mContext, SurveillanceForegroundService.class);
         serviceIntent.setAction("start");
@@ -88,7 +82,7 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
                 mCurrentGroupName,
                 mCurrentGroupPassword,
                 mCurrentDeviceName,
-                mInternalData.mCurrentServiceMode,
+                mInternalData.currentServiceMode,
                 mOnSuccess,
                 mOnError
         ).run(null);

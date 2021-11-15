@@ -40,7 +40,7 @@ public class UnsubscribeFromGlobalNotificationsTask implements ServiceSyncTask {
         OnTaskSuccess<Void> successCallback = (data) -> mOnSuccess.onSuccess(null);
         OnTaskError<ServiceError> errorCallback = (error) -> {
             mOnError.onError(
-                    mInternalData.mErrorsMapper.mapToSurveillanceServiceError(
+                    mInternalData.errorsMapper.mapToSurveillanceServiceError(
                             ExternalServiceErrorsMapper.FBS_MESSAGING_SERVICE_TYPE,
                             error
                     )

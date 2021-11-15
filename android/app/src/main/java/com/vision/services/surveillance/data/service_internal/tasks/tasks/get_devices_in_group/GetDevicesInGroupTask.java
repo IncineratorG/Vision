@@ -38,7 +38,7 @@ public class GetDevicesInGroupTask implements ServiceSyncTask {
             SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
             mOnError.onError(
-                    mInternalData.mErrorsMapper.mapToSurveillanceServiceError(
+                    mInternalData.errorsMapper.mapToSurveillanceServiceError(
                             ExternalServiceErrorsMapper.DEVICE_GROUP_SERVICE_TYPE,
                             error
                     )

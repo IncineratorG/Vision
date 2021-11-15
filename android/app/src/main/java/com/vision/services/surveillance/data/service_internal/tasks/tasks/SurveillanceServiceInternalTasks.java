@@ -9,6 +9,7 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
+import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.restore_device_in_group.RestoreDeviceInGroupTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.create_group_with_device.CreateGroupWithDeviceTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
 import com.vision.services.surveillance.data.service_internal.tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
@@ -56,11 +57,10 @@ public class SurveillanceServiceInternalTasks {
             Context context,
             String currentGroupName,
             String currentGroupPassword,
-            String currentDeviceName,
-            String currentServiceMode
+            String currentDeviceName
     ) {
         return new DisposeSurveillanceServiceTask(
-                context, currentGroupName, currentGroupPassword, currentDeviceName, currentServiceMode
+                context, currentGroupName, currentGroupPassword, currentDeviceName
         );
     }
 
@@ -174,7 +174,6 @@ public class SurveillanceServiceInternalTasks {
             String currentGroupName,
             String currentGroupPassword,
             String currentDeviceName,
-            String currentServiceMode,
             OnTaskSuccess<Void> onSuccess,
             OnTaskError<ServiceError> onError
     ) {
@@ -183,7 +182,22 @@ public class SurveillanceServiceInternalTasks {
                 currentGroupName,
                 currentGroupPassword,
                 currentDeviceName,
-                currentServiceMode,
+                onSuccess,
+                onError
+        );
+    }
+
+    public static RestoreDeviceInGroupTask restoreDeviceInGroupTask(Context context,
+                                                                    String currentGroupName,
+                                                                    String currentGroupPassword,
+                                                                    String currentDeviceName,
+                                                                    OnTaskSuccess<Void> onSuccess,
+                                                                    OnTaskError<ServiceError> onError) {
+        return new RestoreDeviceInGroupTask(
+                context,
+                currentGroupName,
+                currentGroupPassword,
+                currentDeviceName,
                 onSuccess,
                 onError
         );
@@ -207,8 +221,6 @@ public class SurveillanceServiceInternalTasks {
             String currentGroupName,
             String currentGroupPassword,
             String currentDeviceName,
-            String currentServiceMode,
-            String serviceWakeLockTag,
             OnTaskSuccess<Void> onSuccess,
             OnTaskError<ServiceError> onError
     ) {
@@ -218,8 +230,6 @@ public class SurveillanceServiceInternalTasks {
                 currentGroupName,
                 currentGroupPassword,
                 currentDeviceName,
-                currentServiceMode,
-                serviceWakeLockTag,
                 onSuccess,
                 onError
         );
@@ -231,7 +241,6 @@ public class SurveillanceServiceInternalTasks {
             String currentGroupName,
             String currentGroupPassword,
             String currentDeviceName,
-            String currentServiceMode,
             OnTaskSuccess<Void> onSuccess,
             OnTaskError<ServiceError> onError
     ) {
@@ -241,7 +250,6 @@ public class SurveillanceServiceInternalTasks {
                 currentGroupName,
                 currentGroupPassword,
                 currentDeviceName,
-                currentServiceMode,
                 onSuccess,
                 onError
         );

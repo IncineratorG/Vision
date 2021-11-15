@@ -25,7 +25,6 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
     private String mCurrentGroupName;
     private String mCurrentGroupPassword;
     private String mCurrentDeviceName;
-    private String mCurrentServiceMode;
     private OnTaskSuccess<Void> mOnSuccess;
     private OnTaskError<ServiceError> mOnError;
 
@@ -34,7 +33,6 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
                                      String currentGroupName,
                                      String currentGroupPassword,
                                      String currentDeviceName,
-                                     String currentServiceMode,
                                      OnTaskSuccess<Void> onSuccess,
                                      OnTaskError<ServiceError> onError) {
         mContext = context;
@@ -42,7 +40,6 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
         mCurrentGroupName = currentGroupName;
         mCurrentGroupPassword = currentGroupPassword;
         mCurrentDeviceName = currentDeviceName;
-        mCurrentServiceMode = currentServiceMode;
         mOnSuccess = onSuccess;
         mOnError = onError;
     }
@@ -64,12 +61,12 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
 
         SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-        if ((mInternalData.mServiceWakeLock != null) && (mInternalData.mServiceWakeLock.isHeld())) {
-            mInternalData.mServiceWakeLock.release();
-            mInternalData.mServiceWakeLock = null;
+        if ((mInternalData.serviceWakeLock != null) && (mInternalData.serviceWakeLock.isHeld())) {
+            mInternalData.serviceWakeLock.release();
+            mInternalData.serviceWakeLock = null;
         }
 
-        mInternalData.mCurrentServiceMode = AppConstants.DEVICE_MODE_USER;
+        mInternalData.currentServiceMode = AppConstants.DEVICE_MODE_USER;
 
         Intent serviceIntent = new Intent(mContext, SurveillanceForegroundService.class);
         serviceIntent.setAction("stop");
@@ -88,7 +85,7 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
                 mCurrentGroupName,
                 mCurrentGroupPassword,
                 mCurrentDeviceName,
-                mInternalData.mCurrentServiceMode,
+                mInternalData.currentServiceMode,
                 mOnSuccess,
                 mOnError
         ).run(null);

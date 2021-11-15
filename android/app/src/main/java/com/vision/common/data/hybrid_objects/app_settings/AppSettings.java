@@ -87,8 +87,6 @@ public class AppSettings implements HybridObject {
 
         if (mInitializedFromStringifiedObject) {
             mWritableMap = new WritableNativeMap();
-
-            mWritableMap = new WritableNativeMap();
             try {
                 // ===
                 JSONObject surveillanceSettingsObject = mJSONObject.getJSONObject(SURVEILLANCE_SETTINGS_FIELD);

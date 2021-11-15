@@ -51,5 +51,9 @@ public class IsDeviceAliveServiceHandler implements ServiceRequestHandler {
         } else {
             Log.d("tag", "IsDeviceAliveServiceHandler->handle()->BAD_REQUEST_KEY: " + request.stringify());
         }
+
+        // ===
+        int a = 2 / 0;
+        // ===
     }
 }
