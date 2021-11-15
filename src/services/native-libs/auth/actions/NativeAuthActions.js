@@ -10,6 +10,7 @@ const NativeFirebaseActions = () => {
       IS_LOGGED_IN,
       LOGIN_DEVICE_IN_GROUP,
       LOGOUT_DEVICE_FROM_GROUP,
+      GET_CURRENT_AUTHENTICATION_DATA,
     },
   } = NativeAuthConstants;
 
@@ -68,6 +69,12 @@ const NativeFirebaseActions = () => {
     };
   };
 
+  const getCurrentAuthenticationDataAction = () => {
+    return {
+      type: GET_CURRENT_AUTHENTICATION_DATA,
+    };
+  };
+
   return {
     isDeviceGroupExistAction,
     createGroupWithDeviceAction,
@@ -76,6 +83,7 @@ const NativeFirebaseActions = () => {
     isLoggedInAction,
     loginDeviceInGroupAction,
     logoutDeviceFromGroupAction,
+    getCurrentAuthenticationDataAction,
   };
 };
 

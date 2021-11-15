@@ -5,6 +5,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.rn_modules.auth.module_actions.types.AuthJSActionTypes;
 import com.vision.rn_modules.auth.module_actions_executor.handlers.CreateGroupWithDeviceHandler;
+import com.vision.rn_modules.auth.module_actions_executor.handlers.GetCurrentAuthenticationDataHandler;
 import com.vision.rn_modules.auth.module_actions_executor.handlers.IsDeviceGroupExistHandler;
 import com.vision.rn_modules.auth.module_actions_executor.handlers.IsDeviceNameAvailableHandler;
 import com.vision.rn_modules.auth.module_actions_executor.handlers.IsLoggedInHandler;
@@ -32,6 +33,7 @@ public class AuthJSActionsExecutor implements JSActionsExecutor {
         mHandlers.put(AuthJSActionTypes.IS_LOGGED_IN, new IsLoggedInHandler());
         mHandlers.put(AuthJSActionTypes.LOGIN_DEVICE_IN_GROUP, new LoginDeviceInGroupHandler());
         mHandlers.put(AuthJSActionTypes.LOGOUT_DEVICE_FROM_GROUP, new LogoutDeviceFromGroupHandler());
+        mHandlers.put(AuthJSActionTypes.GET_CURRENT_AUTHENTICATION_DATA, new GetCurrentAuthenticationDataHandler());
     }
 
     @Override

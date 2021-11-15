@@ -8,4 +8,5 @@ public class AuthJSActionTypes {
     public static final String IS_LOGGED_IN = "IS_LOGGED_IN";
     public static final String LOGIN_DEVICE_IN_GROUP = "LOGIN_DEVICE_IN_GROUP";
     public static final String LOGOUT_DEVICE_FROM_GROUP = "LOGOUT_DEVICE_FROM_GROUP";
+    public static final String GET_CURRENT_AUTHENTICATION_DATA = "GET_CURRENT_AUTHENTICATION_DATA";
 }

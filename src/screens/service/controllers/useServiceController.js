@@ -3,6 +3,7 @@ import {BackHandler} from 'react-native';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import AppActions from '../../../store/actions/AppActions';
 import Services from '../../../services/Services';
+import AppRoutes from '../../../data/common/routes/AppRoutes';
 
 const useServiceController = (model) => {
   const {navigation, dispatch} = model;
@@ -14,10 +15,18 @@ const useServiceController = (model) => {
   }, []);
 
   const stopService = useCallback(() => {
-    SystemEventsHandler.onInfo({info: 'useServiceController()->stopService()'});
+    const stopServiceAsync = async () => {
+      dispatch(AppActions.auth.actions.clearAuthInfo());
+      dispatch(AppActions.surveillanceCommon.actions.stopServiceFinished());
 
-    dispatch(AppActions.surveillanceCommon.actions.stopService());
-  }, [dispatch]);
+      await Services.services().surveillanceService.stopService();
+      await Services.services().authService.logoutFromGroup();
+
+      navigation.navigate(AppRoutes.Authorisation);
+    };
+
+    stopServiceAsync();
+  }, [dispatch, navigation]);
 
   const testCameraPressHandler = useCallback(() => {
     SystemEventsHandler.onInfo({

@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';

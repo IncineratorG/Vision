@@ -10,6 +10,7 @@ const NativeAuthConstants = () => {
       IS_LOGGED_IN,
       LOGIN_DEVICE_IN_GROUP,
       LOGOUT_DEVICE_FROM_GROUP,
+      GET_CURRENT_AUTHENTICATION_DATA,
     },
   } = NativeAuthLib.getConstants();
 
@@ -22,6 +23,7 @@ const NativeAuthConstants = () => {
       IS_LOGGED_IN,
       LOGIN_DEVICE_IN_GROUP,
       LOGOUT_DEVICE_FROM_GROUP,
+      GET_CURRENT_AUTHENTICATION_DATA,
     },
   };
 };

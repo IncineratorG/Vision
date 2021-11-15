@@ -14,7 +14,6 @@ import com.vision.rn_modules.surveillance.module_actions_executor.handlers.GetDe
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.IsServiceRunningHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_SentTestNotificationHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler;
-import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestCameraMotionDetectionHandler_V2;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestMotionSensorHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestStartBackCameraHandler;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.Test_TestStartCameraPreviewHandler;
