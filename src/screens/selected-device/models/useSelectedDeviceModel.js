@@ -6,6 +6,7 @@ import selectedDeviceLocalReducer from '../store/selectedDeviceLocalReducer';
 import selectedDeviceLocalState from '../store/selectedDeviceLocalState';
 import SelectedDeviceLocalActions from '../store/SelectedDeviceLocalActions';
 import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
+import useTakeBackCameraImageRequestSelectedDeviceScreenBehavior from '../hooks/take-back-camera-image-request/useTakeBackCameraImageRequestSelectedDeviceScreenBehavior';
 
 const useSelectedDeviceModel = () => {
   const navigation = useNavigation();
@@ -27,6 +28,11 @@ const useSelectedDeviceModel = () => {
   } = useSelector(
     (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
   );
+
+  useTakeBackCameraImageRequestSelectedDeviceScreenBehavior({
+    localDispatch,
+    dispatch,
+  });
 
   const focusChangedCallback = useCallback(() => {
     if (!selectedDevice) {

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {ImageViewer} from 'react-native-image-zoom-viewer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {SystemEventsHandler} from '../../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const ImageViewerModal = ({visible, image, onClose}) => {
   const [internalVisible, setInternalVisible] = useState(false);

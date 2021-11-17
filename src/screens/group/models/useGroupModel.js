@@ -58,6 +58,7 @@ const useGroupModel = () => {
     (state) => state.surveillanceIsDeviceAliveRequest.isDeviceAliveRequest,
   );
 
+  /*
   useTakeBackCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useTakeFrontCameraImageRequestGroupScreenBehavior({localDispatch, dispatch});
   useToggleDetectDeviceMovementRequestGroupScreenBehavior({
@@ -84,6 +85,7 @@ const useGroupModel = () => {
     currentDeviceName,
     selectedDevice,
   });
+   */
 
   const focusChangedCallback = useCallback(() => {
     SystemEventsHandler.onInfo({

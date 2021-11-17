@@ -9,8 +9,8 @@ import {SystemEventsHandler} from '../../../../utils/common/system-events-handle
 
 const DeviceRequestsList = ({
   device,
-  onGetFrontCameraRequestPress,
-  onGetBackCameraRequestPress,
+  onGetFrontCameraImageRequestPress,
+  onGetBackCameraImageRequestPress,
   onToggleDetectDeviceMovementRequestPress,
   onToggleRecognizePersonWithFrontCameraRequestPress,
   onToggleRecognizePersonWithBackCameraRequestPress,
@@ -48,15 +48,15 @@ const DeviceRequestsList = ({
 
       switch (type) {
         case requestTypes.GET_FRONT_CAMERA_IMAGE: {
-          if (onGetFrontCameraRequestPress) {
-            onGetFrontCameraRequestPress({selectedDevice: device});
+          if (onGetFrontCameraImageRequestPress) {
+            onGetFrontCameraImageRequestPress({selectedDevice: device});
           }
           break;
         }
 
         case requestTypes.GET_BACK_CAMERA_IMAGE: {
-          if (onGetBackCameraRequestPress) {
-            onGetBackCameraRequestPress({selectedDevice: device});
+          if (onGetBackCameraImageRequestPress) {
+            onGetBackCameraImageRequestPress({selectedDevice: device});
           }
           break;
         }
@@ -98,8 +98,8 @@ const DeviceRequestsList = ({
     [
       device,
       requestTypes,
-      onGetFrontCameraRequestPress,
-      onGetBackCameraRequestPress,
+      onGetFrontCameraImageRequestPress,
+      onGetBackCameraImageRequestPress,
       onToggleDetectDeviceMovementRequestPress,
       onToggleRecognizePersonWithFrontCameraRequestPress,
       onToggleRecognizePersonWithBackCameraRequestPress,

@@ -4,9 +4,6 @@ import SimpleButton from '../../../components/common/simple-button/SimpleButton'
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
-import ImageViewerModal from '../../../components/specific/group/image-viewer-modal/ImageViewerModal';
-import CurrentRequestStatusDialog from '../../../components/specific/group/current-request-status-dialog/CurrentRequestStatusDialog';
-import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 import CameraRecognizePersonSettingsDialog from '../../../components/specific/group/camera-recognize-person-settings-dialog/CameraRecognizePersonSettingsDialog';
 
 const GroupView = ({model, controller}) => {
@@ -129,29 +126,29 @@ const GroupView = ({model, controller}) => {
     />
   );
 
-  const currentRequestStatusDialog = (
-    <CurrentRequestStatusDialog
-      visible={currentRequestStatusDialogVisible}
-      statusText={currentRequestStatusDialogStatusText}
-      leftButtonVisible={currentRequestStatusDialogLeftButtonVisible}
-      leftButtonText={currentRequestStatusDialogLeftButtonText}
-      leftButtonPressHandler={currentRequestStatusDialogLeftButtonPressHandler}
-      rightButtonVisible={currentRequestStatusDialogRightButtonVisible}
-      rightButtonText={currentRequestStatusDialogRightButtonText}
-      rightButtonPressHandler={
-        currentRequestStatusDialogRightButtonPressHandler
-      }
-      onCancel={currentRequestStatusDialogOnCancel}
-    />
-  );
+  // const currentRequestStatusDialog = (
+  //   <CurrentRequestStatusDialog
+  //     visible={currentRequestStatusDialogVisible}
+  //     statusText={currentRequestStatusDialogStatusText}
+  //     leftButtonVisible={currentRequestStatusDialogLeftButtonVisible}
+  //     leftButtonText={currentRequestStatusDialogLeftButtonText}
+  //     leftButtonPressHandler={currentRequestStatusDialogLeftButtonPressHandler}
+  //     rightButtonVisible={currentRequestStatusDialogRightButtonVisible}
+  //     rightButtonText={currentRequestStatusDialogRightButtonText}
+  //     rightButtonPressHandler={
+  //       currentRequestStatusDialogRightButtonPressHandler
+  //     }
+  //     onCancel={currentRequestStatusDialogOnCancel}
+  //   />
+  // );
 
-  const imageViewer = (
-    <ImageViewerModal
-      visible={imageViewerVisible}
-      image={imageViewerImage}
-      onClose={imageViewerCloseHandler}
-    />
-  );
+  // const imageViewer = (
+  //   <ImageViewerModal
+  //     visible={imageViewerVisible}
+  //     image={imageViewerImage}
+  //     onClose={imageViewerCloseHandler}
+  //   />
+  // );
 
   const cameraRecognizePersonSettingsDialog = (
     <CameraRecognizePersonSettingsDialog
@@ -199,9 +196,7 @@ const GroupView = ({model, controller}) => {
       {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
-      {currentRequestStatusDialog}
       {cameraRecognizePersonSettingsDialog}
-      {imageViewer}
     </View>
   );
 };
