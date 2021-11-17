@@ -10,7 +10,7 @@ import AppRoutes from '../../../data/common/routes/AppRoutes';
 import Loader from '../../../screens/loader/Loader';
 import Service from '../../../screens/service/Service';
 import Settings from '../../../screens/settings/Settings';
-import CameraTest from '../../../screens/camera-test/CameraTest';
+import SelectedDevice from '../../../screens/selected-device/SelectedDevice';
 
 const MainStack = createNativeStackNavigator();
 
@@ -38,10 +38,22 @@ const AppNavigation = () => {
           component={Loader}
           options={({navigation, route}) => ({
             headerShown: false,
+            // headerLeft: (props) => {
+            //   return null;
+            // },
+            title: 'Loader',
+            headerStatusBarHeight: 0,
+          })}
+        />
+        <MainStack.Screen
+          name={AppRoutes.SelectedDevice}
+          component={SelectedDevice}
+          options={({navigation, route}) => ({
+            headerShown: true,
             headerLeft: (props) => {
               return null;
             },
-            title: 'Loader',
+            title: 'Selected Device',
             headerStatusBarHeight: 0,
           })}
         />

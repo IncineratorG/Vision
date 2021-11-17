@@ -160,6 +160,19 @@ const ru = {
     'Выполнение',
   CurrentRequestStatusDialog_getCameraRecognizePersonSettingsRequestInProgressRightButtonText:
     'ОТМЕНА',
+
+  CheckingDeviceDialog_messageText: 'Проверка доступности устройства',
+  CheckingDeviceDialog_cancelButton: 'ОТМЕНА',
+
+  DeviceNotAvailable_messageText: 'Устройство не доступно',
+
+  DeviceRequestsList_getFrontCameraImage: 'Изображение передней камеры',
+  DeviceRequestsList_getBackCameraImage: 'Изображение задней камеры',
+  DeviceRequestsList_detectDeviceMovement: 'Следить за движением устройства',
+  DeviceRequestsList_recognizePersonWithFrontCamera:
+    'Реагировать на человека в кадре передней камеры',
+  DeviceRequestsList_recognizePersonWithBackCamera:
+    'Реагировать на человека в кадре задней камеры',
 };
 
 export default ru;

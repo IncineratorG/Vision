@@ -5,6 +5,7 @@ const AppRoutes = {
   Group: 'Group',
   Settings: 'Settings',
   Main: 'Main',
+  SelectedDevice: 'SelectedDevice',
 };
 
 export default AppRoutes;
