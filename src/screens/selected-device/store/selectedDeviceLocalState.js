@@ -15,6 +15,13 @@ const selectedDeviceLocalState = {
     visible: false,
     image: null,
   },
+  cameraRecognizePersonSettingsDialog: {
+    visible: false,
+    image: null,
+    confirmSettingsButtonPressHandler: null,
+    cancelButtonPressHandler: null,
+    onCancel: null,
+  },
 };
 
 export default selectedDeviceLocalState;

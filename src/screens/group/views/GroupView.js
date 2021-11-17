@@ -4,7 +4,6 @@ import SimpleButton from '../../../components/common/simple-button/SimpleButton'
 import GroupDevicesList from '../../../components/specific/group/group-devices-list/GroupDevicesList';
 import DeviceRequestsDialog from '../../../components/specific/group/device-requests-dialog/DeviceRequestsDialog';
 import SelectedDeviceErrorDialog from '../../../components/specific/group/selected-device-error-dialog/SelectedDeviceErrorDialog';
-import CameraRecognizePersonSettingsDialog from '../../../components/specific/group/camera-recognize-person-settings-dialog/CameraRecognizePersonSettingsDialog';
 
 const GroupView = ({model, controller}) => {
   const {
@@ -150,19 +149,19 @@ const GroupView = ({model, controller}) => {
   //   />
   // );
 
-  const cameraRecognizePersonSettingsDialog = (
-    <CameraRecognizePersonSettingsDialog
-      visible={cameraRecognizePersonSettingsDialogVisible}
-      image={cameraRecognizePersonSettingsDialogImage}
-      confirmSettingsButtonPressHandler={
-        cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler
-      }
-      cancelButtonPressHandler={
-        cameraRecognizePersonSettingsDialogCancelButtonPressHandler
-      }
-      onCancel={cameraRecognizePersonSettingsDialogOnCancel}
-    />
-  );
+  // const cameraRecognizePersonSettingsDialog = (
+  //   <CameraRecognizePersonSettingsDialog
+  //     visible={cameraRecognizePersonSettingsDialogVisible}
+  //     image={cameraRecognizePersonSettingsDialogImage}
+  //     confirmSettingsButtonPressHandler={
+  //       cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler
+  //     }
+  //     cancelButtonPressHandler={
+  //       cameraRecognizePersonSettingsDialogCancelButtonPressHandler
+  //     }
+  //     onCancel={cameraRecognizePersonSettingsDialogOnCancel}
+  //   />
+  // );
 
   return (
     <View style={styles.mainContainer}>
@@ -196,7 +195,6 @@ const GroupView = ({model, controller}) => {
       {updateDataIndicator}
       {deviceRequestsDialog}
       {selectedDeviceErrorDialog}
-      {cameraRecognizePersonSettingsDialog}
     </View>
   );
 };

@@ -6,7 +6,7 @@ import useTranslation from '../../../../utils/common/localization';
 import AppActions from '../../../../store/actions/AppActions';
 import SelectedDeviceLocalActions from '../../store/SelectedDeviceLocalActions';
 
-const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
+const useTakeFrontCameraImageRequestSelectedDeviceScreenBehavior = ({
   localDispatch,
   dispatch,
 }) => {
@@ -15,18 +15,18 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
   const [screenFocused, setScreenFocused] = useState(false);
 
   const {
-    inProgress: takeBackCameraImageRequestInProgress,
-    completed: takeBackCameraImageRequestCompleted,
+    inProgress: takeFrontCameraImageRequestInProgress,
+    completed: takeFrontCameraImageRequestCompleted,
     response: {
-      payload: {image: selectedDeviceBackCameraImage},
+      payload: {image: selectedDeviceFrontCameraImage},
     },
     error: {
-      hasError: takeBackCameraImageRequestHasError,
-      code: takeBackCameraImageRequestErrorCode,
+      hasError: takeFrontCameraImageRequestHasError,
+      code: takeFrontCameraImageRequestErrorCode,
     },
   } = useSelector(
     (state) =>
-      state.surveillanceTakeBackCameraImageRequest.takeBackCameraImageRequest,
+      state.surveillanceTakeFrontCameraImageRequest.takeFrontCameraImageRequest,
   );
 
   const focusChangedCallback = useCallback(() => {
@@ -42,23 +42,23 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
       return;
     }
 
-    if (takeBackCameraImageRequestInProgress) {
+    if (takeFrontCameraImageRequestInProgress) {
       localDispatch(
         SelectedDeviceLocalActions.actions.setCurrentRequestStatusDialogData({
           visible: true,
           statusText: t(
-            'CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressStatusText',
+            'CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressStatusText',
           ),
           leftButtonVisible: false,
           leftButtonText: '',
           leftButtonPressHandler: null,
           rightButtonVisible: true,
           rightButtonText: t(
-            'CurrentRequestStatusDialog_takeBackCameraImageRequestInProgressRightButtonText',
+            'CurrentRequestStatusDialog_takeFrontCameraImageRequestInProgressRightButtonText',
           ),
           rightButtonPressHandler: () => {
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.cancelSendTakeBackCameraImageRequest(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.cancelSendTakeFrontCameraImageRequest(),
             );
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -66,7 +66,7 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
           },
           onCancel: () => {
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.cancelSendTakeBackCameraImageRequest(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.cancelSendTakeFrontCameraImageRequest(),
             );
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -77,10 +77,10 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
     }
   }, [
     screenFocused,
-    takeBackCameraImageRequestInProgress,
+    takeFrontCameraImageRequestInProgress,
     localDispatch,
-    dispatch,
     t,
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -88,40 +88,40 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
       return;
     }
 
-    if (takeBackCameraImageRequestCompleted) {
+    if (takeFrontCameraImageRequestCompleted) {
       localDispatch(
         SelectedDeviceLocalActions.actions.setCurrentRequestStatusDialogData({
           visible: true,
           statusText: t(
-            'CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedStatusText',
+            'CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedStatusText',
           ),
           leftButtonVisible: true,
           leftButtonText: t(
-            'CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedLeftButtonText',
+            'CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedLeftButtonText',
           ),
           leftButtonPressHandler: () => {
             localDispatch(
               SelectedDeviceLocalActions.actions.openImageViewer({
-                image: selectedDeviceBackCameraImage,
+                image: selectedDeviceFrontCameraImage,
               }),
             );
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
             );
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
           },
           rightButtonVisible: true,
           rightButtonText: t(
-            'CurrentRequestStatusDialog_takeBackCameraImageRequestCompletedRightButtonText',
+            'CurrentRequestStatusDialog_takeFrontCameraImageRequestCompletedRightButtonText',
           ),
           rightButtonPressHandler: () => {
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
             );
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
           },
           onCancel: () => {
@@ -129,7 +129,7 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
             );
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
           },
         }),
@@ -137,11 +137,11 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
     }
   }, [
     screenFocused,
-    takeBackCameraImageRequestCompleted,
-    selectedDeviceBackCameraImage,
+    takeFrontCameraImageRequestCompleted,
+    selectedDeviceFrontCameraImage,
     localDispatch,
-    dispatch,
     t,
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -149,11 +149,11 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
       return;
     }
 
-    if (takeBackCameraImageRequestHasError) {
+    if (takeFrontCameraImageRequestHasError) {
       SystemEventsHandler.onInfo({
         info:
-          'useTakeBackCameraImageRequestSelectedDeviceScreenBehavior()->ERROR: ' +
-          takeBackCameraImageRequestErrorCode,
+          'useTakeFrontCameraImageRequestSelectedDeviceScreenBehavior()->ERROR: ' +
+          takeFrontCameraImageRequestErrorCode,
       });
 
       localDispatch(
@@ -169,7 +169,7 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
           ),
           rightButtonPressHandler: () => {
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -177,7 +177,7 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
           },
           onCancel: () => {
             dispatch(
-              AppActions.surveillanceTakeBackCameraImageRequest.actions.clear(),
+              AppActions.surveillanceTakeFrontCameraImageRequest.actions.clear(),
             );
             localDispatch(
               SelectedDeviceLocalActions.actions.clearCurrentRequestStatusDialogData(),
@@ -188,24 +188,24 @@ const useTakeBackCameraImageRequestSelectedDeviceScreenBehavior = ({
     }
   }, [
     screenFocused,
-    takeBackCameraImageRequestHasError,
-    takeBackCameraImageRequestErrorCode,
-    dispatch,
+    takeFrontCameraImageRequestHasError,
+    takeFrontCameraImageRequestErrorCode,
     localDispatch,
+    dispatch,
     t,
   ]);
 
   // return {
-  //   inProgress: takeBackCameraImageRequestInProgress,
-  //   completed: takeBackCameraImageRequestCompleted,
+  //   inProgress: takeFrontCameraImageRequestInProgress,
+  //   completed: takeFrontCameraImageRequestCompleted,
   //   response: {
-  //     payload: {image: selectedDeviceBackCameraImage},
+  //     payload: {image: selectedDeviceFrontCameraImage},
   //   },
   //   error: {
-  //     hasError: takeBackCameraImageRequestHasError,
-  //     code: takeBackCameraImageRequestErrorCode,
+  //     hasError: takeFrontCameraImageRequestHasError,
+  //     code: takeFrontCameraImageRequestErrorCode,
   //   },
   // };
 };
 
-export default useTakeBackCameraImageRequestSelectedDeviceScreenBehavior;
+export default useTakeFrontCameraImageRequestSelectedDeviceScreenBehavior;

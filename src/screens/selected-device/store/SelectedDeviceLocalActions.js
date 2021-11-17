@@ -9,6 +9,11 @@ const SelectedDeviceLocalActions = () => {
 
     OPEN_IMAGE_VIEWER: 'SDLA_OPEN_IMAGE_VIEWER',
     CLOSE_IMAGE_VIEWER: 'SDLA_CLOSE_IMAGE_VIEWER',
+
+    SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA:
+      'SDLA_SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG',
+    CLEAR_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA:
+      'SDLA_CLEAR_CURRENT_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA',
   };
 
   const setDeviceData = ({device}) => {
@@ -64,6 +69,31 @@ const SelectedDeviceLocalActions = () => {
     };
   };
 
+  const setCameraRecognizePersonSettingsDialogData = ({
+    visible,
+    image,
+    confirmSettingsButtonPressHandler,
+    cancelButtonPressHandler,
+    onCancel,
+  }) => {
+    return {
+      type: types.SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA,
+      payload: {
+        visible,
+        image,
+        confirmSettingsButtonPressHandler,
+        cancelButtonPressHandler,
+        onCancel,
+      },
+    };
+  };
+
+  const clearCameraRecognizePersonSettingsDialogData = () => {
+    return {
+      type: types.CLEAR_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA,
+    };
+  };
+
   return {
     types,
     actions: {
@@ -72,6 +102,8 @@ const SelectedDeviceLocalActions = () => {
       clearCurrentRequestStatusDialogData,
       openImageViewer,
       closeImageViewer,
+      setCameraRecognizePersonSettingsDialogData,
+      clearCameraRecognizePersonSettingsDialogData,
     },
   };
 };

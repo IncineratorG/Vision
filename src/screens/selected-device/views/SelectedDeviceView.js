@@ -5,6 +5,7 @@ import DeviceNotAvailable from '../../../components/specific/selected-device/dev
 import DeviceRequestsList from '../../../components/specific/selected-device/device-requests-list/DeviceRequestsList';
 import CurrentRequestStatusDialog from '../../../components/specific/selected-device/current-request-status-dialog/CurrentRequestStatusDialog';
 import ImageViewerModal from '../../../components/specific/selected-device/image-viewer-modal/ImageViewerModal';
+import CameraRecognizePersonSettingsDialog from '../../../components/specific/selected-device/camera-recognize-person-settings-dialog/CameraRecognizePersonSettingsDialog';
 
 const SelectedDeviceView = ({model, controller}) => {
   const {
@@ -25,6 +26,15 @@ const SelectedDeviceView = ({model, controller}) => {
           rightButtonPressHandler:
             currentRequestStatusDialogRightButtonPressHandler,
           onCancel: currentRequestStatusDialogOnCancel,
+        },
+        cameraRecognizePersonSettingsDialog: {
+          visible: cameraRecognizePersonSettingsDialogVisible,
+          image: cameraRecognizePersonSettingsDialogImage,
+          confirmSettingsButtonPressHandler:
+            cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler,
+          cancelButtonPressHandler:
+            cameraRecognizePersonSettingsDialogCancelButtonPressHandler,
+          onCancel: cameraRecognizePersonSettingsDialogOnCancel,
         },
         imageViewer: {visible: imageViewerVisible, image: imageViewerImage},
       },
@@ -94,12 +104,27 @@ const SelectedDeviceView = ({model, controller}) => {
     />
   );
 
+  const cameraRecognizePersonSettingsDialog = (
+    <CameraRecognizePersonSettingsDialog
+      visible={cameraRecognizePersonSettingsDialogVisible}
+      image={cameraRecognizePersonSettingsDialogImage}
+      confirmSettingsButtonPressHandler={
+        cameraRecognizePersonSettingsDialogConfirmSettingsDialogPressHandler
+      }
+      cancelButtonPressHandler={
+        cameraRecognizePersonSettingsDialogCancelButtonPressHandler
+      }
+      onCancel={cameraRecognizePersonSettingsDialogOnCancel}
+    />
+  );
+
   return (
     <View style={styles.mainContainer}>
       {screenContent}
       {checkingDeviceDialog}
       {currentRequestStatusDialog}
       {imageViewer}
+      {cameraRecognizePersonSettingsDialog}
     </View>
   );
 };
