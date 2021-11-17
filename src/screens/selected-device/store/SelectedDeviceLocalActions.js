@@ -6,7 +6,7 @@ const SelectedDeviceLocalActions = () => {
   const setDeviceData = ({device}) => {
     return {
       type: types.SET_DEVICE_DATA,
-      payload: {...device},
+      payload: {device: {...device}},
     };
   };
 

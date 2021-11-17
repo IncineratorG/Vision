@@ -5,6 +5,7 @@ import AppActions from '../../../store/actions/AppActions';
 import selectedDeviceLocalReducer from '../store/selectedDeviceLocalReducer';
 import selectedDeviceLocalState from '../store/selectedDeviceLocalState';
 import SelectedDeviceLocalActions from '../store/SelectedDeviceLocalActions';
+import {SystemEventsHandler} from '../../../utils/common/system-events-handler/SystemEventsHandler';
 
 const useSelectedDeviceModel = () => {
   const navigation = useNavigation();
