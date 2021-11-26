@@ -7,10 +7,16 @@ import android.util.Log;
 import com.tencent.mmkv.MMKV;
 import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.data.hybrid_objects.authentication_data.AuthenticationData;
+import com.vision.common.interfaces.service_state.ServiceState;
 import com.vision.services.app_storages.helper.AppStoragesHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SurveillanceStorage {
     public static final String NAME = "SurveillanceStorage";
+
+    private final String SERVICE_STATE_MMKV_ID = "serviceStateMMKVID";
 
     private final String AUTHENTICATION_DATA_MMKV_ID = "authenticationDataMMKVID";
     private final String AUTHENTICATION_DATA_KEY = "authenticationData";
@@ -23,6 +29,45 @@ public class SurveillanceStorage {
 
     public SurveillanceStorage() {
 
+    }
+
+    public boolean saveServiceState(Context context, ServiceState state) {
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, SERVICE_STATE_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->saveServiceState()->MMKV_IS_NULL");
+            return false;
+        }
+
+        if (state == null) {
+            Log.d("tag", "SurveillanceStorage->saveServiceState()->STATE_IS_NULL");
+            return false;
+        }
+
+        return mmkv.encode(state.stateId(), state.stringify());
+    }
+
+    public List<ServiceState> getServiceStates(Context context) {
+        return new ArrayList<>();
+
+//        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, SERVICE_STATE_MMKV_ID);
+//        if (mmkv == null) {
+//            Log.d("tag", "SurveillanceStorage->getServiceStates()->MMKV_IS_NULL");
+//            return new ArrayList<>();
+//        }
+//
+//        String[] keys = mmkv.allKeys();
+//        if (keys == null) {
+//            return new ArrayList<>();
+//        }
+//
+//        List<ServiceState> states = new ArrayList<>();
+//        for (int i = 0; i < keys.length; ++i) {
+//            String key = keys[i];
+//
+//            String stringifiedState = mmkv.decodeString(key);
+//
+//        }
+//        return states;
     }
 
     public boolean saveLastAuthenticationData(Context context, AuthenticationData authenticationData) {

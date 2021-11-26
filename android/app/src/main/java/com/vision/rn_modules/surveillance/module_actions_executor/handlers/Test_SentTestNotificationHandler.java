@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.vision.common.data.service_notification.ServiceNotification;
 import com.vision.services.surveillance.SurveillanceService;
-import com.vision.services.surveillance.data.notifications.SurveillanceServiceNotifications;
+import com.vision.services.surveillance.notifications.SurveillanceServiceNotifications;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 
 public class Test_SentTestNotificationHandler implements JSActionHandler {

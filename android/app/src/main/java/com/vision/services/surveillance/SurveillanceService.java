@@ -14,27 +14,31 @@ import com.vision.common.interfaces.service_notification_sender.ServiceNotificat
 import com.vision.common.interfaces.service_notifications_executor.ServiceNotificationsExecutor;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
-import com.vision.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
+import com.vision.common.interfaces.service_state.ServiceState;
+import com.vision.common.interfaces.service_state_change_listener.ServiceStateChangeListener;
+import com.vision.services.device_movement.DeviceMovementService;
+import com.vision.services.device_movement.data.state.DeviceMovementServiceState;
+import com.vision.services.surveillance.foreground_service_work.firebase.FBSForegroundServiceWork;
 import com.vision.common.data.service_request.ServiceRequest;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
-import com.vision.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
+import com.vision.services.surveillance.notifications_manager.firebase.FBSNotificationsManager;
 import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
 import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
-import com.vision.services.surveillance.data.service_internal.data.internal_data.SurveillanceServiceInternalData;
-import com.vision.services.surveillance.data.service_internal.tasks.task_results.SurveillanceServiceInternalTaskResults;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.SurveillanceServiceInternalTasks;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.get_current_service_mode.GetCurrentServiceModeTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.init_and_dispose_service.is_service_initialized.IsServiceInitializedTask;
-import com.vision.services.surveillance.data.service_internal.tasks.tasks.recognize_person_with_camera.is_recognize_person_with_camera_service_running.IsRecognizePersonWithCameraServiceRunningTask;
+import com.vision.services.surveillance.data.internal_data.SurveillanceServiceInternalData;
+import com.vision.services.surveillance.service_internal_tasks.task_results.SurveillanceServiceInternalTaskResults;
+import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.get_current_service_mode.GetCurrentServiceModeTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.is_service_initialized.IsServiceInitializedTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.recognize_person_with_camera.is_recognize_person_with_camera_service_running.IsRecognizePersonWithCameraServiceRunningTask;
 
 public class SurveillanceService implements
         ServiceResponseSender,
@@ -52,6 +56,25 @@ public class SurveillanceService implements
 
         mInternalData.currentServiceMode = AppConstants.DEVICE_MODE_UNKNOWN;
         mInternalData.errorsMapper = new ExternalServiceErrorsMapper();
+
+        // ===
+        DeviceMovementService.get().addStateChangeListener(state -> {
+            Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED");
+
+            if (state == null) {
+                Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED->STATE_IS_NULL");
+                return;
+            }
+
+            if (state instanceof DeviceMovementServiceState) {
+                DeviceMovementServiceState serviceState = (DeviceMovementServiceState) state;
+
+                Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED: " + serviceState.stateId() + " - " + serviceState.isRunning());
+            } else {
+                Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED->BAD_STATE_INSTANCE: " + state.stateId());
+            }
+        });
+        // ===
     }
 
     public static synchronized SurveillanceService get() {
@@ -414,22 +437,22 @@ public class SurveillanceService implements
 //import com.vision.services.firebase_messaging.FBSMessagingService;
 //import com.vision.services.firebase_paths.FBSPathsService;
 //import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
-//import com.vision.services.surveillance.data.communication_manager.firebase.FBSCommunicationManager;
-//import com.vision.services.surveillance.data.foreground_service_work.firebase.FBSForegroundServiceWork;
+//import com.vision.services.surveillance.communication_manager.firebase.FBSCommunicationManager;
+//import com.vision.services.surveillance.foreground_service_work.firebase.FBSForegroundServiceWork;
 //import com.vision.common.data.service_request.ServiceRequest;
 //import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestDeliveredCallback;
 //import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestErrorCallback;
 //import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 //import com.vision.common.interfaces.service_request_sender.ServiceRequestSender;
-//import com.vision.services.surveillance.data.notifications.SurveillanceServiceNotifications;
-//import com.vision.services.surveillance.data.notifications_manager.firebase.FBSNotificationsManager;
-//import com.vision.services.surveillance.data.requests.sender.firebase.FBSRequestSender;
+//import com.vision.services.surveillance.notifications.SurveillanceServiceNotifications;
+//import com.vision.services.surveillance.notifications_manager.firebase.FBSNotificationsManager;
+//import com.vision.services.surveillance.requests.sender.firebase.FBSRequestSender;
 //import com.vision.common.interfaces.service_requests_executor.ServiceRequestsExecutor;
 //import com.vision.common.data.service_response.ServiceResponse;
 //import com.vision.common.interfaces.service_response_sender.ServiceResponseSender;
-//import com.vision.services.surveillance.data.requests.executor.firebase.FBSRequestsExecutor;
-//import com.vision.services.surveillance.data.responses.sender.firebase.FBSResponseSender;
-//import com.vision.services.surveillance.data.responses.executor.firebase.FBSResponsesExecutor;
+//import com.vision.services.surveillance.requests.executor.firebase.FBSRequestsExecutor;
+//import com.vision.services.surveillance.responses.sender.firebase.FBSResponseSender;
+//import com.vision.services.surveillance.responses.executor.firebase.FBSResponsesExecutor;
 //import com.vision.services.surveillance.data.service_errors.SurveillanceServiceErrors;
 //import com.vision.services.surveillance.data.service_errors.external_service_errors_mapper.ExternalServiceErrorsMapper;
 //

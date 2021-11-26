@@ -14,7 +14,7 @@ import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestEr
 import com.vision.common.interfaces.service_request_sender.callbacks.OnRequestResponseCallback;
 import com.vision.rn_modules.surveillance.module_actions_executor.handlers.send_request.response_handlers.GetCameraRecognizePersonSettingsResponseHandler;
 import com.vision.services.surveillance.SurveillanceService;
-import com.vision.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
+import com.vision.services.surveillance.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.rn_modules.modules_common.data.error.ModuleError;
 import com.vision.rn_modules.modules_common.interfaces.js_action_handler.JSActionHandler;
 import com.vision.rn_modules.modules_common.interfaces.response_handler.ResponseHandler;

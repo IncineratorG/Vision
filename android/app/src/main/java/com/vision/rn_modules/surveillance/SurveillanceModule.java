@@ -13,7 +13,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.PermissionListener;
-import com.vision.services.surveillance.data.requests.types.SurveillanceServiceRequestTypes;
+import com.vision.services.surveillance.requests.types.SurveillanceServiceRequestTypes;
 import com.vision.rn_modules.surveillance.module_actions.types.SurveillanceJSActionTypes;
 import com.vision.rn_modules.surveillance.module_actions_executor.SurveillanceJSActionsExecutor;
 import com.vision.rn_modules.surveillance.module_events.types.SurveillanceEventTypes;

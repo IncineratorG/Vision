@@ -9,14 +9,18 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
+import com.vision.common.interfaces.service_state.ServiceState;
+import com.vision.common.interfaces.stateful_service.StatefulService;
+import com.vision.services.device_movement.data.state.DeviceMovementServiceState;
 
-public class DeviceMovementService {
+public class DeviceMovementService extends StatefulService {
     public static final String NAME = "DeviceMovementService";
 
     private final long MOVEMENT_COOLDOWN_TIMESTAMP_DELTA = 5000;
 
     private static DeviceMovementService sInstance;
 
+    private DeviceMovementServiceState mServiceState;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private SensorEventListener mSensorEventListener;
@@ -29,7 +33,7 @@ public class DeviceMovementService {
     private boolean mMovementInProgress = false;
 
     private DeviceMovementService() {
-
+        mServiceState = new DeviceMovementServiceState(false);
     }
 
     public static DeviceMovementService get() {
@@ -100,6 +104,9 @@ public class DeviceMovementService {
         };
 
         mIsRunning = mSensorManager.registerListener(mSensorEventListener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        mServiceState = new DeviceMovementServiceState(true);
+        notifyStateListeners();
     }
 
     public void stop(Context context) {
@@ -134,6 +141,9 @@ public class DeviceMovementService {
         mMovementInProgress = false;
         mIsInitialMovement = true;
         mIsRunning = false;
+
+        mServiceState = new DeviceMovementServiceState(false);
+        notifyStateListeners();
     }
 
     private void processSensorData(long initializeTimestamp,
@@ -190,5 +200,10 @@ public class DeviceMovementService {
         float zDelta = Math.abs(mPrevZ - z);
 
         return xDelta > 0.5 || yDelta > 0.5 || zDelta > 0.5;
+    }
+
+    @Override
+    public DeviceMovementServiceState getCurrentState() {
+        return new DeviceMovementServiceState(mServiceState);
     }
 }

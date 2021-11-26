@@ -173,7 +173,7 @@
 //import com.vision.services.camera.data.callbacks.OnImageTaken;
 //import com.vision.services.camera.data.camera_frame_changed_task.CameraFrameChangedTask;
 //import com.vision.services.camera.data.camera_preview_image_data.CameraPreviewImageData;
-//import com.vision.services.camera.data.helpers.OpenCVHelper;
+//import com.vision.services.camera.helpers.OpenCVHelper;
 //
 //import java.io.ByteArrayOutputStream;
 //import java.io.IOException;
@@ -735,12 +735,12 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
-import com.vision.services.camera.data.camera_manager.CameraManager;
-import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
-import com.vision.services.camera.data.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
-import com.vision.services.camera.data.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
-import com.vision.services.camera.data.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
-import com.vision.services.camera.data.helpers.OpenCVHelper;
+import com.vision.services.camera.camera_manager.CameraManager;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
+import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
+import com.vision.services.camera.helpers.OpenCVHelper;
 
 
 public class CameraService {

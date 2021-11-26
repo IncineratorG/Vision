@@ -6,8 +6,8 @@ import com.vision.common.data.service_response.ServiceResponse;
 import com.vision.rn_modules.modules_common.interfaces.response_handler.ResponseHandler;
 import com.vision.rn_modules.surveillance.module_events.payloads.SurveillanceEventsJSPayloads;
 import com.vision.rn_modules.surveillance.module_events.types.SurveillanceEventTypes;
-import com.vision.services.surveillance.data.responses.payloads.SurveillanceServiceResponsePayloads;
-import com.vision.services.surveillance.data.responses.payloads.payloads.GetCameraRecognizePersonSettingsResponsePayload;
+import com.vision.services.surveillance.responses.payloads.SurveillanceServiceResponsePayloads;
+import com.vision.services.surveillance.responses.payloads.payloads.GetCameraRecognizePersonSettingsResponsePayload;
 
 public class GetCameraRecognizePersonSettingsResponseHandler implements ResponseHandler {
     @Override
