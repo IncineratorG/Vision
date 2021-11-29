@@ -11,6 +11,8 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.common.interfaces.service_restore_handler.ServiceRestoreHandler;
 import com.vision.services.app_storages.AppStorages;
 import com.vision.services.camera.data.state.CameraServiceState;
+import com.vision.services.surveillance.data.internal_data.SurveillanceServiceInternalData;
+import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.List;
 
@@ -42,11 +44,49 @@ public class RestoreCameraServiceHandler implements ServiceRestoreHandler {
             return;
         }
 
-        Log.d(
-                "tag",
-                "RestoreCameraServiceHandler->handle(): " + cameraServiceState.isFrontCameraRecognizePersonRunning() + " - " + cameraServiceState.isBackCameraRecognizePersonRunning()
-        );
+        if (cameraServiceState.isBackCameraRecognizePersonRunning() ||
+                cameraServiceState.isFrontCameraRecognizePersonRunning()) {
+            if (cameraServiceState.isBackCameraRecognizePersonRunning()) {
+                SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
 
-        onSuccess.onSuccess(null);
+                OnTaskSuccess<Void> successCallback = (result) -> {
+                    onSuccess.onSuccess(null);
+                };
+
+                SurveillanceServiceInternalTasks.startRecognizePersonWithCameraTask(
+                        context,
+                        "back",
+                        cameraServiceState.imageRotationDegrees(),
+                        false,
+                        authenticationData.groupName(),
+                        authenticationData.groupPassword(),
+                        authenticationData.deviceName(),
+                        mInternalData.currentServiceMode,
+                        successCallback,
+                        onError
+                ).run(null);
+            } else if (cameraServiceState.isFrontCameraRecognizePersonRunning()) {
+                SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
+
+                OnTaskSuccess<Void> successCallback = (result) -> {
+                    onSuccess.onSuccess(null);
+                };
+
+                SurveillanceServiceInternalTasks.startRecognizePersonWithCameraTask(
+                        context,
+                        "front",
+                        cameraServiceState.imageRotationDegrees(),
+                        false,
+                        authenticationData.groupName(),
+                        authenticationData.groupPassword(),
+                        authenticationData.deviceName(),
+                        mInternalData.currentServiceMode,
+                        successCallback,
+                        onError
+                ).run(null);
+            }
+        } else {
+            onSuccess.onSuccess(null);
+        }
     }
 }

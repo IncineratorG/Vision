@@ -773,7 +773,7 @@ public class CameraService extends StatefulService {
 
     private CameraService() {
         mCameraManager = new CameraManager();
-        mServiceState = new CameraServiceState(false, false);
+        mServiceState = new CameraServiceState(false, false, 0);
     }
 
     public static CameraService get() {
@@ -809,7 +809,8 @@ public class CameraService extends StatefulService {
 
         mServiceState = new CameraServiceState(
                 isFrontCameraRecognizePersonRunning(),
-                isBackCameraRecognizePersonRunning()
+                isBackCameraRecognizePersonRunning(),
+                0
         );
         notifyStateListeners(context);
     }
@@ -860,7 +861,8 @@ public class CameraService extends StatefulService {
 
         mServiceState = new CameraServiceState(
                 isFrontCameraRecognizePersonRunning(),
-                isBackCameraRecognizePersonRunning()
+                isBackCameraRecognizePersonRunning(),
+                imageRotationDeg
         );
         notifyStateListeners(context);
     }
@@ -892,7 +894,8 @@ public class CameraService extends StatefulService {
 
         mServiceState = new CameraServiceState(
                 isFrontCameraRecognizePersonRunning(),
-                isBackCameraRecognizePersonRunning()
+                isBackCameraRecognizePersonRunning(),
+                imageRotationDeg
         );
         notifyStateListeners(context);
     }
@@ -902,7 +905,8 @@ public class CameraService extends StatefulService {
 
         mServiceState = new CameraServiceState(
                 isFrontCameraRecognizePersonRunning(),
-                isBackCameraRecognizePersonRunning()
+                isBackCameraRecognizePersonRunning(),
+                0
         );
         notifyStateListeners(context);
     }
@@ -912,7 +916,8 @@ public class CameraService extends StatefulService {
 
         mServiceState = new CameraServiceState(
                 isFrontCameraRecognizePersonRunning(),
-                isBackCameraRecognizePersonRunning()
+                isBackCameraRecognizePersonRunning(),
+                0
         );
         notifyStateListeners(context);
     }

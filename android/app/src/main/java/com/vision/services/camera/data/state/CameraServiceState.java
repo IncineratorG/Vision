@@ -13,16 +13,19 @@ public class CameraServiceState implements ServiceState {
     private final String ID_FIELD = "id";
     private final String IS_FRONT_CAMERA_RECOGNIZE_PERSON_RUNNING = "isFrontCameraRecognizePersonRunning";
     private final String IS_BACK_CAMERA_RECOGNIZE_PERSON_RUNNING = "isBackCameraRecognizePersonRunning";
+    private final String IMAGE_ROTATION_DEGREES = "imageRotationDegrees";
 
     private JSONObject mStateData;
 
     public CameraServiceState(boolean isFrontCameraRecognizePersonRunning,
-                              boolean isBackCameraRecognizePersonRunning) {
+                              boolean isBackCameraRecognizePersonRunning,
+                              int imageRotationDegrees) {
         mStateData = new JSONObject();
         try {
             mStateData.put(ID_FIELD, STATE_ID);
             mStateData.put(IS_FRONT_CAMERA_RECOGNIZE_PERSON_RUNNING, isFrontCameraRecognizePersonRunning);
             mStateData.put(IS_BACK_CAMERA_RECOGNIZE_PERSON_RUNNING, isBackCameraRecognizePersonRunning);
+            mStateData.put(IMAGE_ROTATION_DEGREES, imageRotationDegrees);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -72,6 +75,21 @@ public class CameraServiceState implements ServiceState {
             e.printStackTrace();
         }
         return isBackCameraRecognizePersonRunning;
+    }
+
+    public int imageRotationDegrees() {
+        if (mStateData == null) {
+            Log.d("tag", "CameraServiceState->imageRotationDegrees()->STATE_DATA_IS_NULL");
+            return 0;
+        }
+
+        int imageRotationDegrees = 0;
+        try {
+            imageRotationDegrees = mStateData.getInt(IMAGE_ROTATION_DEGREES);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return imageRotationDegrees;
     }
 
     @Override

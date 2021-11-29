@@ -25,6 +25,7 @@ public class RestoreDeviceMovementServiceHandler implements ServiceRestoreHandle
         List<SerializedServiceState> serializedServiceStates =
                 AppStorages.get().surveillanceStorage().getServiceStates(context);
 
+        // ===
         for (int i = 0; i < serializedServiceStates.size(); ++i) {
             SerializedServiceState serializedServiceState = serializedServiceStates.get(i);
             if (!serializedServiceState.isEmpty()) {
@@ -33,43 +34,44 @@ public class RestoreDeviceMovementServiceHandler implements ServiceRestoreHandle
                 Log.d("tag", "RestoreDeviceMovementServiceHandler->STATE_IS_EMPTY: " + i);
             }
         }
+        // ===
 
-//        DeviceMovementServiceState deviceMovementServiceState = null;
-//        for (int i = 0; i < serializedServiceStates.size(); ++i) {
-//            SerializedServiceState serializedServiceState = serializedServiceStates.get(i);
-//            if (!serializedServiceState.isEmpty()) {
-//                if (serializedServiceState.stateId().equalsIgnoreCase(DeviceMovementServiceState.STATE_ID)) {
-//                    deviceMovementServiceState = new DeviceMovementServiceState(serializedServiceState.serializedState());
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (deviceMovementServiceState == null) {
-//            Log.d("tag", "RestoreDeviceMovementServiceHandler->handle()->STATE_IS_NULL");
-//            onSuccess.onSuccess(null);
-//            return;
-//        }
-//
-//        if (deviceMovementServiceState.isRunning()) {
-//            SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
-//
-//            OnTaskSuccess<Void> successCallback = (result) -> {
-//                onSuccess.onSuccess(null);
-//            };
-//
-//            SurveillanceServiceInternalTasks.startDetectDeviceMovementTask(
-//                    context,
-//                    false,
-//                    authenticationData.groupName(),
-//                    authenticationData.groupPassword(),
-//                    authenticationData.deviceName(),
-//                    mInternalData.currentServiceMode,
-//                    successCallback,
-//                    onError
-//            ).run(null);
-//        } else {
-//            onSuccess.onSuccess(null);
-//        }
+        DeviceMovementServiceState deviceMovementServiceState = null;
+        for (int i = 0; i < serializedServiceStates.size(); ++i) {
+            SerializedServiceState serializedServiceState = serializedServiceStates.get(i);
+            if (!serializedServiceState.isEmpty()) {
+                if (serializedServiceState.stateId().equalsIgnoreCase(DeviceMovementServiceState.STATE_ID)) {
+                    deviceMovementServiceState = new DeviceMovementServiceState(serializedServiceState.serializedState());
+                    break;
+                }
+            }
+        }
+
+        if (deviceMovementServiceState == null) {
+            Log.d("tag", "RestoreDeviceMovementServiceHandler->handle()->STATE_IS_NULL");
+            onSuccess.onSuccess(null);
+            return;
+        }
+
+        if (deviceMovementServiceState.isRunning()) {
+            SurveillanceServiceInternalData mInternalData = SurveillanceServiceInternalData.get();
+
+            OnTaskSuccess<Void> successCallback = (result) -> {
+                onSuccess.onSuccess(null);
+            };
+
+            SurveillanceServiceInternalTasks.startDetectDeviceMovementTask(
+                    context,
+                    false,
+                    authenticationData.groupName(),
+                    authenticationData.groupPassword(),
+                    authenticationData.deviceName(),
+                    mInternalData.currentServiceMode,
+                    successCallback,
+                    onError
+            ).run(null);
+        } else {
+            onSuccess.onSuccess(null);
+        }
     }
 }
