@@ -7,6 +7,7 @@ import android.util.Log;
 import com.tencent.mmkv.MMKV;
 import com.vision.common.data.hybrid_objects.app_settings.AppSettings;
 import com.vision.common.data.hybrid_objects.authentication_data.AuthenticationData;
+import com.vision.common.data.serialized_service_state.SerializedServiceState;
 import com.vision.common.interfaces.service_state.ServiceState;
 import com.vision.services.app_storages.helper.AppStoragesHelper;
 
@@ -46,28 +47,25 @@ public class SurveillanceStorage {
         return mmkv.encode(state.stateId(), state.stringify());
     }
 
-    public List<ServiceState> getServiceStates(Context context) {
-        return new ArrayList<>();
+    public List<SerializedServiceState> getServiceStates(Context context) {
+        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, SERVICE_STATE_MMKV_ID);
+        if (mmkv == null) {
+            Log.d("tag", "SurveillanceStorage->getServiceStates()->MMKV_IS_NULL");
+            return new ArrayList<>();
+        }
 
-//        MMKV mmkv = AppStoragesHelper.mmkvWithID(context, SERVICE_STATE_MMKV_ID);
-//        if (mmkv == null) {
-//            Log.d("tag", "SurveillanceStorage->getServiceStates()->MMKV_IS_NULL");
-//            return new ArrayList<>();
-//        }
-//
-//        String[] keys = mmkv.allKeys();
-//        if (keys == null) {
-//            return new ArrayList<>();
-//        }
-//
-//        List<ServiceState> states = new ArrayList<>();
-//        for (int i = 0; i < keys.length; ++i) {
-//            String key = keys[i];
-//
-//            String stringifiedState = mmkv.decodeString(key);
-//
-//        }
-//        return states;
+        String[] keys = mmkv.allKeys();
+        if (keys == null) {
+            return new ArrayList<>();
+        }
+
+        List<SerializedServiceState> serviceStates = new ArrayList<>();
+        for (String key : keys) {
+            String stringifiedState = mmkv.decodeString(key);
+
+            serviceStates.add(new SerializedServiceState(key, stringifiedState));
+        }
+        return serviceStates;
     }
 
     public boolean saveLastAuthenticationData(Context context, AuthenticationData authenticationData) {
