@@ -30,6 +30,13 @@ const groupLocalState = {
     rightButtonPressHandler: null,
     onCancel: null,
   },
+  cameraRecognizePersonSettingsDialog: {
+    visible: false,
+    image: null,
+    confirmSettingsButtonPressHandler: null,
+    cancelButtonPressHandler: null,
+    onCancel: null,
+  },
   imageViewer: {
     visible: false,
     image: null,

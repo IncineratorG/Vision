@@ -111,8 +111,11 @@ const surveillanceToggleRecognizePersonRequestReducer = (
           cancelled: false,
           response: {
             ...state.toggleRecognizePersonRequest.response,
-            frontCameraRecognizePersonServiceRunning,
-            backCameraRecognizePersonServiceRunning,
+            payload: {
+              ...state.toggleRecognizePersonRequest.response.payload,
+              frontCameraRecognizePersonServiceRunning,
+              backCameraRecognizePersonServiceRunning,
+            },
           },
           error: {
             ...state.toggleRecognizePersonRequest.error,

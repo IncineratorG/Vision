@@ -5,7 +5,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.vision.modules.modules_common.interfaces.hybrid_object.HybridObject;
+import com.vision.rn_modules.modules_common.interfaces.hybrid_object.HybridObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,8 +86,6 @@ public class AppSettings implements HybridObject {
         }
 
         if (mInitializedFromStringifiedObject) {
-            mWritableMap = new WritableNativeMap();
-
             mWritableMap = new WritableNativeMap();
             try {
                 // ===

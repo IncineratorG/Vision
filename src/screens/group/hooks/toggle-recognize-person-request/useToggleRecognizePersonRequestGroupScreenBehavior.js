@@ -53,7 +53,7 @@ const useToggleRecognizePersonRequestGroupScreenBehavior = ({
     if (toggleRecognizePersonRequestInProgress) {
       SystemEventsHandler.onInfo({
         info:
-          '===> HERE->REQUEST_IN_PROGRESS: ' +
+          '===> useToggleRecognizePersonRequestGroupScreenBehavior->REQUEST_IN_PROGRESS: ' +
           toggleRecognizePersonRequestInProgress,
       });
 

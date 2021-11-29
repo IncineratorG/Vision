@@ -172,6 +172,37 @@ const groupLocalReducer = (state, action) => {
       };
     }
 
+    case GroupLocalActions.types
+      .SET_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA: {
+      return {
+        ...state,
+        cameraRecognizePersonSettingsDialog: {
+          ...state.cameraRecognizePersonSettingsDialog,
+          visible: action.payload.visible,
+          image: action.payload.image,
+          confirmSettingsButtonPressHandler:
+            action.payload.confirmSettingsButtonPressHandler,
+          cancelButtonPressHandler: action.payload.cancelButtonPressHandler,
+          onCancel: action.payload.onCancel,
+        },
+      };
+    }
+
+    case GroupLocalActions.types
+      .CLEAR_CAMERA_RECOGNIZE_PERSON_SETTINGS_DIALOG_DATA: {
+      return {
+        ...state,
+        cameraRecognizePersonSettingsDialog: {
+          ...state.cameraRecognizePersonSettingsDialog,
+          visible: false,
+          image: null,
+          confirmSettingsButtonPressHandler: null,
+          cancelButtonPressHandler: null,
+          onCancel: null,
+        },
+      };
+    }
+
     default: {
       return state;
     }

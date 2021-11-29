@@ -1,6 +1,7 @@
 const AuthActions = () => {
   const types = {
     CLEAR_ALL_ERRORS: 'AA_CLEAR_ALL_ERRORS',
+    CLEAR_AUTH_INFO: 'AA_CLEAR_AUTH_INFO',
 
     REGISTER_DEVICE_IN_GROUP: 'AA_REGISTER_DEVICE_IN_GROUP',
     REGISTER_DEVICE_IN_GROUP_BEGIN: 'AA_REGISTER_DEVICE_IN_GROUP_BEGIN',
@@ -26,6 +27,12 @@ const AuthActions = () => {
   const clearAllErrors = () => {
     return {
       type: types.CLEAR_ALL_ERRORS,
+    };
+  };
+
+  const clearAuthInfo = () => {
+    return {
+      type: types.CLEAR_AUTH_INFO,
     };
   };
 
@@ -147,6 +154,7 @@ const AuthActions = () => {
     types,
     actions: {
       clearAllErrors,
+      clearAuthInfo,
       registerDeviceInGroup,
       registerDeviceInGroupBegin,
       registerDeviceInGroupFinished,

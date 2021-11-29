@@ -83,12 +83,17 @@ const AuthService = () => {
     return nativeAuthService.logoutDeviceFromGroup();
   };
 
+  const getCurrentAuthenticationData = async () => {
+    return await nativeAuthService.getCurrentAuthenticationData();
+  };
+
   return {
     registerDeviceInGroup,
     createGroupWithDevice,
     isLoggedIn,
     loginInGroup,
     logoutFromGroup,
+    getCurrentAuthenticationData,
   };
 };
 

@@ -8,7 +8,7 @@ const LoaderView = ({model, controller}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // backgroundColor: 'orange',
+    backgroundColor: 'orange',
   },
 });
 

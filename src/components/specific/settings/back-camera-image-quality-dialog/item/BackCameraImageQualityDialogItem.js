@@ -1,5 +1,5 @@
 import React, {useMemo, useCallback} from 'react';
-import {View, Text, TouchableNativeFeedback, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const BackCameraImageQualityDialogItem = ({
@@ -20,7 +20,7 @@ const BackCameraImageQualityDialogItem = ({
   }, []);
 
   return (
-    <TouchableNativeFeedback onPress={onPressHandler}>
+    <TouchableOpacity onPress={onPressHandler}>
       <View style={styles.mainContainer}>
         <View style={styles.checkmarkIconContainer}>
           {isSelected ? radioButtonCheckedIcon : radioButtonUncheckedIcon}
@@ -29,7 +29,7 @@ const BackCameraImageQualityDialogItem = ({
           <Text style={styles.text}>{text}</Text>
         </View>
       </View>
-    </TouchableNativeFeedback>
+    </TouchableOpacity>
   );
 };
 

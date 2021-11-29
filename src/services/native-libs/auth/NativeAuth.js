@@ -67,6 +67,11 @@ const NativeAuth = () => {
     return await nativeAuthService.execute(action);
   };
 
+  const getCurrentAuthenticationData = async () => {
+    const action = NativeAuthActions.getCurrentAuthenticationDataAction();
+    return await nativeAuthService.execute(action);
+  };
+
   return {
     isDeviceGroupExist,
     createGroupWithDevice,
@@ -75,6 +80,7 @@ const NativeAuth = () => {
     isLoggedIn,
     loginDeviceInGroup,
     logoutDeviceFromGroup,
+    getCurrentAuthenticationData,
   };
 };
 

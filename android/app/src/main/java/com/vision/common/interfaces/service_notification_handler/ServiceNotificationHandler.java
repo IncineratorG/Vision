@@ -30,7 +30,7 @@ public abstract class ServiceNotificationHandler {
         handleServiceNotification(context, notification);
 
         Notification systemNotification = createSystemNotification(context, notification);
-        if (systemNotification!= null) {
+        if (systemNotification != null) {
             showSystemNotification(context, systemNotification);
             return;
         }

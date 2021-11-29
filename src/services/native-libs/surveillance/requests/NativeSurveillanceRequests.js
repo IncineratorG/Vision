@@ -9,6 +9,7 @@ const NativeSurveillanceRequests = () => {
       TAKE_FRONT_CAMERA_IMAGE,
       TOGGLE_DETECT_DEVICE_MOVEMENT,
       TOGGLE_RECOGNIZE_PERSON,
+      GET_CAMERA_RECOGNIZE_PERSON_SETTINGS,
     },
   } = NativeSurveillanceConstants;
 
@@ -57,9 +58,27 @@ const NativeSurveillanceRequests = () => {
     };
   };
 
-  const toggleRecognizePerson = ({receiverDeviceName, cameraType}) => {
+  const toggleRecognizePerson = ({
+    receiverDeviceName,
+    cameraType,
+    imageRotationDeg,
+  }) => {
     return {
       requestType: TOGGLE_RECOGNIZE_PERSON,
+      receiverDeviceName,
+      requestPayload: {
+        cameraType,
+        imageRotationDeg,
+      },
+    };
+  };
+
+  const getCameraRecognizePersonSettings = ({
+    receiverDeviceName,
+    cameraType,
+  }) => {
+    return {
+      requestType: GET_CAMERA_RECOGNIZE_PERSON_SETTINGS,
       receiverDeviceName,
       requestPayload: {
         cameraType,
@@ -74,6 +93,7 @@ const NativeSurveillanceRequests = () => {
     takeFrontCameraImage,
     toggleDetectDeviceMovement,
     toggleRecognizePerson,
+    getCameraRecognizePersonSettings,
   };
 };
 

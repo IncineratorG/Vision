@@ -85,6 +85,19 @@ const authReducer = (state = initialState, action) => {
       };
     }
 
+    case AppActions.auth.types.CLEAR_AUTH_INFO: {
+      return {
+        ...state,
+        authInfo: {
+          ...state.authInfo,
+          groupName: '',
+          groupPassword: '',
+          deviceName: '',
+          loggedIn: false,
+        },
+      };
+    }
+
     case AppActions.auth.types.REGISTER_DEVICE_IN_GROUP_BEGIN: {
       return {
         ...state,

@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vision.common.constants.AppConstants;
-import com.vision.common.services.surveillance.SurveillanceService;
+import com.vision.services.surveillance.SurveillanceService;
 
 public class FirebaseMessagingBackgroundService extends FirebaseMessagingService {
     @Override

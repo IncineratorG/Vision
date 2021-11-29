@@ -18,6 +18,8 @@ import SS_sendToggleDetectDeviceMovementRequestHandler from './handlers/toggle-d
 import SS_cancelToggleDetectDeviceMovementRequestHandler from './handlers/toggle-detect-device-movement-request/SS_cancelToggleDetectDeviceMovementRequestHandler';
 import SS_sendToggleRecognizePersonRequestHandler from './handlers/toggle-recognize-person-request/SS_sendToggleRecognizePersonRequestHandler';
 import SS_cancelToggleRecognizePersonRequestHandler from './handlers/toggle-recognize-person-request/SS_cancelToggleRecognizePersonRequestHandler';
+import SS_getCameraRecognizePersonSettingsRequestHandler from './handlers/get-camera-recognize-person-settings-request/SS_getCameraRecognizePersonSettingsRequestHandler';
+import SS_cancelGetCameraRecognizePersonSettingsRequestHandler from './handlers/get-camera-recognize-person-settings-request/SS_cancelGetCameraRecognizePersonSettingsRequestHandler';
 
 const SurveillanceSaga = () => {
   const sagaChannel = channel();
@@ -58,6 +60,12 @@ const SurveillanceSaga = () => {
     SS_sendToggleRecognizePersonRequestHandler({channel: sagaChannel});
   const {handler: cancelToggleRecognizePersonRequestHandler} =
     SS_cancelToggleRecognizePersonRequestHandler({channel: sagaChannel});
+  const {handler: sendGetCameraRecognizePersonSettingsRequestHandler} =
+    SS_getCameraRecognizePersonSettingsRequestHandler({channel: sagaChannel});
+  const {handler: cancelGetCameraRecognizePersonSettingsRequestHandler} =
+    SS_cancelGetCameraRecognizePersonSettingsRequestHandler({
+      channel: sagaChannel,
+    });
 
   const handlers = function* () {
     SystemEventsHandler.onInfo({info: 'SurveillanceSaga->handlers()'});
@@ -134,6 +142,16 @@ const SurveillanceSaga = () => {
       AppActions.surveillanceToggleRecognizePersonRequest.types
         .CANCEL_SEND_TOGGLE_RECOGNIZE_PERSON_REQUEST,
       cancelToggleRecognizePersonRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.types
+        .SEND_GET_CAMERA_RECOGNIZE_PERSON_SETTINGS_REQUEST,
+      sendGetCameraRecognizePersonSettingsRequestHandler,
+    );
+    yield takeLatest(
+      AppActions.surveillanceGetCameraRecognizePersonSettingsRequest.types
+        .CANCEL_SEND_GET_CAMERA_RECOGNIZE_PERSON_SETTINGS_REQUEST,
+      cancelGetCameraRecognizePersonSettingsRequestHandler,
     );
   };
 
