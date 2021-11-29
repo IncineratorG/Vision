@@ -10,6 +10,7 @@ import com.vision.services.surveillance.service_internal_tasks.tasks.authenticat
 import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
 import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
 import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.restore_device_in_group.RestoreDeviceInGroupTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.restore_service.RestoreServiceTask;
 import com.vision.services.surveillance.service_internal_tasks.tasks.create_group_with_device.CreateGroupWithDeviceTask;
 import com.vision.services.surveillance.service_internal_tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
 import com.vision.services.surveillance.service_internal_tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
@@ -201,6 +202,12 @@ public class SurveillanceServiceInternalTasks {
                 onSuccess,
                 onError
         );
+    }
+
+    public static RestoreServiceTask restoreServiceTask(Context context,
+                                                        OnTaskSuccess<Void> onSuccess,
+                                                        OnTaskError<ServiceError> onError) {
+        return new RestoreServiceTask(context, onSuccess, onError);
     }
 
     public static GetCurrentGroupNameTask getCurrentGroupNameTask() {

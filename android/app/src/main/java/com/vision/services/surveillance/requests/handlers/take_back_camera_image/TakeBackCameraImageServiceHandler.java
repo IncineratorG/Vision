@@ -25,6 +25,12 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
     public void handle(Context context, ServiceRequest request) {
         Log.d("tag", "TakeBackCameraImageServiceHandler->handle(): " + request.stringify());
 
+        // ===
+        // =====
+        int a = 2 / 0;
+        // =====
+        // ===
+
         TakeBackCameraImageRequestPayload requestPayload =
                 SurveillanceServiceRequestPayloads.takeBackCameraImageRequestPayload(request.payload());
         Log.d("tag", "TakeBackCameraImageServiceHandler->handle()->REQUESTED_IMAGE_QUALITY: " + requestPayload.imageQuality());

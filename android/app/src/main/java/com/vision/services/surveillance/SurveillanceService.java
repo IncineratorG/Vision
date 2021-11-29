@@ -131,19 +131,29 @@ public class SurveillanceService implements
         ).run(null);
     }
 
-    public void restoreDeviceInGroup(Context context,
-                                     AuthenticationData lastAuthenticationData,
-                                     OnTaskSuccess<Void> onSuccess,
-                                     OnTaskError<ServiceError> onError) {
-        SurveillanceServiceInternalTasks.restoreDeviceInGroupTask(
+    public void restoreService(Context context,
+                               OnTaskSuccess<Void> onSuccess,
+                               OnTaskError<ServiceError> onError) {
+        SurveillanceServiceInternalTasks.restoreServiceTask(
                 context,
-                lastAuthenticationData.groupName(),
-                lastAuthenticationData.groupPassword(),
-                lastAuthenticationData.deviceName(),
                 onSuccess,
                 onError
         ).run(null);
     }
+
+//    public void restoreDeviceInGroup(Context context,
+//                                     AuthenticationData lastAuthenticationData,
+//                                     OnTaskSuccess<Void> onSuccess,
+//                                     OnTaskError<ServiceError> onError) {
+//        SurveillanceServiceInternalTasks.restoreDeviceInGroupTask(
+//                context,
+//                lastAuthenticationData.groupName(),
+//                lastAuthenticationData.groupPassword(),
+//                lastAuthenticationData.deviceName(),
+//                onSuccess,
+//                onError
+//        ).run(null);
+//    }
 
 //    public void logoutDeviceFromGroup(Context context,
 //                                      AuthenticationData lastAuthenticationData,

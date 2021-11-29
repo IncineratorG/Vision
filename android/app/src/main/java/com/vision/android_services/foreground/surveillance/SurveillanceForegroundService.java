@@ -120,11 +120,9 @@ public class SurveillanceForegroundService extends Service {
 
     private void restoreService() {
         Log.d("tag", "---===>> SurveillanceForegroundService->restoreService()->HERE");
-        AuthenticationData lastAuthenticationData = AppStorages.get().surveillanceStorage().getLastAuthenticationData(this);
 
-        SurveillanceService.get().restoreDeviceInGroup(
+        SurveillanceService.get().restoreService(
                 this,
-                lastAuthenticationData,
                 (data) -> {
                     Log.d("tag", "SurveillanceForegroundService->restoreService()->SERVICE_RESTORED");
 
@@ -138,6 +136,27 @@ public class SurveillanceForegroundService extends Service {
                     stopSelf();
                 }
         );
+
+        // ===
+//        AuthenticationData lastAuthenticationData = AppStorages.get().surveillanceStorage().getLastAuthenticationData(this);
+//
+//        SurveillanceService.get().restoreDeviceInGroup(
+//                this,
+//                lastAuthenticationData,
+//                (data) -> {
+//                    Log.d("tag", "SurveillanceForegroundService->restoreService()->SERVICE_RESTORED");
+//
+//                    SurveillanceService.get().foregroundServiceWork().start(this);
+//                    startForeground(101, updateNotification());
+//                },
+//                (error) -> {
+//                    Log.d("tag", "SurveillanceForegroundService->restoreService()->ERROR_RESTORING_DEVICE: " + error.code() + " - " + error.message());
+//
+//                    stopForeground(true);
+//                    stopSelf();
+//                }
+//        );
+        // ===
 
 //        stopForeground(true);
 //        stopSelf();
