@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.vision.common.data.hybrid_objects.authentication_data.AuthenticationData;
-import com.vision.common.data.serialized_service_state.SerializedServiceState;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
@@ -15,6 +14,7 @@ import com.vision.services.firebase_communication.FBSCommunicationService;
 import com.vision.services.firebase_paths.FBSPathsService;
 import com.vision.services.surveillance.data.internal_data.SurveillanceServiceInternalData;
 import com.vision.services.surveillance.data.service_errors.SurveillanceServiceErrors;
+import com.vision.services.surveillance.restore_service_manager.handlers.RestoreCameraServiceHandler;
 import com.vision.services.surveillance.restore_service_manager.handlers.RestoreDeviceMovementServiceHandler;
 import com.vision.services.surveillance.restore_service_manager.handlers.RestoreSurveillanceServiceHandler;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
@@ -26,6 +26,7 @@ import java.util.Map;
 public class RestoreServiceManager {
     private static final String RESTORE_SURVEILLANCE_SERVICE_STAGE = "RESTORE_SURVEILLANCE_SERVICE_STAGE";
     private static final String RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE = "RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE";
+    private static final String RESTORE_CAMERA_SERVICE_STAGE = "RESTORE_CAMERA_SERVICE_STAGE";
 
     private Map<String, ServiceRestoreHandler> mRestoreHandlers;
     private Map<String, OnTaskSuccess<Object>> mRestoreHandlersSuccessCallbacks;
@@ -105,9 +106,24 @@ public class RestoreServiceManager {
                                                 AuthenticationData authenticationData,
                                                 OnTaskSuccess<Void> onSuccess,
                                                 OnTaskError<ServiceError> onError) {
+        mRestoreHandlers.put(RESTORE_CAMERA_SERVICE_STAGE, new RestoreCameraServiceHandler());
+        mRestoreHandlersSuccessCallbacks.put(RESTORE_CAMERA_SERVICE_STAGE, (result) -> {
+            onSuccess.onSuccess(null);
+        });
+        mRestoreHandlersErrorCallbacks.put(RESTORE_CAMERA_SERVICE_STAGE, (error) -> {
+            onError.onError(error);
+        });
+
         mRestoreHandlers.put(RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE, new RestoreDeviceMovementServiceHandler());
         mRestoreHandlersSuccessCallbacks.put(RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE, (result) -> {
-            onSuccess.onSuccess(null);
+            OnTaskSuccess<Object> successCallback =
+                    mRestoreHandlersSuccessCallbacks.get(RESTORE_CAMERA_SERVICE_STAGE);
+            OnTaskError<ServiceError> errorCallback =
+                    mRestoreHandlersErrorCallbacks.get(RESTORE_CAMERA_SERVICE_STAGE);
+            ServiceRestoreHandler restoreHandler =
+                    mRestoreHandlers.get(RESTORE_CAMERA_SERVICE_STAGE);
+
+            restoreHandler.handle(context, authenticationData, successCallback, errorCallback);
         });
         mRestoreHandlersErrorCallbacks.put(RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE, (error) -> {
             onError.onError(error);
