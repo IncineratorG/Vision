@@ -27,7 +27,7 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         // ===
         // =====
-        int a = 2 / 0;
+//        int a = 2 / 0;
         // =====
         // ===
 
