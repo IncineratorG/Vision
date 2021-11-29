@@ -48,7 +48,7 @@ public class StopRecognizePersonWithCameraTask implements ServiceSyncTask {
     public Object run(Map<String, Object> params) {
         CameraService cameraService = CameraService.get();
         if (mCameraType.equalsIgnoreCase("front")) {
-            cameraService.stopRecognizePersonWithFrontCamera();
+            cameraService.stopRecognizePersonWithFrontCamera(mContext);
 
             SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                     mContext,
@@ -61,7 +61,7 @@ public class StopRecognizePersonWithCameraTask implements ServiceSyncTask {
                     mOnError
             ).run(null);
         } else if (mCameraType.equalsIgnoreCase("back")) {
-            cameraService.stopRecognizePersonWithBackCamera();
+            cameraService.stopRecognizePersonWithBackCamera(mContext);
 
             SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                     mContext,

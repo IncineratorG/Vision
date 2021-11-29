@@ -734,16 +734,19 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
+import com.vision.common.interfaces.service_state.ServiceState;
+import com.vision.common.interfaces.stateful_service.StatefulService;
 import com.vision.services.camera.data.camera_frame_detections.CameraFrameDetections;
 import com.vision.services.camera.camera_manager.CameraManager;
 import com.vision.services.camera.camera_manager.tasks.recognize_person_with_back_camera.RecognizePersonWithBackCameraCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.recognize_person_with_front_camera.RecognizePersonWithFrontCameraCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_back_camera_image.TakeBackCameraImageCameraManagerTask;
 import com.vision.services.camera.camera_manager.tasks.take_front_camera_image.TakeFrontCameraImageCameraManagerTask;
+import com.vision.services.camera.data.state.CameraServiceState;
 import com.vision.services.camera.helpers.OpenCVHelper;
 
 
-public class CameraService {
+public class CameraService extends StatefulService {
     public static final String NAME = "CameraService";
 
     public interface OnImageTaken {
@@ -764,11 +767,13 @@ public class CameraService {
 
     private static CameraService sInstance;
 
+    private CameraServiceState mServiceState;
     private CameraManager mCameraManager;
     private CameraFrameDetections mLastFrameDetections;
 
     private CameraService() {
         mCameraManager = new CameraManager();
+        mServiceState = new CameraServiceState(false, false);
     }
 
     public static CameraService get() {
@@ -801,6 +806,12 @@ public class CameraService {
 
     public void stop(Context context) {
         mCameraManager.stopAllTasks();
+
+        mServiceState = new CameraServiceState(
+                isFrontCameraRecognizePersonRunning(),
+                isBackCameraRecognizePersonRunning()
+        );
+        notifyStateListeners(context);
     }
 
     public void takeBackCameraImage(String quality,
@@ -846,6 +857,12 @@ public class CameraService {
         mCameraManager.executeTask(
                 new RecognizePersonWithFrontCameraCameraManagerTask(imageRotationDeg)
         );
+
+        mServiceState = new CameraServiceState(
+                isFrontCameraRecognizePersonRunning(),
+                isBackCameraRecognizePersonRunning()
+        );
+        notifyStateListeners(context);
     }
 
     public void startRecognizePersonWithBackCamera(Context context,
@@ -872,14 +889,32 @@ public class CameraService {
                         context, imageRotationDeg, frameDetectionsCallback
                 )
         );
+
+        mServiceState = new CameraServiceState(
+                isFrontCameraRecognizePersonRunning(),
+                isBackCameraRecognizePersonRunning()
+        );
+        notifyStateListeners(context);
     }
 
-    public void stopRecognizePersonWithFrontCamera() {
+    public void stopRecognizePersonWithFrontCamera(Context context) {
         mCameraManager.stopTaskOfType(CameraManager.RECOGNIZE_PERSON_WITH_FRONT_CAMERA);
+
+        mServiceState = new CameraServiceState(
+                isFrontCameraRecognizePersonRunning(),
+                isBackCameraRecognizePersonRunning()
+        );
+        notifyStateListeners(context);
     }
 
-    public void stopRecognizePersonWithBackCamera() {
+    public void stopRecognizePersonWithBackCamera(Context context) {
         mCameraManager.stopTaskOfType(CameraManager.RECOGNIZE_PERSON_WITH_BACK_CAMERA);
+
+        mServiceState = new CameraServiceState(
+                isFrontCameraRecognizePersonRunning(),
+                isBackCameraRecognizePersonRunning()
+        );
+        notifyStateListeners(context);
     }
 
     private void updatedLastFrameDetectionsData(CameraFrameDetections frameDetections) {
@@ -893,5 +928,10 @@ public class CameraService {
         }
 
         return OpenCVHelper.getObjectOfClassInFrameCount(personClassId, frameDetections);
+    }
+
+    @Override
+    public CameraServiceState getCurrentState() {
+        return new CameraServiceState(mServiceState);
     }
 }

@@ -34,30 +34,9 @@ public class DeviceMovementServiceState implements ServiceState {
         }
     }
 
-    public DeviceMovementServiceState(JSONObject stateData) {
-        try {
-            mStateData = new JSONObject(stateData.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     public DeviceMovementServiceState(String serializedState) {
         try {
             mStateData = new JSONObject(serializedState);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setIsRunning(boolean isRunning) {
-        if (mStateData == null) {
-            Log.d("tag", "DeviceMovementServiceState->setIsRunning()->STATE_DATA_IS_NULL");
-            return;
-        }
-
-        try {
-            mStateData.put(IS_RUNNING_FIELD, isRunning);
         } catch (JSONException e) {
             e.printStackTrace();
         }
