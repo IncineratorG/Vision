@@ -23,6 +23,7 @@ import java.util.Map;
 
 public class RestoreServiceManager {
     private static final String RESTORE_SURVEILLANCE_SERVICE_STAGE = "RESTORE_SURVEILLANCE_SERVICE_STAGE";
+    private static final String RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE = "RESTORE_DEVICE_MOVEMENT_SERVICE_STAGE";
 
     private Map<String, ServiceRestoreHandler> mRestoreHandlers;
     private Map<String, OnTaskSuccess<Object>> mRestoreHandlersSuccessCallbacks;

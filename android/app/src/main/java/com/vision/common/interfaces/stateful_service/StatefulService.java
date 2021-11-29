@@ -1,5 +1,7 @@
 package com.vision.common.interfaces.stateful_service;
 
+import android.content.Context;
+
 import com.vision.common.interfaces.service.Service;
 import com.vision.common.interfaces.service_state.ServiceState;
 import com.vision.common.interfaces.service_state_change_listener.ServiceStateChangeListener;
@@ -26,13 +28,13 @@ public abstract class StatefulService implements Service {
         return true;
     }
 
-    protected synchronized void notifyStateListeners() {
+    protected synchronized void notifyStateListeners(Context context) {
         ServiceState currentState = getCurrentState().copy();
 
         for (Map.Entry<String, ServiceStateChangeListener> listenerEntry : mStateChangeListeners.entrySet()) {
             ServiceStateChangeListener listener = listenerEntry.getValue();
             if (listener != null) {
-                listener.onStateChange(currentState);
+                listener.onStateChange(context, currentState);
             }
         }
     }

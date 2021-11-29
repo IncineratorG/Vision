@@ -16,6 +16,7 @@ import com.vision.common.interfaces.service_request_interrupter.ServiceRequestIn
 import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
 import com.vision.common.interfaces.service_state.ServiceState;
 import com.vision.common.interfaces.service_state_change_listener.ServiceStateChangeListener;
+import com.vision.services.app_storages.AppStorages;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.services.device_movement.data.state.DeviceMovementServiceState;
 import com.vision.services.surveillance.foreground_service_work.firebase.FBSForegroundServiceWork;
@@ -58,7 +59,7 @@ public class SurveillanceService implements
         mInternalData.errorsMapper = new ExternalServiceErrorsMapper();
 
         // ===
-        DeviceMovementService.get().addStateChangeListener(state -> {
+        DeviceMovementService.get().addStateChangeListener((context, state) -> {
             Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED");
 
             if (state == null) {
@@ -67,9 +68,7 @@ public class SurveillanceService implements
             }
 
             if (state instanceof DeviceMovementServiceState) {
-                DeviceMovementServiceState serviceState = (DeviceMovementServiceState) state;
-
-                Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED: " + serviceState.stateId() + " - " + serviceState.isRunning());
+                AppStorages.get().surveillanceStorage().saveServiceState(context, state);
             } else {
                 Log.d("tag", "SurveillanceService->DEVICE_MOVEMENT_SERVICE_STATE_CHANGED->BAD_STATE_INSTANCE: " + state.stateId());
             }

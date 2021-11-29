@@ -106,7 +106,7 @@ public class DeviceMovementService extends StatefulService {
         mIsRunning = mSensorManager.registerListener(mSensorEventListener, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         mServiceState = new DeviceMovementServiceState(true);
-        notifyStateListeners();
+        notifyStateListeners(context);
     }
 
     public void stop(Context context) {
@@ -143,7 +143,7 @@ public class DeviceMovementService extends StatefulService {
         mIsRunning = false;
 
         mServiceState = new DeviceMovementServiceState(false);
-        notifyStateListeners();
+        notifyStateListeners(context);
     }
 
     private void processSensorData(long initializeTimestamp,
