@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.vision.common.constants.AppConstants;
-import com.vision.common.data.hybrid_objects.authentication_data.AuthenticationData;
 import com.vision.common.data.hybrid_objects.device_info_list.DeviceInfoList;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
@@ -14,8 +13,6 @@ import com.vision.common.interfaces.service_notification_sender.ServiceNotificat
 import com.vision.common.interfaces.service_notifications_executor.ServiceNotificationsExecutor;
 import com.vision.common.interfaces.service_request_interrupter.ServiceRequestInterrupter;
 import com.vision.common.interfaces.foreground_service_work.ForegroundServiceWork;
-import com.vision.common.interfaces.service_state.ServiceState;
-import com.vision.common.interfaces.service_state_change_listener.ServiceStateChangeListener;
 import com.vision.services.app_storages.AppStorages;
 import com.vision.services.camera.CameraService;
 import com.vision.services.camera.data.state.CameraServiceState;
@@ -34,14 +31,14 @@ import com.vision.services.surveillance.data.service_errors.external_service_err
 import com.vision.services.surveillance.data.internal_data.SurveillanceServiceInternalData;
 import com.vision.services.surveillance.service_internal_tasks.task_results.SurveillanceServiceInternalTaskResults;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
-import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_device_name.GetCurrentDeviceNameTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_name.GetCurrentGroupNameTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.get_current_group_password.GetCurrentGroupPasswordTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.detect_device_movement.is_detect_device_movement_service_running.IsDetectDeviceMovementServiceRunningTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.foreground_service.is_foreground_service_running.IsForegroundServiceRunningTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.get_current_service_mode.GetCurrentServiceModeTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.is_service_initialized.IsServiceInitializedTask;
-import com.vision.services.surveillance.service_internal_tasks.tasks.recognize_person_with_camera.is_recognize_person_with_camera_service_running.IsRecognizePersonWithCameraServiceRunningTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.GetCurrentDeviceNameTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.GetCurrentGroupNameTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.authentication.GetCurrentGroupPasswordTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.detect_device_movement.IsDetectDeviceMovementServiceRunningTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.foreground_service.IsForegroundServiceRunningTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.GetCurrentServiceModeTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.init_and_dispose_service.IsServiceInitializedTask;
+import com.vision.services.surveillance.service_internal_tasks.tasks.recognize_person_with_camera.IsRecognizePersonWithCameraServiceRunningTask;
 
 public class SurveillanceService implements
         ServiceResponseSender,
@@ -235,6 +232,8 @@ public class SurveillanceService implements
                                        OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->startForegroundService()");
 
+        // ===
+        // =====
         SurveillanceServiceInternalTasks.startForegroundServiceTask(
                 context,
                 true,
@@ -244,6 +243,8 @@ public class SurveillanceService implements
                 onSuccess,
                 onError
         ).run(null);
+        // =====
+        // ===
     }
 
     public void stopForegroundService(Context context,
@@ -251,6 +252,8 @@ public class SurveillanceService implements
                                       OnTaskError<ServiceError> onError) {
         Log.d("tag", "SurveillanceService->stopForegroundService()");
 
+        // ===
+        // =====
         SurveillanceServiceInternalTasks.stopForegroundServiceTask(
                 context,
                 true,
@@ -260,6 +263,8 @@ public class SurveillanceService implements
                 onSuccess,
                 onError
         ).run(null);
+        // =====
+        // ===
     }
 
     public boolean isForegroundServiceRunning(Context context) {

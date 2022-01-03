@@ -51,4 +51,10 @@ public class SurveillanceServiceErrors {
         return new ServiceError("10", "BAD_CAMERA_PREVIEW_IMAGE_DATA");
     }
     // ===========================
+
+    // ===== PipelineErrors ======
+    public static ServiceError generalPipelineError() {
+        return new ServiceError("11", "GENERAL_PIPELINE_ERROR");
+    }
+    // ===========================
 }
