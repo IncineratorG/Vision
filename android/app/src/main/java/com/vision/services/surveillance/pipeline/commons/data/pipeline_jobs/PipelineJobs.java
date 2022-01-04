@@ -34,4 +34,17 @@ public class PipelineJobs {
 
         return jobs;
     }
+
+    public void clear() {
+        mJobs.clear();
+    }
+
+    public void copyFrom(PipelineJobs other) {
+        mJobs.clear();
+        mJobs = new HashMap<>(other.mJobs);
+    }
+
+    public int distinctJobsCount() {
+        return mJobs.size();
+    }
 }

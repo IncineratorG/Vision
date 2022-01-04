@@ -7,6 +7,9 @@ import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
+import com.vision.services.surveillance.pipeline.Pipeline;
+import com.vision.services.surveillance.pipeline.jobs.OperationTwoJob;
+import com.vision.services.surveillance.pipeline.jobs.StopDetectDeviceMovementJob;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;
@@ -42,6 +45,10 @@ public class StopDetectDeviceMovementTask implements ServiceSyncTask {
     @Override
     public Object run(Map<String, Object> params) {
         DeviceMovementService.get().stop(mContext);
+
+        // ===
+        Pipeline.get().scheduleJob(new StopDetectDeviceMovementJob(String.valueOf(System.currentTimeMillis())));
+        // ===
 
         SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
                 mContext,

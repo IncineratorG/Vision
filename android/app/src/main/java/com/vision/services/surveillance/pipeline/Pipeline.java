@@ -5,7 +5,6 @@ import android.util.Log;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
-import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle_V2;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.jobs.OperationOneJob;
@@ -30,52 +29,49 @@ public class Pipeline {
 
         mIsRunning = false;
 
-        // ===
         mCycle = new PipelineCycle_V2();
 
         mCycle.addOperation((jobs, onSuccess, onError) -> {
-//            Log.d("TAG", "Operation_1: " + Thread.currentThread().getId());
+            Log.d("TAG", "Operation_1: " + Thread.currentThread().getId());
 
             List<PipelineJob> operationJobs = jobs.getAndRemoveJobs(OperationOneJob.TYPE);
-//            Log.d("TAG", "Operation_1: " + operationJobs.size());
+            Log.d("TAG", "Operation_1->JOBS: " + operationJobs.size());
 
             onSuccess.onSuccess(true);
         });
-//        mCycle.addOperation((jobs, onSuccess, onError) -> {
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            onSuccess.onSuccess(true);
-//        });
         mCycle.addOperation((jobs, onSuccess, onError) -> {
-//            Log.d("TAG", "Operation_2: " + Thread.currentThread().getId());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            onSuccess.onSuccess(true);
+        });
+        mCycle.addOperation((jobs, onSuccess, onError) -> {
+            Log.d("TAG", "Operation_2: " + Thread.currentThread().getId());
 
             List<PipelineJob> operationJobs = jobs.getAndRemoveJobs(OperationTwoJob.TYPE);
-//            Log.d("TAG", "Operation_2: " + operationJobs.size());
+            Log.d("TAG", "Operation_2->JOBS: " + operationJobs.size());
 
             onSuccess.onSuccess(true);
         });
-//        mCycle.addOperation((jobs, onSuccess, onError) -> {
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            onSuccess.onSuccess(true);
-//        });
         mCycle.addOperation((jobs, onSuccess, onError) -> {
-//            Log.d("TAG", "Operation_3: " + Thread.currentThread().getId());
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             onSuccess.onSuccess(true);
         });
-//        mCycle.addOperation(new DetectDeviceMovementOperation());
-        // ===
+        mCycle.addOperation(new DetectDeviceMovementOperation());
+        mCycle.addOperation((jobs, onSuccess, onError) -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            onSuccess.onSuccess(true);
+        });
     }
 
     public static synchronized Pipeline get() {
@@ -98,22 +94,13 @@ public class Pipeline {
                     cycleThread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    break;
                 } finally {
                     ++mCycleCounter;
-//                    Log.d("TAG", "===> AFTER_CYCLE: " + mCycleCounter++);
                 }
             }
 
             Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
-
-//            Thread cycleThread = mCycle.run();
-//            try {
-//                cycleThread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } finally {
-//                Log.d("TAG", "===> AFTER_CYCLE");
-//            }
         });
         mWorkerThread.start();
 
@@ -148,7 +135,7 @@ public class Pipeline {
     }
 
     public void scheduleJob(PipelineJob job) {
-
+        mCycle.scheduleJob(job);
     }
 
     private synchronized void setNeedStopCycle(boolean needStop) {

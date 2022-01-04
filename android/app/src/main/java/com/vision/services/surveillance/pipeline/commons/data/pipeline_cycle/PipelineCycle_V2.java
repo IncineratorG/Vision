@@ -2,28 +2,17 @@ package com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle;
 
 import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.CallbackImpl;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.PromiseImpl;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PipelineCycle_V2 {
-    public interface OnCycleFinished {
-        void finished();
-    }
-
     private int mCurrentOperationIndex;
     private List<PipelineOperation> mOperationsList;
-    private OnCycleFinished mCycleFinishedCallback;
     private PipelineJobs mCurrentJobs;
     private PipelineJobs mScheduledJobs;
 
@@ -51,33 +40,26 @@ public class PipelineCycle_V2 {
     }
 
     public Thread run() {
-        mCurrentOperationIndex = -1;
-
-        mOperationsQueue.clear();
-
-        setCycleFinished(false);
-
+        setCurrentCycleJobs();
+        prepareCycleState();
         queueNextOperation();
 
         Thread thread = new Thread(() -> {
             while (!cycleFinished()) {
                 try {
-                    PipelineOperation queedOperation = mOperationsQueue.take();
-                    queedOperation.run(
+                    PipelineOperation queuedOperation = mOperationsQueue.take();
+                    queuedOperation.run(
                             mCurrentJobs,
                             (data) -> {
-//                                Log.d("TAG", "WILL_RUN_NEXT_OPERATION");
                                 queueNextOperation();
                             },
                             (error) -> {
-                                Log.d("TAG", "ERROR_OCCURRED");
+                                Log.d("TAG", "PipelineCycle->ERROR_OCCURRED");
                             }
                     );
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-//                Log.d("TAG", "=======> AFTER <======");
             }
         });
         thread.start();
@@ -88,7 +70,6 @@ public class PipelineCycle_V2 {
     private void queueNextOperation() {
         ++mCurrentOperationIndex;
         if (mCurrentOperationIndex >= mOperationsList.size()) {
-//            Log.d("TAG", "PipelineCycle->queueNextOperation()->ALL_OPERATIONS_FINISHED");
             setCycleFinished(true);
             return;
         }
@@ -101,40 +82,24 @@ public class PipelineCycle_V2 {
         }
     }
 
+    private void setCurrentCycleJobs() {
+        Log.d("TAG", "PipelineCycle->setCurrentCycleJobs(): " + mScheduledJobs.distinctJobsCount());
+
+        mCurrentJobs.copyFrom(mScheduledJobs);
+        mScheduledJobs.clear();
+    }
+
+    private void prepareCycleState() {
+        mCurrentOperationIndex = -1;
+        mOperationsQueue.clear();
+        setCycleFinished(false);
+    }
+
     private synchronized boolean cycleFinished() {
         return mCycleFinished;
     }
 
     private synchronized void setCycleFinished(boolean finished) {
         mCycleFinished = finished;
-    }
-
-    private boolean runNextOperation() {
-        ++mCurrentOperationIndex;
-        if (mCurrentOperationIndex >= mOperationsList.size()) {
-            Log.d("TAG", "PipelineCycle->run()->ALL_OPERATIONS_FINISHED");
-            return true;
-        }
-
-        PipelineOperation operation = mOperationsList.get(mCurrentOperationIndex);
-        try {
-            mOperationsQueue.put(operation);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-//        PipelineOperation operation = mOperationsList.get(mCurrentOperationIndex);
-//        operation.run(
-//                mCurrentJobs,
-//                (data) -> {
-//                    Log.d("TAG", "WILL_RUN_NEXT_OPERATION");
-////                    runNextOperation();
-//                },
-//                (error) -> {
-//                    Log.d("TAG", "ERROR_OCCURRED");
-//                }
-//        );
-
-        return false;
     }
 }

@@ -6,11 +6,9 @@ public class OperationOneJob implements PipelineJob {
     public static final String TYPE = "OperationOneJob";
 
     private String mId;
-    private boolean mIsFinished;
 
     public OperationOneJob(String id) {
         mId = id;
-        mIsFinished = false;
     }
 
     @Override
@@ -21,14 +19,5 @@ public class OperationOneJob implements PipelineJob {
     @Override
     public String type() {
         return TYPE;
-    }
-
-    @Override
-    public boolean finished() {
-        return mIsFinished;
-    }
-
-    public void setFinished() {
-        mIsFinished = true;
     }
 }

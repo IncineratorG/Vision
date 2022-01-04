@@ -2,12 +2,12 @@ package com.vision.services.surveillance.pipeline.jobs;
 
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 
-public class OperationTwoJob implements PipelineJob {
-    public static final String TYPE = "OperationTwoJob";
+public class StopDetectDeviceMovementJob implements PipelineJob {
+    public static final String TYPE = "StopDetectDeviceMovementJob";
 
     private String mId;
 
-    public OperationTwoJob(String id) {
+    public StopDetectDeviceMovementJob(String id) {
         mId = id;
     }
 

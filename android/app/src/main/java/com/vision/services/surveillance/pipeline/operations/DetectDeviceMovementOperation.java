@@ -8,6 +8,10 @@ import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
+import com.vision.services.surveillance.pipeline.jobs.StartDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.jobs.StopDetectDeviceMovementJob;
+
+import java.util.List;
 
 public class DetectDeviceMovementOperation implements PipelineOperation {
     public DetectDeviceMovementOperation() {
@@ -18,12 +22,21 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
     public void run(PipelineJobs jobs, OnTaskSuccess<Object> onSuccess, OnTaskError<Object> onError) {
         Log.d("TAG", "DetectDeviceMovementOperation");
 
-        OnTaskSuccess<Void> movementStartCallback = (data) -> {
-            Log.d("tag", "DetectDeviceMovementOperation->movementStartCallback()");
-        };
-        OnTaskSuccess<Void> movementEndCallback = (data) -> {
-            Log.d("tag", "DetectDeviceMovementOperation->movementEndCallback()");
-        };
+        List<PipelineJob> startDetectDeviceMovementJobs = jobs.getAndRemoveJobs(StartDetectDeviceMovementJob.TYPE);
+        List<PipelineJob> stopDetectDeviceMovementJobs = jobs.getAndRemoveJobs(StopDetectDeviceMovementJob.TYPE);
+
+        Log.d("TAG", "DetectDeviceMovementOperation->startDetectDeviceMovementJobs: " + startDetectDeviceMovementJobs.size());
+        Log.d("TAG", "DetectDeviceMovementOperation->stopDetectDeviceMovementJobs: " + stopDetectDeviceMovementJobs.size());
+
+        onSuccess.onSuccess(true);
+
+//        OnTaskSuccess<Void> movementStartCallback = (data) -> {
+//            Log.d("tag", "DetectDeviceMovementOperation->movementStartCallback()");
+//        };
+//        OnTaskSuccess<Void> movementEndCallback = (data) -> {
+//            Log.d("tag", "DetectDeviceMovementOperation->movementEndCallback()");
+//        };
+
 
 //        DeviceMovementService.get().start(mContext, movementStartCallback, movementEndCallback);
 

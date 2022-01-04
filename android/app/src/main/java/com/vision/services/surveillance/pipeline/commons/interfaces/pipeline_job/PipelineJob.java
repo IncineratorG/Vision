@@ -3,5 +3,4 @@ package com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_jo
 public interface PipelineJob {
     String id();
     String type();
-    boolean finished();
 }
