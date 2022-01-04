@@ -34,8 +34,6 @@ public class GetCameraRecognizePersonSettingsServiceHandler implements ServiceRe
 
         String requestSenderDeviceName = request.senderDeviceName();
 
-        CameraService cameraService = CameraService.get();
-
         // ===
         String imageQuality = AppConstants.CAMERA_IMAGE_QUALITY_HIGH;
         CameraService.OnImageTaken imageTakenCallback = (base64String) -> {
@@ -62,9 +60,9 @@ public class GetCameraRecognizePersonSettingsServiceHandler implements ServiceRe
         };
 
         if (requestPayload.cameraType().equalsIgnoreCase("front")) {
-            cameraService.takeFrontCameraImage(imageQuality, imageTakenCallback, errorCallback);
+            surveillanceService.takeFrontCameraImage(imageQuality, imageTakenCallback, errorCallback);
         } else if (requestPayload.cameraType().equalsIgnoreCase("back")) {
-            cameraService.takeBackCameraImage(imageQuality, imageTakenCallback, errorCallback);
+            surveillanceService.takeBackCameraImage(imageQuality, imageTakenCallback, errorCallback);
         } else {
             Log.d("tag", "GetCameraRecognizePersonSettingsServiceHandler->handle()->UNKNOWN_CAMERA_TYPE: " + requestPayload.cameraType());
         }

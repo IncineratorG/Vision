@@ -36,9 +36,7 @@ public class TakeFrontCameraImageServiceHandler implements ServiceRequestHandler
         String requestSenderDeviceName = request.senderDeviceName();
 
         // ===
-        CameraService cameraService = CameraService.get();
-
-        cameraService.takeFrontCameraImage(
+        surveillanceService.takeFrontCameraImage(
                 requestPayload.imageQuality(),
                 (base64String) -> {
                     Log.d("tag", "TakeFrontCameraImageServiceHandler->OnImageTaken()");
@@ -63,6 +61,34 @@ public class TakeFrontCameraImageServiceHandler implements ServiceRequestHandler
                     Log.d("tag", "TakeFrontCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
                 }
         );
+
+//        CameraService cameraService = CameraService.get();
+//
+//        cameraService.takeFrontCameraImage(
+//                requestPayload.imageQuality(),
+//                (base64String) -> {
+//                    Log.d("tag", "TakeFrontCameraImageServiceHandler->OnImageTaken()");
+//
+//                    TakeFrontCameraImageResponsePayload responsePayload =
+//                            SurveillanceServiceResponsePayloads.takeFrontCameraImageResponsePayload(base64String);
+//
+//                    ServiceResponse response = new ServiceResponse(
+//                            ServiceResponse.TYPE_RESULT,
+//                            request.id(),
+//                            responsePayload.jsonObject()
+//                    );
+//
+//                    surveillanceService.sendResponse(
+//                            currentGroupName,
+//                            currentGroupPassword,
+//                            requestSenderDeviceName,
+//                            response
+//                    );
+//                },
+//                (code, message) -> {
+//                    Log.d("tag", "TakeFrontCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
+//                }
+//        );
         // ===
 
         List<String> requestsPath = FBSPathsService.get().requestsPath(currentGroupName, currentGroupPassword, currentDeviceName);

@@ -43,10 +43,7 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
 
         String requestSenderDeviceName = request.senderDeviceName();
 
-        // ===
-        CameraService cameraService = CameraService.get();
-
-        cameraService.takeBackCameraImage(
+        surveillanceService.takeBackCameraImage(
                 requestPayload.imageQuality(),
                 (base64String) -> {
                     Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken()");
@@ -71,6 +68,35 @@ public class TakeBackCameraImageServiceHandler implements ServiceRequestHandler 
                     Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
                 }
         );
+
+        // ===
+//        CameraService cameraService = CameraService.get();
+//
+//        cameraService.takeBackCameraImage(
+//                requestPayload.imageQuality(),
+//                (base64String) -> {
+//                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTaken()");
+//
+//                    TakeBackCameraImageResponsePayload responsePayload =
+//                            SurveillanceServiceResponsePayloads.takeBackCameraImageResponsePayload(base64String);
+//
+//                    ServiceResponse response = new ServiceResponse(
+//                            ServiceResponse.TYPE_RESULT,
+//                            request.id(),
+//                            responsePayload.jsonObject()
+//                    );
+//
+//                    surveillanceService.sendResponse(
+//                            currentGroupName,
+//                            currentGroupPassword,
+//                            requestSenderDeviceName,
+//                            response
+//                    );
+//                },
+//                (code, message) -> {
+//                    Log.d("tag", "TakeBackCameraImageServiceHandler->OnImageTakeError(): " + code + " - " + message);
+//                }
+//        );
         // ===
 //        CameraService.get().takeBackCameraImage(
 //                context,
