@@ -7,22 +7,23 @@ import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PipelineCycle {
-    public interface OnCycleFinished {
-        void finished();
-    }
-
     private int mCurrentOperationIndex;
     private List<PipelineOperation> mOperationsList;
-    private OnCycleFinished mCycleFinishedCallback;
     private PipelineJobs mCurrentJobs;
     private PipelineJobs mScheduledJobs;
 
+    private LinkedBlockingQueue<PipelineOperation> mOperationsQueue;
+    private boolean mCycleFinished;
+
     public PipelineCycle() {
+        mCycleFinished = false;
+
+        mOperationsQueue = new LinkedBlockingQueue<>();
+
         mCurrentOperationIndex = -1;
         mOperationsList = new ArrayList<>();
 
@@ -38,31 +39,71 @@ public class PipelineCycle {
         mScheduledJobs.addJob(job);
     }
 
-    public void run(OnCycleFinished finishedCallback) {
-        mCurrentOperationIndex = -1;
-        mCycleFinishedCallback = finishedCallback;
-        runNextOperation();
+    public PipelineJobs getCurrentCycleJobs() {
+        return mCurrentJobs;
     }
 
-    private void runNextOperation() {
+    public Thread run() {
+        setCurrentCycleJobs();
+        prepareCycleState();
+        queueNextOperation();
+
+        Thread thread = new Thread(() -> {
+            while (!cycleFinished()) {
+                try {
+                    PipelineOperation queuedOperation = mOperationsQueue.take();
+                    queuedOperation.run(
+                            mCurrentJobs,
+                            (data) -> {
+                                queueNextOperation();
+                            },
+                            (error) -> {
+                                Log.d("TAG", "PipelineCycle->ERROR_OCCURRED");
+                            }
+                    );
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+        return thread;
+    }
+
+    private void queueNextOperation() {
         ++mCurrentOperationIndex;
         if (mCurrentOperationIndex >= mOperationsList.size()) {
-            Log.d("TAG", "PipelineCycle->run()->ALL_OPERATIONS_FINISHED");
-            mCycleFinishedCallback.finished();
-            Log.d("TAG", "PipelineCycle->run()->ALL_OPERATIONS_FINISHED->AFTER_FINISHED");
+            setCycleFinished(true);
             return;
         }
 
         PipelineOperation operation = mOperationsList.get(mCurrentOperationIndex);
-        operation.run(
-                mCurrentJobs,
-                (data) -> {
-                    Log.d("TAG", "WILL_RUN_NEXT_OPERATION");
-                    runNextOperation();
-                },
-                (error) -> {
-                    Log.d("TAG", "ERROR_OCCURRED");
-                }
-        );
+        try {
+            mOperationsQueue.put(operation);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCurrentCycleJobs() {
+        Log.d("TAG", "PipelineCycle->setCurrentCycleJobs(): " + mScheduledJobs.distinctJobsCount());
+
+        mCurrentJobs.copyFrom(mScheduledJobs);
+        mScheduledJobs.clear();
+    }
+
+    private void prepareCycleState() {
+        mCurrentOperationIndex = -1;
+        mOperationsQueue.clear();
+        setCycleFinished(false);
+    }
+
+    private synchronized boolean cycleFinished() {
+        return mCycleFinished;
+    }
+
+    private synchronized void setCycleFinished(boolean finished) {
+        mCycleFinished = finished;
     }
 }

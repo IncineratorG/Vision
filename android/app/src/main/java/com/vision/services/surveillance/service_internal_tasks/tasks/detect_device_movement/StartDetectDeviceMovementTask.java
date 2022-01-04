@@ -75,7 +75,17 @@ public class StartDetectDeviceMovementTask implements ServiceSyncTask {
         DeviceMovementService.get().start(mContext, movementStartCallback, movementEndCallback);
 
         // ===
-        Pipeline.get().scheduleJob(new StartDetectDeviceMovementJob(String.valueOf(System.currentTimeMillis())));
+        Pipeline.get().scheduleJob(
+                new StartDetectDeviceMovementJob(
+                        String.valueOf(System.currentTimeMillis()),
+                        data -> {
+                            Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_STARTED");
+                        },
+                        error -> {
+                            Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_START->ERROR: " + error.toString());
+                        }
+                )
+        );
         // ===
 
         SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(

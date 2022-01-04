@@ -1,6 +1,7 @@
 package com.vision.services.surveillance.service_internal_tasks.tasks.detect_device_movement;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
@@ -47,7 +48,17 @@ public class StopDetectDeviceMovementTask implements ServiceSyncTask {
         DeviceMovementService.get().stop(mContext);
 
         // ===
-        Pipeline.get().scheduleJob(new StopDetectDeviceMovementJob(String.valueOf(System.currentTimeMillis())));
+        Pipeline.get().scheduleJob(
+                new StopDetectDeviceMovementJob(
+                        String.valueOf(System.currentTimeMillis()),
+                        data -> {
+                            Log.d("TAG", "StopDetectDeviceMovementTask->SUCCESS_CALLBACK");
+                        },
+                        error -> {
+                            Log.d("TAG", "StopDetectDeviceMovementTask->ERROR_CALLBACK: " + error.toString());
+                        }
+                )
+        );
         // ===
 
         SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(

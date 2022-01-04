@@ -5,7 +5,8 @@ import android.util.Log;
 import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
-import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle_V2;
+import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle;
+import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.jobs.OperationOneJob;
 import com.vision.services.surveillance.pipeline.jobs.OperationTwoJob;
@@ -19,7 +20,7 @@ public class Pipeline {
 
     private boolean mIsRunning;
     private Thread mWorkerThread;
-    private PipelineCycle_V2 mCycle;
+    private PipelineCycle mCycle;
     private boolean mNeedStopCycle = false;
 
     private long mCycleCounter;
@@ -29,12 +30,12 @@ public class Pipeline {
 
         mIsRunning = false;
 
-        mCycle = new PipelineCycle_V2();
+        mCycle = new PipelineCycle();
 
         mCycle.addOperation((jobs, onSuccess, onError) -> {
             Log.d("TAG", "Operation_1: " + Thread.currentThread().getId());
 
-            List<PipelineJob> operationJobs = jobs.getAndRemoveJobs(OperationOneJob.TYPE);
+            List<PipelineJob> operationJobs = jobs.getJobs(OperationOneJob.TYPE);
             Log.d("TAG", "Operation_1->JOBS: " + operationJobs.size());
 
             onSuccess.onSuccess(true);
@@ -50,7 +51,7 @@ public class Pipeline {
         mCycle.addOperation((jobs, onSuccess, onError) -> {
             Log.d("TAG", "Operation_2: " + Thread.currentThread().getId());
 
-            List<PipelineJob> operationJobs = jobs.getAndRemoveJobs(OperationTwoJob.TYPE);
+            List<PipelineJob> operationJobs = jobs.getJobs(OperationTwoJob.TYPE);
             Log.d("TAG", "Operation_2->JOBS: " + operationJobs.size());
 
             onSuccess.onSuccess(true);
@@ -64,6 +65,28 @@ public class Pipeline {
             onSuccess.onSuccess(true);
         });
         mCycle.addOperation(new DetectDeviceMovementOperation());
+        mCycle.addOperation((jobs, onSuccess, onError) -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            onSuccess.onSuccess(true);
+        });
+        mCycle.addOperation((jobs, onSuccess, onError) -> {
+            Log.d("TAG", "FinalOperation");
+
+            // ===
+//            List<PipelineJob> pipelineJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
+//            Log.d("TAG", "FinalOperation: " + pipelineJobs.size());
+//            for (int i = 0; i < pipelineJobs.size(); ++i) {
+//                StartDetectDeviceMovementJob job = (StartDetectDeviceMovementJob) pipelineJobs.get(i);
+//                Log.d("TAG", "FinalOperation->RESULT: " + job.result());
+//            }
+            // ===
+
+            onSuccess.onSuccess(true);
+        });
         mCycle.addOperation((jobs, onSuccess, onError) -> {
             try {
                 Thread.sleep(1000);
@@ -98,6 +121,8 @@ public class Pipeline {
                 } finally {
                     ++mCycleCounter;
                 }
+
+                finalizeCurrentCycleJobs();
             }
 
             Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
@@ -136,6 +161,21 @@ public class Pipeline {
 
     public void scheduleJob(PipelineJob job) {
         mCycle.scheduleJob(job);
+    }
+
+    private synchronized void finalizeCurrentCycleJobs() {
+        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()");
+        PipelineJobs jobs = mCycle.getCurrentCycleJobs();
+        List<PipelineJob> jobsList = jobs.getAllJobs();
+        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()->JOBS_COUNT: " + jobsList.size());
+        for (int i = 0; i < jobsList.size(); ++i) {
+            PipelineJob job = jobsList.get(i);
+            if (job.error() != null) {
+                job.errorCallback().onError(job.error());
+            } else if (job.finished()) {
+                job.successCallback().onSuccess(job.result());
+            }
+        }
     }
 
     private synchronized void setNeedStopCycle(boolean needStop) {

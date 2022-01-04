@@ -1,5 +1,7 @@
 package com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs;
 
+import android.util.Log;
+
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 
 import java.util.ArrayList;
@@ -24,15 +26,23 @@ public class PipelineJobs {
         mJobs.put(job.type(), jobs);
     }
 
-    public List<PipelineJob> getAndRemoveJobs(String type) {
+    public List<PipelineJob> getJobs(String type) {
         List<PipelineJob> jobs = mJobs.get(type);
         if (jobs == null) {
             jobs = new ArrayList<>();
         }
 
-        mJobs.remove(type);
-
         return jobs;
+    }
+
+    public List<PipelineJob> getAllJobs() {
+        Log.d("TAG", "PipelineJobs->getAllJobs(): " + mJobs.size());
+
+        List<PipelineJob> allJobs = new ArrayList<>();
+        for (Map.Entry<String, List<PipelineJob>> jobsMapEntry : mJobs.entrySet()) {
+            allJobs.addAll(jobsMapEntry.getValue());
+        }
+        return allJobs;
     }
 
     public void clear() {

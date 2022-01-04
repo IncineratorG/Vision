@@ -22,11 +22,20 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
     public void run(PipelineJobs jobs, OnTaskSuccess<Object> onSuccess, OnTaskError<Object> onError) {
         Log.d("TAG", "DetectDeviceMovementOperation");
 
-        List<PipelineJob> startDetectDeviceMovementJobs = jobs.getAndRemoveJobs(StartDetectDeviceMovementJob.TYPE);
-        List<PipelineJob> stopDetectDeviceMovementJobs = jobs.getAndRemoveJobs(StopDetectDeviceMovementJob.TYPE);
+        List<PipelineJob> startDetectDeviceMovementJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
+        List<PipelineJob> stopDetectDeviceMovementJobs = jobs.getJobs(StopDetectDeviceMovementJob.TYPE);
 
         Log.d("TAG", "DetectDeviceMovementOperation->startDetectDeviceMovementJobs: " + startDetectDeviceMovementJobs.size());
         Log.d("TAG", "DetectDeviceMovementOperation->stopDetectDeviceMovementJobs: " + stopDetectDeviceMovementJobs.size());
+
+        for (int i = 0; i < startDetectDeviceMovementJobs.size(); ++i) {
+            StartDetectDeviceMovementJob job = (StartDetectDeviceMovementJob) startDetectDeviceMovementJobs.get(i);
+            job.setFinished(true);
+        }
+
+        for (int i = 0; i < stopDetectDeviceMovementJobs.size(); ++i) {
+            stopDetectDeviceMovementJobs.get(i).setFinished(true);
+        }
 
         onSuccess.onSuccess(true);
 
