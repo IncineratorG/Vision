@@ -3,11 +3,14 @@ package com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle;
 import android.util.Log;
 
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
+import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PipelineCycle {
@@ -15,6 +18,7 @@ public class PipelineCycle {
     private List<PipelineOperation> mOperationsList;
     private PipelineJobs mCurrentJobs;
     private PipelineJobs mScheduledJobs;
+    private Map<String, PipelineOperationState> mOperationsCycleStates;
 
     private LinkedBlockingQueue<PipelineOperation> mOperationsQueue;
     private boolean mCycleFinished;
@@ -29,6 +33,8 @@ public class PipelineCycle {
 
         mCurrentJobs = new PipelineJobs();
         mScheduledJobs = new PipelineJobs();
+
+        mOperationsCycleStates = new HashMap<>();
     }
 
     public void addOperation(PipelineOperation operation) {
@@ -43,6 +49,16 @@ public class PipelineCycle {
         return mCurrentJobs;
     }
 
+    public List<PipelineOperationState> getCurrentCycleOperationStates() {
+        List<PipelineOperationState> states = new ArrayList<>();
+
+        for (Map.Entry<String, PipelineOperationState> cycleStatesEntry : mOperationsCycleStates.entrySet()) {
+            states.add(cycleStatesEntry.getValue());
+        }
+
+        return states;
+    }
+
     public Thread run() {
         setCurrentCycleJobs();
         prepareCycleState();
@@ -55,6 +71,7 @@ public class PipelineCycle {
                     queuedOperation.run(
                             mCurrentJobs,
                             (data) -> {
+                                mOperationsCycleStates.put(data.operation().id(), data);
                                 queueNextOperation();
                             },
                             (error) -> {
@@ -97,6 +114,7 @@ public class PipelineCycle {
         mCurrentOperationIndex = -1;
         mOperationsQueue.clear();
         setCycleFinished(false);
+        mOperationsCycleStates.clear();
     }
 
     private synchronized boolean cycleFinished() {

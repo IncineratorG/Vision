@@ -36,8 +36,6 @@ public class PipelineJobs {
     }
 
     public List<PipelineJob> getAllJobs() {
-        Log.d("TAG", "PipelineJobs->getAllJobs(): " + mJobs.size());
-
         List<PipelineJob> allJobs = new ArrayList<>();
         for (Map.Entry<String, List<PipelineJob>> jobsMapEntry : mJobs.entrySet()) {
             allJobs.addAll(jobsMapEntry.getValue());

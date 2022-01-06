@@ -1,5 +1,6 @@
 package com.vision.services.surveillance.pipeline;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.vision.common.data.service_error.ServiceError;
@@ -7,10 +8,16 @@ import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
+import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_jobs_finalizer.PipelineCycleJobsFinalizer;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_operation_states_processor.PipelineCycleOperationStatesProcessor;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
-import com.vision.services.surveillance.pipeline.jobs.OperationOneJob;
-import com.vision.services.surveillance.pipeline.jobs.OperationTwoJob;
-import com.vision.services.surveillance.pipeline.operations.DetectDeviceMovementOperation;
+import com.vision.services.surveillance.pipeline.jobs_finalizer.SimpleCycleJobsFinalizer;
+import com.vision.services.surveillance.pipeline.operation_states_processor.SimpleOperationStatesProcessor;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation.DetectDeviceMovementOperation;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.status.DetectDeviceMovementOperationStatus;
+import com.vision.services.surveillance.pipeline.operations.empty.operation.EmptyOperation;
+import com.vision.services.surveillance.pipeline.operations.wait.operation.WaitOperation;
 
 import java.util.List;
 
@@ -25,76 +32,24 @@ public class Pipeline {
 
     private long mCycleCounter;
 
+    private PipelineCycleJobsFinalizer mCycleJobsFinalizer;
+    private PipelineCycleOperationStatesProcessor mCycleOperationStatesProcessor;
+
     private Pipeline() {
         mCycleCounter = 0;
 
         mIsRunning = false;
 
+        int operationIdsCounter = 1;
+
+        mCycleJobsFinalizer = new SimpleCycleJobsFinalizer();
+        mCycleOperationStatesProcessor = new SimpleOperationStatesProcessor();
+
         mCycle = new PipelineCycle();
-
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            Log.d("TAG", "Operation_1: " + Thread.currentThread().getId());
-
-            List<PipelineJob> operationJobs = jobs.getJobs(OperationOneJob.TYPE);
-            Log.d("TAG", "Operation_1->JOBS: " + operationJobs.size());
-
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            Log.d("TAG", "Operation_2: " + Thread.currentThread().getId());
-
-            List<PipelineJob> operationJobs = jobs.getJobs(OperationTwoJob.TYPE);
-            Log.d("TAG", "Operation_2->JOBS: " + operationJobs.size());
-
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation(new DetectDeviceMovementOperation());
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            Log.d("TAG", "FinalOperation");
-
-            // ===
-//            List<PipelineJob> pipelineJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
-//            Log.d("TAG", "FinalOperation: " + pipelineJobs.size());
-//            for (int i = 0; i < pipelineJobs.size(); ++i) {
-//                StartDetectDeviceMovementJob job = (StartDetectDeviceMovementJob) pipelineJobs.get(i);
-//                Log.d("TAG", "FinalOperation->RESULT: " + job.result());
-//            }
-            // ===
-
-            onSuccess.onSuccess(true);
-        });
-        mCycle.addOperation((jobs, onSuccess, onError) -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            onSuccess.onSuccess(true);
-        });
+        mCycle.addOperation(new EmptyOperation(String.valueOf(++operationIdsCounter)));
+        mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
+        mCycle.addOperation(new DetectDeviceMovementOperation(String.valueOf(++operationIdsCounter)));
+        mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
     }
 
     public static synchronized Pipeline get() {
@@ -105,25 +60,39 @@ public class Pipeline {
         return sInstance;
     }
 
-    public void start(OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
+    public void start(Context context, OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
         Log.d("TAG", "Pipeline-start(): " + Thread.currentThread().getId());
 
         setNeedStopCycle(false);
 
         mWorkerThread = new Thread(() -> {
-            while (!needStopCycle()) {
-                Thread cycleThread = mCycle.run();
-                try {
-                    cycleThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    break;
-                } finally {
-                    ++mCycleCounter;
-                }
-
-                finalizeCurrentCycleJobs();
+            Thread cycleThread = mCycle.run();
+            try {
+                cycleThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                ++mCycleCounter;
             }
+
+            mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
+            mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
+
+            // ===
+//            while (!needStopCycle()) {
+//                Thread cycleThread = mCycle.run();
+//                try {
+//                    cycleThread.join();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                    break;
+//                } finally {
+//                    ++mCycleCounter;
+//                }
+//
+//                finalizeCurrentCycleJobs();
+//            }
+            // ===
 
             Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
         });
@@ -134,7 +103,7 @@ public class Pipeline {
         onSuccess.onSuccess(null);
     }
 
-    public void stop(OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
+    public void stop(Context context, OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
         Log.d("TAG", "Pipeline->stop(): " + Thread.currentThread().getId());
 
         setNeedStopCycle(true);
@@ -163,21 +132,6 @@ public class Pipeline {
         mCycle.scheduleJob(job);
     }
 
-    private synchronized void finalizeCurrentCycleJobs() {
-        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()");
-        PipelineJobs jobs = mCycle.getCurrentCycleJobs();
-        List<PipelineJob> jobsList = jobs.getAllJobs();
-        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()->JOBS_COUNT: " + jobsList.size());
-        for (int i = 0; i < jobsList.size(); ++i) {
-            PipelineJob job = jobsList.get(i);
-            if (job.error() != null) {
-                job.errorCallback().onError(job.error());
-            } else if (job.finished()) {
-                job.successCallback().onSuccess(job.result());
-            }
-        }
-    }
-
     private synchronized void setNeedStopCycle(boolean needStop) {
         mNeedStopCycle = needStop;
     }
@@ -185,6 +139,40 @@ public class Pipeline {
     private synchronized boolean needStopCycle() {
         return mNeedStopCycle;
     }
+
+    //    private synchronized void processCurrentCycleOperationStates() {
+//        Log.d("TAG", "Pipeline->processCurrentCycleOperationStates(): " + Thread.currentThread().getId());
+//
+//        List<PipelineOperationState> states = mCycle.getCurrentCycleOperationStates();
+//        Log.d("TAG", "Pipeline->processCurrentCycleOperationStates()->STATES_COUNT: " + states.size());
+//
+//        for (int i = 0; i < states.size(); ++i) {
+//            PipelineOperationState state = states.get(i);
+//
+//            if (state.operation().type().equalsIgnoreCase(DetectDeviceMovementOperation.TYPE)) {
+//                DetectDeviceMovementOperationStatus status = (DetectDeviceMovementOperationStatus) state.status();
+//
+//                Log.d("TAG", "Pipeline->processCurrentCycleOperationStates()->DETECT_MOVEMENT_RUNNING: " + status.deviceMovementRunning());
+//                Log.d("TAG", "Pipeline->processCurrentCycleOperationStates()->MOVEMENT_DETECTED: " + status.movementDetected());
+//            }
+//        }
+//    }
+
+    //    private synchronized void finalizeCurrentCycleJobs() {
+//        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()");
+//
+//        PipelineJobs jobs = mCycle.getCurrentCycleJobs();
+//        List<PipelineJob> jobsList = jobs.getAllJobs();
+//        Log.d("TAG", "Pipeline->finalizeCurrentCycleJobs()->JOBS_COUNT: " + jobsList.size());
+//        for (int i = 0; i < jobsList.size(); ++i) {
+//            PipelineJob job = jobsList.get(i);
+//            if (job.error() != null) {
+//                job.errorCallback().onError(job.error());
+//            } else if (job.finished()) {
+//                job.successCallback().onSuccess(job.result());
+//            }
+//        }
+//    }
 }
 
 
@@ -200,7 +188,7 @@ public class Pipeline {
 //import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 //import com.vision.services.surveillance.pipeline.jobs.OperationOneJob;
 //import com.vision.services.surveillance.pipeline.jobs.OperationTwoJob;
-//import com.vision.services.surveillance.pipeline.operations.DetectDeviceMovementOperation;
+//import com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation.DetectDeviceMovementOperation;
 //
 //import java.util.List;
 //

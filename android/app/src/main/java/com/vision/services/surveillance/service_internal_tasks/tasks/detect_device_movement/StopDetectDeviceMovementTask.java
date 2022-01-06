@@ -9,8 +9,7 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.pipeline.Pipeline;
-import com.vision.services.surveillance.pipeline.jobs.OperationTwoJob;
-import com.vision.services.surveillance.pipeline.jobs.StopDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StopDetectDeviceMovementJob;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;

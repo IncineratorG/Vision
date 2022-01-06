@@ -94,7 +94,7 @@ public class StartForegroundServiceTask implements ServiceSyncTask {
         OnTaskError<ServiceError> startPipelineError = (error) -> mOnError.onError(error);
          // ===
 
-        Pipeline.get().start(startPipelineSuccess, startPipelineError);
+        Pipeline.get().start(mContext, startPipelineSuccess, startPipelineError);
 
 //        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
 //                mContext,

@@ -11,8 +11,7 @@ import com.vision.services.surveillance.SurveillanceService;
 import com.vision.services.surveillance.notifications.SurveillanceServiceNotifications;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.pipeline.Pipeline;
-import com.vision.services.surveillance.pipeline.jobs.OperationOneJob;
-import com.vision.services.surveillance.pipeline.jobs.StartDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StartDetectDeviceMovementJob;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
 import java.util.Map;

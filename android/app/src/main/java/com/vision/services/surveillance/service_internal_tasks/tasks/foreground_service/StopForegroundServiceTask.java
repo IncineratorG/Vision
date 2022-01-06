@@ -97,7 +97,7 @@ public class StopForegroundServiceTask implements ServiceSyncTask {
         OnTaskError<ServiceError> stopPipelineError = (error) -> mOnError.onError(error);
         // ===
 
-        Pipeline.get().stop(stopPipelineSuccess, stopPipelineError);
+        Pipeline.get().stop(mContext, stopPipelineSuccess, stopPipelineError);
 
 //        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
 //                mContext,

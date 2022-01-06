@@ -1,25 +1,40 @@
-package com.vision.services.surveillance.pipeline.operations;
+package com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation;
 
 import android.util.Log;
 
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
-import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
+import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
-import com.vision.services.surveillance.pipeline.jobs.StartDetectDeviceMovementJob;
-import com.vision.services.surveillance.pipeline.jobs.StopDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StartDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StopDetectDeviceMovementJob;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.status.DetectDeviceMovementOperationStatus;
 
 import java.util.List;
 
 public class DetectDeviceMovementOperation implements PipelineOperation {
-    public DetectDeviceMovementOperation() {
+    public static final String TYPE = "DetectDeviceMovementOperation";
 
+    private String mId;
+
+    public DetectDeviceMovementOperation(String id) {
+        mId = id;
     }
 
     @Override
-    public void run(PipelineJobs jobs, OnTaskSuccess<Object> onSuccess, OnTaskError<Object> onError) {
+    public String id() {
+        return mId;
+    }
+
+    @Override
+    public String type() {
+        return TYPE;
+    }
+
+    @Override
+    public void run(PipelineJobs jobs, OnTaskSuccess<PipelineOperationState> onSuccess, OnTaskError<Object> onError) {
         Log.d("TAG", "DetectDeviceMovementOperation");
 
         List<PipelineJob> startDetectDeviceMovementJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
@@ -37,7 +52,9 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
             stopDetectDeviceMovementJobs.get(i).setFinished(true);
         }
 
-        onSuccess.onSuccess(true);
+        DetectDeviceMovementOperationStatus status = new DetectDeviceMovementOperationStatus();
+
+        onSuccess.onSuccess(new PipelineOperationState(this, status));
 
 //        OnTaskSuccess<Void> movementStartCallback = (data) -> {
 //            Log.d("tag", "DetectDeviceMovementOperation->movementStartCallback()");

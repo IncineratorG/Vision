@@ -1,4 +1,4 @@
-package com.vision.services.surveillance.pipeline.jobs;
+package com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs;
 
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
