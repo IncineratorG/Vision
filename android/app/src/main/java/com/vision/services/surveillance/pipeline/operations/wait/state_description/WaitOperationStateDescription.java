@@ -17,6 +17,11 @@ public class WaitOperationStateDescription implements PipelineOperationStateDesc
     }
 
     @Override
+    public boolean includeInResult() {
+        return false;
+    }
+
+    @Override
     public boolean isValid(JSONObject stateResult) {
         if (stateResult == null) {
             Log.d("TAG", "WaitOperationStateDescription->isValid()->RESULT_IS_NULL");

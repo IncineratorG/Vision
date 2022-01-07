@@ -21,6 +21,11 @@ public class EmptyOperationStateDescription implements PipelineOperationStateDes
     }
 
     @Override
+    public boolean includeInResult() {
+        return true;
+    }
+
+    @Override
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
 

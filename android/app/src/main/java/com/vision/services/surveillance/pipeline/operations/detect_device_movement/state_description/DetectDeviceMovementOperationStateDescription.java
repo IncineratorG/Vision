@@ -26,6 +26,11 @@ public class DetectDeviceMovementOperationStateDescription implements PipelineOp
     }
 
     @Override
+    public boolean includeInResult() {
+        return true;
+    }
+
+    @Override
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
 

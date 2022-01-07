@@ -21,6 +21,9 @@ public class SimpleCycleResultBuilder implements PipelineCycleResultBuilder {
 
         for (int i = 0; i < states.size(); ++i) {
             PipelineOperationState state = states.get(i);
+            if (!state.description().includeInResult()) {
+                continue;
+            }
 
             JSONObject operationResult = resultForOperation(state);
             if (operationResult.length() > 0) {
@@ -29,6 +32,12 @@ public class SimpleCycleResultBuilder implements PipelineCycleResultBuilder {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Log.d(
+                        "TAG",
+                        "SimpleCycleResultBuilder->build()->BAD_OPERATION_RESULT_FOR_OPERATION: " +
+                                state.operation().type()
+                );
             }
         }
 

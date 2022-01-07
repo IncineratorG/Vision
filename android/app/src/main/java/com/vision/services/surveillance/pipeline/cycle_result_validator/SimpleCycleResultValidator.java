@@ -33,7 +33,7 @@ public class SimpleCycleResultValidator implements PipelineCycleResultValidator 
         List<PipelineOperationState> cycleOperationStates = cycle.getCurrentCycleOperationStates();
         for (int i = 0; i < cycleOperationStates.size(); ++i) {
             PipelineOperationStateDescription description = cycleOperationStates.get(i).description();
-            if (description.name().isEmpty()) {
+            if (!description.includeInResult()) {
                 continue;
             }
 
