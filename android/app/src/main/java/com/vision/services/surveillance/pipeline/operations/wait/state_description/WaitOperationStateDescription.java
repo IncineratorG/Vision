@@ -16,15 +16,15 @@ public class WaitOperationStateDescription implements PipelineOperationStateDesc
         return "";
     }
 
-//    @Override
-//    public boolean isValid(JSONObject result) {
-//        if (result == null) {
-//            Log.d("TAG", "WaitOperationStateDescription->isValid()->RESULT_IS_NULL");
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    @Override
+    public boolean isValid(JSONObject stateResult) {
+        if (stateResult == null) {
+            Log.d("TAG", "WaitOperationStateDescription->isValid()->RESULT_IS_NULL");
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public JSONObject toJSONObject() {

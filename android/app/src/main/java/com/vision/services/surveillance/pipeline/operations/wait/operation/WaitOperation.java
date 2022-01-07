@@ -7,7 +7,7 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
-import com.vision.services.surveillance.pipeline.operations.empty.state_description.EmptyOperationStateDescription;
+import com.vision.services.surveillance.pipeline.operations.wait.state_description.WaitOperationStateDescription;
 
 public class WaitOperation implements PipelineOperation {
     public static final String TYPE = "WaitOperation";
@@ -38,6 +38,6 @@ public class WaitOperation implements PipelineOperation {
             e.printStackTrace();
         }
 
-        onSuccess.onSuccess(new PipelineOperationState(this, new EmptyOperationStateDescription()));
+        onSuccess.onSuccess(new PipelineOperationState(this, new WaitOperationStateDescription()));
     }
 }

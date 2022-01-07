@@ -39,17 +39,25 @@ public class DetectDeviceMovementOperationStateDescription implements PipelineOp
         return jsonObject;
     }
 
-//    @Override
-//    public boolean isValid(JSONObject result) {
-//        if (result == null) {
-//            Log.d("TAG", "DetectDeviceMovementOperationStateDescription->isValid()->RESULT_IS_NULL");
-//            return false;
-//        }
-//
-//
-//
-//        return true;
-//    }
+    @Override
+    public boolean isValid(JSONObject stateResult) {
+        if (stateResult == null) {
+            Log.d("TAG", "DetectDeviceMovementOperationStateDescription->isValid()->RESULT_IS_NULL");
+            return false;
+        }
+
+        if (!stateResult.has(DEVICE_MOVEMENT_RUNNING_FIELD)) {
+            Log.d("TAG", "DetectDeviceMovementOperationStateDescription->isValid()->INSUFFICIENT_FIELD: " + DEVICE_MOVEMENT_RUNNING_FIELD);
+            return false;
+        }
+
+        if (!stateResult.has(DEVICE_MOVEMENT_DETECTED_FIELD)) {
+            Log.d("TAG", "DetectDeviceMovementOperationStateDescription->isValid()->INSUFFICIENT_FIELD: " + DEVICE_MOVEMENT_DETECTED_FIELD);
+            return false;
+        }
+
+        return true;
+    }
 
     public DetectDeviceMovementOperationStateDescription(boolean deviceMovementRunning, boolean movementDetected) {
         mDeviceMovementRunning = deviceMovementRunning;
