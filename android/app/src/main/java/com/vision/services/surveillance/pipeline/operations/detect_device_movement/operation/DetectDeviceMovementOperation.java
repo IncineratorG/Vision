@@ -10,7 +10,7 @@ import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StartDetectDeviceMovementJob;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StopDetectDeviceMovementJob;
-import com.vision.services.surveillance.pipeline.operations.detect_device_movement.status.DetectDeviceMovementOperationStatus;
+import com.vision.services.surveillance.pipeline.operations.detect_device_movement.state_description.DetectDeviceMovementOperationStateDescription;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
             stopDetectDeviceMovementJobs.get(i).setFinished(true);
         }
 
-        DetectDeviceMovementOperationStatus status = new DetectDeviceMovementOperationStatus();
+        DetectDeviceMovementOperationStateDescription status = new DetectDeviceMovementOperationStateDescription();
 
         onSuccess.onSuccess(new PipelineOperationState(this, status));
 

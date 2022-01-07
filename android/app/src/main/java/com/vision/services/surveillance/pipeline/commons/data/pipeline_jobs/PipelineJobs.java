@@ -1,6 +1,5 @@
 package com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs;
 
-import android.util.Log;
 
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 

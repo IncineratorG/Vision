@@ -7,19 +7,22 @@ import com.vision.common.data.service_error.ServiceError;
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_cycle.PipelineCycle;
-import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
-import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_jobs_finalizer.PipelineCycleJobsFinalizer;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_operation_states_processor.PipelineCycleOperationStatesProcessor;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_result_builder.PipelineCycleResultBuilder;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_result_processor.PipelineCycleResultProcessor;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_result_validator.PipelineCycleResultValidator;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
-import com.vision.services.surveillance.pipeline.jobs_finalizer.SimpleCycleJobsFinalizer;
-import com.vision.services.surveillance.pipeline.operation_states_processor.SimpleOperationStatesProcessor;
+import com.vision.services.surveillance.pipeline.cycle_result_processor.SimpleCycleResultProcessor;
+import com.vision.services.surveillance.pipeline.cycle_jobs_finalizer.SimpleCycleJobsFinalizer;
+import com.vision.services.surveillance.pipeline.cycle_operation_states_processor.SimpleCycleOperationStatesProcessor;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation.DetectDeviceMovementOperation;
-import com.vision.services.surveillance.pipeline.operations.detect_device_movement.status.DetectDeviceMovementOperationStatus;
 import com.vision.services.surveillance.pipeline.operations.empty.operation.EmptyOperation;
 import com.vision.services.surveillance.pipeline.operations.wait.operation.WaitOperation;
+import com.vision.services.surveillance.pipeline.cycle_result_builder.SimpleCycleResultBuilder;
+import com.vision.services.surveillance.pipeline.cycle_result_validator.SimpleCycleResultValidator;
 
-import java.util.List;
+import org.json.JSONObject;
 
 
 public class Pipeline {
@@ -34,16 +37,22 @@ public class Pipeline {
 
     private PipelineCycleJobsFinalizer mCycleJobsFinalizer;
     private PipelineCycleOperationStatesProcessor mCycleOperationStatesProcessor;
+    private PipelineCycleResultBuilder mCycleResultBuilder;
+    private PipelineCycleResultValidator mCycleResultValidator;
+    private PipelineCycleResultProcessor mCycleResultProcessor;
 
     private Pipeline() {
         mCycleCounter = 0;
 
         mIsRunning = false;
 
-        int operationIdsCounter = 1;
-
         mCycleJobsFinalizer = new SimpleCycleJobsFinalizer();
-        mCycleOperationStatesProcessor = new SimpleOperationStatesProcessor();
+        mCycleOperationStatesProcessor = new SimpleCycleOperationStatesProcessor();
+        mCycleResultBuilder = new SimpleCycleResultBuilder();
+        mCycleResultValidator = new SimpleCycleResultValidator();
+        mCycleResultProcessor = new SimpleCycleResultProcessor();
+
+        int operationIdsCounter = 1;
 
         mCycle = new PipelineCycle();
         mCycle.addOperation(new EmptyOperation(String.valueOf(++operationIdsCounter)));
@@ -77,6 +86,13 @@ public class Pipeline {
 
             mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
             mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
+            JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
+            boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
+            if (resultValid) {
+                mCycleResultProcessor.process(context, cycleResult);
+            } else {
+                Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
+            }
 
             // ===
 //            while (!needStopCycle()) {

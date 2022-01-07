@@ -1,4 +1,4 @@
-package com.vision.services.surveillance.pipeline.jobs_finalizer;
+package com.vision.services.surveillance.pipeline.cycle_jobs_finalizer;
 
 import android.content.Context;
 import android.util.Log;
