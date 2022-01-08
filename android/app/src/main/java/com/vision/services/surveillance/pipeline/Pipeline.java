@@ -72,45 +72,14 @@ public class Pipeline {
     public void start(Context context, OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
         Log.d("TAG", "Pipeline-start(): " + Thread.currentThread().getId());
 
+        mCycleCounter = 0;
+
         setNeedStopCycle(false);
 
         mWorkerThread = new Thread(() -> {
-            Thread cycleThread = mCycle.run();
-            try {
-                cycleThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                ++mCycleCounter;
+            while (!needStopCycle()) {
+                runCycleOnce(context);
             }
-
-            mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
-            mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
-            JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
-            boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
-            if (resultValid) {
-                mCycleResultProcessor.process(context, cycleResult);
-            } else {
-                Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
-            }
-
-            // ===
-//            while (!needStopCycle()) {
-//                Thread cycleThread = mCycle.run();
-//                try {
-//                    cycleThread.join();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                    break;
-//                } finally {
-//                    ++mCycleCounter;
-//                }
-//
-//                finalizeCurrentCycleJobs();
-//            }
-            // ===
-
-            Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
         });
         mWorkerThread.start();
 
@@ -124,16 +93,26 @@ public class Pipeline {
 
         setNeedStopCycle(true);
 
-        mIsRunning = false;
-
         if (mWorkerThread != null) {
-            mWorkerThread.interrupt();
             try {
                 mWorkerThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        mIsRunning = false;
+
+//        if (mWorkerThread != null) {
+//            mWorkerThread.interrupt();
+//            try {
+//                mWorkerThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        Log.d("TAG", "Pipeline->stop()->CYCLES_PASSED: " + mCycleCounter);
 
         onSuccess.onSuccess(null);
     }
@@ -148,6 +127,41 @@ public class Pipeline {
         mCycle.scheduleJob(job);
     }
 
+    private void runCycleOnce(Context context) {
+        Thread cycleThread = mCycle.run();
+        try {
+            cycleThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            ++mCycleCounter;
+
+            mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
+            mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
+            JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
+            boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
+            if (resultValid) {
+                mCycleResultProcessor.process(context, cycleResult);
+            } else {
+                Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
+            }
+
+            Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
+        }
+
+//        mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
+//        mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
+//        JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
+//        boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
+//        if (resultValid) {
+//            mCycleResultProcessor.process(context, cycleResult);
+//        } else {
+//            Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
+//        }
+//
+//        Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
+    }
+
     private synchronized void setNeedStopCycle(boolean needStop) {
         mNeedStopCycle = needStop;
     }
@@ -155,6 +169,56 @@ public class Pipeline {
     private synchronized boolean needStopCycle() {
         return mNeedStopCycle;
     }
+
+    //    public void start(Context context, OnTaskSuccess<Void> onSuccess, OnTaskError<ServiceError> error) {
+//        Log.d("TAG", "Pipeline-start(): " + Thread.currentThread().getId());
+//
+//        setNeedStopCycle(false);
+//
+//        mWorkerThread = new Thread(() -> {
+//            Thread cycleThread = mCycle.run();
+//            try {
+//                cycleThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } finally {
+//                ++mCycleCounter;
+//            }
+//
+//            mCycleJobsFinalizer.finalize(context, mCycle.getCurrentCycleJobs());
+//            mCycleOperationStatesProcessor.process(context, mCycle.getCurrentCycleOperationStates());
+//            JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
+//            boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
+//            if (resultValid) {
+//                mCycleResultProcessor.process(context, cycleResult);
+//            } else {
+//                Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
+//            }
+//
+//            // ===
+////            while (!needStopCycle()) {
+////                Thread cycleThread = mCycle.run();
+////                try {
+////                    cycleThread.join();
+////                } catch (InterruptedException e) {
+////                    e.printStackTrace();
+////                    break;
+////                } finally {
+////                    ++mCycleCounter;
+////                }
+////
+////                finalizeCurrentCycleJobs();
+////            }
+//            // ===
+//
+//            Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);
+//        });
+//        mWorkerThread.start();
+//
+//        mIsRunning = true;
+//
+//        onSuccess.onSuccess(null);
+//    }
 
     //    private synchronized void processCurrentCycleOperationStates() {
 //        Log.d("TAG", "Pipeline->processCurrentCycleOperationStates(): " + Thread.currentThread().getId());

@@ -11,6 +11,7 @@ import com.vision.services.surveillance.SurveillanceService;
 import com.vision.services.surveillance.notifications.SurveillanceServiceNotifications;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.pipeline.Pipeline;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StartDetectDeviceMovementJob;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
@@ -71,20 +72,21 @@ public class StartDetectDeviceMovementTask implements ServiceSyncTask {
             );
         };
 
-        DeviceMovementService.get().start(mContext, movementStartCallback, movementEndCallback);
+//        DeviceMovementService.get().start(mContext, movementStartCallback, movementEndCallback);
 
         // ===
-        Pipeline.get().scheduleJob(
-                new StartDetectDeviceMovementJob(
-                        String.valueOf(System.currentTimeMillis()),
-                        data -> {
-                            Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_STARTED");
-                        },
-                        error -> {
-                            Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_START->ERROR: " + error.toString());
-                        }
-                )
+        PipelineJob startDetectDeviceMovementJob = new StartDetectDeviceMovementJob(
+                String.valueOf(System.currentTimeMillis()),
+                mContext,
+                data -> {
+                    Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_STARTED");
+                },
+                error -> {
+                    Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_START->ERROR: " + error.toString());
+                }
         );
+
+        Pipeline.get().scheduleJob(startDetectDeviceMovementJob);
         // ===
 
         SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(

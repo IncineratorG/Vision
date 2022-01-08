@@ -9,6 +9,7 @@ import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.device_movement.DeviceMovementService;
 import com.vision.common.interfaces.service_sync_task.ServiceSyncTask;
 import com.vision.services.surveillance.pipeline.Pipeline;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs.StopDetectDeviceMovementJob;
 import com.vision.services.surveillance.service_internal_tasks.tasks.SurveillanceServiceInternalTasks;
 
@@ -44,20 +45,21 @@ public class StopDetectDeviceMovementTask implements ServiceSyncTask {
 
     @Override
     public Object run(Map<String, Object> params) {
-        DeviceMovementService.get().stop(mContext);
+//        DeviceMovementService.get().stop(mContext);
 
         // ===
-        Pipeline.get().scheduleJob(
-                new StopDetectDeviceMovementJob(
-                        String.valueOf(System.currentTimeMillis()),
-                        data -> {
-                            Log.d("TAG", "StopDetectDeviceMovementTask->SUCCESS_CALLBACK");
-                        },
-                        error -> {
-                            Log.d("TAG", "StopDetectDeviceMovementTask->ERROR_CALLBACK: " + error.toString());
-                        }
-                )
+        PipelineJob stopDetectDeviceMovementJob = new StopDetectDeviceMovementJob(
+                String.valueOf(System.currentTimeMillis()),
+                mContext,
+                data -> {
+                    Log.d("TAG", "StopDetectDeviceMovementTask->SUCCESS_CALLBACK");
+                },
+                error -> {
+                    Log.d("TAG", "StopDetectDeviceMovementTask->ERROR_CALLBACK: " + error.toString());
+                }
         );
+
+        Pipeline.get().scheduleJob(stopDetectDeviceMovementJob);
         // ===
 
         SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(

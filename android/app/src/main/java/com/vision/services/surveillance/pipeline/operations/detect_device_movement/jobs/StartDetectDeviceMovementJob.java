@@ -1,5 +1,7 @@
 package com.vision.services.surveillance.pipeline.operations.detect_device_movement.jobs;
 
+import android.content.Context;
+
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_job.PipelineJob;
@@ -8,15 +10,17 @@ public class StartDetectDeviceMovementJob implements PipelineJob {
     public static final String TYPE = "StartDetectDeviceMovementJob";
 
     private String mId;
-    private String mResult;
     private boolean mFinished;
+    private Context mContext;
     private OnTaskSuccess<Object> mSuccessCallback;
     private OnTaskError<Object> mErrorCallback;
 
     public StartDetectDeviceMovementJob(String id,
+                                        Context context,
                                         OnTaskSuccess<Object> successCallback,
                                         OnTaskError<Object> errorCallback) {
         mId = id;
+        mContext = context;
         mSuccessCallback = successCallback;
         mErrorCallback = errorCallback;
 
@@ -71,5 +75,9 @@ public class StartDetectDeviceMovementJob implements PipelineJob {
     @Override
     public OnTaskError<Object> errorCallback() {
         return mErrorCallback;
+    }
+
+    public Context context() {
+        return mContext;
     }
 }
