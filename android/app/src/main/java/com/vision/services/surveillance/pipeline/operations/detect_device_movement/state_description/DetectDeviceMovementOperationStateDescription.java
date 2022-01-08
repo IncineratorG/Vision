@@ -20,6 +20,16 @@ public class DetectDeviceMovementOperationStateDescription implements PipelineOp
         mMovementDetected = false;
     }
 
+    public DetectDeviceMovementOperationStateDescription(boolean deviceMovementRunning, boolean movementDetected) {
+        mDeviceMovementRunning = deviceMovementRunning;
+        mMovementDetected = movementDetected;
+    }
+
+    public DetectDeviceMovementOperationStateDescription(DetectDeviceMovementOperationStateDescription other) {
+        mDeviceMovementRunning = other.mDeviceMovementRunning;
+        mMovementDetected = other.mMovementDetected;
+    }
+
     @Override
     public String name() {
         return NAME_FIELD;
@@ -62,11 +72,6 @@ public class DetectDeviceMovementOperationStateDescription implements PipelineOp
         }
 
         return true;
-    }
-
-    public DetectDeviceMovementOperationStateDescription(boolean deviceMovementRunning, boolean movementDetected) {
-        mDeviceMovementRunning = deviceMovementRunning;
-        mMovementDetected = movementDetected;
     }
 
     public boolean deviceMovementRunning() {

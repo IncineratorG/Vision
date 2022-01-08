@@ -22,9 +22,12 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
     public static final String TYPE = "DetectDeviceMovementOperation";
 
     private String mId;
+    private DetectDeviceMovementOperationStateDescription mLastCycleStateDescription;
 
     public DetectDeviceMovementOperation(String id) {
         mId = id;
+
+        mLastCycleStateDescription = new DetectDeviceMovementOperationStateDescription(false, false);
     }
 
     @Override
@@ -41,50 +44,33 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
     public void run(PipelineJobs jobs, OnTaskSuccess<PipelineOperationState> onSuccess, OnTaskError<Object> onError) {
         Log.d("TAG", "DetectDeviceMovementOperation");
 
-//        List<PipelineJob> startDetectDeviceMovementJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
-//        List<PipelineJob> stopDetectDeviceMovementJobs = jobs.getJobs(StopDetectDeviceMovementJob.TYPE);
-//
-//        Log.d("TAG", "DetectDeviceMovementOperation->startDetectDeviceMovementJobs: " + startDetectDeviceMovementJobs.size());
-//        Log.d("TAG", "DetectDeviceMovementOperation->stopDetectDeviceMovementJobs: " + stopDetectDeviceMovementJobs.size());
-//
-//        for (int i = 0; i < startDetectDeviceMovementJobs.size(); ++i) {
-//            StartDetectDeviceMovementJob job = (StartDetectDeviceMovementJob) startDetectDeviceMovementJobs.get(i);
-//            job.setFinished(true);
-//        }
-//
-//        for (int i = 0; i < stopDetectDeviceMovementJobs.size(); ++i) {
-//            stopDetectDeviceMovementJobs.get(i).setFinished(true);
-//        }
-//
-//        DetectDeviceMovementOperationStateDescription status = new DetectDeviceMovementOperationStateDescription();
-
         // ===
         // =====
         List<PipelineJob> startDetectDeviceMovementJobs = jobs.getJobs(StartDetectDeviceMovementJob.TYPE);
         List<PipelineJob> stopDetectDeviceMovementJobs = jobs.getJobs(StopDetectDeviceMovementJob.TYPE);
 
         if (startDetectDeviceMovementJobs.size() <= 0 && stopDetectDeviceMovementJobs.size() <= 0) {
-            onSuccess.onSuccess(new PipelineOperationState(this, new DetectDeviceMovementOperationStateDescription()));
+            onSuccess.onSuccess(new PipelineOperationState(this, getAndResetLastCycleStateDescription()));
         } else if (startDetectDeviceMovementJobs.size() > 0 && stopDetectDeviceMovementJobs.size() > 0) {
             Log.d("TAG", "DetectDeviceMovementOperation->run()->HAVE_OPPOSITE_OPERATIONS->WILL_DO_NOTHING");
             finishJobs(startDetectDeviceMovementJobs);
             finishJobs(stopDetectDeviceMovementJobs);
 
-            onSuccess.onSuccess(new PipelineOperationState(this, new DetectDeviceMovementOperationStateDescription()));
+            onSuccess.onSuccess(new PipelineOperationState(this, getAndResetLastCycleStateDescription()));
         } else if (startDetectDeviceMovementJobs.size() > 0) {
             StartDetectDeviceMovementJob job = (StartDetectDeviceMovementJob) startDetectDeviceMovementJobs.get(0);
 
             startDetectDeviceMovement(job.context());
             finishJobs(startDetectDeviceMovementJobs);
 
-            onSuccess.onSuccess(new PipelineOperationState(this, new DetectDeviceMovementOperationStateDescription()));
+            onSuccess.onSuccess(new PipelineOperationState(this, getAndResetLastCycleStateDescription()));
         } else {
             StopDetectDeviceMovementJob job = (StopDetectDeviceMovementJob) stopDetectDeviceMovementJobs.get(0);
 
             stopDetectDeviceMovement(job.context());
             finishJobs(stopDetectDeviceMovementJobs);
 
-            onSuccess.onSuccess(new PipelineOperationState(this, new DetectDeviceMovementOperationStateDescription()));
+            onSuccess.onSuccess(new PipelineOperationState(this, getAndResetLastCycleStateDescription()));
         }
         // =====
         // ===
@@ -96,39 +82,55 @@ public class DetectDeviceMovementOperation implements PipelineOperation {
         OnTaskSuccess<Void> movementStartCallback = (data) -> {
             Log.d("tag", "---> movementStartCallback()");
 
-//            SurveillanceService.get().sendNotificationToAll(
-//                    mContext,
-//                    SurveillanceServiceNotifications.deviceMovementStartNotification(
-//                            mCurrentGroupName,
-//                            mCurrentDeviceName
-//                    )
-//            );
+            setLastCycleStateDescription(
+                    new DetectDeviceMovementOperationStateDescription(true, true)
+            );
         };
         OnTaskSuccess<Void> movementEndCallback = (data) -> {
             Log.d("tag", "---> movementEndCallback()");
-
-//            SurveillanceService.get().sendNotificationToAll(
-//                    mContext,
-//                    SurveillanceServiceNotifications.deviceMovementEndNotification(
-//                            mCurrentGroupName,
-//                            mCurrentDeviceName
-//                    )
-//            );
         };
 
         DeviceMovementService.get().start(context, movementStartCallback, movementEndCallback);
+
+        setLastCycleStateDescription(
+                new DetectDeviceMovementOperationStateDescription(true, false)
+        );
     }
 
     private void stopDetectDeviceMovement(Context context) {
         Log.d("TAG", "==> DetectDeviceMovementOperation->stopDetectDeviceMovement()");
 
         DeviceMovementService.get().stop(context);
+
+        setLastCycleStateDescription(
+                new DetectDeviceMovementOperationStateDescription(false, false)
+        );
     }
 
     private void finishJobs(List<PipelineJob> jobs) {
         for (int i = 0; i < jobs.size(); ++i) {
             jobs.get(i).setFinished(true);
         }
+    }
+
+    private synchronized void setLastCycleStateDescription(DetectDeviceMovementOperationStateDescription stateDescription) {
+        mLastCycleStateDescription = new DetectDeviceMovementOperationStateDescription(stateDescription);
+    }
+
+    private synchronized DetectDeviceMovementOperationStateDescription getLastCycleStateDescription() {
+        return mLastCycleStateDescription;
+    }
+
+    private synchronized DetectDeviceMovementOperationStateDescription getAndResetLastCycleStateDescription() {
+        DetectDeviceMovementOperationStateDescription lastCycleStateDescription =
+                new DetectDeviceMovementOperationStateDescription(mLastCycleStateDescription);
+
+        mLastCycleStateDescription = new DetectDeviceMovementOperationStateDescription(
+                mLastCycleStateDescription.deviceMovementRunning(),
+                false
+        );
+
+        return lastCycleStateDescription;
     }
 }
 

@@ -80,6 +80,17 @@ public class StartDetectDeviceMovementTask implements ServiceSyncTask {
                 mContext,
                 data -> {
                     Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_STARTED");
+
+                    SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
+                            mContext,
+                            mNeedUpdateDeviceMode,
+                            mCurrentGroupName,
+                            mCurrentGroupPassword,
+                            mCurrentDeviceName,
+                            mCurrentServiceMode,
+                            mOnSuccess,
+                            mOnError
+                    ).run(null);
                 },
                 error -> {
                     Log.d("TAG", "StartDetectDeviceMovementTask->DETECT_DEVICE_MOVEMENT_START->ERROR: " + error.toString());
@@ -89,16 +100,16 @@ public class StartDetectDeviceMovementTask implements ServiceSyncTask {
         Pipeline.get().scheduleJob(startDetectDeviceMovementJob);
         // ===
 
-        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
-                mContext,
-                mNeedUpdateDeviceMode,
-                mCurrentGroupName,
-                mCurrentGroupPassword,
-                mCurrentDeviceName,
-                mCurrentServiceMode,
-                mOnSuccess,
-                mOnError
-        ).run(null);
+//        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
+//                mContext,
+//                mNeedUpdateDeviceMode,
+//                mCurrentGroupName,
+//                mCurrentGroupPassword,
+//                mCurrentDeviceName,
+//                mCurrentServiceMode,
+//                mOnSuccess,
+//                mOnError
+//        ).run(null);
 
         return null;
     }

@@ -53,6 +53,17 @@ public class StopDetectDeviceMovementTask implements ServiceSyncTask {
                 mContext,
                 data -> {
                     Log.d("TAG", "StopDetectDeviceMovementTask->SUCCESS_CALLBACK");
+
+                    SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
+                            mContext,
+                            mNeedUpdateDeviceMode,
+                            mCurrentGroupName,
+                            mCurrentGroupPassword,
+                            mCurrentDeviceName,
+                            mCurrentServiceMode,
+                            mOnSuccess,
+                            mOnError
+                    ).run(null);
                 },
                 error -> {
                     Log.d("TAG", "StopDetectDeviceMovementTask->ERROR_CALLBACK: " + error.toString());
@@ -62,16 +73,16 @@ public class StopDetectDeviceMovementTask implements ServiceSyncTask {
         Pipeline.get().scheduleJob(stopDetectDeviceMovementJob);
         // ===
 
-        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
-                mContext,
-                mNeedUpdateDeviceMode,
-                mCurrentGroupName,
-                mCurrentGroupPassword,
-                mCurrentDeviceName,
-                mCurrentServiceMode,
-                mOnSuccess,
-                mOnError
-        ).run(null);
+//        SurveillanceServiceInternalTasks.updateAndPublishDeviceInfoTask(
+//                mContext,
+//                mNeedUpdateDeviceMode,
+//                mCurrentGroupName,
+//                mCurrentGroupPassword,
+//                mCurrentDeviceName,
+//                mCurrentServiceMode,
+//                mOnSuccess,
+//                mOnError
+//        ).run(null);
 
         return null;
     }
