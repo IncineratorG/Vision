@@ -15,26 +15,27 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     hasBackCamera,
     canDetectDeviceMovement,
     canRecognizePerson,
-    deviceMovementServiceRunning,
-    frontCameraRecognizePersonServiceRunning,
-    backCameraRecognizePersonServiceRunning,
+
+    // deviceMovementServiceRunning,
+    // frontCameraRecognizePersonServiceRunning,
+    // backCameraRecognizePersonServiceRunning,
 
     stringifiedDeviceStatusInfo,
   } = device;
 
   // ===
   // =====
-  const deviceStatusInfoObject = JSON.parse(stringifiedDeviceStatusInfo);
-
-  SystemEventsHandler.onInfo({
-    info:
-      'GroupDeviceItem->DEVICE_STATUS_INFO: ' +
-      JSON.stringify(deviceStatusInfoObject),
-  });
-  SystemEventsHandler.onInfo({info: '> ===== <'});
-  SystemEventsHandler.onInfo({
-    info: 'GroupDeviceItem->DEVICE: ' + JSON.stringify(device),
-  });
+  // const deviceStatusInfoObject = JSON.parse(stringifiedDeviceStatusInfo);
+  //
+  // SystemEventsHandler.onInfo({
+  //   info:
+  //     'GroupDeviceItem->DEVICE_STATUS_INFO: ' +
+  //     JSON.stringify(deviceStatusInfoObject),
+  // });
+  // SystemEventsHandler.onInfo({info: '> ===== <'});
+  // SystemEventsHandler.onInfo({
+  //   info: 'GroupDeviceItem->DEVICE: ' + JSON.stringify(device),
+  // });
   // =====
   // ===
 
@@ -77,6 +78,24 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
   const canRecognizePersonIndicatorColor = canRecognizePerson
     ? activeOptionColor
     : notActiveOptionColor;
+
+  // ===
+  const deviceStatusInfo = JSON.parse(stringifiedDeviceStatusInfo);
+
+  let deviceMovementServiceRunning = false;
+  let frontCameraRecognizePersonServiceRunning = false;
+  let backCameraRecognizePersonServiceRunning = false;
+
+  if (deviceStatusInfo) {
+    const {detectDeviceMovement, recognizePerson} = deviceStatusInfo;
+    SystemEventsHandler.onInfo({
+      info: 'DEVICE_STATUS_INFO_1: ' + JSON.stringify(detectDeviceMovement),
+    });
+    SystemEventsHandler.onInfo({
+      info: 'DEVICE_STATUS_INFO_2: ' + JSON.stringify(recognizePerson),
+    });
+  }
+  // ===
 
   const deviceMovementServiceIndicatorColor = deviceMovementServiceRunning
     ? activeOptionColor
