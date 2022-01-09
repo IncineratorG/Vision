@@ -2,10 +2,14 @@ package com.vision.services.surveillance.pipeline.operations.empty.state_descrip
 
 import android.util.Log;
 
+import com.vision.common.interfaces.service_object.ServiceObject;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation_state_description.PipelineOperationStateDescription;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EmptyOperationStateDescription implements PipelineOperationStateDescription {
     public static final String NAME_FIELD = "emptyOperation";
@@ -36,6 +40,18 @@ public class EmptyOperationStateDescription implements PipelineOperationStateDes
         }
 
         return jsonObject;
+    }
+
+    @Override
+    public Map<String, Object> toServiceObject() {
+        Map<String, Object> serviceObject = new HashMap<>();
+
+        Map<String, Object> stateDescription = new HashMap<>();
+        stateDescription.put(TEST_VARIABLE_FIELD, 7);
+
+        serviceObject.put(NAME_FIELD, stateDescription);
+
+        return serviceObject;
     }
 
     @Override

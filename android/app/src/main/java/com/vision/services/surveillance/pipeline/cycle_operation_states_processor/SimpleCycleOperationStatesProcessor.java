@@ -5,8 +5,12 @@ import android.util.Log;
 
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_operation_state.PipelineOperationState;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_cycle_operation_states_processor.PipelineCycleOperationStatesProcessor;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation.PipelineOperation;
+import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation_state_description.PipelineOperationStateDescription;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation.DetectDeviceMovementOperation;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.state_description.DetectDeviceMovementOperationStateDescription;
+import com.vision.services.surveillance.pipeline.operations.empty.operation.EmptyOperation;
+import com.vision.services.surveillance.pipeline.operations.wait.operation.WaitOperation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +25,11 @@ public class SimpleCycleOperationStatesProcessor implements PipelineCycleOperati
     @Override
     public void process(Context context, List<PipelineOperationState> states) {
         Log.d("TAG", "SimpleOperationStatesProcessor->process()->STATES_COUNT: " + states.size());
+
+        for (int i = 0; i < states.size(); ++i) {
+            PipelineOperationState state = states.get(i);
+//            processState(state);
+        }
 
 //        for (int i = 0; i < states.size(); ++i) {
 //            PipelineOperationState state = states.get(i);
@@ -60,5 +69,32 @@ public class SimpleCycleOperationStatesProcessor implements PipelineCycleOperati
 //            e.printStackTrace();
 //        }
         // ===
+    }
+
+    private void processState(PipelineOperationState state) {
+        PipelineOperation operation = state.operation();
+        PipelineOperationStateDescription stateDescription = state.description();
+
+        switch (operation.type()) {
+            case (EmptyOperation.TYPE): {
+                Log.d("TAG", "SimpleCycleOperationStatesProcessor->processState()->WILL_PROCESS_EMPTY_STATE");
+                break;
+            }
+
+            case (WaitOperation.TYPE): {
+                Log.d("TAG", "SimpleCycleOperationStatesProcessor->processState()->WILL_PROCESS_WAIT_STATE");
+                break;
+            }
+
+            case (DetectDeviceMovementOperation.TYPE): {
+                Log.d("TAG", "SimpleCycleOperationStatesProcessor->processState()->WILL_PROCESS_DETECT_DEVICE_MOVEMENT_STATE");
+                break;
+            }
+
+            default: {
+                Log.d("TAG", "SimpleCycleOperationStatesProcessor->processState()->UNKNOWN_OPERATION: " + operation.type());
+                break;
+            }
+        }
     }
 }

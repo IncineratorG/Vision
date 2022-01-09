@@ -24,6 +24,8 @@ import com.vision.services.surveillance.pipeline.cycle_result_validator.SimpleCy
 
 import org.json.JSONObject;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 
 public class Pipeline {
     private static Pipeline sInstance;
@@ -40,6 +42,8 @@ public class Pipeline {
     private PipelineCycleResultBuilder mCycleResultBuilder;
     private PipelineCycleResultValidator mCycleResultValidator;
     private PipelineCycleResultProcessor mCycleResultProcessor;
+
+    private LinkedBlockingQueue<Boolean> mCanRunNextCycleQueue;
 
     private Pipeline() {
         mCycleCounter = 0;
@@ -59,6 +63,8 @@ public class Pipeline {
         mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
         mCycle.addOperation(new DetectDeviceMovementOperation(String.valueOf(++operationIdsCounter)));
         mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
+
+        mCanRunNextCycleQueue = new LinkedBlockingQueue<>();
     }
 
     public static synchronized Pipeline get() {
@@ -79,6 +85,12 @@ public class Pipeline {
         mWorkerThread = new Thread(() -> {
             while (!needStopCycle()) {
                 runCycleOnce(context);
+
+                try {
+                    mCanRunNextCycleQueue.take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         mWorkerThread.start();
@@ -141,9 +153,35 @@ public class Pipeline {
             JSONObject cycleResult = mCycleResultBuilder.build(context, mCycle.getCurrentCycleOperationStates());
             boolean resultValid = mCycleResultValidator.isValid(cycleResult, mCycle);
             if (resultValid) {
-                mCycleResultProcessor.process(context, cycleResult);
+                mCycleResultProcessor.process(
+                        context,
+                        cycleResult,
+                        mCycle.getCurrentCycleOperationStates(),
+                        data -> {
+                            try {
+                                mCanRunNextCycleQueue.put(true);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        },
+                        error -> {
+                            Log.d("TAG", "Pipeline->runCycleOnce()->CYCLE_RESULT_PROCESSOR_ERROR");
+
+                            try {
+                                mCanRunNextCycleQueue.put(true);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                );
             } else {
                 Log.d("TAG", "Pipeline->RESULT_IS_NOT_VALID");
+
+                try {
+                    mCanRunNextCycleQueue.put(true);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             Log.d("TAG", "===> PIPELINE_CYCLE_FINISHED: " + mCycleCounter);

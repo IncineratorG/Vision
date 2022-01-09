@@ -2,9 +2,13 @@ package com.vision.services.surveillance.pipeline.operations.wait.state_descript
 
 import android.util.Log;
 
+import com.vision.common.interfaces.service_object.ServiceObject;
 import com.vision.services.surveillance.pipeline.commons.interfaces.pipeline_operation_state_description.PipelineOperationStateDescription;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WaitOperationStateDescription implements PipelineOperationStateDescription {
     public WaitOperationStateDescription() {
@@ -29,6 +33,11 @@ public class WaitOperationStateDescription implements PipelineOperationStateDesc
         }
 
         return true;
+    }
+
+    @Override
+    public Map<String, Object> toServiceObject() {
+        return new HashMap<>();
     }
 
     @Override
