@@ -1,5 +1,7 @@
 package com.vision.services.surveillance.pipeline.operations.recognize_person.operation;
 
+import android.util.Log;
+
 import com.vision.common.data.service_generic_callbacks.OnTaskError;
 import com.vision.common.data.service_generic_callbacks.OnTaskSuccess;
 import com.vision.services.surveillance.pipeline.commons.data.pipeline_jobs.PipelineJobs;
@@ -28,6 +30,8 @@ public class RecognizePersonOperation implements PipelineOperation {
 
     @Override
     public void run(PipelineJobs jobs, OnTaskSuccess<PipelineOperationState> onSuccess, OnTaskError<Object> onError) {
+        Log.d("TAG", "RecognizePersonOperation");
+
         RecognizePersonOperationStateDescription stateDescription = new RecognizePersonOperationStateDescription();
 
         onSuccess.onSuccess(new PipelineOperationState(this, stateDescription));

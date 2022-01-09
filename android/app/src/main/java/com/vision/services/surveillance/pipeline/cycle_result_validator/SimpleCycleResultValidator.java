@@ -87,33 +87,5 @@ public class SimpleCycleResultValidator implements PipelineCycleResultValidator 
 
     private boolean isValidOperationStateResult(PipelineOperationState state, JSONObject stateResult) {
         return state.description().isValid(stateResult);
-
-//        switch (state.operation().type()) {
-//            case (DetectDeviceMovementOperation.TYPE): {
-//                DetectDeviceMovementOperationStateDescription stateDescription =
-//                        (DetectDeviceMovementOperationStateDescription) state.description();
-//
-//                return stateDescription.isValid(stateResult);
-//            }
-//
-//            case (EmptyOperation.TYPE): {
-//                EmptyOperationStateDescription stateDescription =
-//                        (EmptyOperationStateDescription) state.description();
-//
-//                return stateDescription.isValid(stateResult);
-//            }
-//
-//            case (WaitOperation.TYPE): {
-//                WaitOperationStateDescription stateDescription =
-//                        (WaitOperationStateDescription) state.description();
-//
-//                return stateDescription.isValid(stateResult);
-//            }
-//
-//            default: {
-//                Log.d("TAG", "SimpleCycleResultValidator->isValidOperationStateResult()->UNKNOWN_OPERATION_TYPE: " + state.operation().type());
-//                return false;
-//            }
-//        }
     }
 }
