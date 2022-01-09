@@ -88,12 +88,23 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
 
   if (deviceStatusInfo) {
     const {detectDeviceMovement, recognizePerson} = deviceStatusInfo;
-    SystemEventsHandler.onInfo({
-      info: 'DEVICE_STATUS_INFO_1: ' + JSON.stringify(detectDeviceMovement),
-    });
-    SystemEventsHandler.onInfo({
-      info: 'DEVICE_STATUS_INFO_2: ' + JSON.stringify(recognizePerson),
-    });
+    if (detectDeviceMovement) {
+      const {deviceMovementRunning, deviceMovementDetected} =
+        detectDeviceMovement;
+
+      deviceMovementServiceRunning = deviceMovementRunning;
+    }
+    if (recognizePerson) {
+      const {
+        backCameraRecognizePersonRunning,
+        frontCameraRecognizePersonRunning,
+      } = recognizePerson;
+
+      backCameraRecognizePersonServiceRunning =
+        backCameraRecognizePersonRunning;
+      frontCameraRecognizePersonServiceRunning =
+        frontCameraRecognizePersonRunning;
+    }
   }
   // ===
 
