@@ -26,7 +26,7 @@ public class EmptyOperationStateDescription implements PipelineOperationStateDes
 
     @Override
     public boolean includeInResult() {
-        return true;
+        return false;
     }
 
     @Override

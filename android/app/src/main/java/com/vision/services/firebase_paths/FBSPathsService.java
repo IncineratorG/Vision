@@ -14,7 +14,7 @@ public class FBSPathsService {
     public final String REQUESTS_PATH = "requests";
     public final String RESPONSES_PATH = "responses";
     public final String DEVICE_INFO_PATH = "deviceInfo";
-    public final String DEVICE_STATUS_INFO_PATH = "deviceStatusInfo";
+    public final String DEVICE_STATUS_INFO_PATH = "stringifiedDeviceStatusInfo";
     public final String UPDATE_FIELD_PATH = "lastUpdateTimestamp";
 
     public FBSPathsService() {

@@ -18,7 +18,25 @@ const GroupDeviceItem = ({device, onDevicePress}) => {
     deviceMovementServiceRunning,
     frontCameraRecognizePersonServiceRunning,
     backCameraRecognizePersonServiceRunning,
+
+    stringifiedDeviceStatusInfo,
   } = device;
+
+  // ===
+  // =====
+  const deviceStatusInfoObject = JSON.parse(stringifiedDeviceStatusInfo);
+
+  SystemEventsHandler.onInfo({
+    info:
+      'GroupDeviceItem->DEVICE_STATUS_INFO: ' +
+      JSON.stringify(deviceStatusInfoObject),
+  });
+  SystemEventsHandler.onInfo({info: '> ===== <'});
+  SystemEventsHandler.onInfo({
+    info: 'GroupDeviceItem->DEVICE: ' + JSON.stringify(device),
+  });
+  // =====
+  // ===
 
   const activeOptionColor = '#2ecc71';
   const notActiveOptionColor = 'lightgrey';

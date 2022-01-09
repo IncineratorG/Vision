@@ -27,6 +27,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     public final String FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY = "frontCameraRecognizePersonServiceRunning";
     public final String BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY = "backCameraRecognizePersonServiceRunning";
 
+    public final String STRINGIFIED_DEVICE_STATUS_INFO_KEY = "stringifiedDeviceStatusInfo";
+
     private final String UNKNOWN_DEVICE_NAME = "Unknown";
 
     private long mLastLoginTimestamp = -1;
@@ -43,6 +45,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
     private boolean mFrontCameraRecognizePersonServiceRunning;
     private boolean mBackCameraRecognizePersonServiceRunning;
 
+    private String mStringifiedDeviceStatusInfo;
+
     public DeviceInfo() {
         mLastLoginTimestamp = -1;
         mLastUpdateTimestamp = -1;
@@ -57,6 +61,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMovementServiceRunning = false;
         mFrontCameraRecognizePersonServiceRunning = false;
         mBackCameraRecognizePersonServiceRunning = false;
+
+        mStringifiedDeviceStatusInfo = "";
     }
 
     public DeviceInfo(DeviceInfo other) {
@@ -73,6 +79,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         mDeviceMovementServiceRunning = other.mDeviceMovementServiceRunning;
         mFrontCameraRecognizePersonServiceRunning = other.mFrontCameraRecognizePersonServiceRunning;
         mBackCameraRecognizePersonServiceRunning = other.mBackCameraRecognizePersonServiceRunning;
+
+        mStringifiedDeviceStatusInfo = other.mStringifiedDeviceStatusInfo;
     }
 
     public DeviceInfo(Object object) {
@@ -212,6 +220,19 @@ public class DeviceInfo implements ServiceObject, HybridObject {
             } else {
                 Log.d("tag", "DeviceInfo->NO_BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_VALUE");
             }
+
+            // ===
+            if (map.containsKey(STRINGIFIED_DEVICE_STATUS_INFO_KEY)) {
+                String stringifiedDeviceStatusInfo = (String) map.get(STRINGIFIED_DEVICE_STATUS_INFO_KEY);
+                if (stringifiedDeviceStatusInfo != null) {
+                    mStringifiedDeviceStatusInfo = stringifiedDeviceStatusInfo;
+                } else {
+                    Log.d("TAG", "DeviceInfo->DEVICE_STATUS_INFO_IS_NULL");
+                }
+            } else {
+                Log.d("TAG", "DeviceInfo->NO_DEVICE_STATUS_INFO");
+            }
+            // ===
         } else {
             Log.d("tag", "DeviceInfo->BAD_OBJECT_MAP");
         }
@@ -328,6 +349,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         writableMap.putBoolean(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mFrontCameraRecognizePersonServiceRunning);
         writableMap.putBoolean(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mBackCameraRecognizePersonServiceRunning);
 
+        writableMap.putString(STRINGIFIED_DEVICE_STATUS_INFO_KEY, mStringifiedDeviceStatusInfo);
+
         return writableMap;
     }
 
@@ -357,6 +380,8 @@ public class DeviceInfo implements ServiceObject, HybridObject {
         serviceObjectMap.put(DEVICE_MOVEMENT_SERVICE_RUNNING_KEY, mDeviceMovementServiceRunning);
         serviceObjectMap.put(FRONT_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mFrontCameraRecognizePersonServiceRunning);
         serviceObjectMap.put(BACK_CAMERA_RECOGNIZE_PERSON_SERVICE_RUNNING_KEY, mBackCameraRecognizePersonServiceRunning);
+
+        serviceObjectMap.put(STRINGIFIED_DEVICE_STATUS_INFO_KEY, mStringifiedDeviceStatusInfo);
 
         return serviceObjectMap;
     }

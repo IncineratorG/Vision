@@ -16,6 +16,8 @@ const initialState = {
     deviceMovementServiceRunning: false,
     frontCameraRecognizePersonServiceRunning: false,
     backCameraRecognizePersonServiceRunning: false,
+
+    stringifiedDeviceStatusInfo: '',
   },
   devicesInGroup: {
     inProgress: false,

@@ -30,20 +30,12 @@ public class SimpleCycleResultProcessor implements PipelineCycleResultProcessor 
                         List<PipelineOperationState> states,
                         OnTaskSuccess<Void> onSuccess,
                         OnTaskError<Object> onError) {
-        Log.d("TAG", "SimpleCycleResultProcessor->process(): " + cycleResult.toString());
+        Log.d("TAG", "SimpleCycleResultProcessor->process()");
 
-        Map<String, Object> deviceStatusInfo = new HashMap<>();
-        for (int i = 0; i < states.size(); ++i) {
-            PipelineOperationState state = states.get(i);
-            deviceStatusInfo.putAll(state.description().toServiceObject());
-        }
-
-//        Log.d("TAG", "SimpleCycleResultProcessor->process(): " + deviceStatusInfo.toString());
-
-        publishDeviceStatus(deviceStatusInfo, onSuccess, onError);
+        publishDeviceStatus(cycleResult, onSuccess, onError);
     }
 
-    private void publishDeviceStatus(Map<String, Object> deviceStatusInfo,
+    private void publishDeviceStatus(JSONObject deviceStatus,
                                      OnTaskSuccess<Void> onSuccess,
                                      OnTaskError<Object> onError) {
         SurveillanceService surveillanceService = SurveillanceService.get();
@@ -74,11 +66,18 @@ public class SimpleCycleResultProcessor implements PipelineCycleResultProcessor 
             onError.onError(e);
         };
 
-        FBSCommunicationService.get().setMapValue(
+        FBSCommunicationService.get().setStringValue(
                 deviceStatusInfoPath,
-                deviceStatusInfo,
+                deviceStatus.toString(),
                 onCompleteListener,
                 onFailureListener
         );
+
+//        FBSCommunicationService.get().setMapValue(
+//                deviceStatusInfoPath,
+//                deviceStatusInfo,
+//                onCompleteListener,
+//                onFailureListener
+//        );
     }
 }
