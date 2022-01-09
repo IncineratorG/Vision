@@ -38,7 +38,7 @@ public class SimpleCycleResultProcessor implements PipelineCycleResultProcessor 
             deviceStatusInfo.putAll(state.description().toServiceObject());
         }
 
-        Log.d("TAG", "SimpleCycleResultProcessor->process(): " + deviceStatusInfo.toString());
+//        Log.d("TAG", "SimpleCycleResultProcessor->process(): " + deviceStatusInfo.toString());
 
         publishDeviceStatus(deviceStatusInfo, onSuccess, onError);
     }

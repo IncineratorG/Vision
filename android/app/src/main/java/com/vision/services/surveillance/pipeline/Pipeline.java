@@ -18,6 +18,7 @@ import com.vision.services.surveillance.pipeline.cycle_jobs_finalizer.SimpleCycl
 import com.vision.services.surveillance.pipeline.cycle_operation_states_processor.SimpleCycleOperationStatesProcessor;
 import com.vision.services.surveillance.pipeline.operations.detect_device_movement.operation.DetectDeviceMovementOperation;
 import com.vision.services.surveillance.pipeline.operations.empty.operation.EmptyOperation;
+import com.vision.services.surveillance.pipeline.operations.recognize_person.operation.RecognizePersonOperation;
 import com.vision.services.surveillance.pipeline.operations.wait.operation.WaitOperation;
 import com.vision.services.surveillance.pipeline.cycle_result_builder.SimpleCycleResultBuilder;
 import com.vision.services.surveillance.pipeline.cycle_result_validator.SimpleCycleResultValidator;
@@ -63,6 +64,7 @@ public class Pipeline {
         mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
         mCycle.addOperation(new DetectDeviceMovementOperation(String.valueOf(++operationIdsCounter)));
         mCycle.addOperation(new WaitOperation(String.valueOf(++operationIdsCounter)));
+        mCycle.addOperation(new RecognizePersonOperation(String.valueOf(++operationIdsCounter)));
 
         mCanRunNextCycleQueue = new LinkedBlockingQueue<>();
     }
